@@ -1,0 +1,118 @@
+
+tokens {
+    kw <= `def` | `enum` | `namespace` | `Type`
+        | `mut` | `xform` | `visit` | `#include` | `no_hash`;
+    idBase <- ((`a`..`z` | `A`..`Z` | `_`) (`a`..`z` | `A`..`Z` | `0`..`9` | `_`)*) - kw;
+    op <= `.` | `:` | `;` | `::` | `{` | `}` | `(` | `)` | `,` | `^` | `<:`;
+    str_lit <- `"` (unicode_any - `"`)* `"`;
+    ws <= ` ` | `\n`;
+    top <= idBase | op | kw | str_lit;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        `//` => { push comment_single; }
+        eof => { pop; }
+    }
+
+    mode comment_single {
+        `\n` => { pop_extract; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { Module, Decl, Field, Expr, Id, SumId }
+
+    Module <- decls:#T2[Decl::eps];
+
+    Decl.Include <- `#include` _ path:str_lit;
+    Decl.Namespace <- `namespace` _ name:Id _ `{` body:#B2[Decl::eps] `}`;
+    Decl.Data <-
+        `def` _ name:SumId base:(_ `<:` _ SumId)?
+        params:(`(` #L[Param::`,`_] `)`)? _
+        mods:#L[Mod::_::]
+        `{` fields:#B[Field::eps] `}`;
+    Decl.Enum <-
+        `enum` _ name:Id `{` cases:#B[idBase::`;`::] `}`;
+
+    Mod.Mut <- `mut`;
+    Mod.Xform <- `xform`;
+    Mod.Visit <- `visit`;
+
+    Param <- name:idBase `:` _ type_:Expr;
+
+    Field <- name:idBase no_hash_:(_ `no_hash`)? `:` _ type_:Expr `;`;
+
+    Expr.Id <- ext:`^`? x:Id;
+    Expr.App <- f:Expr `(` args:#L[Expr::`,`_] `)`;
+    Expr.Type_ <- `Type`;
+
+    SumId <- items:#L[idBase::+`.`];
+
+    Id <- items:#L[idBase::+`::`];
+}
+
+test {
+`def Foo {
+    bar: Int;
+    baz: Int;
+}
+`;
+
+
+`def Foo(T: Type) {
+    bar: Vec(Vec(T));
+}
+`;
+
+
+`def Foo(T: Type) {
+    x: Int;
+}
+
+def Bar(T: Type) {
+    foo: Foo(Vec(T));
+}
+`;
+
+
+`namespace NS {
+    def Foo(T: Type) {
+        x: Int;
+    }
+}
+
+def Bar(T: Type) {
+    foo: NS::Foo(Vec(T));
+}
+`;
+
+
+`namespace lang::expr {
+    def E.Id {
+        x: string;
+    }
+
+    def BinOp {
+    }
+
+    def BinOp.Add {
+    }
+
+    def BinOp.Mul {
+    }
+
+    def E.BinOp {
+        lhs: E;
+        op: BinOp;
+        rhs: E;
+    }
+}
+`;
+
+}

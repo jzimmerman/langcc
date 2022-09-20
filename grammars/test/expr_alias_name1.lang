@@ -1,0 +1,43 @@
+
+tokens {
+    id <- letter_gen (letter_gen | digit)*;
+    letter_gen <= `a`..`z` | `A`..`Z` | `_`;
+    digit <= `0`..`9`;
+    ws_inline <= (`\r` | `\t` | ` `);
+
+    op <= `:` | `.`;
+
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws_inline => { pass; }
+        `\n` => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { ParseExpr }
+
+    prop { name_strict; }
+
+    prec {
+        ParseExpr.Name prefix;
+        ParseExpr.Id;
+    }
+
+    ParseExpr.Id <- id_:~Id;
+    ParseExpr.Name <- name:IdBase `:` e:ParseExpr;
+
+    Id <- names:IdBase*;
+
+    IdBase <= id;
+}
+
+test {
+}

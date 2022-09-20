@@ -1,0 +1,53 @@
+
+tokens {
+    id <- `a`;
+    op <= `0` | `1` | `2` | `3` | `4` | `5` | `6` | `7` | `,`;
+
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Expr }
+
+    prec {
+        Expr.Bin0 assoc_left;
+        Expr.Bin1 assoc_left;
+        Expr.Bin2 assoc_left;
+        Expr.Bin3 assoc_left;
+        Expr.Bin4 assoc_left;
+        Expr.Bin5 assoc_left;
+        Expr.Bin6 assoc_left;
+        Expr.Bin7 assoc_left;
+        Expr.Id;
+    }
+
+    Expr.Id <- id;
+    Expr.Bin0 <- Expr `0` Expr;
+    Expr.Bin1 <- Expr `1` Expr;
+    Expr.Bin2 <- Expr `2` Expr;
+    Expr.Bin3 <- Expr `3` Expr;
+    Expr.Bin4 <- Expr `4` Expr;
+    Expr.Bin5 <- Expr `5` Expr;
+    Expr.Bin6 <- Expr `6` Expr;
+    Expr.Bin7 <- Expr `7` Expr;
+}
+
+compile_test {
+}
+
+test {
+    `a`;
+    `a1a`;
+    `a1a2a3a2a1a`;
+    `a##a`;
+    `a1##1`;
+}

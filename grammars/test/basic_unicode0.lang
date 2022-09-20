@@ -1,0 +1,29 @@
+
+tokens {
+    base <- ascii_base_any;
+    ext <- `\x80`..`\xff`;
+    uni <- unicode_any - (ascii_base_any | `\x80`..`\xff`);
+
+    top <= base | uni | ext;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- uni ext base;
+}
+
+test {
+    `日ÿa`;
+    `日ÿ##ÿ`;
+    `##a`;
+}

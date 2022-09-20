@@ -1,0 +1,30 @@
+
+tokens {
+    id <- `x`;
+    top <= id;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        `//` => { push comment; emit; push comment; }
+        eof => { pop; }
+    }
+
+    mode comment {
+        `\n` => { pop_extract; }
+    }
+}
+
+parser {
+    main { S }
+
+    prop { Err; }
+
+    S <- id;
+}
+
+test {
+}

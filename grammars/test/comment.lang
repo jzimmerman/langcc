@@ -1,0 +1,62 @@
+
+tokens {
+    a <- `a`;
+    ws_inline <= `\r` | `\t` | ` `;
+    ws <- `\n` | ws_inline;
+
+    top <= a;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        `//` => { push comment; pass; }
+        eof => { pop; }
+    }
+
+    mode comment {
+        `b` => { pass; }
+        ws_inline => { pass; }
+        `\n` => { pass; pop_extract; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- a a;
+}
+
+test {
+
+////////////////////
+
+`aa`;
+
+////////////////////
+
+`a
+a
+` <<>>;
+
+////////////////////
+
+`a
+// b bbb bb
+a
+` <<>>;
+
+////////////////////
+
+`a
+// b bbb bb
+a
+//bb
+##b
+b
+` <<>>;
+
+}

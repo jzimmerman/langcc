@@ -1,0 +1,35 @@
+
+tokens {
+    sep <- false;
+    top <= `a` | `b`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ` ` => {
+            match_history {
+                `b` => { emit sep; pass; }
+                _ => { pass; }
+            };
+        }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- X X sep `a`;
+    X.A <- `a`;
+    X.B <- `b`;
+}
+
+test {
+    `ab a`;
+    `aa ##a`;
+    `ab##a`;
+    `a ##`;
+}

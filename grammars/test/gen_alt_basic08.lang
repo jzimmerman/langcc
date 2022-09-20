@@ -1,0 +1,40 @@
+
+tokens {
+    ws <= ` `;
+    Ta <- `a` | `A`;
+    Tb <- `b` | `B`;
+    Tc <- `c` | `C`;
+    Td <- `d` | `D`;
+    top <= Ta | Tb | Tc | Td;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { X }
+
+    X <- R X S | eps;
+
+    R <- A B;
+    S <- C D;
+
+    A <- Ta;
+    B <- Tb;
+    C <- Tc;
+    D <- Td;
+}
+
+test {
+    `abcd`;
+    `ababcdcd`;
+    `ab##d`;
+    `a##`;
+}

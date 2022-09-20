@@ -1,0 +1,27 @@
+tokens {
+    a <= `a`;
+    ar <- a^3;
+
+    top <= ar;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- ar ar;
+}
+
+test {
+    `aaaaaa`;
+    `aaa##`;
+    `aaaaaa##a`;
+}

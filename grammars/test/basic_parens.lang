@@ -1,0 +1,35 @@
+
+tokens {
+    a <- `a`;
+    top <= a | `(` | `)`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.Iter <- xl:S xr:(a | `(` sub:S `)`);
+    S.Base <- eps;
+}
+
+test {
+    `a`;
+    `aa`;
+    `aaa`;
+    `(a)`;
+    `(a)a`;
+    `a(a)`;
+    `aa((a))`;
+    `(()())`;
+    `((##`;
+    `(aa(()aaa(a)))`;
+    `(aa(()aaa(a)))##)`;
+}

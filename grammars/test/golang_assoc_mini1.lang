@@ -1,0 +1,38 @@
+
+tokens {
+    id <- `x`;
+    op <= `.` | `,` | `:=` | `=`;
+    ws <= ` `;
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Stmt }
+
+    Stmt.A <- Expr[S] `,`_ Expr[S] _ `:=` _ Expr;
+    Stmt.B <- Expr `,`_ Expr _ `=` _ Expr;
+
+    Expr.Id[S] <- id;
+    Expr.Id2 <- id `.` id;
+}
+
+test {
+    `x, x := x`;
+    `x, x = x`;
+    `x, x.x = x`;
+    `x, x.x ##:= x`;
+    `x.x, x.x = x`;
+    `x.x, x.x ##:= x`;
+    `x.x##.x`;
+    `x ##= x`;
+}

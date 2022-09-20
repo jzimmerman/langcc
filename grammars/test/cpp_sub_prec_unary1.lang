@@ -1,0 +1,41 @@
+
+tokens {
+    id <- `x`;
+    op <= `(` | `)` | `;` | `,` | `++` | `--` | `!`;
+
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Expr }
+
+    prec {
+        Expr.UnaryPre prefix;
+        Expr.IncPost postfix;
+        Expr.IncPre prefix;
+        Expr.Id;
+    }
+
+    Expr.UnaryPre <- `!` x:Expr;
+    Expr.IncPre <- op:`++` x:Expr;
+    Expr.IncPost <- x:Expr op:`++`;
+    Expr.Id <- name:id;
+}
+
+test {
+    `x`;
+    `!x`;
+    `!!x`;
+    `x++`;
+    `!!x++++`;
+    `x##!`;
+}

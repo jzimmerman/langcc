@@ -1,0 +1,39 @@
+
+tokens {
+    ws <- ` `;
+    par_item <= `a` | `b`;
+    par <- false;
+    top <= `a`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        `(` => { push par; pass; }
+        eof => { pop; }
+    }
+
+    mode par {
+        `)` => { pass; pop_emit par; }
+        par_item => { pass; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- `a` par;
+}
+
+test {
+    `a()`;
+    `a(a)`;
+    `a(ab)`;
+    `a(aba)`;
+    `a(babbab)`;
+    `a(##(`;
+    `a##b`;
+}

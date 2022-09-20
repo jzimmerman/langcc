@@ -1,0 +1,40 @@
+tokens {
+    top <= `a` | `b` | `x` | `y`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.A         <- `x` E[mA];
+    S.B         <- `y` E[mB];
+
+    E.A[mA]     <- E[mA, mB] `a`;
+    E.B[mA, mB] <- E[mA] `b`;
+
+    E.X[mA]     <- `x`;
+    E.Y[mB]     <- `y`;
+}
+
+test {
+    `xx`;
+    `xxba`;
+    `xxbab`;
+    `xxbabab`;
+    `x##y`;
+    `xx##a`;
+    `xxbbba`;
+    `y##b`;
+    `yy`;
+    `yy##b`;
+    `yxb`;
+    `yxbbb`;
+}

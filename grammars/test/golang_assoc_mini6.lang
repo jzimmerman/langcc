@@ -1,0 +1,33 @@
+
+tokens {
+    id <- `x`;
+    kw <= `import`;
+    op <= `(` | `)`;
+    string_lit <- `s`;
+    ws <= ` `;
+    top <= id | kw | op | string_lit;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Import }
+
+    Import <- `import` (ImportSpec | `(` ImportSpec `)`);
+
+        ImportSpec <- ~Expr[I]? string_lit;
+
+    Expr.Id[I] <- id;
+    Expr.Paren <- `(` Expr `)`;
+}
+
+test {
+}

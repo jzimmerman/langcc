@@ -1,0 +1,51 @@
+
+tokens {
+    id <- `x`;
+    op <= `;` | `{` | `}`;
+    ws <= ` `;
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Block }
+
+    attr {
+        match {
+            Stmt => {
+                match {
+                    Empty => {},
+                    _ => lhs[nE],
+                };
+            },
+        };
+    }
+
+    Block <- `{` _ #L[Stmt::`;`::] Stmt[nE]? _ `}`;
+
+    Stmt.Empty <- eps;
+    Stmt.Id <- id;
+}
+
+test {
+    `{}` <<>>;
+    `{ x }`;
+    `{ x; }`;
+    `{ x;x }`;
+    `{ x;x; }`;
+    `{ ;;;x;;; }`;
+    `{ ; }`;
+    `{ ;x }`;
+    `{ x ##x }`;
+    `##x`;
+    `##;`;
+}

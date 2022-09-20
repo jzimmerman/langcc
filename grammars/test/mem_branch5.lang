@@ -1,0 +1,48 @@
+
+tokens {
+    a <- `a`;
+    u <- `u`;
+    b <- `b`;
+    v <- `v`;
+    c <- `c`;
+
+    top <= a | u | b | v | c;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        `\n` => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.AA <- ~AU ~X ~AU;
+    S.AB <- ~AU ~Y ~BV;
+    S.BA <- ~BV ~Y ~AU;
+    S.BB <- ~BV ~X ~BV;
+
+    AU.A <- a;
+    AU.U <- u;
+    BV.B <- b;
+    BV.V <- v;
+
+    X <- c ~Xr;
+    Y <- c ~Yr;
+
+    Xr <- c c;
+    Yr <- c c;
+}
+
+test {
+    `acccb`;
+    `bccca`;
+    `bcccb`;
+    `a##aa`;
+    `acc##a`;
+}

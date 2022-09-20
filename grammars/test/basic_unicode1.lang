@@ -1,0 +1,40 @@
+
+tokens {
+    str_lit <- false;  // Emitted by lexer mode
+
+        raw_str_lit_item <= unicode_any - `\``;
+
+    top <= str_lit;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        `\`` => { push raw_str_lit; pass; }
+        eof => { pop; }
+    }
+
+    mode raw_str_lit {
+        `\`` => { pass; pop_emit str_lit; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- str_lit;
+}
+
+test {
+    `\`a\``;
+    `\`\``;
+    `\`abc\``;
+    `\`日\``;
+    `\`日本語+$\``;
+    `\`日本${語+$\``;
+    `\`日本${{}}}${$}語+$\``;
+    `\`abc\`##a`;
+}

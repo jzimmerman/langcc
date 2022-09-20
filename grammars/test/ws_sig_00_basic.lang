@@ -1,0 +1,47 @@
+
+tokens {
+    ws <= ` ` | `\n`;
+
+    id <- `a`;
+
+    top <= id | `(` | `)` | `[` | `]` | `{` | `}` | `\\`;
+}
+
+
+lexer {
+    main { body }
+
+    mode body ws_sig {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+
+parser {
+    main { S }
+
+    S <- id newline indent id newline dedent id newline;
+}
+
+test {
+`
+a
+  a
+a
+` <<>>;
+
+`
+
+a
+  a
+a
+` <<>>;
+
+`
+a
+##a
+a
+` <<>>;
+}

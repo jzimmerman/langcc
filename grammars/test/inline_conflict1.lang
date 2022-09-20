@@ -1,0 +1,35 @@
+
+tokens {
+    top <= `a` | `b` | `c`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.AB <- AB `a` `b`;
+    S.AC <- AC `a` `c`;
+
+    AB <= `a`;
+    AC <= `a`;
+}
+
+compile_test {
+    LR(0);
+    LR(1);
+    LR(2);
+}
+
+test {
+    `aab`;
+    `aac`;
+    `aa##a`;
+}

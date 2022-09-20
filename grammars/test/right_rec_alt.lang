@@ -1,0 +1,26 @@
+
+tokens {
+    a <- `a`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        a => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { X }
+
+    X <- cons:(hd:a tl:X) | nil:eps;
+}
+
+test {
+    `a`;
+    ``;
+    `aaaa`;
+    `a##b`;
+}

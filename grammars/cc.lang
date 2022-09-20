@@ -1,0 +1,398 @@
+
+tokens {
+    id <- letter_gen (letter_gen | digit)* - kw;
+    letter_gen <= `a`..`z` | `A`..`Z` | `_`;
+    digit <= `0`..`9`;
+    ws_inline <= (`\r` | `\t` | ` `);
+
+    kw <= `return` | `struct` | `if` | `else` | `for`
+        | `template` | `typename` | `namespace` | `enum` | `delete` | `using`
+        | `virtual` | `static` | `inline` | `const` | `switch` | `case` | `default`
+        | `include` | `pragma` | `once` | `break` | `continue` | `new`
+        | `_LT_` | `_GT_`
+        | `__attribute__` | `always_inline` | `noinline`;
+
+    op <= `(` | `)` | `[` | `]` | `{` | `}` | `::`
+        | `,` | `;` | `:`
+        | `.` | `->`
+        | `=`
+        | `<` | `>`
+        | `<=` | `>=` | `==` | `!=`
+        | `<<`
+        | `+` | `-` | `*` | `/` | `%`
+        | `&`
+        | `||` | `&&`
+        | `++` | `--`
+        | `~`
+        | `!`
+        | `#`
+        | `...`
+        ;
+
+    int_lit <- (dec_lit | hex_lit) `L`?;
+    dec_lit <= `0` | (`1`..`9`) (`0`..`9`)*;
+    hex_digit <= (`0`..`9` | `a`..`f`);
+    hex_lit <= `0x` hex_digit+;
+    
+    oct_digit <= `0`..`7`;
+
+    oct_escape <= `\\` oct_digit^3;
+    str_lit <- `"` ((unicode_any - (`\\` | `"`))
+        | `\\n` | `\\r` | `\\t` | `\\"` | `\\'` | `\\\\` | oct_escape)* `"`;
+
+    top <= id | kw | op | int_lit | str_lit;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws_inline => { pass; }
+        `\n` => { pass; }
+        `//` => { push comment_single; }
+        eof => { pop; }
+    }
+
+    mode comment_single {
+        `\n` => { pop_extract; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { Module, Decl, Block, Stmt, Expr, Entry, Param, Mod, SwitchCase }
+
+    prop { name_strict; }
+
+    prec {
+        Expr.Assign assoc_right;
+        Expr.Bin1 assoc_left;
+        Expr.Bin2 assoc_left;
+        Expr.Bin3 assoc_left;
+        Expr.Bin4 assoc_left;
+        Expr.Bin5 assoc_left;
+        Expr.Bin6 assoc_left;
+        Expr.New Expr.Delete prefix;
+        Expr.UnaryPre prefix;
+        Expr.IncDecPost postfix;
+        Expr.IncDecPre prefix;
+        Expr.Ref postfix;
+        Expr.Call Expr.Index Expr.IndexEmpty Expr.Template postfix;
+        Expr.Tilde prefix;
+        Expr.AddrOf Expr.Deref prefix;
+        Expr.Ellipsis postfix;
+        Expr.Dot Expr.Arrow assoc_left;
+        Expr.Namespace assoc_left;
+        Expr.Id Expr.Lit.Integer Expr.Lit.Str Expr.Lit.Array Expr.Paren;
+    }
+
+    attr {
+        match {
+            Expr.Id => lhs[aI],
+        };
+
+        match {
+            Expr.Lit.Array => {},
+            _ => lhs[NLA] -> rhs_begin[NLA],
+        };
+
+        match {
+            Stmt.If | Stmt.IfElse => {},
+            _ => lhs[aIfBody],
+        };
+
+        match {
+            Expr.Template => lhs[aT] -> rhs_begin[aT],
+            Expr.Id | Expr.Ref => lhs[aT],
+            Expr.Tilde => lhs[aT] -> rhs_end[aT],
+            Expr.Namespace => lhs[aT] -> rhs[aT],
+        };
+    }
+
+    Module <- decls:#T2[Decl::eps];
+
+    Decl.Struct <- tmpl:(TemplateDecl _)? `struct` _ name:Id body:StructDeclDef;
+
+            StructDeclDef.Decl <- `;`;
+            StructDeclDef.Def <- base:(`:`_ #L[Type::+`,`_])? _ `{` entries:#B[Entry::eps] `}` `;`;
+
+        Entry.Field <- type_:Type _ name:Id `;`;
+        Entry.Fun <- FunProto body:FunDeclDef;
+
+            FunProto <= tmpl:(TemplateDecl _)? mods:#L[Mod::_::]
+                ret_type:(Type _)? name:Type `(` params:ParamList `)` mods_post:#L[_ Mod::eps];
+
+                ParamList <= #L[~Param::`,`_:?];
+
+                    Param <- mods:#L[Mod::_::] type_:Type _ name:Id val:(_ `=` _ init_val:Expr)?;
+
+            FunDeclDef.Decl <- `;`;
+            FunDeclDef.Def <- init:(_`:`_ #L[Expr::+`,`_])? _ body:Block;
+            FunDeclDef.Del <- _ `=` _ `delete` `;`;
+            FunDeclDef.Zero <- _ `=` _ val:int_lit `;`;
+
+    Decl.EnumStruct <- `enum` _ `struct` _ name:Id _ `{` cases:#B[Id::`,`::] `}` `;`;
+
+    Decl.Fun <- FunProto body:FunDeclDef;
+
+        TemplateDecl <= `template` `<` args:#L[TemplateDeclArg::`,`_:?] `>`;
+        TemplateDeclArg <= `typename` _ dots:(`...`)? name:Id;
+
+        Mod.Const <- `const`;
+        Mod.Inline <- `inline`;
+        Mod.Static <- `static`;
+        Mod.Virtual <- `virtual`;
+        Mod.NoInline <- `__attribute__` `(` `(` `noinline` `)` `)`;
+        Mod.AlwaysInline <- `__attribute__` `(` `(` `always_inline` `)` `)`;
+
+    Decl.Namespace <- `namespace` _ name:Type _ `{` body:#B2[Decl::eps] `}`;
+
+    Decl.UsingAlias <- tmpl:(TemplateDecl _)? `using` _ name:Id _ `=` _ val:Expr `;`;
+    Decl.UsingNamespace <- `using` _ `namespace` _ name:Type;
+
+    Decl.Include <- `#` `include` _ path:str_lit;
+    Decl.PragmaOnce <- `#` `pragma` _ `once`;
+
+    Block <- `{` stmts:#B[Stmt::eps] `}`;
+
+    Stmt.Decl <- decl:~TypedDecl `;`;
+
+        TypedDecl <- mods:#L[Mod::_::] type_:Type _ vars:#L[name:Id val:(_ `=` _ init_val:Expr)?::+`,`_];
+
+    Stmt.Expr <- e:Expr[NLA] `;`;
+    Stmt.Block <- block:Block;
+    Stmt.If <- `if` _ `(` cond:Expr `)` _ xt:Stmt;
+    Stmt.IfElse <- `if` _ `(` cond:Expr `)` _ xt:Stmt[aIfBody] _ `else` _ xf:Stmt;
+    Stmt.For <- `for` _ `(` init:ExprExt `;`_ cond:Expr `;`_ incr:Expr `)` _ body:Block;
+
+        ExprExt.Expr <- e:Expr;
+        ExprExt.Decl <- decl:~TypedDecl;
+
+    Stmt.Switch <- `switch` _ `(` val:Expr `)` _ `{` cases:#B[SwitchCase::eps] `}`;
+
+        SwitchCase.Case <- `case` _ val:Expr `:` _ body:Block;
+        SwitchCase.Default <- `default` `:` _ body:Block;
+
+    Stmt.Break <- `break` `;`;
+    Stmt.Continue <- `continue` `;`;
+
+    Stmt.Return <- `return` val:(_ Expr)? `;`;
+
+    Expr.Paren <- `(` x:Expr[pr=*] `)`;
+
+    Expr.Call <- f:Expr `(` args:Args `)`;
+
+        Args <= #L[Arg::`,`_];
+        Arg <= Expr[pr=*];
+
+    Expr.Index <- f:Expr `[` arg:Arg `]`;
+    Expr.IndexEmpty <- f:Expr `[` `]`;
+
+    Expr.Dot <- x:Expr `.` field:Expr;
+    Expr.Arrow <- x:Expr `->` field:Expr;
+    Expr.Ref <- x:Type `&`;
+    Expr.AddrOf <- `&` x:Expr;
+    Expr.Deref <- `*` x:Expr;
+    Expr.UnaryPre <- op:(NOT:`!` | NEG:`-`) x:Expr;
+    Expr.IncDecPre <- op:(INC:`++` | DEC:`--`) x:Expr;
+    Expr.IncDecPost <- x:Expr op:(INC:`++` | DEC:`--`);
+    Expr.Assign <- xl:Expr _ `=` _ xr:Expr;
+    Expr.Bin1 <- xl:Expr op:#Alt[LOR:(_`||`_)] xr:Expr;
+    Expr.Bin2 <- xl:Expr op:#Alt[LAND:(_`&&`_)] xr:Expr;
+    Expr.Bin3 <-
+        xl:Expr
+        op:(EQ:(_`==`_) | NE:(_`!=`_) | LE:(_`<=`_) | GE:(_`>=`_) | LT:(_`_LT_`_) | GT:(_`_GT_`_))
+        xr:Expr;
+    Expr.Bin4 <- xl:Expr op:#Alt[SHL:(_`<<`_)] xr:Expr;
+    Expr.Bin5 <- xl:Expr op:(PLUS:(_`+`_) | MINUS:(_`-`_)) xr:Expr;
+    Expr.Bin6 <- xl:Expr op:(TIMES:(_`*`_) | DIVIDE:(_`/`_) | MODULO:(_`%`_)) xr:Expr;
+    Expr.Template <- x:Expr `<` args:#L[Expr[pr=*]::+`,`_:?] `>`;
+    Expr.New <- `new` _ x:Expr;
+    Expr.Delete <- `delete` _ x:Expr;
+    Expr.Ellipsis <- x:Expr `...`;
+
+    Expr.Tilde <- `~` x:Expr;  // Note: only for destructors, not for bitwise negation
+    Expr.Namespace <- x:Expr `::` tilde:`~`? name:Id;
+    Expr.Id <- name:id;
+    Expr.Lit.Integer <- val:int_lit;
+    Expr.Lit.Str <- val:str_lit;
+    Expr.Lit.Array <- `{` items:#L[Expr[pr=*]::`,`_] `}`;
+
+    Type <= Expr[aT];
+    Id <= Expr[aI];
+}
+
+test {
+`x().y` <- Expr;
+
+`x.y()` <- Expr;
+
+`x.A::b` <- Expr;
+
+`A::x.b` <- Expr;
+
+`struct A {
+    int x;
+    float y;
+};
+` <- Module;
+
+
+`{
+    {
+        {
+            {
+                {
+                    x + 3;
+                }
+            }
+        }
+    }
+}` <- Stmt;
+
+
+`inline void pr(ostream& os, const Buffer& A) {
+    fmt(os, "Buffer[{}]:\\n", A.N_);
+    if (A.N_ <= 256L + 64L) {
+        for (Int i = 0; i _LT_ A.N_; i++) {
+            os << byte_to_hex(A.v_[i]);
+            pr_buffer_sep(os, i);
+        }
+        if (A.N_ % 64 != 0) {
+            os << "\\n";
+        }
+    } else {
+        for (Int i = 0; i _LT_ 256L; i++) {
+            os << byte_to_hex(A.v_[i]);
+            pr_buffer_sep(os, i);
+        }
+        os << "...\\n";
+        Int N_base = A.N_ - 64;
+        for (Int i = 0; i _LT_ 64; i++) {
+            os << byte_to_hex(A.v_[N_base + i]);
+            pr_buffer_sep(os, i);
+        }
+    }
+}
+` <- Module;
+
+
+`template<typename T> inline void fmt_acc(ostream& os, vector<string>& args_acc, T t) {
+    args_acc.push_back(pr_str(t));
+}
+` <- Module;
+
+`namespace BinOp {
+    enum struct Which {
+        ADD,
+        SUB,
+        MUL,
+        DIV,
+    };
+
+    struct _S: Expr::_S {
+        Which which_binop_;
+        Expr_S lhs;
+        Expr_S rhs;
+        _S(Which w, Expr_S lhs, Expr_S rhs) : which_binop_(w), Expr::_S(Expr::Which::BinOp), lhs(lhs), rhs(rhs) {
+        }
+    };
+
+    Expr::BinOp_S make_ADD(Expr_S lhs, Expr_S rhs) {
+        return make_shared<Expr::BinOp::_S>(Which::ADD, lhs, rhs);
+    }
+}
+` <- Module;
+
+
+`namespace Expr {
+    enum struct Which {
+        _UNINIT_,
+        BinOp,
+        Lit,
+    };
+}
+
+namespace Expr {
+    struct _S: std::enable_shared_from_this<_S> {
+        Expr::Which which_expr_;
+        _S(Expr::Which w) : which_expr_(w) {
+        }
+        _S() = delete;
+        virtual ~_S() {
+        }
+        Expr::Which which() {
+            return which_expr_;
+        }
+        bool is_BinOp() {
+            return which_expr_ == Expr::Which::BinOp;
+        }
+        bool is_Lit() {
+            return which_expr_ == Expr::Which::Lit;
+        }
+        Expr::BinOp_S as_BinOp() {
+            AT(this->is_BinOp());
+            return dynamic_pointer_cast<Expr::BinOp::_S>(this->shared_from_this());
+        }
+        Expr::Lit_S as_Lit() {
+            AT(this->is_Lit());
+            return dynamic_pointer_cast<Expr::Lit::_S>(this->shared_from_this());
+        }
+    };
+}
+
+namespace Expr::BinOp {
+    enum struct Which {
+        _UNINIT_,
+        Add,
+        Sub,
+        Mul,
+        Div,
+    };
+}
+
+namespace Expr {
+    Expr::BinOp_S make_BinOp(Expr::BinOp::Which w, Expr_S lhs, Expr_S rhs) {
+        return make_shared<Expr::BinOp::_S>(w, lhs, rhs);
+    }
+}
+
+void pr(ostream& os, FmtFlags flags, Expr::BinOp::Op op) {
+    switch (op) {
+        case Expr::BinOp::Op::Add: {
+            os << "+";
+            break;
+        }
+        case Expr::BinOp::Op::Sub: {
+            os << "-";
+            break;
+        }
+        case Expr::BinOp::Op::Mul: {
+            os << "*";
+            break;
+        }
+        case Expr::BinOp::Op::Div: {
+            os << "/";
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+` <- Module;
+
+`x().y().z(a, b, c)` <- Expr;
+
+`for (Int i = 0; i _LT_ n; i++) {
+    y[i] = x[i];
+}` <- Stmt;
+
+`x->m_->at(i)->length()` <- Expr;
+
+`for (i1 = 0; i1 _LT_ x->m_->at(i)->length(); i1++) {
+    expr_data::Node::Expr_T y = xform(x->m_->at(i)->at(i1), f);
+    ret1->push_back(y);
+}` <- Stmt;
+}

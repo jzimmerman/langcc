@@ -1,0 +1,29 @@
+
+tokens {
+    ident <- `a`+;
+    ws <- `\n` | `\r` | `\t` | ` `;
+
+    top <= ident;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- ident ident;
+}
+
+test {
+    `aaa aaaaa` <<>>;
+    `a a` <<>>;
+    `a a ##a` <<>>;
+}

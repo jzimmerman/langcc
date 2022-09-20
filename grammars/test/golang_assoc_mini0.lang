@@ -1,0 +1,39 @@
+
+tokens {
+    id <- `x`;
+    op <= `+` | `-` | `*` | `/` | `^` | `{` | `}`;
+    ws <= ` `;
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Block }
+
+    prec {
+        Expr.Bin1 assoc_left;
+        Expr.Bin2 assoc_left;
+        Expr.Bin3 assoc_left;
+        Expr.Id;
+    }
+
+    Block <- `{` Expr `}`;
+
+    Expr.Bin1 <- Expr `+` Expr;
+    Expr.Bin2 <- Expr `*` Expr;
+    Expr.Bin3 <- Expr `^` Expr;
+
+    Expr.Id <- id;
+}
+
+test {
+}

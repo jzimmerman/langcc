@@ -1,0 +1,32 @@
+
+tokens {
+    top <= `a` | `b`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.X <- x:X? y:Y;
+    S.Y <- y0:Y y1:Y;
+
+    X <- `a`;
+    Y <- `b`;
+}
+
+test {
+    `ab`;
+    `bb`;
+    `b`;
+    `a##`;
+    `b##a`;
+    `a##a`;
+}

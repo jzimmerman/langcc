@@ -1,0 +1,28 @@
+
+tokens {
+    id <- `x`;
+    top <= id;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    prop { Err; }
+
+    S <- X;
+    X <- Y.A;
+    Y.A <- id;
+    Y.B <- eps;
+}
+
+test {
+}

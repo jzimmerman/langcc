@@ -1,0 +1,46 @@
+
+tokens {
+    id <- letter_gen (letter_gen | digit)* - kw;
+    letter_gen <= `a`..`z` | `A`..`Z` | `_`;
+    digit <= `0`..`9`;
+    ws_inline <= (`\r` | `\t` | ` `);
+
+    kw <= `nil` | `some` | `none` | `false` | `true` | `vector` | `prod` | `term` | `data`;
+
+    op <= `(` | `)` | `::` | `,`;
+
+    top <= id | kw | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws_inline => { pass; }
+        `\n` => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Result }
+
+    prop { name_strict; }
+
+    Result.Data <- `data` `(` v:Placeholder `)`;
+
+    Result.Vector <- `vector` `(` vs:#L[Result::`,`_] `)`;
+    Result.Prod <- `prod` `(` vs:#L[Result::`,`_] `)`;
+    Result.Some <- `some` `(` v:Result `)`;
+    Result.None <- `none`;
+    Result.Term <- `term` `(` contents:id? `)`;
+    Result.False <- `false`;
+    Result.True <- `true`;
+    Result.Nil <- `nil`;
+
+        Placeholder <- name:id;
+}
+
+test {
+}

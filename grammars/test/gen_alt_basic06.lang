@@ -1,0 +1,37 @@
+
+tokens {
+    ws <= ` `;
+    Ta <- `a` | `A`;
+    Tb <- `b` | `B`;
+    top <= Ta | Tb;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { X }
+
+    X.C0 <- ~B ~A? ~B ((~A)+ ~B) ~A;
+    X.C1 <- ~B ~B ~B;
+
+    A <- Ta;
+    B <- Tb;
+}
+
+test {
+    `babaaba`;
+    `babaaaaaba`;
+    `bbaaaba`;
+    `bbb`;
+    `bb##`;
+    `bbb##a`;
+    `ba##a`;
+}

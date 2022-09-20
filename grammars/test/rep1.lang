@@ -1,0 +1,31 @@
+
+tokens {
+    a <- `a`;
+    ws <= ` `;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        a => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- LS:(La:A)+;
+
+    A <- a;
+}
+
+test {
+    `a`;
+    `aa`;
+    `##`;
+    `a  a  a` <<>>;
+    `a##b`;
+}

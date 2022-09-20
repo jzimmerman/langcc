@@ -1,0 +1,44 @@
+
+tokens {
+    ws <= ` `;
+    Ta <- `a` | `A`;
+    Tb <- `b`;
+    top <= Ta | Tb | `c` | `d` | `e` | `f` | `g`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { X }
+
+    X <- La:~A _
+         Lm:(
+            Lm1:(Lb:~B _ Ln:(Lnc:~C | Lnd:~D) _ Le:~E) |
+            Lf:~F
+         ) _
+         Lg:~G;
+
+    A <- v0:Ta _ v1:(La2:(v0:Ta _ v1:Ta) | La3:(v0:Tb _ v1:Ta _ v2:Ta)) _ v2:Ta;
+    B.Case0.Subcase0 <- v0:Tb;
+    B.Case0.Subcase1 <- v0:Tb v1:Tb;
+    B.Case1 <- v0:Tb v1:Tb v2:Tb;
+    C <- `c`;
+    D <- `d`;
+    E <- `e`;
+    F <- `f`;
+    G <- `g`;
+
+    prop { name_strict; }
+}
+
+test {
+    `A b A a a b c e g`;
+}

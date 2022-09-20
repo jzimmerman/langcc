@@ -1,0 +1,49 @@
+
+tokens {
+    a <- `a`;
+    b <- `b`;
+    c <- `c`;
+    d <- `d`;
+
+    top <= a | b | c | d;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.AA <- a ~X a;
+    S.AB <- a ~Y b;
+    S.BA <- b ~Y a;
+    S.BB <- b ~X b;
+
+    X <- c ~Xr;
+    Y <- c ~Yr;
+
+    Xr <- c c Z;
+    Yr <- c c Z;
+
+    Z.Iter <- Z d;
+    Z.Base <- eps;
+}
+
+test {
+    `accca`;
+    `acccb`;
+    `bccca`;
+    `bcccb`;
+    `acccdda`;
+    `acccdb`;
+    `bcccdddda`;
+    `bcccdddb`;
+    `a##aa`;
+    `acc##a`;
+}

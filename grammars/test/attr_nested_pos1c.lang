@@ -1,0 +1,47 @@
+
+tokens {
+    top <= `a` | `b` | `c`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    attr {
+        match {
+            S => {
+                rhs[mA];
+                rhs[mB];
+                rhs[mC];
+            },
+            X => {
+                lhs[mA] -> rhs_begin[mA];
+                lhs[mB] -> rhs_end[mB];
+                lhs[mC] -> rhs_mid[mC];
+            },
+        };
+    }
+
+    S <- X;
+
+    X <- Y Y Y Y;
+
+    Y.A[mA] <- `a`;
+    Y.B[mB] <- `b`;
+    Y.C[mC] <- `c`;
+}
+
+test {
+    `accb`;
+    `ac##b`;
+    `acc##c`;
+    `##`;
+}

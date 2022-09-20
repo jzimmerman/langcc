@@ -1,0 +1,54 @@
+
+tokens {
+    top <= `a` | `b` | `,` | `;`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    attr {
+        match {
+            S => {
+                rhs[mA];
+                rhs[mB];
+            },
+            X => {
+                lhs[mA] -> rhs_begin[mA];
+                lhs[mB] -> rhs_end[mB];
+            },
+        };
+    }
+
+    S <- X;
+
+    X <- #L[Y::`,`] `;` #L[Y::`,`];
+
+    Y.A[mA] <- `a`;
+    Y.B[mB] <- `b`;
+}
+
+compile_test {
+    !LR(0);
+    LR(1);
+    LR(2);
+}
+
+test {
+    `a;b`;
+    `a,a;b,b`;
+    `a,b,a,b;a,a,a,a,b`;
+    `##b`;
+    `a;a##`;
+    `a;a,a##`;
+    `a;a,a,b`;
+    `a,b;b,b,b,a,b`;
+}

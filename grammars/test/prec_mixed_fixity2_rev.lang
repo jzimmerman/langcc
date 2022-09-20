@@ -1,0 +1,43 @@
+
+tokens {
+    id <- `x`;
+    top <= id | `*` | `[]` | `()`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { E }
+
+    prec {
+        E.Star postfix;
+        E.Call prefix;
+        E.ArrayType postfix;
+        E.Id;
+    }
+
+    E.Star <- E `*`;
+    E.Call <- `()` E;
+    E.ArrayType <- E `[]`;
+    E.Id <- id;
+}
+
+compile_test {
+    !LR(0);
+    LR(1);
+    LR(2);
+}
+
+test {
+    `x*`;
+    `x*[]`;
+    `()x*[]`;
+    `()x[]*`;
+}

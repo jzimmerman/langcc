@@ -1,0 +1,49 @@
+
+tokens {
+    id <- `x`;
+    ws <= ` `;
+    op <= `(` | `)` | `;` | `,`;
+
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Stmt }
+
+    prec {
+        Expr.Call postfix;
+        Expr.Paren Expr.Id;
+    }
+
+    Stmt.Decl <- decl:~TypedDecl `;`;
+
+        TypedDecl <- type_:Type _ var:Id;
+
+    Stmt.Expr <- e:Expr `;`;
+
+    Expr.Paren <- `(` x:Expr[pr=*] `)`;
+    Expr.Call <- f:Expr `(` arg:Expr[pr=*] `)`;
+    Expr.Id[aI, aT] <- name:id;
+
+    Type <= Expr[aT];
+    Id <= Expr[aI];
+}
+
+test {
+    `x;`;
+    `x x;`;
+    `x(x(x));`;
+    `((x));`;
+    `(x(x));`;
+    `x(x) ##x;`;
+}

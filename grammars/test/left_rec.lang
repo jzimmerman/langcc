@@ -1,0 +1,30 @@
+
+tokens {
+    a <- `a`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        a => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { X }
+
+    X.Iter <- hd:X tl:a;
+    X.Base <- eps;
+}
+
+compile_test {
+}
+
+test {
+    `a`;
+    ``;
+    `aaaa`;
+    `a##b`;
+}

@@ -1,0 +1,123 @@
+
+tokens {
+    id <- `x`;
+    kw <= `if` | `func`;
+    op <= `(` | `)` | `{` | `}` | `+` | `*` | `/` | `!`;
+    lit_int <- `42`;
+    ws <= ` `;
+    top <= id | kw | op | lit_int;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Stmt }
+
+    attr {
+        // T: type expression
+        // V: value expression
+        // mC: valid for trailing `{` (no unguarded match)
+        // mS: valid for trailing `*` (no unguarded match)
+
+        match {
+            Expr => {
+                match {
+                    Id => {
+                        lhs[V];
+                        lhs[T];
+                    },
+                    Star => {
+                        lhs[V];
+                        lhs[T] -> rhs[T];
+                    },
+                    Paren => {
+                        lhs[V] -> rhs[V];
+                        lhs[T] -> rhs[T];
+                    },
+                };
+            },
+        };
+
+        match {
+            Expr.Lit.FuncType.Void | Expr.Lit.FuncType.Res => {},
+            _ => lhs[mC] -> rhs_end[mC],
+        };
+
+        match {
+            Expr.Lit.FuncType.Void => {},
+            _ => lhs[mS] -> rhs_end[mS],
+        };
+    }
+
+    prec {
+        Expr.Bin1 assoc_left;
+        Expr.Bin2.Mul Expr.Bin2.Div assoc_left;
+        Expr.Star Expr.UnaryPre;
+        Expr.Lit.FuncType.Void Expr.Lit.FuncType.Res Expr.Lit.Func.Void Expr.Lit.Func.Res;
+        Expr.Paren Expr.Id Expr.Lit.Integer;
+    }
+
+    Stmt.If <- `if` _ Expr[V, mC] _ `{` `}`;
+    Stmt.Expr <- Expr;
+
+    Expr.Id[T, V] <- id;
+    Expr.Star <- `*` _ Expr;
+    Expr.Paren <- `(` Expr[pr=*] `)`;
+
+    Expr.UnaryPre[V] <- `!` Expr[V];
+    Expr.Bin1[V] <- Expr[V] _ `+` _ Expr[V];
+    Expr.Bin2.Mul[V] <- Expr[V, mS] _ `*` _ Expr[V];
+    Expr.Bin2.Div[V] <- Expr[V] _ `/` _ Expr[V];
+
+    Expr.Lit.Integer[V] <- lit_int;
+
+    Expr.Lit.FuncType.Void[T] <- `func` `(` `)`;
+    Expr.Lit.FuncType.Res[T] <- `func` `(` `)` _ res_type:Expr[T, pr=*];
+
+    Expr.Lit.Func.Void[V] <- `func` `(` `)` _ `{` `}`;
+    Expr.Lit.Func.Res[V] <- `func` `(` `)` _ res_type:Expr[T, pr=*] _ `{` `}`;
+}
+
+test {
+    `func() {}`;
+    `func() x {}`;
+    `if func() x {} {}`;
+
+    `if * func() x {} {}`;
+
+        // `func() x {}` is a function literal value Expr (and `*` can be applied to such a value).
+
+    `if * func() {} {}`;
+
+    `if * func() {}##`;
+
+        // `* func() {}` must be parsed greedily, even though `* func()` by itself is also a value Expr.
+        // This leaves the `if` statement without a body.
+
+    `func() * x {}` <<>>;
+
+        // `* x` is the return type of the function literal (a pointer type, i.e., StarExpr).
+
+    `if (* func()) {}`;
+
+        // `* func()` is a value Expr: the star operator converts a type literal to a StarExpr
+        // (and any StarExpr can appear in a value context).
+
+    `* func() + 42`;
+    `* func() / 42`;
+    `* func() * ##42`;
+
+        // `func()` can be followed by a return type, and a return type can start with `*` (a pointer type).
+        // Therefore, `* 42` must be parsed greedily as a StarExpr; but `42` is not valid in a type context,
+        // so this is a parse error.
+
+    `* func() * x * 42`;
+}

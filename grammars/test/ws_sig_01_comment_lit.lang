@@ -1,0 +1,199 @@
+
+tokens {
+    ws <= ` ` | `\n`;
+
+    id <- `a`;
+
+    str_lit <- false;  // Emitted by lexer modes
+
+    top <= id;
+}
+
+
+lexer {
+    main { body }
+
+    mode body ws_sig {
+        top => { emit; }
+        ws => { pass; }
+        `\\` => { pass; }
+        `"""` => { push str_lit_block; pass; }
+        `"` => { push str_lit; pass; }
+        `#` => { push comment; pass; }
+        eof => { pop; }
+    }
+
+    mode str_lit_block {
+        `"""` => { pass; pop_emit str_lit; }
+        `\\"` => { pass; }
+        `\\\\` => { pass; }
+        _ => { pass; }
+    }
+
+    mode str_lit {
+        `"` => { pass; pop_emit str_lit; }
+        `\\"` => { pass; }
+        `\\\\` => { pass; }
+        _ => { pass; }
+    }
+
+    mode comment {
+        `\n` => { pop_extract; }
+        _ => { pass; }
+    }
+}
+
+
+parser {
+    main { S }
+
+    S.R0 <-
+        id newline @(`\n`) indent
+            id newline @(`\n`)
+            str_lit newline @(`\n`) dedent
+        id newline @(`\n`);
+
+    S.R1 <- str_lit newline @(`\n`);
+}
+
+test {
+////////////////////
+
+`"xyz"
+`;
+
+////////////////////
+
+`"日本語"
+`;
+
+////////////////////
+
+`"\\\\"
+`;
+
+////////////////////
+
+`"\\\\\\""
+`;
+
+////////////////////
+
+`"\\"日本語\\""
+`;
+
+////////////////////
+
+`"\\"日本語\\\\\\""
+`;
+
+////////////////////
+
+`"""xyz"""
+`;
+
+////////////////////
+
+`"""\\"日本語\\\\\\""""
+`;
+
+////////////////////
+
+`"""\\"日本語\\\\\\""""
+`;
+
+////////////////////
+
+`
+a
+  a
+  """x"""
+a
+` <<>>;
+
+////////////////////
+
+`
+a
+  a
+  """x"""
+a` <<>>;
+
+////////////////////
+
+`
+a
+  a
+  "\\"日本語\\\\\\""
+a
+` <<>>;
+
+////////////////////
+
+`
+a
+  a
+  """\\"日本語\\\\\\""""
+a
+` <<>>;
+
+////////////////////
+
+`
+a
+  a
+  """\\"日本
+
+  語\\\\\\""""
+a
+` <<>>;
+
+////////////////////
+
+`
+a    # comment1 # comment1
+  a  # comment2
+  """\\"日本語\\\\\\""""
+a
+` <<>>;
+
+////////////////////
+
+`
+a    # comment1
+  a  # comment2
+  """\\"日本語\\\\\\""""  # comment3
+# comment4  # comment4
+
+# comment5
+a
+` <<>>;
+
+////////////////////
+
+`
+a    # comment
+  \\
+  \\
+  a  # comment
+  """\\"日本語\\\\\\""""  # comment
+# comment
+
+# comment
+a
+` <<>>;
+
+////////////////////
+
+`
+a    # comment
+  a  # comment
+  """\\"日本語\\\\\\""""  # comment
+# comment
+
+# comment
+ ##a
+` <<>>;
+
+////////////////////
+}

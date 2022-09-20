@@ -1,0 +1,44 @@
+
+tokens {
+    id <- `x`;
+    kw <= `if` | `else`;
+    op <= `;` | `{` | `}`;
+    ws <= ` `;
+    top <= id | kw | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Stmt }
+
+
+    attr {
+        match {
+            Stmt => {
+                match {
+                    Expr => lhs[mS],
+                    If => lhs[mI],
+                };
+            },
+        };
+    }
+
+    Stmt.If <- `if` (~Stmt[mS] `;`)? Expr Block (`else` (Stmt[mI] | Block))?;
+    Stmt.Expr <- Expr;
+
+    Block <- `{` Stmt `;` Stmt `}`;
+
+    Expr.Id <- id;
+}
+
+test {
+}

@@ -1,0 +1,27 @@
+
+tokens {
+    id <- `x`;
+    op <= `,` | `*`;
+    ws <= ` `;
+    top <= id | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { FieldDecl }
+
+    FieldDecl.Standard <- #L[id::+`,`] id;
+    FieldDecl.Embedded <- `*`? id;
+}
+
+test {
+}

@@ -1,0 +1,40 @@
+
+tokens {
+    ws <= ` `;
+    top <= `a` | `b` | `c` | `d` | `e` | `f` | `g` | `h`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { X }
+
+    X <- ~A _ ((~B|~C) | (~D|~E)) _ ((~A _ ~F) _ ~F | ~G) _ ~G _ ~H;
+
+    A <- `a`;
+    B <- `b`;
+    C <- `c`;
+    D <- `d`;
+    E <- `e`;
+    F <- `f`;
+    G <- `g`;
+    H <- `h`;
+}
+
+test {
+    `a b a f f g h`;
+    `a b g g h`;
+    `a c a f f g h`;
+    `a d a f f g h`;
+    `a e a f f g h`;
+    `a b ##d f f g h`;
+    `a ##a f f g h`;
+}

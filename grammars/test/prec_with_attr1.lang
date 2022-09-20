@@ -1,0 +1,66 @@
+
+tokens {
+    top <= `*` | `+` | `a` | `b` | `B`;
+    ws <= ` `;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Stmt }
+
+    prec {
+        Expr.Add Expr.B0 assoc_left;
+        Expr.Mul assoc_left;
+        Expr.Star prefix;
+        Expr.A Expr.B;
+    }
+
+    attr {
+        match {
+            Expr.Mul => lhs[nB] -> rhs_begin[nB],
+            Expr.Add => lhs[nB] -> rhs_end[nB],
+            Expr.Star => lhs[nB] -> rhs[nB],
+            Expr.A => lhs[nB],
+            Expr.B0 => lhs[nB],
+        };
+    }
+
+    Stmt <- Expr[nB];
+
+    Expr.A <- `a`;
+    Expr.B <- `b`;
+    Expr.B0 <- `B`;
+    Expr.Add <- Expr `+` Expr;
+    Expr.Mul <- Expr `*` Expr;
+    Expr.Star <- `*` Expr;
+
+    prop { LR(1); }
+}
+
+compile_test {
+    !LR(0);
+    LR(1);
+    LR(2);
+}
+
+test {
+    `a`;
+    `b##`;
+    `a+a`;
+    `a+b##`;
+    `b+a`;
+    `B+a`;
+    `B+a+a`;
+    `B+b##`;
+    `a+a*a`;
+    `a+b*a##`;
+}

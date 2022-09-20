@@ -1,0 +1,10 @@
+build
+gen/go__*
+gen/py__*
+gen/common__*
+gost
+.vscode
+examples/calc/gen
+examples/basic/gen
+examples/calc/build
+examples/basic/build

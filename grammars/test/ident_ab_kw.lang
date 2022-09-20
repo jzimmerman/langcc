@@ -1,0 +1,36 @@
+
+tokens {
+    ident <- (`a`..`b`)+ - kw;
+    ws <- `\n` | `\r` | `\t` | ` `;
+    kw <= `bb`;
+
+    top <= ident | kw;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- ident _ ident;
+}
+
+test {
+    `a a`;
+    `aa aa`;
+    `ab ab`;
+    `ba ba`;
+    `abababb bbabbababb`;
+    `abababb bbabbababb ##a`;
+    `abababb ba`;
+    `abababb ab`;
+    `abababb ##bb`;
+}

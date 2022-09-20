@@ -1,0 +1,34 @@
+
+tokens {
+    ws <= ` `;
+    a <= `a`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        a => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { X }
+
+    Na <- `a`;
+
+    XR0 <= XR1;
+    XR1 <= hd:(v0:`a` _ _ v1:Na) _ tl:X;
+
+    X.C0.C00 <- Lcons:XR0 | Lnil:_;
+}
+
+test {
+    `a  a  ` <<>>;
+    ` ` <<>>;
+    `a  ##`;
+    `a  a a  a  ` <<>>;
+    `a  ##b`;
+}

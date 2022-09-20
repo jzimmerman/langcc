@@ -1,0 +1,35 @@
+
+tokens {
+    a <- `a`;
+    b <- `b`;
+    top <= a | b | `,`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- X `,` b* `,` X;
+
+    X <= a*;
+}
+
+test {
+    `a,b,a`;
+    `a,b,##b`;
+    `a,##a,a`;
+    `aaa,bb,aa`;
+    `aa##b,b,a`;
+    `,,`;
+    `aaaaa,,`;
+    `aaaaa,,aa`;
+    `aaaaa,,aa##ba`;
+}

@@ -1,0 +1,49 @@
+
+tokens {
+    a <- `a`;
+    b <- `b`;
+    top <= a | b;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.R1 <- ~X1 b;
+    S.R2 <- ~X2 b b;
+    S.R3 <- ~X3 b b b;
+
+    X1 <- a;
+    X2 <- a;
+    X3 <- a;
+
+    prop { LR(4); }
+}
+
+compile_test {
+    !LR(0);
+    !LR(1);
+    !LR(2);
+    LR(3);
+    LR(4);
+    LR(5);
+}
+
+test {
+    `ab`;
+    `abb`;
+    `abbb`;
+    `##`;
+    `a##`;
+    `abbb##b`;
+    `abbb##bb`;
+    `abbb##bbb`;
+}

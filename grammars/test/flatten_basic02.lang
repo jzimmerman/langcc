@@ -1,0 +1,41 @@
+
+tokens {
+    a <- `a`;
+    b <- `b`;
+    c <- `c`;
+    d <- `d`;
+    ws <= ` `;
+    top <= a | b | c | d | `,`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    prop { name_strict; }
+
+    S.T <- v:a? | r:(w:(x:b y:c) (z0:d `,` dd:`,`? z1:d));
+    S.U.V <- r1:a r2:a;
+}
+
+test {
+    `a`;
+    `aa`;
+    `aa##a`;
+    ``;
+    `bcd,d`;
+    `bcd,,d`;
+    `bcd,##`;
+    `bcd,,##,`;
+    `a##b`;
+    `b##b`;
+}

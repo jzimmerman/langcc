@@ -1,0 +1,44 @@
+
+tokens {
+    top <= `a` | `b`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    attr {
+        match {
+            Y => {
+                lhs[rD] -> rhs_begin[rA];
+                lhs[rD] -> rhs_end[rB];
+            },
+        };
+    }
+
+    S <- sl:Y[rD] sr:Y;
+
+    Y <- x0:X x1:X | x:X;
+
+    X.A[rA] <- `a`;
+    X.B[rB] <- `b`;
+}
+
+test {
+    `abab`;
+    `abaa`;
+    `abbb`;
+    `abba`;
+    `aba`;
+    `abb`;
+    `abba##b`;
+    `a##a`;
+}

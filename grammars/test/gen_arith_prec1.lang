@@ -1,0 +1,59 @@
+
+tokens {
+    id <- `x`;
+    ws <= ` `;
+    top <= id | `*` | `+` | `(` | `)` | `,`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { E }
+
+    prec {
+        E.Add assoc_left;
+        E.Mul assoc_left;
+        E.Call postfix;
+        E.Id;
+    }
+
+    attr {
+        match {
+            X => lhs[mC] -> rhs[mC],
+        };
+    }
+
+    E.Add <- xl:E _ `+` _ xr:E;
+    E.Mul <- xl:E _ `*` _ xr:E;
+    E.Call <- f:E `(` args:#L[E[pr=*]::`,`_] `)`;
+    E.Id <- X[mC];
+
+    X <- Y;
+
+    Y.RC[mC] <- id;
+    Y.RN <- id id;
+}
+
+test {
+    `x`;
+    `x + x`;
+    `x + x + x`;
+    `x + x * x`;
+    `x + x * x * x + x * x`;
+    `x(x, x + x, x)`;
+    `x(x)`;
+    `x(x, x, x)`;
+    `x(x+x, x*x, x+x*x)` <<>>;
+    `x ##x`;
+    `##+x`;
+    `x+##`;
+    `x+##*x`;
+}

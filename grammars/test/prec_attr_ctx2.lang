@@ -1,0 +1,43 @@
+
+tokens {
+    top <= `a` | `b` | `1` | `2` | `3` | `4` | `5` | `6` | `7` | `,`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    attr {
+        match {
+            E.X2 | E.X3 => { lhs[m1] -> rhs[m1]; },
+        };
+
+        match {
+            E.X1 | E.X3 => { lhs[m2] -> rhs[m2]; },
+        };
+
+        match {
+            E.X1 | E.X2 => { lhs[m3] -> rhs[m3]; },
+        };
+    }
+
+    S.Ea <- `a` E[m2] `,` E;
+    S.Eb <- `b` E[m3] `,` E[m1] `1`;
+
+    E.Base[m1, m2, m3] <- eps;
+
+    E.X1 <- `1` E;
+    E.X2 <- `2` E;
+    E.X3 <- `3` E;
+}
+
+test {
+}

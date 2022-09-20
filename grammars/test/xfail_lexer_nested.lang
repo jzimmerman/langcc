@@ -1,0 +1,28 @@
+
+tokens {
+    tokA <- `a`;
+    tokB <= tokC;
+    tokC <- tokD;
+    tokD <= tokA;
+    top <= tokD;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    prop { Err; }
+
+    S <- eps;
+}
+
+test {
+}

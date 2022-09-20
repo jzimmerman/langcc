@@ -1,0 +1,34 @@
+
+tokens {
+    top <= `a`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        `/*` => { push comment; pass; }
+        eof => { pop; }
+    }
+
+    mode comment {
+        `*/` => { pass; pop_extract; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- `a`;
+}
+
+test {
+    `a/*abc*/` <<>>;
+    `a/*abc##` <<>>;
+    `a/*abc日$*/` <<>>;
+    `a/*a日ab本abc語*/` <<>>;
+    `/*abc*/a/*abc*/` <<>>;
+    `/*abc*/a/*abc*/##a` <<>>;
+}

@@ -1,0 +1,47 @@
+
+tokens {
+    id <- `a`;
+    top <= id | `*` | `+`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { E }
+
+    prec {
+        E.Add assoc_left;
+        E.Mul assoc_left;
+        E.Id;
+    }
+
+    E.Add <- R `+` R;
+    E.Mul <- R `*` R;
+    E.Id <- id;
+
+    R <= E;
+}
+
+compile_test {
+    !LR(0);
+    LR(1);
+    LR(2);
+}
+
+test {
+    `a`;
+    `a+a`;
+    `a+a+a`;
+    `a+a*a`;
+    `a+a*a*a+a*a`;
+    `##+a`;
+    `a+##`;
+    `a+##*a`;
+}

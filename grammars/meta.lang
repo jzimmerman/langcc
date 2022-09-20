@@ -1,0 +1,194 @@
+
+tokens {
+    id <- letter_gen (letter_gen | digit)* - (kw | `_`);
+    letter_gen <= `a`..`z` | `A`..`Z` | `_`;
+    digit <= `0`..`9`;
+    ws_inline <= (`\r` | `\t` | ` `);
+
+    kw <= `tokens` | `lexer` | `parser` | `test` | `compile_test`
+        | `main` | `mode` | `prop` | `prec` | `attr`
+        | `emit` | `pass` | `pop` | `pop_extract` | `pop_emit` | `push`
+        | `name_strict`
+        | `assoc_left` | `assoc_right` | `prefix` | `postfix`
+        | `match` | `match_history`
+        | `lhs` | `rhs` | `rhs_begin` | `rhs_mid` | `rhs_end`
+        | `eof` | `false`
+        | `eps`
+        | `unicode_any` | `ascii_base_any`
+        | `ws_sig` | `newline` | `indent` | `dedent`
+        | `pr`
+        | `LR` | `Err`;
+
+    op <= `(` | `)` | `{` | `}` | `[` | `]` | `;`
+        | `<-` | `<=` | `<==` | `|` | `*` | `+` | `^` | `-` | `..` | `?` | `!` | `~` | `_`
+        | `->` | `=>` | `,` | `.` | `.` | `:` | `=`
+        | `#T` | `#T2` | `#B` | `#B2` | `#L` | `#Alt`
+        | `::` | `::+` | `::++` | `:?`
+        | `<<>>` | `@`;
+
+    str_lit <- `\`` ((unicode_any - (`\\` | `\``)) | esc)* `\``;
+    int_lit <- `0` | (`1`..`9`) digit*;
+    esc <= `\\` (`n` | `r` | `f` | `t` | `\`` | `x` | `u` | `\\`);
+
+    top <= id | kw | op | str_lit | int_lit;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws_inline => { pass; }
+        `\n` => { pass; }
+        `//` => { push comment_single; pass; }
+        eof => { pop; }
+    }
+
+    mode comment_single {
+        `\n` => { pop_extract; }
+        eof => { pop_extract; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { Lang, Stanza, ParseExpr }
+
+    prop { name_strict; }
+
+    prec {
+        ParseExpr.Alt;
+        ParseExpr.Minus assoc_left;
+        ParseExpr.Concat;
+        ParseExpr.Name prefix;
+        ParseExpr.Optional ParseExpr.Rep ParseExpr.RepNonzero ParseExpr.RepCount postfix;
+        ParseExpr.Unfold prefix;
+        ParseExpr.AttrReq postfix;
+        ParseExpr.CharRange;
+        ParseExpr.Id ParseExpr.Eof ParseExpr.False ParseExpr.Eps
+            ParseExpr.UnicodeAny ParseExpr.AsciiBaseAny
+            ParseExpr.Indent ParseExpr.Dedent ParseExpr.Newline
+            ParseExpr.StrLit ParseExpr.Underscore ParseExpr.Paren ParseExpr.Pass
+            ParseExpr.List ParseExpr.AltExplicit
+            AttrClauseExpr.LhsGeq AttrClauseExpr.RhsGeq AttrClauseExpr.Implies;
+    }
+
+    Lang <- stanzas:#T2[Stanza::eps];
+
+    Stanza.Tokens <- `tokens` _ `{` decls:#B[TokenDecl::`;`::] `}`;
+    Stanza.Lexer <- `lexer` _ `{` decls:#B2[LexerDecl::eps] `}`;
+    Stanza.Parser <- `parser` _ `{` decls:#B[ParserDecl::eps] `}`;
+    Stanza.Test <- `test` _ `{` items:#B2[TestCase::`;`::] `}`;
+    Stanza.CompileTest <- `compile_test` _ `{` items:#B[CompileTestCase::`;`::] `}`;
+
+    TokenDecl <- name:IdBase _ op:(DEF:`<-` | DEF_ALIAS:`<=`) _ def_:ParseExpr;
+
+    LexerDecl.Main <- `main` _ `{` _ name:IdBase _ `}`;
+    LexerDecl.Mode <- `mode` _ name:IdBase ws_sig_:(_ `ws_sig`)? _ `{` cases:#B[LexerModeCase::eps] `}`;
+
+        LexerModeCase <- tok:ParseExpr _ `=>` _ `{` instrs:#B[LexerInstr::`;`::] `}`;
+
+        LexerInstr.Emit <- `emit` arg:(_ ParseExpr)?;
+        LexerInstr.Pass <- `pass`;
+        LexerInstr.Push <- `push` _ name:IdBase;
+        LexerInstr.Pop <- `pop`;
+        LexerInstr.PopExtract <- `pop_extract`;
+        LexerInstr.PopEmit <- `pop_emit` _ arg:ParseExpr;
+        LexerInstr.MatchHistory <- `match_history` _ `{` cases:#B[LexerModeCase::eps] `}`;
+
+    ParserDecl.Main <- `main` _ `{` _ names:#L[IdBase::+`,`_] _ `}`;
+    ParserDecl.Prop <- `prop` _ `{` _ props:#L[ParserProp::`;`_::] `}`;
+    ParserDecl.Prec <- `prec` _ `{` items:#B[PrecItem::`;`::] `}`;
+    ParserDecl.Attr <- `attr` _ `{` clauses:#B2[AttrClause::`;`::] `}`;
+    ParserDecl.Rule <- name:Id lhs_attrs:(_ `[` #L[AttrReq::`,`_] `]`)?
+        _ op:(DEF:`<-` | DEF_ALIAS:`<=`)
+        _ e:ParseExpr `;`;
+
+        ParserProp.NameStrict <- `name_strict`;
+        ParserProp.LRSpec <- `LR` `(` k:int_lit `)`;
+        ParserProp.Err_ <- `Err`;
+
+        PrecItem <- ids:#L[Id::+_] assoc:(_ PrecAssoc)?;
+
+            PrecAssoc.Left <- `assoc_left`;
+            PrecAssoc.Right <- `assoc_right`;
+            PrecAssoc.Prefix <- `prefix`;
+            PrecAssoc.Postfix <- `postfix`;
+
+        AttrClause.Expr <- e:AttrClauseExpr;
+        AttrClause.Block <- `{` items:#B[AttrClause::`;`::] `}`;
+        AttrClause.Match <- `match` _ `{` cases:#B[AttrMatchCase::`,`::] `}`;
+
+            AttrMatchCase <- pat:AttrMatchCasePattern _ `=>` _ clause:AttrClause;
+
+                AttrMatchCasePattern.Alt <- items:#L[Id::+_`|`_];
+                AttrMatchCasePattern.Wildcard <- `_`;
+
+        AttrClauseExpr.LhsGeq <- `lhs` `[` k:IdBase `]`;
+        AttrClauseExpr.RhsGeq <- loc:AttrClauseExprRhsLoc `[` k:IdBase `]`;
+        AttrClauseExpr.Implies <- `lhs` `[` kl:IdBase `]` _ `->` _ loc:AttrClauseExprRhsLoc `[` kr:IdBase `]`;
+
+            AttrClauseExprRhsLoc.All <- `rhs`;
+            AttrClauseExprRhsLoc.Begin <- `rhs_begin`;
+            AttrClauseExprRhsLoc.Mid <- `rhs_mid`;
+            AttrClauseExprRhsLoc.End <- `rhs_end`;
+
+    TestCase <- text:str_lit sym_:(_ `<-` _ IdBase)? print_exempt:(_ `<<>>`)?;
+
+    CompileTestCase <- neg:`!`? `LR` `(` k:int_lit `)`;
+
+    ParseExpr.Id <- id_:~Id;
+    ParseExpr.Eof <- `eof`;
+    ParseExpr.False <- `false`;
+    ParseExpr.Eps <- `eps`;
+    ParseExpr.Indent <- `indent`;
+    ParseExpr.Dedent <- `dedent`;
+    ParseExpr.Newline <- `newline`;
+    ParseExpr.UnicodeAny <- `unicode_any`;
+    ParseExpr.AsciiBaseAny <- `ascii_base_any`;
+    ParseExpr.Alt <- xs:#L[ParseExpr::++_`|`_];
+    ParseExpr.AltExplicit <- `#Alt` `[` e:ParseExpr[pr=*] `]`;
+    ParseExpr.Minus <- x:ParseExpr _ `-` _ y:ParseExpr;
+    ParseExpr.Concat <- xs:#L[ParseExpr::++_];
+    ParseExpr.Optional <- x:ParseExpr `?`;
+    ParseExpr.Rep <- x:ParseExpr `*`;
+    ParseExpr.RepNonzero <- x:ParseExpr `+`;
+    ParseExpr.RepCount <- x:ParseExpr `^` count:int_lit;
+    ParseExpr.CharRange <- min_:str_lit `..` max_:str_lit;
+    ParseExpr.StrLit <- s:str_lit;
+    ParseExpr.Underscore <- `_`;
+    ParseExpr.Pass <- `@` `(` s:str_lit `)`;
+    ParseExpr.Paren <- `(` x:ParseExpr[pr=*] `)`;
+    ParseExpr.Name <- name:IdBase `:` e:ParseExpr;
+    ParseExpr.List <- ty:~ParseExprListType
+        `[`
+        elem:ParseExpr[pr=*]
+        num:ParseExprListNum
+        delim:ParseExpr[pr=*]
+        end_delim:(NONE:eps | OPTIONAL:`:?` | SOME:`::`)
+        `]`;
+    ParseExpr.Unfold <- `~` e:ParseExpr;
+    ParseExpr.AttrReq <- e:ParseExpr `[` attrs:#L[AttrReq::`,`_] `]`;
+
+        AttrReq.Base <- k:IdBase;
+        AttrReq.PrecStar <- `pr` `=` `*`;
+
+        ParseExprListType.List <- `#L`;
+        ParseExprListType.Block <- `#B`;
+        ParseExprListType.Block2 <- `#B2`;
+        ParseExprListType.Top <- `#T`;
+        ParseExprListType.Top2 <- `#T2`;
+
+        ParseExprListNum.Ge0 <- `::`;
+        ParseExprListNum.Ge1 <- `::+`;
+        ParseExprListNum.Ge2 <- `::++`;
+
+    Id <- names:#L[IdBase::+`.`];
+
+    IdBase <= id;
+}
+
+test {
+    `~x:y` <- ParseExpr;
+    `id newline indent id newline dedent id newline` <- ParseExpr;
+}

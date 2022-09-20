@@ -1,0 +1,48 @@
+
+tokens {
+    ws <= ` `;
+    Ta <- `a` | `A`;
+    Tb <- `b`;
+    top <= Ta | Tb | `c` | `d` | `D` | `e`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    attr {
+        match {
+            X => lhs[atU] -> rhs[atU],
+            S => rhs[atU],
+        };
+    }
+
+    S <- ~X;
+
+    X <- a:A r:(b:B | c:C) ds:D* e:E;
+
+    A <- Ta;
+    B <- Tb;
+    C <- `c`;
+    D.Lower[atU] <- `d`;
+    D.Upper <- `D`;
+    E <- `e`;
+}
+
+test {
+    `Abde`;
+    `Ab##De`;
+    `acde`;
+    `abe`;
+    `abe##e`;
+    `acddde`;
+}

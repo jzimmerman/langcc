@@ -1,0 +1,47 @@
+
+tokens {
+    a <- `a`;
+    A <- `A`;
+    b <- `b`;
+    B <- `B`;
+    c <- `c`;
+
+    top <= a | A | b | B | c;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.AA <- ~aA ~X ~aA;
+    S.AB <- ~aA ~Y ~bB;
+    S.BA <- ~bB ~Y ~aA;
+    S.BB <- ~bB ~X ~bB;
+
+    aA <- a | A;
+    bB <- b | B;
+
+    X <- c ~Xr;
+    Y <- c ~Yr;
+
+    Xr <- c c;
+    Yr <- c c;
+}
+
+test {
+    `accca`;
+    `acccA`;
+    `Acccb`;
+    `BcccA`;
+    `bcccb`;
+    `a##a`;
+    `Acc##a`;
+}

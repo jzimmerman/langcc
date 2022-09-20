@@ -1,0 +1,361 @@
+
+#include "meta__gen.hpp"
+
+namespace common {
+    def IdentBase {}
+        def IdentBase.User { name: Str; }
+        def IdentBase.Ordinal { i: Int; }
+        def IdentBase.ItemInner {}
+
+    def Ident { xs: Vec(IdentBase); }
+
+    def MetaVar { id: Ident; }
+
+    def BaseAttrReq {
+        id: Ident;
+        negate: bool;
+        bound: Option(Int);
+    }
+
+    enum TokenBaseSpecial {
+        Indent;
+        Dedent;
+        Newline;
+        ErrMixedIndent;
+        ErrTextAfterLC;
+        ErrDelimMismatch;
+    }
+
+    def TokenBase {}
+        def TokenBase.Id { name: Ident; unfold: bool; }
+        def TokenBase.Special { w: TokenBaseSpecial; }
+        def TokenBase.LitStr { cs: Vec(Char); }
+        def TokenBase.LitCharRange { min_: Char; max_: Char; }
+        def TokenBase.LitEps {}
+        def TokenBase.LitEof {}
+
+    def ParseExpr_Base {
+        tok: TokenBase;
+        src no_hash: Option(^lang::meta::Node::ParseExpr_T);
+    }
+
+    def Lexer_NFALabel {}
+        def Lexer_NFALabel.Eps {}
+        def Lexer_NFALabel.CharRange { ind: Int; char_min: Int; char_max: Int; }
+            // char_lo, char_hi for debugging purposes
+        def Lexer_NFALabel.Eof {}
+
+    def SwitchTable {}
+        def SwitchTable.Base { v: Vec(Int); }
+        def SwitchTable.IterList {
+                id: Int; cases: Vec(SwitchTable_IterListEntry); default_: SwitchTable;
+            }
+            def SwitchTable_IterListEntry { case_val: Int; case_: SwitchTable; }
+        def SwitchTable.IterMat { id: Int; cases: Vec(SwitchTable); }
+
+    def ProdId {}
+        def ProdId.Explicit { rule_ind: Int; sub: Int; }
+        def ProdId.Start { sym: Sym; }
+        def ProdId.GenCPS { orig: ProdId; uniq_ind: Int; }
+
+    def Sym {}
+        def Sym.Term { tok: ParseExpr_Base; }
+        def Sym.TermStartMarker { name: IdentBase; }
+        def Sym.Start {}
+        def Sym.Defined { name: IdentBase; }
+        def Sym.Direct { e no_hash: ^lang::meta::Node::ParseExpr_T; gen_id: Int; }
+        def Sym.Iter { e no_hash: ^lang::meta::Node::ParseExpr_T; gen_id: Int; }
+        def Sym.GenCPS {
+            sym: Sym;
+            tail: Vec(SymFlattenResultCPS);
+            uniq_ind: Int;
+        }
+
+    def LRSym {}
+        def LRSym.Base { sym: Sym; }
+        def LRSym.RecurStep { sym: Sym; }
+        def LRSym.EndMarker {}
+
+    def Prod {
+        lhs: Sym;
+        rhs: Vec(Sym);
+        prod_id: ProdId;
+        unfold_mask: Vec(bool);
+    }
+
+    def DottedProd {
+        prod: Prod;
+        dot: Int;
+    }
+
+    def Grammar {
+        term: VecUniq(Sym);
+        nonterm: VecUniq(Sym);
+        start: Option(Sym);
+        prods: VecUniq(Prod);
+        prods_by_nonterm: Map(Sym, Set(Prod));
+        prods_by_nonterm_rhs: Map(Sym, Set(DottedProd));
+        prods_by_id: Map(ProdId, Prod);
+    }
+
+    def NameMaybeBase {}
+        def NameMaybeBase.Name { id: IdentBase; }
+        def NameMaybeBase.Blame { e no_hash: ^lang::meta::Node::ParseExpr_T; }
+
+    def NameMaybe {
+        items: Vec(NameMaybeBase);
+    }
+
+    def HasFinalDelim {}
+        def HasFinalDelim.N {}
+        def HasFinalDelim.M {}
+        def HasFinalDelim.Y {}
+
+    def ListFormat {}
+        def ListFormat.Inline {}
+        def ListFormat.Block {}
+        def ListFormat.Block2 {}
+        def ListFormat.Top {}
+        def ListFormat.Top2 {}
+
+    def WriteInstr {}
+        def WriteInstr.Pass {}
+        def WriteInstr.Seq { instrs: Vec(WriteInstr); }
+        def WriteInstr.String { s: Str; }
+        def WriteInstr.WithField { field_name: IdentBase; body: WriteInstr; }
+        def WriteInstr.WithSumCase { sum_id: Ident; cases_map: Map(IdentBase, WriteInstr); }
+        def WriteInstr.WithOpt { id: Ident; body: WriteInstr; }
+        def WriteInstr.WithOptBool { id: Ident; body: WriteInstr; }
+        def WriteInstr.WithItem { body: WriteInstr; }
+        def WriteInstr.Prim {}
+        def WriteInstr.Rec { id: Ident; }
+        def WriteInstr.RecList {
+            body: WriteInstr; format: ListFormat; delim: Option(Str); has_final: HasFinalDelim; }
+
+    def UnwindInstr {}
+        def UnwindInstr.Nil { rhs_tys: Vec(GenType); }
+        def UnwindInstr.True { rhs_ty: GenType; }
+        def UnwindInstr.False {}
+        def UnwindInstr.Identity {}
+        def UnwindInstr.ItemCons { id: Ident; item_ty: GenType; }
+        def UnwindInstr.SelectIndex { i: Int; rhs_tys: Vec(GenType); }
+        def UnwindInstr.ProdCons {
+            id: Ident; args_map: Map(IdentBase, Int); rhs_tys: Vec(GenType); }
+        def UnwindInstr.SumCons { id: Ident; case_id: IdentBase; }
+        def UnwindInstr.SumConsItem { id: Ident; case_id: IdentBase; item_ty: GenType; }
+        def UnwindInstr.VecConsDelim { id: Ident; elem_ty: GenType; delim_ty: GenType; }
+        def UnwindInstr.VecSingle { id: Ident; elem_ty: GenType; }
+        def UnwindInstr.VecSingleDelim { id: Ident; elem_ty: GenType; delim_ty: GenType; }
+        def UnwindInstr.VecEmpty { id: Ident; elem_ty: GenType; }
+        def UnwindInstr.VecCons { id: Ident; elem_ty: GenType; }
+        def UnwindInstr.OptSome { id: Ident; item_ty: GenType; }
+        def UnwindInstr.OptNone { id: Ident; item_ty: GenType; }
+
+    def GenDatatype {
+        fields: Map(IdentBase, GenType);
+        cases: Option(Map(IdentBase, GenType));
+    }
+
+    def GenType {}
+        def GenType.Builtin { name: Str; }
+        def GenType.Bool {}
+        def GenType.Int_ {}
+        def GenType.String {}
+        def GenType.Vector { elem_ty: GenType; }
+        def GenType.Optional { item_ty: GenType; }
+        def GenType.Named { id: Ident; }
+        def GenType.Datatype { id: Ident; dt: GenDatatype; }
+        def GenType.Nil {}
+
+    def AttrLeaf {}
+        def AttrLeaf.Lhs {}
+        def AttrLeaf.Id {
+            e no_hash: ^lang::meta::Node::ParseExpr_T;
+            e_gen_id: Int;
+        }
+
+    def SymFlattenResult {
+        sym: Sym;
+        unfold: bool;
+        attr_leaf: Option(AttrLeaf);
+    }
+
+    def SymFlattenResultCPS {
+        sym: Sym;
+        unfold: bool;
+    }
+
+    def AttrType {}
+        def AttrType.Bool {}
+        def AttrType.Range { n: Int; }
+
+    enum PrecDir {
+        Left;
+        Right;
+    }
+
+    def AttrKey { loc: Option(ProdConstrRhsLoc); }
+        def AttrKey.Id { name: Ident; }
+        def AttrKey.Prec { dir: PrecDir; }
+
+    def AttrVal { ty: AttrType; }
+        def AttrVal.Bool { v: bool; }
+        def AttrVal.Int_ { v: Int; }
+
+    def AttrBound {
+        lo: AttrVal;
+    }
+
+    def AttrSet {
+        m: Map(AttrKey, AttrVal);
+    }
+
+    def AttrBoundSet {
+        m: Map(AttrKey, AttrBound);
+    }
+
+    def SymStr {
+        v: Vec(LRSym);
+    }
+
+    def StringSet(Repr: Type) {
+        items: Map(SymStr, Repr);
+        k: Int;
+        strict_eq: bool;
+    }
+
+    enum ProdConstrRhsLoc {
+        All;
+        Begin;
+        NBegin;
+        Mid;
+        End;
+        NEnd;
+    }
+
+    def ProdConstr {}
+        def ProdConstr.LhsGeq {
+            k: AttrKey;
+            v: AttrVal;
+        }
+        def ProdConstr.LhsLeq {
+            k: AttrKey;
+            v: AttrVal;
+        }
+        def ProdConstr.RhsGeq {
+            loc: ProdConstrRhsLoc;
+            k: AttrKey;
+            v: AttrVal;
+        }
+        def ProdConstr.Implies {
+            kl: AttrKey;
+            loc: ProdConstrRhsLoc;
+            kr: AttrKey;
+            ty: AttrType;
+        }
+
+    def ProdConstrFlat {}
+        def ProdConstrFlat.LhsLeq {
+            k: AttrKey;
+            v: AttrVal;
+        }
+        def ProdConstrFlat.RhsGeq {
+            i: Int;
+            k: AttrKey;
+            v: AttrVal;
+        }
+        def ProdConstrFlat.Implies {
+            kl: AttrKey;
+            i: Int;
+            kr: AttrKey;
+            ty: AttrType;
+        }
+
+    def RhsPos {
+        begin: bool;
+        end: bool;
+    }
+
+    def LRVertex {
+        bounds: AttrBoundSet;
+        la: StringSet(Unit);
+    }
+    def LRVertex.Prod {
+        prod: DottedProd;
+        left_rec: Option(Sym);
+    }
+    def LRVertex.RecStart {
+        sym: Sym;
+    }
+    def LRVertex.RecEnd {
+        sym: Sym;
+    }
+
+    def LRLabel {}
+        def LRLabel.Eps {}
+        def LRLabel.Sym_ {
+            sym: LRSym;
+            attr: AttrSet;
+        }
+
+    def LRAction {}
+        def LRAction.Shift {}
+        def LRAction.Reduce {
+            prod: Prod;
+        }
+        def LRAction.Ret {
+            sym: Sym;
+        }
+        def LRAction.Recur {
+            sym: Sym;
+        }
+
+    def LRLookAction {
+        la: StringSet(Unit);
+        acc: LRAction;
+    }
+
+    def LRStringExemplar {
+        sym: LRSym;
+        attr: AttrSet;
+        contents: SymStr;
+    }
+
+    def LRStringExemplarBounded {
+        sym: LRSym;
+        bounds: AttrBoundSet;
+    }
+
+    def LRStringExemplarBidir {
+        pre: Vec(LRStringExemplar);
+        post: Vec(LRStringExemplar);
+    }
+
+    def LRStringExemplarBidirBounded {
+        pre: Vec(LRStringExemplar);
+        post: Vec(LRStringExemplarBounded);
+    }
+
+    def LRConflictExemplar {
+        exr: LRStringExemplarBidir;
+        la: SymStr;
+        acc: LRAction;
+    }
+
+    def LRConflict {
+        items: Vec(LRConflictExemplar);
+    }
+
+    def LangCompileResult {}
+        def LangCompileResult.Ok {
+            hpp_path: Str;
+            cpp_path: Str;
+            cpp_test_path: Str;
+            cpp_debug_path: Str;
+        }
+        def LangCompileResult.Error {}
+            def LangCompileResult.Error.LRConf { conflict no_hash: Vec(LRConflict); }
+            def LangCompileResult.Error.Other { desc: Str; }
+
+    enum IsOwnDatatype { N; Y; }
+}

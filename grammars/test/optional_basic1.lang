@@ -1,0 +1,41 @@
+
+tokens {
+    a <- `a`;
+    b <- `b`;
+    c <- `c`;
+    d <- `d`;
+    ws <= ` `;
+    top <= a | b | c | d;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- La:(A _)? Lb:b* (_ CD)?;
+    A <- a;
+    CD <- c | d;
+}
+
+test {
+    `a `;
+    `a b`;
+    `a b c`;
+    `a b d`;
+    `abc` <<>>;
+    `abc##d`;
+    ``;
+    `abbb` <<>>;
+    `a bbbb`;
+    `bb##abab`;
+    `b  b  b  b` <<>>;
+}

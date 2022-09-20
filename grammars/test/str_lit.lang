@@ -1,0 +1,44 @@
+
+tokens {
+    a <- `a`;
+    ws <= `\n` | `\r` | `\t` | ` `;
+
+    ascii_base_any_bf <= `\x00`..`\x7f`;
+    unicode_any_bf <= ascii_base_any_bf
+                    | (`\xc0`..`\xdf`) (`\x80`..`\xff`)
+                    | (`\xe0`..`\xef`) (`\x80`..`\xff`) (`\x80`..`\xff`)
+                    | (`\xf0`..`\xf7`) (`\x80`..`\xff`) (`\x80`..`\xff`) (`\x80`..`\xff`)
+                    ;
+
+    unicode_char <= unicode_any_bf - `\n`;
+    string_lit <- `"` (unicode_char - `"`)* `"`;
+
+    top <= a | string_lit;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S <- a string_lit a;
+}
+
+test {
+
+////////////////////
+
+`a
+
+"b cde fg! "
+a` <<>>;
+
+}

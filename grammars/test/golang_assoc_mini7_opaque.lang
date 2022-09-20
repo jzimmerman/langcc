@@ -1,0 +1,34 @@
+
+tokens {
+    id <- `x`;
+    ws <= ` `;
+    top <= id | `...` | `,`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Params }
+
+    Params.Unnamed <- #L[(`...` _)? id::+`,`_:?];
+    Params.Named <- #L[~ParamDeclNamed::+`,`_:?];
+
+        ParamDeclNamed <- names:#L[id::+`,`_] _ (`...` _)? id;
+}
+
+test {
+    `x x`;
+    `x, x, x`;
+    `x x, x x, x x`;
+    `x x ##x`;
+    `x, x x, x##`;
+    `x, ##,`;
+}

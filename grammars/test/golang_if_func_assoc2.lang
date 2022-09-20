@@ -1,0 +1,101 @@
+
+tokens {
+    id <- `x`;
+
+    ws_inline <= `\r` | `\t` | ` `;
+
+    kw <= `break`    | `default`     | `func`   | `interface` | `select`
+        | `case`     | `defer`       | `go`     | `map`       | `struct`
+        | `chan`     | `else`        | `goto`   | `package`   | `switch`
+        | `const`    | `fallthrough` | `if`     | `range`     | `type`
+        | `continue` | `for`         | `import` | `return`    | `var`;
+
+    op <= `+` | `&`  |  `&&` | `==` | `!=`  | `(` | `)`
+        | `-` | `|`  |  `||` | `<`  | `<=`  | `[` | `]`
+        | `*` | `^`  |  `<-` | `>`  | `>=`  | `{` | `}`
+        | `/` | `<<` | `++`  | `=`  | `:=`  | `,` | `;`
+        | `%` | `>>` | `--`  | `!`  | `...` | `.` | `:`
+              | `&^` ;
+
+    op_assign <- `&^=`
+               | `+=` | `&=`
+               | `-=` | `|=`
+               | `*=` | `^=`
+               | `/=` | `<<=`
+               | `%=` | `>>=`;
+
+    top <= id | kw | op | op_assign;
+}
+
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws_inline => { pass; }
+        eof => { pop; }
+    }
+}
+
+
+parser {
+    main { Stmt, Expr }
+
+    attr {
+        // T: type expression
+        // V: value expression
+        // I: simple identifier
+        // S: simple statement
+        // mC: guarded for trailing match on `{`
+        // mR: guarded for trailing match on Result
+
+        match {
+            Expr => {
+                match {
+                    Star => {
+                        lhs[T] -> rhs[T];
+                        lhs[mC] -> rhs_end[mC];
+                    },
+                };
+            },
+
+            Stmt => {
+                match {                    
+                    Expr => lhs[mC] -> rhs_end[mC],
+                };
+            },
+        };
+    }
+
+    prec {
+        Expr.Star prefix;
+        Expr.FuncType Expr.FuncLit;
+        Expr.Id;
+    }
+
+    Block <= `{` `}`;
+
+    Stmt.Block <- Block;
+
+    Stmt.Expr[S] <- Expr[V];
+
+    Stmt.For.Basic <- `for` Expr[V, mC] Block;
+    Stmt.For.Extended <- `for` init:~Stmt[S] `;` post:Stmt[S, mC] Block;
+
+    Expr.Id[T, V, I, mC] <- id;
+    Expr.Star <- `*` Expr;
+
+    Expr.FuncType[T] <- `func` Sig;
+    Expr.FuncLit[V, mC] <- `func` Sig body:Block;
+
+        Sig.Void <- Params;
+
+        Params <- `(` `)`;
+
+    IdList <= #L[Expr[I]::+`,`];
+    ValList <= #L[Expr[V]::+`,`];
+}
+
+test {
+}

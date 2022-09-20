@@ -1,0 +1,36 @@
+
+tokens {
+    a <- `a`;
+    op <= `*`;
+
+    top <= a | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { F, G }
+
+    F.Standard <- a a;
+    F.Embedded <- SM a;
+
+    G.Standard <- a a;
+    G.Embedded <- SM a;
+
+        SM <= `*`?;
+}
+
+test {
+    `a`;
+    `*a`;
+    `aa`;
+    `a##*a`;
+    `*##*`;
+}

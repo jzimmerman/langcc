@@ -1,0 +1,38 @@
+
+tokens {
+    top <= `a` | `b`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    attr {
+        match {
+            AB.A => lhs[mA],
+        };
+    }
+
+    S <- V W;
+
+    V <= AB;
+    W <= AB[mA];
+
+    AB.A <- `a`;
+    AB.B <- `b`;
+}
+
+test {
+    `aa`;
+    `ba`;
+    `a##b`;
+    `b##b`;
+}

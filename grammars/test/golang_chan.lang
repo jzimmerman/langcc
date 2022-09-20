@@ -1,0 +1,55 @@
+
+tokens {
+    id <- `x`;
+    ws <= ` `;
+    top <= id | `chan` | `<-` | `*`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Expr }
+
+    attr {
+        // C: Guarded for leading `<-`
+
+        match {
+            Expr => {
+                match {
+                    Chan.Recv => {},
+                    _ => lhs[C],
+                };
+            },
+        };
+    }
+
+    Expr.Id <- id;
+    Expr.Star <- `*` Expr;
+    Expr.Chan.SendRecv <- `chan` _ Expr[C];
+    Expr.Chan.Send <- `chan` _ `<-` _ Expr;
+    Expr.Chan.Recv <- `<-` _ `chan` _ Expr;
+}
+
+test {
+    `x`;
+    `chan x`;
+    `*x`;
+    `**x`;
+    `chan chan x`;
+    `chan <- x`;
+    `chan <- chan x`;
+    `chan <- <- chan x`;
+    `chan <- <- chan <- chan x`;
+    `chan *<- chan x`;
+    `chan * <- chan x` <<>>;
+    `chan * <- ##* chan x`;
+    `chan <- <- ##x`;
+}

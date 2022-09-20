@@ -1,0 +1,29 @@
+
+tokens {
+    top <= `a` | `b`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    prop { name_strict; }
+
+    S <- x1:(`a`? `a` `b`)+ `a`;
+}
+
+test {
+    `aaba`;
+    `aba`;
+    `aabababa`;
+    `ababaa##a`;
+    `aababaababaa##a`;
+}

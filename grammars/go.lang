@@ -1,0 +1,576 @@
+// Golang 1.17.8
+//
+// Note that this grammar may deviate from the standard language spec
+// in a number of ways, including those detailed in the accompanying
+// technical report.
+
+tokens {
+    id <- id_leading id_trailing* - kw;
+    id_leading <= `a`..`z` | `A`..`Z` | `_` | (unicode_any - ascii_base_any);
+    id_trailing <= `a`..`z` | `A`..`Z` | `_` | `0`..`9`
+                 | (unicode_any - ascii_base_any);
+
+    ws_inline <= `\r` | `\t` | ` `;
+
+    kw <= `break`    | `default`     | `func`   | `interface` | `select`
+        | `case`     | `defer`       | `go`     | `map`       | `struct`
+        | `chan`     | `else`        | `goto`   | `package`   | `switch`
+        | `const`    | `fallthrough` | `if`     | `range`     | `type`
+        | `continue` | `for`         | `import` | `return`    | `var`;
+
+    op <= `+` | `&`  |  `&&` | `==` | `!=`  | `(` | `)`
+        | `-` | `|`  |  `||` | `<`  | `<=`  | `[` | `]`
+        | `*` | `^`  |  `<-` | `>`  | `>=`  | `{` | `}`
+        | `/` | `<<` | `++`  | `=`  | `:=`  | `,` | `;`
+        | `%` | `>>` | `--`  | `!`  | `...` | `.` | `:`
+              | `&^` ;
+
+    op_assign <- `&^=` |  `+=` |  `&=` |  `-=` |  `|=` |  `*=`
+               |  `^=` |  `/=` | `<<=` |  `%=` | `>>=` ;
+
+    dec_digit <= `0`..`9`;
+    bin_digit <= `0`..`1`;
+    oct_digit <= `0`..`7`;
+    hex_digit <= `0`..`9` | `A`..`F` | `a`..`f`;
+
+    rune_lit <- `'` rune_lit_item `'`;
+
+        rune_lit_item <=
+            rune_char_proper | rune_char_esc_builtin | char_esc_val;
+
+            rune_char_proper <= unicode_any - (`\n` | `'` | `\\`);
+            rune_char_esc_builtin <= `\\` (esc_char_arg_builtin | `'`);
+
+            esc_char_arg_builtin <=
+                `a` | `b` | `f` | `n` | `r` | `t` | `v` | `\\`;
+
+            char_esc_val <=  `\\` oct_digit^3  | `\\x` hex_digit^2
+                          |  `\\u` hex_digit^4 | `\\U` hex_digit^8;
+
+    str_lit <- false;  // Emitted by lexer modes
+
+        interpreted_str_lit_item <=
+            str_char_proper | str_char_esc_builtin | char_esc_val;
+
+            str_char_proper <= unicode_any - (`\n` | `"` | `\\`);
+            str_char_esc_builtin <= `\\` (esc_char_arg_builtin | `"`);
+
+        raw_str_lit_item <= unicode_any - `\``;
+
+    int_lit <- int_lit_def;
+
+        int_lit_def <= dec_lit | bin_lit | oct_lit | hex_lit;
+
+        dec_lit <= `0` | (`1`..`9`) (`_`? dec_digits)?;
+        bin_lit <= `0` (`b`|`B`)  `_`? bin_digits;
+        oct_lit <= `0` (`o`|`O`)? `_`? oct_digits;
+        hex_lit <= `0` (`x`|`X`)  `_`? hex_digits;
+
+        dec_digits <= dec_digit (`_`? dec_digit)*;
+        bin_digits <= bin_digit (`_`? bin_digit)*;
+        oct_digits <= oct_digit (`_`? oct_digit)*;
+        hex_digits <= hex_digit (`_`? hex_digit)*;
+
+    float_lit <- float_lit_def;
+
+        float_lit_def <= dec_float_lit | hex_float_lit;
+
+        dec_float_lit <= (
+            dec_digits `.` dec_digits? dec_exponent? |
+            `.` dec_digits dec_exponent? |
+            dec_digits dec_exponent
+        );
+        dec_exponent <= (`e`|`E`) (`+`|`-`)? dec_digits;
+
+        hex_float_lit <= `0` (`x`|`X`) hex_mantissa hex_exponent;
+
+        hex_mantissa <= (
+            `_`? hex_digits `.` hex_digits? |
+            `_`? hex_digits |
+            `.` hex_digits
+        );
+
+        hex_exponent <= (`p`|`P`) (`+`|`-`)? dec_digits;
+
+    imag_lit <- (dec_digits | int_lit_def | float_lit_def) `i`;
+
+    top <= id | kw | op | op_assign
+         | int_lit | float_lit | imag_lit | rune_lit | str_lit;
+}
+
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws_inline => { pass; }
+        `\n` => {
+            match_history {
+                id | int_lit | float_lit | imag_lit | rune_lit | str_lit |
+                `break` | `continue` | `fallthrough` | `return` |
+                `++` | `--` | `)` | `]` | `}` => { emit `;`; pass; }
+                _ => { pass; }
+            };
+        }
+        `\`` => { push raw_str_lit; pass; }
+        `"` => { push interpreted_str_lit; pass; }
+        `//` => { push comment_single; pass; }
+        `/*` => { push comment; pass; }
+        eof => { pop; }
+    }
+
+    mode raw_str_lit {
+        `\`` => { pass; pop_emit str_lit; }
+        _ => { pass; }
+    }
+
+    mode interpreted_str_lit {
+        `\\"` => { pass; }
+        `\\\\` => { pass; }
+        `"` => { pass; pop_emit str_lit; }
+        _ => { pass; }
+    }
+
+    mode comment_single {
+        `\n` => { pop_extract; }
+        eof => { pop_extract; }
+        _ => { pass; }
+    }
+
+    mode comment {
+        `*/` => { pass; pop_extract; }
+        _ => { pass; }
+    }
+}
+
+
+parser {
+    main { Module, Stmt, Expr }
+
+    prop { name_strict; }
+
+    attr {
+        // T: type expression
+        // V: value expression
+        // I: simple identifier
+        // I2: simple or qualified identifier
+        // S: simple statement
+        // SI: if statement
+        // DS: decl suitable for a stmt (i.e., Const, Type, Var)
+        // nE: non-empty statement
+        // nP: non-parenthesis expression
+        // nV: non-ChannelType.Recv expression
+        // gC: all named composite literals enclosed
+        // mC: no trailing match on `{`
+        // mR: no trailing match on Result
+        // eT: TypeOf expression
+        // eNT: expression other than a TypeOf
+        // eNS: expression other than a square-bracketed type constructor
+
+        match {
+            Expr => {
+                match {
+                    FuncType | SliceType | ArrayType | MapType | StructType
+                        | InterfaceType | ChannelType => lhs[T],
+                    Star => {
+                        lhs[V];
+                        lhs[T] -> rhs[T];
+                    },
+                    Paren => {
+                        lhs[V] -> rhs[V];
+                        lhs[T] -> rhs[T];
+                    },
+                    Selector => {
+                        lhs[V] -> rhs[V];
+                        lhs[T] -> rhs[T];
+                        lhs[T] -> rhs[I];
+                    },
+                    Id => {
+                        lhs[V];
+                        lhs[T];
+                    },
+                    _ => lhs[V],
+                };
+
+                match {
+                    Id => {
+                        lhs[I];
+                        lhs[I2];
+                    },
+                    Selector => lhs[I2] -> rhs[I],
+                };
+
+                match {
+                    Paren => {},
+                    _ => lhs[nP],
+                };
+
+                match {
+                    CompositeLit.Named => {},
+                    Bin | UnaryPre | Star => lhs[gC] -> rhs[gC],
+                    Selector | Call | Index | Slice | TypeAssert | TypeOf
+                        => lhs[gC] -> rhs_begin[gC],
+                    _ => lhs[gC],
+                };
+
+                match {                    
+                    ArrayType | StructType | SliceType | MapType | FuncType
+                        => {},
+                    Bin | UnaryPre | Star => lhs[mC] -> rhs_end[mC],
+                    _ => lhs[mC],
+                };
+
+                match {
+                    ArrayType | SliceType | MapType | ChannelType | FuncType
+                        => lhs[mR] -> rhs_end[mR],
+                    Bin | UnaryPre | Star => lhs[mR] -> rhs_end[mR],
+                    _ => lhs[mR],
+                };
+
+                match {
+                    ChannelType.Recv => {},
+                    _ => lhs[nV],
+                };
+
+                match {
+                    TypeOf => lhs[eT],
+                    _ => lhs[eNT],
+                };
+
+                match {
+                    ArrayType | SliceType | MapType => {},
+                    _ => lhs[eNS],
+                };
+            },
+
+            Stmt => {
+                match {
+                    Empty | Expr | Send | IncDec | Assign | ShortVarDecl
+                        => lhs[S],
+                };
+
+                match {
+                    If => lhs[SI],
+                };
+
+                match {
+                    Empty => {},
+                    _ => lhs[nE],
+                };
+
+                match {
+                    Empty | Expr | Send | IncDec | Assign | ShortVarDecl
+                        => lhs[gC] -> rhs[gC],
+                };
+
+                match {                    
+                    Empty | Expr | Send | IncDec | Assign | ShortVarDecl
+                        => lhs[mC] -> rhs_end[mC],
+                };
+            },
+
+            Decl => {
+                match {
+                    Const | Type_ | Var => lhs[DS],
+                };
+            },
+
+            _ => {
+                match {
+                    Sig.Result | Result.Single => lhs[mR] -> rhs_end[mR],
+                    Sig.Void => {},
+                    _ => lhs[mR],
+                };
+            },
+        };
+    }
+
+    prec {
+        Expr.Bin.L1 assoc_left;
+        Expr.Bin.L2 assoc_left;
+        Expr.Bin.L3 assoc_left;
+        Expr.Bin.L4 assoc_left;
+        Expr.Bin.L5.Mul Expr.Bin.L5.Other assoc_left;
+        Expr.UnaryPre Expr.Star Expr.ChannelType.SendRecv
+            Expr.ChannelType.Send Expr.ChannelType.Recv prefix;
+        Expr.CompositeLit.Named Expr.CompositeLit.VarArray
+            Expr.CompositeLit.Slice Expr.CompositeLit.Array
+            Expr.CompositeLit.Map Expr.CompositeLit.Struct postfix;
+        Expr.Call.Standard Expr.Call.SliceType Expr.Call.ArrayType
+            Expr.Call.MapType Expr.Index Expr.Slice postfix;
+        Expr.SliceType Expr.ArrayType Expr.MapType prefix;
+        Expr.StructType Expr.InterfaceType;
+        Expr.FuncType Expr.FuncLit prefix;
+        Expr.Selector Expr.TypeAssert Expr.TypeOf postfix;
+        Expr.Id Expr.Paren Expr.BasicLit;
+    }
+
+    Module <- top_id:(`package` _ Id `;`)
+        imports:(@(`\n\n`) #T[Import::+`;`::] @(`\n`))?
+        decls:#T2[Decl::`;`::];
+
+    Import <- `import` _
+        (single:ImportSpec | multi:(`(` #B[ImportSpec::`;`::] `)`));
+
+        ImportSpec <- prefix_:(dot:(`.` _) | name:(Id _))? path:str_lit;
+
+    Decl.Var <- `var` _
+        (single:VarSpec | multi:(`(` #B[VarSpec::`;`::] `)`));
+
+        VarSpec.Assign <- ids:Ids _ `=` _ vals:Vals;
+        VarSpec.Typed <- ids:Ids _ ty:Type;
+        VarSpec.AssignTyped <- ids:Ids _ ty:Type _ `=` _ vals:Vals;
+
+    Decl.Const <- `const` _
+        (single:ConstSpec | multi:(`(` #B[ConstSpec::`;`::] `)`));
+
+        ConstSpec <- ids:Ids suffix:(ty:(_ Type)? _ `=` _ vals:Vals)?;
+
+    Decl.Type_ <- `type` _
+        (single:TypeSpec | multi:(`(` #B[TypeSpec::`;`::] `)`));
+
+        TypeSpec <= id_:Id alias:(_ `=`)? _ ty:Type;
+
+    Decl.Func <- `func` recv:(_ Params)? _ name:Id sig:Sig body:(_ Block)?;
+
+        Sig.Void <- params:Params;
+        Sig.Result <- params:Params _ res:Result;
+
+        Result.Multi <- x:Params;
+        Result.Single <- x:Expr[T, nP];
+            // Note: ambiguous if parenthesization is allowed
+
+        Params.Empty <- `(` `)`;
+        Params.Unnamed <-
+            `(` tys:#L[(ellipsis:`...`? type_:Type)::+`,`_:?] `)`;
+        Params.Named <- `(` items:#L[ParamDeclNamed::+`,`_:?] `)`;
+
+            ParamDeclNamed <= names:Ids _ ellipsis:`...`? type_:Type;
+
+    Block <- `{` stmts:#B[Stmt::`;`::] end_stmt:Stmt[nE]? `}`;
+
+    Stmt.Block <- x:Block;
+
+    Stmt.Decl <- x:Decl[DS];
+    Stmt.Labeled <- label:Id `:`_ stmt:Stmt;
+
+    Stmt.Empty <- eps;
+    Stmt.Expr <- x:Val;
+    Stmt.Send <- x:Expr[V, mR] _ `<-` _ y:Val;
+    Stmt.IncDec <- x:Val op:(inc:`++` | dec:`--`);
+    Stmt.Assign <- xs:Vals _ op:(op_eq:op_assign | eq:`=`) _ ys:Vals;
+    Stmt.ShortVarDecl <- xs:Ids _ `:=` _ ys:Vals;
+
+    Stmt.Go <- `go` _ x:Val;
+    Stmt.Return <- `return` xs:(_ #L[Val::+`,`_])?;
+    Stmt.Break <- `break` label:(_ Id)?;
+    Stmt.Continue <- `continue` label:(_ Id)?;
+    Stmt.Goto <- `goto` _ label:Id;
+    Stmt.Fallthrough <- `fallthrough`;
+    Stmt.Defer <- `defer` _ x:Val;
+
+    Stmt.If <- `if` _
+        pre:(~Stmt[S, gC] `;` _)?
+        cond:Expr[V, gC, mC] _
+        xt:Block
+        xf:(_ `else` _ (stmt:Stmt[SI] | block:Block))?;
+
+    Stmt.For.Basic <- `for` cond:(_ Expr[V, gC, mC])? _ body:Block;
+    Stmt.For.Extended <- `for` _
+        init:~Stmt[S, gC] `;` _ cond:Expr[V, gC]? `;` _
+        post:Stmt[S, gC, mC] _ body:Block;
+    Stmt.For.Range.Empty <- `for` _ `range` _ arg:Expr[V, gC, mC] _ body:Block;
+    Stmt.For.Range.Assign <- `for` _
+        x0:Expr[V, gC] x1:(`,`_ Expr[V, gC])? _ `=` _
+        `range` _ arg:Expr[V, gC, mC] _ body:Block;
+    Stmt.For.Range.Decl <- `for` _ ids:Ids _ `:=` _ `range` _
+        arg:Expr[V, gC, mC] _ body:Block;
+
+    Stmt.Switch.Expr <- `switch`
+        pre:(~Stmt[S, gC] `;`)?
+        cond:Expr[V, gC, mC, eNT]?
+        `{` cases:~ExprCaseClause* `}`;
+
+        ExprCaseClause <- cond:(case_:(`case` Vals) | default_:`default`) `:` _
+            body:#L[Stmt::`;`::];
+
+    Stmt.Switch.Type_ <- `switch`
+        pre:(_ ~Stmt[S, gC] `;`)?
+        binding:(_ name:Id _ `:=`)? _
+        arg:Expr[gC, eT]
+        `{` cases:~TypeCaseClause* `}`;
+
+        TypeCaseClause <-
+            cond:(case_:(`case` #L[Type::+`,`]) | default_:`default`) `:` _
+            body:#L[Stmt::`;`::];
+
+    Stmt.Select <- `select` _ `{` cases:~CommClause* `}`;
+
+        CommClause <-
+            cond:(case_:(`case` ~CommClauseCase) | default_:`default`)
+            `:` _ body:#L[Stmt::`;`::];
+
+        CommClauseCase.Expr <- x:Val;
+        CommClauseCase.Send <- x:Expr[V, mR] `<-` y:Val;
+        CommClauseCase.RecvDecl <- xs:Ids `:=` ys:Vals;
+        CommClauseCase.RecvAssign <- xs:Vals `=` y:Val;
+
+    Expr.Id <- name:id;
+    Expr.Paren <- `(` x:ExprI `)`;
+    Expr.Star <- `*` x:Expr;
+    Expr.Selector <- x:Expr `.` field:id;
+
+    // The naive translation here would do the following:
+    //   Expr.Call <- Expr `(` Args `)`;
+    //
+    // Unfortunately, the expression []*x(y) is required to associate as
+    // ([]*x)(y), not [](*x(y)), even though the order of precedence
+    // is ordinarily [star prefix, call postfix, arraytype prefix].
+    //
+    // The same situation can be seen in reverse in the expression []x().y,
+    // with [call postfix, arraytype prefix, selector postfix]. Here the
+    // behavior is as expected, i.e., []x binds first (taking precedence
+    // over its neighbor x()), then we produce []x(), and finally invoke
+    // the selector y, for a final result of ([]x()).y.
+    // The difference between this behavior and the call behavior implies
+    // that we cannot treat both precedence orderings in a compositional
+    // manner (i.e., using the same meta-level rules forward and backward).
+    // We work around this by spelling out the particular constructors
+    // that are allowed to appear in call position, via attributes.
+    //
+    Expr.Call.Standard <- f:Expr[mR, eNS] `(` args:Args `)`;
+    Expr.Call.SliceType <-
+        `[` `]` elem_ty:Expr[T, mR, pr=*]  `(` args:Args `)`;
+    Expr.Call.ArrayType <- `[` len_:ValI `]` elem_ty:Expr[T, mR, pr=*]
+        `(` args:Args `)`;
+    Expr.Call.MapType <- `map` `[` key_ty:TypeI `]` elem_ty:Expr[T, mR, pr=*]
+        `(` args:Args `)`;
+
+        Args.Empty <- eps;
+        Args.List <- items:#L[ExprI::+`,`_] ellipsis:`...`? sep:`,`?;
+
+    Expr.Index <- x:Val `[` ind:ValI `]`;
+
+    Expr.Slice <- x:Val `[` ~ind:SliceArg `]`;
+
+        SliceArg.V2 <- lo:ValI? `:` hi:ValI?;
+        SliceArg.V3 <- lo:ValI? `:` hi:ValI `:` step:ValI;
+
+    Expr.TypeAssert <- x:Val `.` `(` ty:TypeI `)`;
+
+    Expr.TypeOf <- x:Val `.` `(` `type` `)`;
+
+    UnaryPreOp <-
+        plus:`+` | minus:`-` | not_:`!` | xor_:`^` | and_:`&` | send:`<-`;
+
+    Expr.UnaryPre <- op:~UnaryPreOp x:Val;
+
+    BinOp1 <- `||`;
+    BinOp2 <- `&&`;
+    BinOp3 <- eq:`==` | ne:`!=` | lt:`<` | le:`<=` | gt:`>` | ge:`>=`;
+    BinOp4 <- plus:`+` | minus:`-` | or_:`|` | xor_:`^`;
+    BinOp5 <- div:`/` | mod:`%` | shl:`<<` | shr:`>>` | and_:`&` | clear:`&^`;
+
+    Expr.Bin.L1 <- x:Val _ op:BinOp1 _ y:Val;
+    Expr.Bin.L2 <- x:Val _ op:BinOp2 _ y:Val;
+    Expr.Bin.L3 <- x:Val _ op:BinOp3 _ y:Val;
+    Expr.Bin.L4 <- x:Val _ op:BinOp4 _ y:Val;
+    Expr.Bin.L5.Mul <- x:Expr[V, mR] _ `*` _ y:Val;
+    Expr.Bin.L5.Other <- x:Val _ op:BinOp5 _ y:Val;
+
+    Expr.FuncType <- `func` sig:Sig;
+    Expr.SliceType <- `[` `]` elem_ty:Type;
+    Expr.ArrayType <- `[` len_:ValI `]` elem_ty:Type;
+    Expr.MapType <- `map` `[` key_ty:TypeI `]` elem_ty:Type;
+    Expr.StructType <- `struct` _ `{` fields:#B[FieldDecl::`;`:?] `}`;
+    Expr.InterfaceType <- `interface` _
+        `{` entries:#L[(method:MethodSpec | id_:Expr[I2])::`;`:?] `}`;
+
+        FieldDecl <- body:~FieldDeclBody tag:(_ str_lit)?;
+        FieldDeclBody.Standard <- ids:#L[Id::+`,`] _ ty:Type;
+        FieldDeclBody.Embedded <- star:`*`? id_:Expr[I2];
+        MethodSpec <= method_name:Id _ sig:Sig;
+
+    Expr.ChannelType.SendRecv <- `chan` _ elem_ty:Expr[T, nV];
+    Expr.ChannelType.Send <- `chan` _ `<-` _ elem_ty:Type;
+    Expr.ChannelType.Recv <- `<-` `chan` _ elem_ty:Type;
+
+    Expr.BasicLit <-
+        int_:int_lit | float_:float_lit | imag:imag_lit | rune:rune_lit |
+        str:str_lit;
+
+    Expr.FuncLit <- `func` sig:Sig _ body:Block;
+
+    // Note: as above, the rules for associativity of composite literals are
+    // somewhat surprising, e.g.,:
+    //
+    //   `&x{}` associates as `&(x{})`,
+    //   `*x{}` associates as `*(x{})`,
+    //   `[]*x{}` associates as `([]*x){}`, and
+    //   `(*x){}` and `(x){}` are disallowed.
+    //
+    //   `map[int]func(){}` is a valid composite literal, but `func(){}`
+    //    is not (the curly braces would become the function body).
+    // 
+    //   `x{y: z}` and `[]int{y: z}` are both valid composite literals, but
+    //   `if []int{y: z} {}` is a valid statement and `if x{y: z} {}` is not.
+    //
+    // We arrive at the following attribute-based workarounds.
+    //
+    Expr.CompositeLit.Named <- id_:Expr[I2] val:CompositeLitVal;
+    Expr.CompositeLit.VarArray <- `[` `...` `]` elem_ty:Expr[T, gC, pr=*]
+        val:~CompositeLitVal;
+    Expr.CompositeLit.Slice <- `[` `]` elem_ty:Expr[T, gC, pr=*]
+        val:CompositeLitVal;
+    Expr.CompositeLit.Array <- `[` ind:ValI `]` elem_ty:Expr[T, gC, pr=*]
+        val:CompositeLitVal;
+    Expr.CompositeLit.Map <- `map` `[` key_ty:TypeI `]`
+        elem_ty:Expr[T, gC, pr=*]
+        val:CompositeLitVal;
+    Expr.CompositeLit.Struct <- `struct` _ `{` fields:#B[FieldDecl::`;`:?] `}`
+        val:CompositeLitVal;
+
+        CompositeLitVal <- `{` elems:#L[KeyedElement::`,`_:?] `}`;
+
+        KeyedElement <- k:(Element `:`_)? v:Element;
+
+        Element.Basic <- x:Val;
+        Element.Composite <- v:CompositeLitVal;
+
+    Id <= Expr[I];
+    ExprI <= Expr[pr=*];
+    Val <= Expr[V];
+    ValI <= Expr[V, pr=*];
+    Type <= Expr[T];
+    TypeI <= Expr[T, pr=*];
+
+    Ids <= #L[Id::+`,`_];
+    Vals <= #L[Val::+`,`_];
+    Types <= #L[Type::+`,`_];
+}
+
+test {
+    `if func() {
+} {
+}` <- Stmt;
+    `if func() {}##` <- Stmt;
+    `0x1234abcdP-10` <- Expr;
+    `\`abc\`` <- Expr;
+    `\`日\`` <- Expr;
+    `\`日本語+$\`` <- Expr;
+    `[]a()` <- Expr;
+    `[]*a()` <- Expr;
+    `[]a().b` <- Expr;
+    `[]int{}` <- Expr;
+    `[]a{}` <- Expr;
+    `[]*a{}` <- Expr;
+    `([]int)##{}` <- Expr;
+    `[...]x{y: z}` <- Expr;
+    `[...]func(){}` <- Expr;
+    `map[int]func(){}` <- Expr;
+    `if []int{y: z} {
+}` <- Stmt;
+    `if x{y: z} ##{}` <- Stmt;
+    `if x{y: z}` <- Stmt <<>>;
+}

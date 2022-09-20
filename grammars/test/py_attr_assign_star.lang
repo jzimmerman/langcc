@@ -1,0 +1,55 @@
+
+tokens {
+    ws <= ` `;
+    id <- `x`;
+    top <= id | `(` | `)` | `*` | `.`;
+}
+
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws => { pass; }
+        eof => { pop; }
+    }
+}
+
+
+parser {
+    main { S }
+
+    prec {
+        Expr.Star prefix;
+        Expr.Dot postfix;
+        Expr.Id;
+    }
+
+    attr {
+        // A: syntactically assignable ("lvalue")
+
+        match {
+            Expr => {
+                match {
+                    Id | Dot => lhs[A],
+                    Star => lhs[A] -> rhs[A],
+                };
+            },
+        };
+    }
+
+    S <- `(` Expr `)`;
+
+    Expr.Star <- `*` Expr;
+    Expr.Dot <- Expr `.` id;
+    Expr.Id <- id;
+}
+
+test {
+    `(x)`;
+    `(*x)`;
+    `(**x)`;
+    `(x.x.x)`;
+    `(*x.x)`;
+}

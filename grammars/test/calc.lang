@@ -1,0 +1,58 @@
+
+tokens {
+    id <- `a`..`z` (`a`..`z` | `0`..`9`)*;
+    int_lit <- `0` | `1`..`9` (`0`..`9`)*;
+    top <= id | int_lit | `+` | `-` | `*` | `/` | `^` | `=` | `(` | `)`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ` ` => { pass; }
+        `//` => { push comment_single; pass; }
+        eof => { pop; }
+    }
+
+    mode comment_single {
+        `\n` => { pop_extract; }
+        eof => { pop_extract; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { Stmt, Expr }
+
+    prec {
+        Expr.BinOp1 assoc_left;
+        Expr.BinOp2 assoc_left;
+        Expr.UnaryPre prefix;
+        Expr.BinOp3 assoc_left;
+        Expr.Id Expr.Lit.Int_ Expr.Paren;
+    }
+
+    prop { name_strict; }
+
+    Stmt.Assign <- x:Expr[I] _ `=` _ y:Expr;
+    Stmt.Expr <- x:Expr;
+
+    Expr.Id[I] <- name:id;
+    Expr.Lit.Int_ <- val:int_lit;
+    Expr.UnaryPre <- op:#Alt[Neg:`-`] x:Expr;
+    Expr.BinOp1 <- x:Expr _ op:(Add:`+` | Sub:`-`) _ y:Expr;
+    Expr.BinOp2 <- x:Expr _ op:(Mul:`*` | Div:`/`) _ y:Expr;
+    Expr.BinOp3 <- x:Expr op:#Alt[Pow:`^`] y:Expr;
+    Expr.Paren <- `(` x:Expr[pr=*] `)`;
+}
+
+test {
+    `x`;
+    `abc123 + xyz456`;
+    `(x + y) * (z + w)`;
+    `x = 7`;
+    `x + y ##= z + w`;
+    `x = -7^(3 * x)`;
+    `x = -7^(3 * x)  // foobar` <<>>;
+}
