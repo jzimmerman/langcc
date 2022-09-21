@@ -24,17 +24,38 @@ all: \
 	$(BUILD)/go_standalone_test \
 	$(BUILD)/py_standalone_test
 
+CFLAGS_EXTRA =
+LFLAGS_EXTRA =
+CC =
+
+ifeq ($(shell uname), Darwin)
+	SDKROOT = $(shell xcrun --show-sdk-path)
+	export SDKROOT = $(shell xcrun --show-sdk-path)
+
+	HOMEBREW_BASE = /usr/local
+	ifeq ($(shell uname -m), arm64)
+		HOMEBREW_BASE = /opt/homebrew
+	endif
+
+	CFLAGS_EXTRA = -D__MACOS__ -D__MACOS_SDKROOT__=$(SDKROOT) -D__HOMEBREW_BASE__=$(HOMEBREW_BASE) -I/opt/local/include -I$(HOMEBREW_BASE)/opt/llvm@15/include -mmacosx-version-min=12.0
+	LFLAGS_EXTRA = -L/opt/local/lib -L$(HOMEBREW_BASE)/opt/gperftools/lib -L$(HOMEBREW_BASE)/opt/llvm@15/lib -L$(HOMEBREW_BASE)/Cellar/ncurses/6.3/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+	CC = $(HOMEBREW_BASE)/opt/llvm@15/bin/clang++
+else
+	CFLAGS_EXTRA = -I/usr/include/llvm-c-14 -I/usr/include/llvm-14
+	LFLAGS_EXTRA = -L/usr/lib/llvm-14/lib
+	CC = clang++
+endif
+
 # debug
 # CFLAGS = -I./src -I./gen  -g -ggdb -g3 -std=c++17 -I/usr/include/llvm-c-14 \
-#   -I/usr/include/llvm-14 -fno-omit-frame-pointer -fsanitize=address 
-# LFLAGS = -L/usr/lib/llvm-14/lib \
-# 	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses -lpthread
+#   -I/usr/include/llvm-14 -fno-omit-frame-pointer -fsanitize=address $(CFLAGS_EXTRA)
+# LFLAGS = -L/usr/lib/llvm-14/lib $(LFLAGS_EXTRA) \
+# 	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses
 
 # release
-CFLAGS = -I./src -I./gen -g -ggdb -g3 -O3 -std=c++17 -I/usr/include/llvm-c-14 \
-	-I/usr/include/llvm-14 -fno-omit-frame-pointer
-LFLAGS = -L/usr/lib/llvm-14/lib \
-	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses -lpthread -ltcmalloc
+CFLAGS = -I./src -I./gen -g -ggdb -g3 -O3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_EXTRA)
+LFLAGS = $(LFLAGS_EXTRA) \
+	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses -ltcmalloc
 
 HPP_SRC = $(wildcard src/*.hpp)
 
@@ -71,43 +92,43 @@ IMPLICIT_SRC_DATACC = $(HPP_SRC) gen/cc__gen.cpp gen/data__gen.cpp
 
 $(BUILD)/datacc_main.o: src/datacc_main.cpp $(IMPLICIT_SRC_DATACC) Makefile
 	mkdir -p $(BUILD)
-	clang++ $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/datacc.o: src/datacc.cpp $(IMPLICIT_SRC_DATACC) Makefile
 	mkdir -p $(BUILD)
-	clang++ $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/cc__gen.o: gen/cc__gen.cpp $(IMPLICIT_SRC_DATACC) Makefile
 	mkdir -p $(BUILD)
-	clang++ $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/data__gen.o: gen/data__gen.cpp $(IMPLICIT_SRC_DATACC) Makefile
 	mkdir -p $(BUILD)
-	clang++ $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/%.o: src/%.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/%.o: gen/%.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/unittest_lib: $(BUILD)/unittest_lib_main.o Makefile
-	clang++ $(CFLAGS) -o $@ $< $(LFLAGS)
+	$(CC) $(CFLAGS) -o $@ $< $(LFLAGS)
 
 $(BUILD)/unittest_lang: $(BUILD)/unittest_lang_main.o $(LANGCC_OBJ) Makefile
-	clang++ $(CFLAGS) -o $@ $< $(LANGCC_OBJ) $(LFLAGS)
+	$(CC) $(CFLAGS) -o $@ $< $(LANGCC_OBJ) $(LFLAGS)
 
 $(BUILD)/test_lang_single_main: $(BUILD)/test_lang_single_main.o $(LANGCC_OBJ) Makefile
 	mkdir -p $(BUILD)
-	clang++ $(CFLAGS) -o $@ $< $(LANGCC_OBJ) $(LFLAGS)
+	$(CC) $(CFLAGS) -o $@ $< $(LANGCC_OBJ) $(LFLAGS)
 
 $(DATACC): $(BUILD)/datacc_main.o $(DATACC_OBJ) Makefile
-	clang++ $(CFLAGS) -o $@ $< $(DATACC_OBJ) $(LFLAGS)
+	$(CC) $(CFLAGS) -o $@ $< $(DATACC_OBJ) $(LFLAGS)
 
 $(LANGCC): $(BUILD)/langcc_main.o $(LANGCC_OBJ) Makefile
-	clang++ $(CFLAGS) -o $@ $< $(LANGCC_OBJ) $(LFLAGS)
+	$(CC) $(CFLAGS) -o $@ $< $(LANGCC_OBJ) $(LFLAGS)
 
 gen/common__data_gen.cpp: $(DATACC) src/common.data
 	$(DATACC) src/common.data gen
@@ -122,15 +143,15 @@ gen/go__gen_debug.cpp: gen/go__gen.cpp
 
 $(BUILD)/go__gen.o: gen/go__gen.cpp $(IMPLICIT_SRC)  Makefile
 	mkdir -p $(BUILD)
-	clang++ -c -o $(BUILD)/go__gen.o $(CFLAGS) gen/go__gen.cpp
+	$(CC) -c -o $(BUILD)/go__gen.o $(CFLAGS) gen/go__gen.cpp
 
 $(BUILD)/go_standalone_test: $(BUILD)/go__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ -o $(BUILD)/go_standalone_test $(CFLAGS) src/go_standalone_test.cpp $(BUILD)/go__gen.o $(LFLAGS)
+	$(CC) -o $(BUILD)/go_standalone_test $(CFLAGS) src/go_standalone_test.cpp $(BUILD)/go__gen.o $(LFLAGS)
 
 $(BUILD)/go_debug: gen/go__gen_debug.cpp $(BUILD)/go__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ -o $(BUILD)/go_debug $(CFLAGS) gen/go__gen_debug.cpp $(BUILD)/go__gen.o $(LFLAGS)
+	$(CC) -o $(BUILD)/go_debug $(CFLAGS) gen/go__gen_debug.cpp $(BUILD)/go__gen.o $(LFLAGS)
 
 gost: src/gost.go Makefile
 	go build src/gost.go
@@ -145,16 +166,16 @@ gen/py__gen_debug.cpp: gen/py__gen.cpp
 
 $(BUILD)/py__gen.o: gen/py__gen.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ -c -o $(BUILD)/py__gen.o $(CFLAGS) gen/py__gen.cpp
+	$(CC) -c -o $(BUILD)/py__gen.o $(CFLAGS) gen/py__gen.cpp
 
 $(BUILD)/py__gen_debug.o: gen/py__gen_debug.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ -c -o $(BUILD)/py__gen_debug.o $(CFLAGS) gen/py__gen_debug.cpp
+	$(CC) -c -o $(BUILD)/py__gen_debug.o $(CFLAGS) gen/py__gen_debug.cpp
 
 $(BUILD)/py_standalone_test: $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ -o $(BUILD)/py_standalone_test $(CFLAGS) src/py_standalone_test.cpp $(BUILD)/py__gen.o $(LFLAGS)
+	$(CC) -o $(BUILD)/py_standalone_test $(CFLAGS) src/py_standalone_test.cpp $(BUILD)/py__gen.o $(LFLAGS)
 
 $(BUILD)/py_debug: $(BUILD)/py__gen_debug.o $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	clang++ -o $(BUILD)/py_debug $(CFLAGS) gen/py__gen_debug.cpp $(BUILD)/py__gen.o $(LFLAGS)
+	$(CC) -o $(BUILD)/py_debug $(CFLAGS) gen/py__gen_debug.cpp $(BUILD)/py__gen.o $(LFLAGS)

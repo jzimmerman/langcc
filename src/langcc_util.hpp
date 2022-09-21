@@ -27,7 +27,12 @@
 #include <unordered_set>
 #include <vector>
 
+#ifdef __MACOS__
+#include <cryptopp/sha.h>
+#include <signal.h>
+#else
 #include <crypto++/sha.h>
+#endif
 
 using namespace std;
 
@@ -286,6 +291,9 @@ template<typename T> struct rc_ptr {
         this->decref();
     }
 };
+
+#define STRINGIFY(x) STRINGIFY_INNER(x)
+#define STRINGIFY_INNER(x) #x
 
 #define RC_STRUCT(x) struct x; \
     using x##_T = rc_ptr<x>;
@@ -992,16 +1000,8 @@ inline void pr(ostream& os, FmtFlags flags, i32 x) {
     os << x;
 }
 
-// inline void pr(ostream& os, FmtFlags flags, u64 x) {
-//     os << x;
-// }
-
 inline void pr(ostream& os, FmtFlags flags, size_t x) {
     os << x;
-}
-
-inline void pr_debug(ostream& os, FmtFlags flags, u64 x) {
-    pr(os, flags, x);
 }
 
 inline void pr(ostream& os, FmtFlags flags, char c) {
@@ -1182,7 +1182,7 @@ template<typename ...Ts> void log_inner(Int level, const Ts&... args) {
     static Int prev_level = -1;
 
     Int tab_len = 4;
-    Int num_sp = tab_len * max(0L, level - 1);
+    Int num_sp = tab_len * max<Int>(0L, level - 1);
     string sp = str_repeat(" ", num_sp);
     string prefix_prim = " ";
     if (level > 0) {
@@ -2908,7 +2908,7 @@ struct PrintTable {
         }
         ret->buffer_cursor_ = 0;
         ret->buffer_active_ = false;
-        ret->widths_ = vec_repeat(0L, len(col));
+        ret->widths_ = vec_repeat<Int>(0L, len(col));
         return ret;
     }
 
@@ -3008,7 +3008,7 @@ struct PrintTable {
     }
 
     inline void push_blank_line() {
-        AR_eq(this->get_buffer_cursor(), 0L);
+        AR_eq(this->get_buffer_cursor(), 0);
         for (Int j = 0; j < this->num_col(); j++) {
             this->push_blank_item();
         }

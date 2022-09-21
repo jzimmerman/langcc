@@ -15,6 +15,6 @@ build/langcc grammars/meta.lang gen
 make clean
 make -j16
 
-build/unittest_lang || echo 'Failure: unittest_lang' && /bin/false
-build/go_standalone_test 1 || echo 'Failure: go_standalone_test' && /bin/false
-build/py_standalone_test 1 || echo 'Failure: py_standalone_test' && /bin/false
+build/unittest_lang || (echo 'Failure: unittest_lang' && false)
+build/go_standalone_test 1 || (echo 'Failure: go_standalone_test' && false)
+build/py_standalone_test 1 || (echo 'Failure: py_standalone_test' && false)

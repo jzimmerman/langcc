@@ -57,13 +57,19 @@ rapid exploration of new compilers and programming languages.
 
 Build
 =====
-The build has been tested on Ubuntu 22.04, but should also run on
-some earlier versions of Ubuntu, or on recent versions of macOS,
-with minor adaptations.
+The build has been tested on Ubuntu 22.04 and macOS 12.5,
+but should also run on some other versions of Ubuntu
+and macOS with minor adaptations.
 
 For Ubuntu 22.04:
 ```
 ./deps_ubuntu.sh
+make -j8
+sudo make install
+```
+For macOS 12.5 (requires Homebrew and MacPorts):
+```
+./deps_macos.sh
 make -j8
 sudo make install
 ```

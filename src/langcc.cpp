@@ -162,8 +162,28 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
     if (run_tests) {
         makedirs("build/gen_test_bin");
 
+#ifdef __MACOS__
+        string sdkroot = STRINGIFY(__MACOS_SDKROOT__);
+        setenv("SDKROOT", sdkroot.c_str(), 1);
+        string hb = STRINGIFY(__HOMEBREW_BASE__);
+#endif
+
         Vec<string> cmds;
+#ifdef __MACOS__
+        cmds.push(fmt_str("{}/opt/llvm@15/bin/clang++", hb));
+#else
         cmds.push("clang++");
+#endif
+
+#ifdef __MACOS__
+        cmds.push("-D");
+        cmds.push("__MACOS__");
+        cmds.push("-D");
+        cmds.push(fmt_str("__MACOS_SDKROOT__={}", sdkroot));
+        cmds.push("-D");
+        cmds.push(fmt_str("__HOMEBREW_BASE__={}", hb));
+#endif
+
         cmds.push("-o");
         auto tgt_path = fmt_str("build/gen_test_bin/{}__gen_test",
             lang_get_src_base_name(src_path));
@@ -173,24 +193,44 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
         cmds.push("-g3");
         cmds.push("-std=c++17");
         cmds.push("-fno-omit-frame-pointer");
+#ifdef __MACOS__
+        cmds.push("-mmacosx-version-min=12.0");
+        cmds.push("-I");
+        cmds.push("/opt/local/include");
+        cmds.push("-I");
+        cmds.push(fmt_str("{}/opt/llvm@15/include", hb));
+#else
         cmds.push("-I");
         cmds.push("/usr/include/llvm-14");
         cmds.push("-I");
         cmds.push("/usr/include/llvm-c-14");
+#endif
         cmds.push("-I");
         cmds.push(fmt_str("./{}", dst_path));
         cmds.push("-I");
         cmds.push("./src");
         cmds.push(res->as_Ok()->cpp_path_);
         cmds.push(res->as_Ok()->cpp_test_path_);
+#ifdef __MACOS__
+        cmds.push("-L");
+        cmds.push("/opt/local/lib");
+        cmds.push("-L");
+        cmds.push(fmt_str("{}/opt/gperftools/lib", hb));
+        cmds.push("-L");
+        cmds.push(fmt_str("{}/opt/llvm@15/lib", hb));
+        cmds.push("-L");
+        cmds.push(fmt_str("{}/Cellar/ncurses/6.3/lib", hb));
+        cmds.push("-L");
+        cmds.push("/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib");
+#else
         cmds.push("-L");
         cmds.push("/usr/lib/llvm-14");
+#endif
         cmds.push("-lLLVMSymbolize");
         cmds.push("-lLLVMDemangle");
         cmds.push("-lLLVMSupport");
         cmds.push("-lcryptopp");
         cmds.push("-lncurses");
-        cmds.push("-lpthread");
 
         string cmd;
         for (auto cmd_i : cmds) {
