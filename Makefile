@@ -10,11 +10,15 @@ clean:
 DATACC = $(BUILD)/datacc
 LANGCC = $(BUILD)/langcc
 
+INSTALL_BASE = /usr/local
+
 install: $(DATACC) $(LANGCC)
-	cp $(DATACC) /usr/local/bin/
-	cp $(LANGCC) /usr/local/bin/
-	cp src/langcc_util.hpp /usr/local/include/
-	cp src/langcc_rt.hpp /usr/local/include/
+	mkdir -p $(INSTALL_BASE)/bin
+	mkdir -p $(INSTALL_BASE)/include
+	cp $(DATACC) $(INSTALL_BASE)/bin/
+	cp $(LANGCC) $(INSTALL_BASE)/bin/
+	cp src/langcc_util.hpp $(INSTALL_BASE)/include/
+	cp src/langcc_rt.hpp $(INSTALL_BASE)/include/
 
 all: \
 	$(DATACC) \
