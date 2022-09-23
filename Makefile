@@ -32,6 +32,8 @@ CFLAGS_EXTRA =
 LFLAGS_EXTRA =
 CC =
 
+LFLAGS_TCMALLOC = -ltcmalloc
+
 ifeq ($(shell uname), Darwin)
 	SDKROOT = $(shell xcrun --show-sdk-path)
 	export SDKROOT = $(shell xcrun --show-sdk-path)
@@ -59,7 +61,7 @@ endif
 # release
 CFLAGS = -I./src -I./gen -g -ggdb -g3 -O3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_EXTRA)
 LFLAGS = $(LFLAGS_EXTRA) \
-	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses -ltcmalloc
+	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses $(LFLAGS_TCMALLOC)
 
 HPP_SRC = $(wildcard src/*.hpp)
 
