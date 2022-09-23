@@ -58,11 +58,11 @@ inline void dump_stack() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void init_handlers();
-void init_logging();
+void init_time_system();
 
 inline void global_init() {
     init_handlers();
-    init_logging();
+    init_time_system();
 }
 
 using i8 = int8_t;
@@ -1146,13 +1146,24 @@ inline string fmt_strs_var(const Ts&... ts) {
 // Logging
 ////////////////////////////////////////////////////////////////////////////////
 
-inline Int& get_init_time() {
-    static Int _init_time = 0;
+inline Int& get_init_time_inner() {
+    static Int _init_time = -1;
     return _init_time;
 }
 
-inline void init_logging() {
-    get_init_time() = now();
+inline void init_time_system() {
+    if (get_init_time_inner() != -1) {
+        AX("Time system initialized more than once");
+    }
+    get_init_time_inner() = now();
+}
+
+inline Int get_init_time() {
+    Int ret = get_init_time_inner();
+    if (ret == -1) {
+        AX("Time system not initialized; must call global_init");
+    }
+    return ret;
 }
 
 inline Int& get_log_level() {
