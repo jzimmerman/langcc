@@ -162,22 +162,22 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
     if (run_tests) {
         makedirs("build/gen_test_bin");
 
-#ifdef __MACOS__
+#ifdef __APPLE__
         string sdkroot = STRINGIFY(__MACOS_SDKROOT__);
         setenv("SDKROOT", sdkroot.c_str(), 1);
         string hb = STRINGIFY(__HOMEBREW_BASE__);
 #endif
 
         Vec<string> cmds;
-#ifdef __MACOS__
+#ifdef __APPLE__
         cmds.push(fmt_str("{}/opt/llvm@15/bin/clang++", hb));
 #else
         cmds.push("clang++");
 #endif
 
-#ifdef __MACOS__
+#ifdef __APPLE__
         cmds.push("-D");
-        cmds.push("__MACOS__");
+        cmds.push("__APPLE__");
         cmds.push("-D");
         cmds.push(fmt_str("__MACOS_SDKROOT__={}", sdkroot));
         cmds.push("-D");
@@ -193,10 +193,8 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
         cmds.push("-g3");
         cmds.push("-std=c++17");
         cmds.push("-fno-omit-frame-pointer");
-#ifdef __MACOS__
+#ifdef __APPLE__
         cmds.push("-mmacosx-version-min=12.0");
-        cmds.push("-I");
-        cmds.push("/opt/local/include");
         cmds.push("-I");
         cmds.push(fmt_str("{}/opt/llvm@15/include", hb));
 #else
@@ -211,9 +209,7 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
         cmds.push("./src");
         cmds.push(res->as_Ok()->cpp_path_);
         cmds.push(res->as_Ok()->cpp_test_path_);
-#ifdef __MACOS__
-        cmds.push("-L");
-        cmds.push("/opt/local/lib");
+#ifdef __APPLE__
         cmds.push("-L");
         cmds.push(fmt_str("{}/opt/gperftools/lib", hb));
         cmds.push("-L");
@@ -225,11 +221,11 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
 #else
         cmds.push("-L");
         cmds.push("/usr/lib/llvm-14");
+        cmds.push("-lcryptopp");
 #endif
         cmds.push("-lLLVMSymbolize");
         cmds.push("-lLLVMDemangle");
         cmds.push("-lLLVMSupport");
-        cmds.push("-lcryptopp");
         cmds.push("-lncurses");
 
         string cmd;

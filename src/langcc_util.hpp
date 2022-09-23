@@ -27,8 +27,8 @@
 #include <unordered_set>
 #include <vector>
 
-#ifdef __MACOS__
-#include <cryptopp/sha.h>
+#ifdef __APPLE__
+#include <CommonCrypto/CommonDigest.h>
 #include <signal.h>
 #else
 #include <crypto++/sha.h>
@@ -2069,9 +2069,13 @@ struct hash_obj {
 
 inline HashVal hash_data(const u8* data, Int len) {
     HashVal ret;
+#ifdef __APPLE__
+    CC_SHA256(data, len, &ret.v_[0]);
+#else
     CryptoPP::SHA256 hash;
     hash.Update(data, len);
     hash.Final(&ret.v_[0]);
+#endif
     return ret;
 }
 

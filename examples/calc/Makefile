@@ -20,18 +20,18 @@ ifeq ($(shell uname), Darwin)
 		HOMEBREW_BASE = /opt/homebrew
 	endif
 
-	CFLAGS_EXTRA = -D__MACOS__ -D__MACOS_SDKROOT__=$(SDKROOT) -D__HOMEBREW_BASE__=$(HOMEBREW_BASE) -I/opt/local/include -I$(HOMEBREW_BASE)/opt/llvm@15/include -mmacosx-version-min=12.0
-	LFLAGS_EXTRA = -L/opt/local/lib -L$(HOMEBREW_BASE)/opt/gperftools/lib -L$(HOMEBREW_BASE)/opt/llvm@15/lib -L$(HOMEBREW_BASE)/Cellar/ncurses/6.3/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+	CFLAGS_EXTRA = -D__MACOS_SDKROOT__=$(SDKROOT) -D__HOMEBREW_BASE__=$(HOMEBREW_BASE) -I$(HOMEBREW_BASE)/opt/llvm@15/include -mmacosx-version-min=12.0
+	LFLAGS_EXTRA = -L$(HOMEBREW_BASE)/opt/gperftools/lib -L$(HOMEBREW_BASE)/opt/llvm@15/lib -L$(HOMEBREW_BASE)/Cellar/ncurses/6.3/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
 	CC = $(HOMEBREW_BASE)/opt/llvm@15/bin/clang++
 else
 	CFLAGS_EXTRA = -I/usr/include/llvm-c-14 -I/usr/include/llvm-14
-	LFLAGS_EXTRA = -L/usr/lib/llvm-14/lib
+	LFLAGS_EXTRA = -L/usr/lib/llvm-14/lib -lcryptopp
 	CC = clang++
 endif
 
 CFLAGS = -I./gen -I./include -g -ggdb -g3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_EXTRA)
 LFLAGS = $(LFLAGS_EXTRA) \
-	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses $(LFLAGS_TCMALLOC)
+	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lncurses $(LFLAGS_TCMALLOC)
 
 gen/calc__gen.cpp: calc.lang Makefile
 	langcc calc.lang gen
