@@ -20,12 +20,23 @@ int main(int argc, char** argv) {
 
     auto L = lang::py::init();
 
-    AR_ge(argc, 2);
-
-    string num_iter_str = argv[1];
-    Int num_iter = atoi(num_iter_str.c_str());
+    Int num_iter = 1;
+    if (argc == 1) {
+        num_iter = 1;
+    } else if (argc == 2) {
+        string num_iter_str = argv[1];
+        num_iter = string_to_int(num_iter_str).as_some();
+    } else {
+        LG_ERR("Usage: py_standalone_test [num_iter]");
+        exit(1);
+    }
 
     AR_ge(num_iter, 1);
+
+    if (!std::filesystem::exists("../cpython")) {
+        LG_ERR("Requires Python (CPython) 3.9.12 sources in ../cpython directory");
+        exit(1);
+    }
 
     auto mn = read_file("data/py_manifest_gen.txt");
     auto mn_ls = str_split(mn.substr(0, len(mn)-1), "\n");

@@ -20,12 +20,23 @@ int main(int argc, char** argv) {
 
     auto L = lang::go::init();
 
-    AR_ge(argc, 2);
-
-    string num_iter_str = argv[1];
-    Int num_iter = atoi(num_iter_str.c_str());
+    Int num_iter = 1;
+    if (argc == 1) {
+        num_iter = 1;
+    } else if (argc == 2) {
+        string num_iter_str = argv[1];
+        num_iter = string_to_int(num_iter_str).as_some();
+    } else {
+        LG_ERR("Usage: go_standalone_test [num_iter]");
+        exit(1);
+    }
 
     AR_ge(num_iter, 1);
+
+    if (!std::filesystem::exists("../go")) {
+        LG_ERR("Requires Golang 1.17.8 sources in ../go directory");
+        exit(1);
+    }
 
     auto mn = read_file("data/golang_manifest_gen.txt");
     auto mn_ls = str_split(mn.substr(0, len(mn)-1), "\n");
