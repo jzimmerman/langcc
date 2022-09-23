@@ -23,6 +23,7 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
@@ -3702,17 +3703,26 @@ inline bool run_unit_tests() {
         test_names.insert(test.name_);
     }
 
-    for (auto& test : get_unit_tests()) {
-        dispatch_unit_test(test);
-        usleep(1000);
-    }
+    Int unit_tests_max_concurrent = std::thread::hardware_concurrency();
 
-    LG_ERR(">>> Launched {} tests", len(get_unit_tests()));
+    auto ts = get_unit_tests();
+    Int test_dispatch_i = 0;
+
+    LG_ERR(">>> Launching {} tests ({} concurrently)",
+        len(get_unit_tests()), unit_tests_max_concurrent);
 
     Time monitor_start = now();
     Time timeout = 300L*G_;
 
-    while (get_unit_tests_running().size() > 0) {
+    while (test_dispatch_i < ts.size() || get_unit_tests_running().size() > 0) {
+        if (test_dispatch_i < ts.size()) {
+            while (get_unit_tests_running().size() < unit_tests_max_concurrent) {
+                dispatch_unit_test(ts[test_dispatch_i]);
+                ++test_dispatch_i;
+                usleep(1000);
+            }
+        }
+
         i32 status = -1;
         pid_t pid = waitpid(-1, &status, WNOHANG);
         if (pid == 0) {
