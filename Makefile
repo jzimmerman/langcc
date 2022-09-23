@@ -56,12 +56,12 @@ endif
 # CFLAGS = -I./src -I./gen  -g -ggdb -g3 -std=c++17 -I/usr/include/llvm-c-14 \
 #   -I/usr/include/llvm-14 -fno-omit-frame-pointer -fsanitize=address $(CFLAGS_EXTRA)
 # LFLAGS = -L/usr/lib/llvm-14/lib $(LFLAGS_EXTRA) \
-# 	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses
+# 	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lncurses
 
 # release
 CFLAGS = -I./src -I./gen -g -ggdb -g3 -O3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_EXTRA)
 LFLAGS = $(LFLAGS_EXTRA) \
-	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses $(LFLAGS_TCMALLOC)
+	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lncurses $(LFLAGS_TCMALLOC)
 
 HPP_SRC = $(wildcard src/*.hpp)
 

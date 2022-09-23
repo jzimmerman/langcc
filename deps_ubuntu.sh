@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 set -u
-sudo apt install llvm-14-dev libcrypto++-dev libgoogle-perftools-dev
+sudo apt install build-essential g++ llvm-14-dev libgoogle-perftools-dev

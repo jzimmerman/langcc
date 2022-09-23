@@ -31,7 +31,7 @@ endif
 
 CFLAGS = -I./gen -I./include -g -ggdb -g3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_EXTRA)
 LFLAGS = $(LFLAGS_EXTRA) \
-	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lcryptopp -lncurses $(LFLAGS_TCMALLOC)
+	-lLLVMSymbolize -lLLVMDemangle -lLLVMSupport -lncurses $(LFLAGS_TCMALLOC)
 
 gen/calc__gen.cpp: calc.lang Makefile
 	langcc calc.lang gen

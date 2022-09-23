@@ -229,7 +229,6 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
         cmds.push("-lLLVMSymbolize");
         cmds.push("-lLLVMDemangle");
         cmds.push("-lLLVMSupport");
-        cmds.push("-lcryptopp");
         cmds.push("-lncurses");
 
         string cmd;

@@ -63,7 +63,7 @@ For Ubuntu 22.04:
 make -j8
 sudo make install
 ```
-For macOS 12.5 (requires Homebrew and MacPorts):
+For macOS 12.5 (requires Homebrew):
 ```
 ./deps_macos.sh
 make -j8
