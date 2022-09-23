@@ -20,6 +20,12 @@ install: $(DATACC) $(LANGCC)
 	cp src/langcc_util.hpp $(INSTALL_BASE)/include/
 	cp src/langcc_rt.hpp $(INSTALL_BASE)/include/
 
+uninstall:
+	rm -f $(INSTALL_BASE)/bin/datacc
+	rm -f $(INSTALL_BASE)/bin/langcc
+	rm -f $(INSTALL_BASE)/src/langcc_util.hpp
+	rm -f $(INSTALL_BASE)/src/langcc_rt.hpp
+
 all: \
 	$(DATACC) \
 	$(LANGCC) \
