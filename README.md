@@ -1,5 +1,4 @@
-``langcc``: A Next-Generation Compiler Compiler
-=====
+# ``langcc``: A Next-Generation Compiler Compiler
 
 ``langcc`` is a tool that takes the formal description of a language,
 in a standard BNF-style format, and automatically generates a compiler
@@ -53,10 +52,7 @@ in production. However, we believe it is essentially stable and
 feature-complete, and can be used as a standalone tool to facilitate
 rapid exploration of new compilers and programming languages.
 
-<br/>
-
-Build
-=====
+## Build
 The build has been tested on Ubuntu 22.04 and macOS 12.5,
 but should also run on some other versions of Ubuntu
 and macOS with minor adaptations.
@@ -78,10 +74,7 @@ And, in order to bootstrap the ``langcc`` front-end itself, subsequently run:
 ./bootstrap.sh
 ```
 
-<br/>
-
-Examples
-=====
+## Examples
 Once ``langcc`` (and its companion, ``datacc``) have been installed,
 one can run various examples:
 - In the ``examples`` directory, there are two examples: ``basic`` and
@@ -98,11 +91,7 @@ one can run various examples:
   This language also serves as basic documentation, as it enumerates all of
   its own features.
 
-
-<br/>
-
-Documentation
-=====
+## Documentation
 For full documentation, see the accompanying technical report:
 - Zimmerman, Joe.
 [langcc: A Next-Generation Compiler Compiler.](https://arxiv.org/abs/2209.08385)
