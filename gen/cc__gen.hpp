@@ -1,6 +1,6 @@
 #pragma once
 
-#include "langcc_rt.hpp"
+#include <langcc_rt.hpp>
 
 namespace lang::cc::lexer {
     rc_ptr<lang_rt::DFALabelIdVec> label_ids_ascii();
@@ -30,7 +30,7 @@ namespace lang::cc::lexer::comment_single {
 
 #pragma once
 
-#include "langcc_util.hpp"
+#include <langcc_util.hpp>
 
 namespace lang::cc::Node::Module {
     struct _T;
@@ -2178,17 +2178,17 @@ namespace lang::cc::Node::Decl::UsingNamespace {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Include_T x);
 
 namespace lang::cc::Node::Decl::Include {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Include_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path);
+    __attribute__((always_inline)) lang::cc::Node::Decl::Include_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::Include {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Include_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path);
+    __attribute__((always_inline)) lang::cc::Node::Decl::Include_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::Include {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
-        StrSlice path_;
+        StrSlice x_;
         _T();
         lang::cc::Node::Decl::Include_T with_id(Int id);
         lang::cc::Node::Decl::Include_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2196,7 +2196,7 @@ namespace lang::cc::Node::Decl::Include {
         lang::cc::Node::Decl::Include_T with_sym(lang_rt::ParserSymId sym);
         lang::cc::Node::Decl::Include_T with_attr(lang_rt::ParserAttrMask attr);
         lang::cc::Node::Decl::Include_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::Include_T with_path(StrSlice path);
+        lang::cc::Node::Decl::Include_T with_x(StrSlice x);
         void hash_ser_acc_lang_cc_Node_Decl_Include(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
@@ -2205,16 +2205,17 @@ namespace lang::cc::Node::Decl::Include {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::PragmaOnce_T x);
 
 namespace lang::cc::Node::Decl::PragmaOnce {
-    __attribute__((always_inline)) lang::cc::Node::Decl::PragmaOnce_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    __attribute__((always_inline)) lang::cc::Node::Decl::PragmaOnce_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::PragmaOnce {
-    __attribute__((always_inline)) lang::cc::Node::Decl::PragmaOnce_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    __attribute__((always_inline)) lang::cc::Node::Decl::PragmaOnce_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::PragmaOnce {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        StrSlice x_;
         _T();
         lang::cc::Node::Decl::PragmaOnce_T with_id(Int id);
         lang::cc::Node::Decl::PragmaOnce_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2222,6 +2223,7 @@ namespace lang::cc::Node::Decl::PragmaOnce {
         lang::cc::Node::Decl::PragmaOnce_T with_sym(lang_rt::ParserSymId sym);
         lang::cc::Node::Decl::PragmaOnce_T with_attr(lang_rt::ParserAttrMask attr);
         lang::cc::Node::Decl::PragmaOnce_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Decl::PragmaOnce_T with_x(StrSlice x);
         void hash_ser_acc_lang_cc_Node_Decl_PragmaOnce(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };

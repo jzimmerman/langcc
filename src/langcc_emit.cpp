@@ -7,16 +7,16 @@ void lang_emit_preambles(LangCompileContext& ctx) {
         ctx.cc_.Q_->qq_ext(Some<string>("Decl"), "#pragma once")->as_Decl());
 
     ctx.cc_.dst_decls_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-        "#include", "\"langcc_rt.hpp\"")->as_Decl());
+        "#include <langcc_rt.hpp>")->as_Decl());
 
     ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-        "#include", fmt_str("\"{}\"", ctx.hpp_name_))->as_Decl());
+        fmt_str("#include \"{}\"", ctx.hpp_name_))->as_Decl());
 
     ctx.cc_test_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-        "#include", fmt_str("\"{}\"", ctx.hpp_name_))->as_Decl());
+        fmt_str("#include \"{}\"", ctx.hpp_name_))->as_Decl());
 
     ctx.cc_debug_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-        "#include", fmt_str("\"{}\"", ctx.hpp_name_))->as_Decl());
+        fmt_str("#include \"{}\"", ctx.hpp_name_))->as_Decl());
 }
 
 

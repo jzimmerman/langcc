@@ -8,7 +8,7 @@ tokens {
     kw <= `return` | `struct` | `if` | `else` | `for`
         | `template` | `typename` | `namespace` | `enum` | `delete` | `using`
         | `virtual` | `static` | `inline` | `const` | `switch` | `case` | `default`
-        | `include` | `pragma` | `once` | `break` | `continue` | `new`
+        | `break` | `continue` | `new`
         | `_LT_` | `_GT_`
         | `__attribute__` | `always_inline` | `noinline`;
 
@@ -25,7 +25,6 @@ tokens {
         | `++` | `--`
         | `~`
         | `!`
-        | `#`
         | `...`
         ;
 
@@ -37,10 +36,15 @@ tokens {
     oct_digit <= `0`..`7`;
 
     oct_escape <= `\\` oct_digit^3;
-    str_lit <- `"` ((unicode_any - (`\\` | `"`))
-        | `\\n` | `\\r` | `\\t` | `\\"` | `\\'` | `\\\\` | oct_escape)* `"`;
+    str_lit <- `"` str_lit_body* `"`;
 
-    top <= id | kw | op | int_lit | str_lit;
+        str_lit_body <= ((unicode_any - (`\\` | `"`))
+            | `\\n` | `\\r` | `\\t` | `\\"` | `\\'` | `\\\\` | oct_escape);
+
+    include <- `#include` ` `+ (`"` str_lit_body* `"` | `<` (unicode_any - `>`)* `>`);
+    pragma_once <- `#pragma` ` `+ `once`;
+
+    top <= id | kw | op | int_lit | str_lit | include | pragma_once;
 }
 
 lexer {
@@ -151,8 +155,8 @@ parser {
     Decl.UsingAlias <- tmpl:(TemplateDecl _)? `using` _ name:Id _ `=` _ val:Expr `;`;
     Decl.UsingNamespace <- `using` _ `namespace` _ name:Type;
 
-    Decl.Include <- `#` `include` _ path:str_lit;
-    Decl.PragmaOnce <- `#` `pragma` _ `once`;
+    Decl.Include <- x:include;
+    Decl.PragmaOnce <- x:pragma_once;
 
     Block <- `{` stmts:#B[Stmt::eps] `}`;
 

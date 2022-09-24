@@ -844,16 +844,16 @@ DataDefsResult compile_data_defs(
         ctx.cc_.Q_->qq_ext(Some<string>("Decl"), "#pragma once")->as_Decl());
 
     ctx.cc_.dst_decls_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-        "#include", "\"langcc_util.hpp\"")->as_Decl());
+        "#include <langcc_util.hpp>")->as_Decl());
 
     for (auto path : *ctx.includes_) {
         ctx.cc_.dst_decls_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-            "#include", path)->as_Decl());
+            fmt_str("#include {}", path))->as_Decl());
     }
 
     if (header_name.is_some()) {
         ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-            "#include", fmt_str("\"{}\"", header_name.as_some()))->as_Decl());
+            fmt_str("#include \"{}\"", header_name.as_some()))->as_Decl());
     }
 
     for (const auto& p : *ctx.enum_leaves_) {

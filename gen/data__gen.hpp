@@ -1,6 +1,6 @@
 #pragma once
 
-#include "langcc_rt.hpp"
+#include <langcc_rt.hpp>
 
 namespace lang::data::lexer {
     rc_ptr<lang_rt::DFALabelIdVec> label_ids_ascii();
@@ -30,7 +30,7 @@ namespace lang::data::lexer::comment_single {
 
 #pragma once
 
-#include "langcc_util.hpp"
+#include <langcc_util.hpp>
 
 namespace lang::data::Node::Module {
     struct _T;
