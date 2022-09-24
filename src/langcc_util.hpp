@@ -35,18 +35,16 @@
 
 using namespace std;
 
+#define UNW_LOCAL_ONLY
+
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <libunwind.h>
+#include <dlfcn.h>
 
-#include "llvm/Support/PrettyStackTrace.h"
-#include "llvm/Support/raw_ostream.h"
-#include "llvm/Support/Signals.h"
-
-inline void dump_stack() {
-    llvm::sys::PrintStackTrace(llvm::errs());
-}
+inline void dump_stack();
 
 
 
@@ -3803,4 +3801,192 @@ inline bool run_unit_tests() {
     }
 
     return res_fail.size() == 0;
+}
+
+inline string llvm_symbolize(string input) {
+    constexpr Int buf_n = 64;
+    char name_in[buf_n], name_out[buf_n], name_err[buf_n];
+    strncpy(name_in, "/tmp/stdin_XXXXXX.txt", buf_n);
+    strncpy(name_out, "/tmp/stdout_XXXXXX.txt", buf_n);
+    strncpy(name_err, "/tmp/stderr_XXXXXX.txt", buf_n);
+
+    {
+        auto stdin_file = sys_chk_nonneg(mkstemps(name_in, 4), "mkstemps stdin");
+        auto stdout_file = sys_chk_nonneg(mkstemps(name_out, 4), "mkstemps stdout");
+        auto stderr_file = sys_chk_nonneg(mkstemps(name_err, 4), "mkstemps stderr");
+    }
+    string stdin_filename = name_in;
+    string stdout_filename = name_out;
+    string stderr_filename = name_err;
+
+    write_file(stdin_filename, input);
+
+    pid_t pid = fork();
+
+    AT(pid >= 0);
+    if (pid == 0) {
+        auto stdin_file = sys_chk_nonneg(open(stdin_filename.c_str(), O_RDONLY), "open stdin");
+        auto stdout_file = sys_chk_nonneg(open(stdout_filename.c_str(), O_WRONLY), "open stdout");
+        auto stderr_file = sys_chk_nonneg(open(stderr_filename.c_str(), O_WRONLY), "open stderr");
+        {
+            sys_chk_nonneg(dup2(stdin_file, STDIN_FILENO), "dup2 stdin");
+        }
+        {
+            sys_chk_nonneg(dup2(stdout_file, STDOUT_FILENO), "dup2 stdout");
+        }
+        {
+            sys_chk_nonneg(dup2(stderr_file, STDERR_FILENO), "dup2 stderr");
+        }
+        const char* path = STRINGIFY(__LLVM_SYMBOLIZER_PATH__);
+        // "/opt/homebrew/opt/llvm/bin/llvm-symbolizer";
+        execl(path, path, nullptr);
+        perror("execl");
+        exit(1);
+    } else {
+        i32 status;
+        waitpid(pid, &status, 0);
+        if (status != 0) {
+            LG_ERR("exec failure: {}\nstderr:\n{}\n\n", read_file(stderr_filename));
+        }
+        auto ret = read_file(stdout_filename);
+        std::filesystem::remove(stdin_filename);
+        std::filesystem::remove(stdout_filename);
+        std::filesystem::remove(stderr_filename);
+        return ret;
+    }
+}
+
+inline string sym_long_summarize(string sym) {
+    string ret;
+    Int angles = 0;
+    Int parens = 0;
+    for (char c : sym) {
+        if (c == '(') {
+            ++parens;
+            continue;
+        }
+        if (c == ')') {
+            --parens;
+            continue;
+        }
+        if (c == '>') {
+            --angles;
+            if (angles == 0 && parens == 0) {
+                ret += "..";
+            }
+        }
+        if (angles == 0 && parens == 0) {
+            ret += c;
+        }
+        if (c == '<') {
+            ++angles;
+        }
+    }
+    return ret;
+}
+
+inline string sym_path_long_excerpt(string path_line) {
+    string cwd = std::filesystem::current_path().string();
+    if (str_starts_with(path_line, cwd + "/")) {
+        path_line = path_line.substr(cwd.length()+1);
+    }
+    return path_line;
+}
+
+inline void dump_stack() {
+    unw_cursor_t cursor;
+    unw_context_t uc;
+    unw_word_t ip;
+    unw_getcontext(&uc);
+    unw_init_local(&cursor, &uc);
+
+    string sym_in;
+    vector<string> sym_ins;
+    while (unw_step(&cursor) > 0) {
+        unw_get_reg(&cursor, UNW_REG_IP, &ip);
+        ip &= 0x7fffffffffffUL;
+        Dl_info info;
+        dladdr(reinterpret_cast<void*>(ip), &info);
+        auto offs = ip - reinterpret_cast<u64>(info.dli_fbase);
+#ifdef __MACOS__
+        offs += 0x100000000UL;
+        offs -= 1;
+#endif
+        auto sym_in_curr = fmt_str(
+            "{} 0x{}\n", string(info.dli_fname), hex_u64_display(offs));
+        sym_in += sym_in_curr;
+        sym_ins.push_back(sym_in_curr);
+    }
+
+    vector<string> sym_outs;
+
+#ifdef __HAS_LLVM_SYMBOLIZER__
+    auto sym_out = llvm_symbolize(sym_in);
+    istringstream is(sym_out);
+    while (is.good()) {
+        string l;
+        getline(is, l);
+        l = string_ws_strip(l);
+        sym_outs.push_back(l);
+    }
+#else
+    for (Int i = 0; i < sym_ins.size(); i++) {
+        sym_outs.push_back("??");
+        sym_outs.push_back("??");
+        sym_outs.push_back("");
+    }
+#endif
+
+    string ret = "\nStack trace:\n";
+
+    vector<string> ret_items;
+
+    Int j = 0;
+    Int num_lines = 0;
+    for (Int i = 0; i < sym_ins.size(); i++) {
+        vector<string> outs_curr;
+        while (true) {
+            outs_curr.push_back(sym_outs[j]);
+            ++j;
+            if (sym_outs[j].length() == 0) {
+                ++j;
+                break;
+            }
+        }
+        if (outs_curr[0] == "??") {
+            string ret_item;
+            ++num_lines;
+            auto sym_ins_i_spl = str_split(string_ws_strip(sym_ins[i]), " ");
+            for (Int k = 0; k < sym_ins_i_spl.size()-1; k++) {
+                if (k > 0) {
+                    ret_item += " ";
+                }
+                ret_item += sym_ins_i_spl[k];
+            }
+            ret_item += " [";
+            ret_item += sym_ins_i_spl[sym_ins_i_spl.size()-1];
+            ret_item += "]";
+            ret_item += "\n";
+            ret_items.push_back(ret_item);
+        } else {
+            for (Int k = 0; k < outs_curr.size(); k += 2) {
+                string ret_item;
+                ++num_lines;
+                ret_item += sym_long_summarize(outs_curr[k]);
+                ret_item += " [";
+                ret_item += sym_path_long_excerpt(outs_curr[k+1]);
+                ret_item += "]";
+                ret_item += "\n";
+                ret_items.push_back(ret_item);
+            }
+        }
+    }
+
+    for (Int i = ret_items.size()-1; i >= 0; i--) {
+        auto ri = ret_items[i];
+        ret += str_align_right(fmt_str("#{}: ", Int(ret_items.size()-i)), 6);
+        ret += ri;
+    }
+
+    cerr << ret << flush;
 }
