@@ -3663,6 +3663,8 @@ inline void dispatch_unit_test(UnitTest& test) {
     {
         auto stdout_file = sys_chk_nonneg(mkstemps(name_out, 4), "mkstemps stdout");
         auto stderr_file = sys_chk_nonneg(mkstemps(name_err, 4), "mkstemps stderr");
+        close(stdout_file);
+        close(stderr_file);
     }
     string stdout_filename = name_out;
     string stderr_filename = name_err;
@@ -3679,9 +3681,9 @@ inline void dispatch_unit_test(UnitTest& test) {
         {
             sys_chk_nonneg(dup2(stderr_file, STDERR_FILENO), "dup2 stderr");
         }
-        test.f_();
         close(stdout_file);
         close(stderr_file);
+        test.f_();
         exit(0);
     } else {
         get_unit_tests_running().insert(
@@ -3734,6 +3736,8 @@ inline bool run_unit_tests() {
         test.end_time_ = now();
         test.stdout_ = read_file(test.stdout_filename_);
         test.stderr_ = read_file(test.stderr_filename_);
+        std::filesystem::remove(test.stdout_filename_);
+        std::filesystem::remove(test.stderr_filename_);
         AT(test.ret_.is_some());
         get_unit_tests_terminated().insert(make_pair(test.desc_.name_, test));
         AT(test.ret_.is_some());
@@ -3814,6 +3818,9 @@ inline string llvm_symbolize(string input) {
         auto stdin_file = sys_chk_nonneg(mkstemps(name_in, 4), "mkstemps stdin");
         auto stdout_file = sys_chk_nonneg(mkstemps(name_out, 4), "mkstemps stdout");
         auto stderr_file = sys_chk_nonneg(mkstemps(name_err, 4), "mkstemps stderr");
+        close(stdin_file);
+        close(stdout_file);
+        close(stderr_file);
     }
     string stdin_filename = name_in;
     string stdout_filename = name_out;
@@ -3837,8 +3844,10 @@ inline string llvm_symbolize(string input) {
         {
             sys_chk_nonneg(dup2(stderr_file, STDERR_FILENO), "dup2 stderr");
         }
+        close(stdin_file);
+        close(stdout_file);
+        close(stderr_file);
         const char* path = STRINGIFY(__LLVM_SYMBOLIZER_PATH__);
-        // "/opt/homebrew/opt/llvm/bin/llvm-symbolizer";
         execl(path, path, nullptr);
         perror("execl");
         exit(1);
