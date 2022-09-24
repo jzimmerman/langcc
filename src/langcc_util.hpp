@@ -3710,7 +3710,7 @@ inline bool run_unit_tests() {
         len(get_unit_tests()), unit_tests_max_concurrent);
 
     Time monitor_start = now();
-    Time timeout = 300L*G_;
+    Time timeout = 1800L*G_;
 
     while (test_dispatch_i < ts.size() || get_unit_tests_running().size() > 0) {
         if (test_dispatch_i < ts.size()) {
