@@ -81,9 +81,67 @@ Int stmt_eval(Stmt_T stmt, unordered_map<string, Int>& env) {
     }
 }
 
-int main() {
+bool is_const_zero(Expr_T e) {
+    if (e->is_Lit() && e->as_Lit()->is_Int_()) {
+        return string_to_int(e->as_Lit()->as_Int_()->val_.to_std_string()).as_some() == 0;
+    }
+    return false;
+}
+
+Expr_T expr_simpl(Expr_T e, QuoteEnv_T Q) {
+    unordered_map<string, Int> empty_env;
+    try {
+        return xform_lang_calc_Node(e, [&](Node_T node) -> Node_T {
+            if (node->is_Expr()) {
+                auto cc = node->as_Expr();
+                if (cc->is_BinOp1()) {
+                    auto cr = cc->as_BinOp1();
+                    if (cr->x_->is_Lit() && cr->y_->is_Lit()) {
+                        return Q->qq("Expr", fmt_str("{}", expr_eval(cc, empty_env)));
+                    }
+                    if (cr->op_->is_Add() && is_const_zero(cr->x_)) {
+                        return cr->y_;
+                    }
+                    if (cr->op_->is_Add() && is_const_zero(cr->y_)) {
+                        return cr->x_;
+                    }
+                    if (cr->op_->is_Sub() && is_const_zero(cr->y_)) {
+                        return cr->x_;
+                    }
+                } else if (cc->is_BinOp2()) {
+                    auto cr = cc->as_BinOp2();
+                    if (cr->x_->is_Lit() && cr->y_->is_Lit()) {
+                        return Q->qq("Expr", fmt_str("{}", expr_eval(cc, empty_env)));
+                    }
+                    if (cr->op_->is_Mul() && is_const_zero(cr->x_)) {
+                        return cr->x_;
+                    }
+                    if (cr->op_->is_Mul() && is_const_zero(cr->y_)) {
+                        return cr->y_;
+                    }
+                } else if (cc->is_BinOp3()) {
+                    if (cc->as_BinOp3()->x_->is_Lit() && cc->as_BinOp3()->x_->is_Lit()) {
+                        return Q->qq("Expr", fmt_str("{}", expr_eval(cc, empty_env)));
+                    }
+                }
+            }
+            return node;
+        });
+    } catch (const CalcError& err) {
+        return e;
+    }
+}
+
+int main(int argc, char** argv) {
     global_init();
     set_log_level(1);
+
+    bool simpl = false;
+    if (argc == 2) {
+        if (string(argv[1]) == "-s") {
+            simpl = true;
+        }
+    }
 
     auto L = lang::calc::init();
     auto Q = L->quote_env();
@@ -106,13 +164,25 @@ int main() {
         }
 
         auto stmt = parse->res_.as_some()->as_Stmt();
-        try {
-            fmt(cerr, "{}\n", stmt_eval(stmt, env));
-        } catch (const CalcError& err) {
-            LG_ERR("\nError: {}\n{}",
-                err.desc_,
-                parse->lex_->location_fmt_str(err.e_blame_->bounds_));
-            continue;
+
+        if (simpl) {
+            if (!stmt->is_Expr()) {
+                LG_ERR("\nError: statements not supported in simplification mode: {}",
+                    parse->lex_->location_fmt_str(stmt->bounds_));
+            }
+            auto e = stmt->as_Expr()->x_;
+            Node_T r = expr_simpl(e, Q);
+            r->write(cout, FmtFlags{});
+            cout << endl;
+        } else {
+            try {
+                fmt(cout, "{}\n", stmt_eval(stmt, env));
+            } catch (const CalcError& err) {
+                LG_ERR("\nError: {}\n{}",
+                    err.desc_,
+                    parse->lex_->location_fmt_str(err.e_blame_->bounds_));
+                continue;
+            }
         }
     }
 
