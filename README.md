@@ -94,4 +94,4 @@ one can run various examples:
 
 ## Documentation
 For full documentation, please see the [user manual](https://github.com/jzimmerman/langcc/blob/main/MANUAL.md),
-as well as the [technical report](https://arxiv.org/pdf/2209.08383.pdf) which describes the theoretical development:
+as well as the [technical report](https://arxiv.org/pdf/2209.08383.pdf) which describes the theoretical development.

@@ -461,7 +461,7 @@ which contain the AST definitions, lexer, parser,
 and pretty-printer, as well as miscellaneous utilities such as debug-printers and hashing functions.
 The following is a basic example of how to use the generated API (from `examples/calc`):
 
-```
+```cpp
 auto L = lang::calc::init();
 auto Q = L->quote_env();
 unordered_map<string, Int> env;
@@ -517,7 +517,7 @@ then call our function `stmt_eval`, which in turn calls `expr_eval`
 on constituent expressions.
 The following is excerpted from `expr_eval`:
 
-```
+```cpp
 Int expr_eval(Expr_T e, const unordered_map<string, Int>& env) {
     if (e->is_Lit()) {
         auto val_str = e->as_Lit()->as_Int_()->val_.to_std_string();
