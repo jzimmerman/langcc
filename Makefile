@@ -128,6 +128,14 @@ $(BUILD)/data__gen.o: gen/data__gen.cpp $(IMPLICIT_SRC_DATACC) Makefile
 	mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+$(BUILD)/go_standalone_test.o: src/go_standalone_test.cpp gen/go__gen.cpp Makefile
+	mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(BUILD)/py_standalone_test.o: src/py_standalone_test.cpp gen/py__gen.cpp Makefile
+	mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 $(BUILD)/%.o: src/%.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -169,9 +177,9 @@ $(BUILD)/go__gen.o: gen/go__gen.cpp $(IMPLICIT_SRC)  Makefile
 	mkdir -p $(BUILD)
 	$(CC) -c -o $(BUILD)/go__gen.o $(CFLAGS) gen/go__gen.cpp
 
-$(BUILD)/go_standalone_test: $(BUILD)/go__gen.o $(IMPLICIT_SRC) Makefile
+$(BUILD)/go_standalone_test: $(BUILD)/go_standalone_test.o $(BUILD)/go__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	$(CC) -o $(BUILD)/go_standalone_test $(CFLAGS) src/go_standalone_test.cpp $(BUILD)/go__gen.o $(LFLAGS)
+	$(CC) -o $(BUILD)/go_standalone_test $(CFLAGS) $(BUILD)/go_standalone_test.o $(BUILD)/go__gen.o $(LFLAGS)
 	$(DSYMUTIL_MAYBE) $@
 
 $(BUILD)/go_debug: gen/go__gen_debug.cpp $(BUILD)/go__gen.o $(IMPLICIT_SRC) Makefile
@@ -198,9 +206,9 @@ $(BUILD)/py__gen_debug.o: gen/py__gen_debug.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
 	$(CC) -c -o $(BUILD)/py__gen_debug.o $(CFLAGS) gen/py__gen_debug.cpp
 
-$(BUILD)/py_standalone_test: $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
+$(BUILD)/py_standalone_test: $(BUILD)/py_standalone_test.o $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	$(CC) -o $(BUILD)/py_standalone_test $(CFLAGS) src/py_standalone_test.cpp $(BUILD)/py__gen.o $(LFLAGS)
+	$(CC) -o $(BUILD)/py_standalone_test $(CFLAGS) $(BUILD)/py_standalone_test.o $(BUILD)/py__gen.o $(LFLAGS)
 	$(DSYMUTIL_MAYBE) $@
 
 $(BUILD)/py_debug: $(BUILD)/py__gen_debug.o $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
