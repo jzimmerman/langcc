@@ -34,18 +34,20 @@ constructs.
 - A general transformation for LR grammars (CPS), which significantly
 expands the class of grammars the tool can support.
 
-Unlike previous compiler compilers, ``langcc`` is general enough to capture
-full industrial programming languages, for which existing parsers are
-typically written by hand or generated from procedural descriptions.
-Examples include Python 3.9.12 (``grammars/py.lang``) and Golang 1.17.8
-(``grammars/go.lang``). In both cases, ``langcc`` automatically generates
-a parser that is faster than the standard library parser for each language.
-In fact, the class of grammars supported by ``langcc`` is general enough
-that the tool is _self-hosting_: that is, one can express the "language
-of languages" in the "language of languages" itself, and use ``langcc``
+Unlike previous compiler front-end generators,
+`langcc` is efficient and general enough to capture
+full industrial programming languages, including
+Python 3.9.12 ([grammars/py.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/py.lang))
+and Golang 1.17.8 ([grammars/go.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/go.lang)). In both cases, `langcc` automatically generates
+a parser that is faster than the standard library parser for each language
+(resp., 1.2x and 4.3x faster).
+In fact, the class of grammars supported by `langcc` is general enough
+that the tool is _self-hosting_: that is, one can express the ``language
+of languages'' in the ``language of languages'' itself, and use \texttt{langcc}
 to generate its own compiler front-end. We do this in the canonical
-implementation; see the files ``bootstrap.sh`` and ``grammars/meta.lang``
-for more details.
+implementation; see the files [bootstrap.sh](https://github.com/jzimmerman/langcc/blob/main/bootstrap.sh) and
+[grammars/meta.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/meta.lang)
+in the source repository for more details.
 
 ``langcc`` is a research prototype and has not yet been used extensively
 in production. However, we believe it is essentially stable and
@@ -92,12 +94,5 @@ one can run various examples:
   its own features.
 
 ## Documentation
-For full documentation, see the accompanying technical report:
-- Zimmerman, Joe.
-[langcc: A Next-Generation Compiler Compiler.](https://arxiv.org/abs/2209.08385)
-arXiv, 2022.
-
-as well as the theoretical development:
-- Zimmerman, Joe.
-[Practical LR Parser Generation.](https://arxiv.org/abs/2209.08383)
-arXiv, 2022.
+For full documentation, please see the [user manual](https://github.com/jzimmerman/langcc/blob/main/MANUAL.md),
+as well as the [technical report](https://arxiv.org/pdf/2209.08383.pdf) which describes the theoretical development:
