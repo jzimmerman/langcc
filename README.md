@@ -101,3 +101,5 @@ as well as the theoretical development:
 - Zimmerman, Joe.
 [Practical LR Parser Generation.](https://arxiv.org/abs/2209.08383)
 arXiv, 2022.
+
+For convenience, one may view the documentation [in the source repo](./2209.08385.adoc)
