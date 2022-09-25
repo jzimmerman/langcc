@@ -9,10 +9,10 @@ a lexer, a parser, and a pretty-printer.
 technical reports, which describe several innovations on the classic
 LR parsing paradigm:
 - Zimmerman, Joe.
-[Practical LR Parser Generation.](https://arxiv.org/abs/2209.08383)
+[Practical LR Parser Generation.](https://arxiv.org/pdf/2209.08383.pdf)
 arXiv, 2022.
 - Zimmerman, Joe.
-[langcc: A Next-Generation Compiler Compiler.](https://arxiv.org/abs/2209.08385)
+[langcc: A Next-Generation Compiler Compiler.](https://arxiv.org/pdf/2209.08385.pdf)
 arXiv, 2022.
 
 ``langcc`` can be used as a replacement for the combination of ``lex``
@@ -34,16 +34,15 @@ constructs.
 - A general transformation for LR grammars (CPS), which significantly
 expands the class of grammars the tool can support.
 
-Unlike previous compiler front-end generators,
-`langcc` is efficient and general enough to capture
+Unlike previous compiler front-end generators, `langcc` is efficient and general enough to capture
 full industrial programming languages, including
 Python 3.9.12 ([grammars/py.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/py.lang))
 and Golang 1.17.8 ([grammars/go.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/go.lang)). In both cases, `langcc` automatically generates
 a parser that is faster than the standard library parser for each language
 (resp., 1.2x and 4.3x faster).
 In fact, the class of grammars supported by `langcc` is general enough
-that the tool is _self-hosting_: that is, one can express the ``language
-of languages'' in the ``language of languages'' itself, and use \texttt{langcc}
+that the tool is _self-hosting_: that is, one can express the "language
+of languages" in the "language of languages" itself, and use `langcc`
 to generate its own compiler front-end. We do this in the canonical
 implementation; see the files [bootstrap.sh](https://github.com/jzimmerman/langcc/blob/main/bootstrap.sh) and
 [grammars/meta.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/meta.lang)
