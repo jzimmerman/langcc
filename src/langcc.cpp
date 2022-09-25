@@ -175,6 +175,8 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
         cmds.push("__MACOS__");
         cmds.push("-D");
         cmds.push(fmt_str("__MACOS_SDKROOT__={}", sdkroot));
+        cmds.push("-isystem");
+        cmds.push("/usr/local/include");
 #endif
 
         cmds.push("-o");

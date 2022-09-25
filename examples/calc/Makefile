@@ -22,7 +22,7 @@ ifeq ($(shell uname), Darwin)
 		HOMEBREW_BASE = /opt/homebrew
 	endif
 
-	CFLAGS_EXTRA = -D__MACOS__ -D__MACOS_SDKROOT__=$(SDKROOT) -D__HOMEBREW_BASE__=$(HOMEBREW_BASE) -mmacosx-version-min=12.0
+	CFLAGS_EXTRA = -isystem /usr/local/include -D__MACOS__ -D__MACOS_SDKROOT__=$(SDKROOT) -D__HOMEBREW_BASE__=$(HOMEBREW_BASE) -mmacosx-version-min=12.0
 	LFLAGS_EXTRA = -L/opt/local/lib -L$(HOMEBREW_BASE)/opt/gperftools/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib -ldl
 	CC = clang++
 	DSYMUTIL_MAYBE = dsymutil
@@ -44,10 +44,22 @@ endif
 CFLAGS = -I./gen -I./include -g -ggdb -g3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_LLVM_SYM) $(CFLAGS_EXTRA)
 LFLAGS = $(LFLAGS_EXTRA) $(LFLAGS_TCMALLOC)
 
+HPP_SRC = $(wildcard src/*.hpp)
+
+IMPLICIT_SRC = $(HPP_SRC)
+
 gen/calc__gen.cpp: calc.lang Makefile
 	langcc calc.lang gen
 
-build/calc: gen/calc__gen.cpp calc_main.cpp Makefile
+$(BUILD)/%.o: %.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
-	$(CC) $(CFLAGS) -o $(BUILD)/calc calc_main.cpp gen/calc__gen.cpp $(LFLAGS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(BUILD)/%.o: gen/%.cpp $(IMPLICIT_SRC) Makefile
+	mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+build/calc: $(BUILD)/calc__gen.o $(BUILD)/calc_main.o Makefile
+	mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -o $(BUILD)/calc $(BUILD)/calc_main.o $(BUILD)/calc__gen.o $(LFLAGS)
 	$(DSYMUTIL_MAYBE) $@

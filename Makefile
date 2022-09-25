@@ -17,6 +17,12 @@ install: $(DATACC) $(LANGCC)
 	mkdir -p $(INSTALL_BASE)/include
 	cp $(DATACC) $(INSTALL_BASE)/bin/
 	cp $(LANGCC) $(INSTALL_BASE)/bin/
+ifeq ($(shell uname), Darwin)
+	rm -rf $(INSTALL_BASE)/bin/langcc.dSYM
+	rm -rf $(INSTALL_BASE)/bin/datacc.dSYM
+	cp -r $(DATACC).dSYM $(INSTALL_BASE)/bin/
+	cp -r $(LANGCC).dSYM $(INSTALL_BASE)/bin/
+endif
 	cp src/langcc_util.hpp $(INSTALL_BASE)/include/
 	cp src/langcc_rt.hpp $(INSTALL_BASE)/include/
 
