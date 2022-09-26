@@ -38,7 +38,9 @@ all: \
 	$(BUILD)/unittest_lib \
 	$(BUILD)/unittest_lang \
 	$(BUILD)/go_standalone_test \
-	$(BUILD)/py_standalone_test
+	$(BUILD)/py_standalone_test \
+	$(BUILD)/go_standalone_bidir_test \
+	$(BUILD)/py_standalone_bidir_test
 
 CFLAGS_EXTRA =
 LFLAGS_EXTRA =
@@ -132,7 +134,15 @@ $(BUILD)/go_standalone_test.o: src/go_standalone_test.cpp gen/go__gen.cpp Makefi
 	mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+$(BUILD)/go_standalone_bidir_test.o: src/go_standalone_bidir_test.cpp gen/go__gen.cpp Makefile
+	mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 $(BUILD)/py_standalone_test.o: src/py_standalone_test.cpp gen/py__gen.cpp Makefile
+	mkdir -p $(BUILD)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(BUILD)/py_standalone_bidir_test.o: src/py_standalone_bidir_test.cpp gen/py__gen.cpp Makefile
 	mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
@@ -182,6 +192,11 @@ $(BUILD)/go_standalone_test: $(BUILD)/go_standalone_test.o $(BUILD)/go__gen.o $(
 	$(CC) -o $(BUILD)/go_standalone_test $(CFLAGS) $(BUILD)/go_standalone_test.o $(BUILD)/go__gen.o $(LFLAGS)
 	$(DSYMUTIL_MAYBE) $@
 
+$(BUILD)/go_standalone_bidir_test: $(BUILD)/go_standalone_bidir_test.o $(BUILD)/go__gen.o $(IMPLICIT_SRC) Makefile
+	mkdir -p $(BUILD)
+	$(CC) -o $(BUILD)/go_standalone_bidir_test $(CFLAGS) $(BUILD)/go_standalone_bidir_test.o $(BUILD)/go__gen.o $(LFLAGS)
+	$(DSYMUTIL_MAYBE) $@
+
 $(BUILD)/go_debug: gen/go__gen_debug.cpp $(BUILD)/go__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
 	$(CC) -o $(BUILD)/go_debug $(CFLAGS) gen/go__gen_debug.cpp $(BUILD)/go__gen.o $(LFLAGS)
@@ -209,6 +224,11 @@ $(BUILD)/py__gen_debug.o: gen/py__gen_debug.cpp $(IMPLICIT_SRC) Makefile
 $(BUILD)/py_standalone_test: $(BUILD)/py_standalone_test.o $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
 	$(CC) -o $(BUILD)/py_standalone_test $(CFLAGS) $(BUILD)/py_standalone_test.o $(BUILD)/py__gen.o $(LFLAGS)
+	$(DSYMUTIL_MAYBE) $@
+
+$(BUILD)/py_standalone_bidir_test: $(BUILD)/py_standalone_bidir_test.o $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
+	mkdir -p $(BUILD)
+	$(CC) -o $(BUILD)/py_standalone_bidir_test $(CFLAGS) $(BUILD)/py_standalone_bidir_test.o $(BUILD)/py__gen.o $(LFLAGS)
 	$(DSYMUTIL_MAYBE) $@
 
 $(BUILD)/py_debug: $(BUILD)/py__gen_debug.o $(BUILD)/py__gen.o $(IMPLICIT_SRC) Makefile
