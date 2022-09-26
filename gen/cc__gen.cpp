@@ -23185,1131 +23185,1811 @@ lang::cc::Node::Decl::PragmaOnce_T xform_lang_cc_Node(lang::cc::Node::Decl::Prag
     return ret->as_Decl()->as_PragmaOnce();
 }
 
-void lang::cc::Node::Module::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Module::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Module::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
             auto xi = x->decls_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.advance_lines(2, os);
+                pb->push_string("");
+                pb->push_newlines(2);
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
     }
+}
+
+void lang::cc::Node::Module::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::Struct::tmpl::args::item::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::args::item::_T>();
+    pb->push_string("typename");
+    pb->push_string(" ");
+    if (x->dots_) {
+        pb->push_string("...");
+    }
+    x->name_->write(pb);
 }
 
 void lang::cc::Node::Decl::Struct::tmpl::args::item::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::args::item::_T>();
-    pr(os, flags, "typename");
-    pr(os, flags, "\040");
-    if (x->dots_) {
-        pr(os, flags, "...");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::Struct::tmpl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::_T>();
+    pb->push_string("template");
+    pb->push_string("<");
+    {
+        Int i;
+        bool is_iter = false;
+        bool indented = false;
+        for (i = 0; i _LT_ len(x->args_); i++) {
+            auto xi = x->args_->at_unchecked(i);
+            if (is_iter) {
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
+            }
+            is_iter = true;
+            xi->write(pb);
+        }
     }
-    x->name_->write(os, flags);
+    pb->push_string(">");
+    pb->push_string(" ");
 }
 
 void lang::cc::Node::Decl::Struct::tmpl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::_T>();
-    pr(os, flags, "template");
-    pr(os, flags, "<");
-    {
-        Int i;
-        bool is_iter = false;
-        for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
-            if (is_iter) {
-                pr(os, flags, ",\040");
-            }
-            is_iter = true;
-            xi->write(os, flags);
-        }
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::Struct::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Struct::_T>();
+    if (x->tmpl_.is_some()) {
+        x->tmpl_.as_some()->write(pb);
     }
-    pr(os, flags, ">");
-    pr(os, flags, "\040");
+    pb->push_string("struct");
+    pb->push_string(" ");
+    x->name_->write(pb);
+    x->body_->write(pb);
 }
 
 void lang::cc::Node::Decl::Struct::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Struct::_T>();
-    if (x->tmpl_.is_some()) {
-        x->tmpl_.as_some()->write(os, flags);
-    }
-    pr(os, flags, "struct");
-    pr(os, flags, "\040");
-    x->name_->write(os, flags);
-    x->body_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::StructDeclDef::Decl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Decl::_T>();
+    pb->push_string(";");
 }
 
 void lang::cc::Node::StructDeclDef::Decl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Decl::_T>();
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::StructDeclDef::Def::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::StructDeclDef::Def::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Def::_T>();
     if (x->base_.is_some()) {
-        pr(os, flags, ":");
-        pr(os, flags, "\040");
+        pb->push_string(":");
+        pb->push_string(" ");
         {
             Int i;
             bool is_iter = false;
+            bool indented = false;
             for (i = 0; i _LT_ len(x->base_.as_some()); i++) {
                 auto xi = x->base_.as_some()->at_unchecked(i);
                 if (is_iter) {
-                    pr(os, flags, ",\040");
+                    pb->push_string(", ");
+                }
+                if (!is_iter) {
+                    indented = true;
                 }
                 is_iter = true;
-                xi->write(os, flags);
+                xi->write(pb);
             }
         }
     }
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i1;
         bool is_iter1 = false;
+        bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->entries_); i1++) {
             auto xi1 = x->entries_->at_unchecked(i1);
             if (is_iter1) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string("");
+                pb->push_newlines(1);
             }
             if (!is_iter1) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented1 = true;
             }
             is_iter1 = true;
-            xi1->write(os, flags.sub_lo());
+            xi1->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented1) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
-    pr(os, flags, ";");
+    pb->push_string("}");
+    pb->push_string(";");
+}
+
+void lang::cc::Node::StructDeclDef::Def::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Entry::Field::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Entry::Field::_T>();
+    x->type__->write(pb);
+    pb->push_string(" ");
+    x->name_->write(pb);
+    pb->push_string(";");
 }
 
 void lang::cc::Node::Entry::Field::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Entry::Field::_T>();
-    x->type__->write(os, flags);
-    pr(os, flags, "\040");
-    x->name_->write(os, flags);
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Entry::Fun::tmpl::args::item::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Entry::Fun::tmpl::args::item::_T>();
+    pb->push_string("typename");
+    pb->push_string(" ");
+    if (x->dots_) {
+        pb->push_string("...");
+    }
+    x->name_->write(pb);
 }
 
 void lang::cc::Node::Entry::Fun::tmpl::args::item::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Entry::Fun::tmpl::args::item::_T>();
-    pr(os, flags, "typename");
-    pr(os, flags, "\040");
-    if (x->dots_) {
-        pr(os, flags, "...");
-    }
-    x->name_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Entry::Fun::tmpl::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Entry::Fun::tmpl::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Entry::Fun::tmpl::_T>();
-    pr(os, flags, "template");
-    pr(os, flags, "<");
+    pb->push_string("template");
+    pb->push_string("<");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
             auto xi = x->args_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
-    pr(os, flags, ">");
-    pr(os, flags, "\040");
+    pb->push_string(">");
+    pb->push_string(" ");
 }
 
-void lang::cc::Node::Entry::Fun::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Entry::Fun::tmpl::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Entry::Fun::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Entry::Fun::_T>();
     if (x->tmpl_.is_some()) {
-        x->tmpl_.as_some()->write(os, flags);
+        x->tmpl_.as_some()->write(pb);
     }
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->mods_); i++) {
             auto xi = x->mods_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040");
+                pb->push_string(" ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, "\040");
+            pb->push_string(" ");
         }
     }
     if (x->ret_type_.is_some()) {
-        x->ret_type_.as_some()->write(os, flags);
-        pr(os, flags, "\040");
+        x->ret_type_.as_some()->write(pb);
+        pb->push_string(" ");
     }
-    x->name_->write(os, flags);
-    pr(os, flags, "(");
+    x->name_->write(pb);
+    pb->push_string("(");
     {
         Int i1;
         bool is_iter1 = false;
+        bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->params_); i1++) {
             auto xi1 = x->params_->at_unchecked(i1);
             if (is_iter1) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter1) {
+                indented1 = true;
             }
             is_iter1 = true;
-            xi1->write(os, flags);
+            xi1->write(pb);
         }
     }
-    pr(os, flags, ")");
+    pb->push_string(")");
     {
         Int i2;
         bool is_iter2 = false;
+        bool indented2 = false;
         for (i2 = 0; i2 _LT_ len(x->mods_post_); i2++) {
             auto xi2 = x->mods_post_->at_unchecked(i2);
             if (is_iter2) {
-                pr(os, flags, "");
+                pb->push_string("");
+            }
+            if (!is_iter2) {
+                indented2 = true;
             }
             is_iter2 = true;
-            pr(os, flags, "\040");
-            xi2->write(os, flags);
+            pb->push_string(" ");
+            xi2->write(pb);
         }
     }
-    x->body_->write(os, flags);
+    x->body_->write(pb);
+}
+
+void lang::cc::Node::Entry::Fun::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Param::val::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Param::val::_T>();
+    pb->push_string(" ");
+    pb->push_string("=");
+    pb->push_string(" ");
+    x->init_val_->write(pb);
 }
 
 void lang::cc::Node::Param::val::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Param::val::_T>();
-    pr(os, flags, "\040");
-    pr(os, flags, "=");
-    pr(os, flags, "\040");
-    x->init_val_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Param::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Param::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Param::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->mods_); i++) {
             auto xi = x->mods_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040");
+                pb->push_string(" ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, "\040");
+            pb->push_string(" ");
         }
     }
-    x->type__->write(os, flags);
-    pr(os, flags, "\040");
-    x->name_->write(os, flags);
+    x->type__->write(pb);
+    pb->push_string(" ");
+    x->name_->write(pb);
     if (x->val_.is_some()) {
-        x->val_.as_some()->write(os, flags);
+        x->val_.as_some()->write(pb);
     }
+}
+
+void lang::cc::Node::Param::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::FunDeclDef::Decl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Decl::_T>();
+    pb->push_string(";");
 }
 
 void lang::cc::Node::FunDeclDef::Decl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Decl::_T>();
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::FunDeclDef::Def::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::FunDeclDef::Def::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Def::_T>();
     if (x->init_.is_some()) {
-        pr(os, flags, "\040");
-        pr(os, flags, ":");
-        pr(os, flags, "\040");
+        pb->push_string(" ");
+        pb->push_string(":");
+        pb->push_string(" ");
         {
             Int i;
             bool is_iter = false;
+            bool indented = false;
             for (i = 0; i _LT_ len(x->init_.as_some()); i++) {
                 auto xi = x->init_.as_some()->at_unchecked(i);
                 if (is_iter) {
-                    pr(os, flags, ",\040");
+                    pb->push_string(", ");
+                }
+                if (!is_iter) {
+                    indented = true;
                 }
                 is_iter = true;
-                xi->write(os, flags);
+                xi->write(pb);
             }
         }
     }
-    pr(os, flags, "\040");
-    x->body_->write(os, flags);
+    pb->push_string(" ");
+    x->body_->write(pb);
+}
+
+void lang::cc::Node::FunDeclDef::Def::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::FunDeclDef::Del::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Del::_T>();
+    pb->push_string(" ");
+    pb->push_string("=");
+    pb->push_string(" ");
+    pb->push_string("delete");
+    pb->push_string(";");
 }
 
 void lang::cc::Node::FunDeclDef::Del::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Del::_T>();
-    pr(os, flags, "\040");
-    pr(os, flags, "=");
-    pr(os, flags, "\040");
-    pr(os, flags, "delete");
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::FunDeclDef::Zero::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Zero::_T>();
+    pb->push_string(" ");
+    pb->push_string("=");
+    pb->push_string(" ");
+    pb->push_string(fmt_str("{}", x->val_));
+    pb->push_string(";");
 }
 
 void lang::cc::Node::FunDeclDef::Zero::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Zero::_T>();
-    pr(os, flags, "\040");
-    pr(os, flags, "=");
-    pr(os, flags, "\040");
-    pr(os, flags, x->val_);
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Decl::EnumStruct::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Decl::EnumStruct::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Decl::EnumStruct::_T>();
-    pr(os, flags, "enum");
-    pr(os, flags, "\040");
-    pr(os, flags, "struct");
-    pr(os, flags, "\040");
-    x->name_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string("enum");
+    pb->push_string(" ");
+    pb->push_string("struct");
+    pb->push_string(" ");
+    x->name_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
             auto xi = x->cases_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string(",");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ",");
+            pb->push_string(",");
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
-    pr(os, flags, ";");
+    pb->push_string("}");
+    pb->push_string(";");
+}
+
+void lang::cc::Node::Decl::EnumStruct::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::Fun::tmpl::args::item::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::args::item::_T>();
+    pb->push_string("typename");
+    pb->push_string(" ");
+    if (x->dots_) {
+        pb->push_string("...");
+    }
+    x->name_->write(pb);
 }
 
 void lang::cc::Node::Decl::Fun::tmpl::args::item::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::args::item::_T>();
-    pr(os, flags, "typename");
-    pr(os, flags, "\040");
-    if (x->dots_) {
-        pr(os, flags, "...");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::Fun::tmpl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::_T>();
+    pb->push_string("template");
+    pb->push_string("<");
+    {
+        Int i;
+        bool is_iter = false;
+        bool indented = false;
+        for (i = 0; i _LT_ len(x->args_); i++) {
+            auto xi = x->args_->at_unchecked(i);
+            if (is_iter) {
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
+            }
+            is_iter = true;
+            xi->write(pb);
+        }
     }
-    x->name_->write(os, flags);
+    pb->push_string(">");
+    pb->push_string(" ");
 }
 
 void lang::cc::Node::Decl::Fun::tmpl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::_T>();
-    pr(os, flags, "template");
-    pr(os, flags, "<");
-    {
-        Int i;
-        bool is_iter = false;
-        for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
-            if (is_iter) {
-                pr(os, flags, ",\040");
-            }
-            is_iter = true;
-            xi->write(os, flags);
-        }
-    }
-    pr(os, flags, ">");
-    pr(os, flags, "\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Decl::Fun::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Decl::Fun::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Fun::_T>();
     if (x->tmpl_.is_some()) {
-        x->tmpl_.as_some()->write(os, flags);
+        x->tmpl_.as_some()->write(pb);
     }
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->mods_); i++) {
             auto xi = x->mods_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040");
+                pb->push_string(" ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, "\040");
+            pb->push_string(" ");
         }
     }
     if (x->ret_type_.is_some()) {
-        x->ret_type_.as_some()->write(os, flags);
-        pr(os, flags, "\040");
+        x->ret_type_.as_some()->write(pb);
+        pb->push_string(" ");
     }
-    x->name_->write(os, flags);
-    pr(os, flags, "(");
+    x->name_->write(pb);
+    pb->push_string("(");
     {
         Int i1;
         bool is_iter1 = false;
+        bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->params_); i1++) {
             auto xi1 = x->params_->at_unchecked(i1);
             if (is_iter1) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter1) {
+                indented1 = true;
             }
             is_iter1 = true;
-            xi1->write(os, flags);
+            xi1->write(pb);
         }
     }
-    pr(os, flags, ")");
+    pb->push_string(")");
     {
         Int i2;
         bool is_iter2 = false;
+        bool indented2 = false;
         for (i2 = 0; i2 _LT_ len(x->mods_post_); i2++) {
             auto xi2 = x->mods_post_->at_unchecked(i2);
             if (is_iter2) {
-                pr(os, flags, "");
+                pb->push_string("");
+            }
+            if (!is_iter2) {
+                indented2 = true;
             }
             is_iter2 = true;
-            pr(os, flags, "\040");
-            xi2->write(os, flags);
+            pb->push_string(" ");
+            xi2->write(pb);
         }
     }
-    x->body_->write(os, flags);
+    x->body_->write(pb);
+}
+
+void lang::cc::Node::Decl::Fun::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Mod::Const::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Const::_T>();
+    pb->push_string("const");
 }
 
 void lang::cc::Node::Mod::Const::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Const::_T>();
-    pr(os, flags, "const");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Mod::Inline::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Inline::_T>();
+    pb->push_string("inline");
 }
 
 void lang::cc::Node::Mod::Inline::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Inline::_T>();
-    pr(os, flags, "inline");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Mod::Static::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Static::_T>();
+    pb->push_string("static");
 }
 
 void lang::cc::Node::Mod::Static::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Static::_T>();
-    pr(os, flags, "static");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Mod::Virtual::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Virtual::_T>();
+    pb->push_string("virtual");
 }
 
 void lang::cc::Node::Mod::Virtual::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::Virtual::_T>();
-    pr(os, flags, "virtual");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Mod::NoInline::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::NoInline::_T>();
+    pb->push_string("__attribute__");
+    pb->push_string("(");
+    pb->push_string("(");
+    pb->push_string("noinline");
+    pb->push_string(")");
+    pb->push_string(")");
 }
 
 void lang::cc::Node::Mod::NoInline::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::NoInline::_T>();
-    pr(os, flags, "__attribute__");
-    pr(os, flags, "(");
-    pr(os, flags, "(");
-    pr(os, flags, "noinline");
-    pr(os, flags, ")");
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Mod::AlwaysInline::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::AlwaysInline::_T>();
+    pb->push_string("__attribute__");
+    pb->push_string("(");
+    pb->push_string("(");
+    pb->push_string("always_inline");
+    pb->push_string(")");
+    pb->push_string(")");
 }
 
 void lang::cc::Node::Mod::AlwaysInline::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::AlwaysInline::_T>();
-    pr(os, flags, "__attribute__");
-    pr(os, flags, "(");
-    pr(os, flags, "(");
-    pr(os, flags, "always_inline");
-    pr(os, flags, ")");
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Decl::Namespace::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Decl::Namespace::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Namespace::_T>();
-    pr(os, flags, "namespace");
-    pr(os, flags, "\040");
-    x->name_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string("namespace");
+    pb->push_string(" ");
+    x->name_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->body_); i++) {
             auto xi = x->body_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(2, os);
+                pb->push_string("");
+                pb->push_newlines(2);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
+}
+
+void lang::cc::Node::Decl::Namespace::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::UsingAlias::tmpl::args::item::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::tmpl::args::item::_T>();
+    pb->push_string("typename");
+    pb->push_string(" ");
+    if (x->dots_) {
+        pb->push_string("...");
+    }
+    x->name_->write(pb);
 }
 
 void lang::cc::Node::Decl::UsingAlias::tmpl::args::item::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::tmpl::args::item::_T>();
-    pr(os, flags, "typename");
-    pr(os, flags, "\040");
-    if (x->dots_) {
-        pr(os, flags, "...");
-    }
-    x->name_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Decl::UsingAlias::tmpl::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Decl::UsingAlias::tmpl::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::tmpl::_T>();
-    pr(os, flags, "template");
-    pr(os, flags, "<");
+    pb->push_string("template");
+    pb->push_string("<");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
             auto xi = x->args_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
-    pr(os, flags, ">");
-    pr(os, flags, "\040");
+    pb->push_string(">");
+    pb->push_string(" ");
+}
+
+void lang::cc::Node::Decl::UsingAlias::tmpl::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::UsingAlias::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::_T>();
+    if (x->tmpl_.is_some()) {
+        x->tmpl_.as_some()->write(pb);
+    }
+    pb->push_string("using");
+    pb->push_string(" ");
+    x->name_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("=");
+    pb->push_string(" ");
+    x->val_->write(pb);
+    pb->push_string(";");
 }
 
 void lang::cc::Node::Decl::UsingAlias::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::_T>();
-    if (x->tmpl_.is_some()) {
-        x->tmpl_.as_some()->write(os, flags);
-    }
-    pr(os, flags, "using");
-    pr(os, flags, "\040");
-    x->name_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "=");
-    pr(os, flags, "\040");
-    x->val_->write(os, flags);
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::UsingNamespace::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::UsingNamespace::_T>();
+    pb->push_string("using");
+    pb->push_string(" ");
+    pb->push_string("namespace");
+    pb->push_string(" ");
+    x->name_->write(pb);
 }
 
 void lang::cc::Node::Decl::UsingNamespace::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::UsingNamespace::_T>();
-    pr(os, flags, "using");
-    pr(os, flags, "\040");
-    pr(os, flags, "namespace");
-    pr(os, flags, "\040");
-    x->name_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::Include::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Include::_T>();
+    pb->push_string(fmt_str("{}", x->x_));
 }
 
 void lang::cc::Node::Decl::Include::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::Include::_T>();
-    pr(os, flags, x->x_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::PragmaOnce::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::PragmaOnce::_T>();
+    pb->push_string(fmt_str("{}", x->x_));
 }
 
 void lang::cc::Node::Decl::PragmaOnce::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Decl::PragmaOnce::_T>();
-    pr(os, flags, x->x_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Block::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Block::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Block::_T>();
-    pr(os, flags, "{");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->stmts_); i++) {
             auto xi = x->stmts_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string("");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
+}
+
+void lang::cc::Node::Block::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::Decl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Decl::_T>();
+    x->decl_->write(pb);
+    pb->push_string(";");
 }
 
 void lang::cc::Node::Stmt::Decl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Decl::_T>();
-    x->decl_->write(os, flags);
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::TypedDecl::vars::item::val::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::TypedDecl::vars::item::val::_T>();
+    pb->push_string(" ");
+    pb->push_string("=");
+    pb->push_string(" ");
+    x->init_val_->write(pb);
 }
 
 void lang::cc::Node::TypedDecl::vars::item::val::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::TypedDecl::vars::item::val::_T>();
-    pr(os, flags, "\040");
-    pr(os, flags, "=");
-    pr(os, flags, "\040");
-    x->init_val_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::TypedDecl::vars::item::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::TypedDecl::vars::item::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::TypedDecl::vars::item::_T>();
-    x->name_->write(os, flags);
+    x->name_->write(pb);
     if (x->val_.is_some()) {
-        x->val_.as_some()->write(os, flags);
+        x->val_.as_some()->write(pb);
     }
 }
 
-void lang::cc::Node::TypedDecl::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::TypedDecl::vars::item::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::TypedDecl::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::TypedDecl::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->mods_); i++) {
             auto xi = x->mods_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040");
+                pb->push_string(" ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, "\040");
+            pb->push_string(" ");
         }
     }
-    x->type__->write(os, flags);
-    pr(os, flags, "\040");
+    x->type__->write(pb);
+    pb->push_string(" ");
     {
         Int i1;
         bool is_iter1 = false;
+        bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->vars_); i1++) {
             auto xi1 = x->vars_->at_unchecked(i1);
             if (is_iter1) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter1) {
+                indented1 = true;
             }
             is_iter1 = true;
-            xi1->write(os, flags);
+            xi1->write(pb);
         }
     }
+}
+
+void lang::cc::Node::TypedDecl::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::Expr::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Expr::_T>();
+    x->e_->write(pb);
+    pb->push_string(";");
 }
 
 void lang::cc::Node::Stmt::Expr::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Expr::_T>();
-    x->e_->write(os, flags);
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::Block::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Block::_T>();
+    x->block_->write(pb);
 }
 
 void lang::cc::Node::Stmt::Block::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Block::_T>();
-    x->block_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::If::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::If::_T>();
+    pb->push_string("if");
+    pb->push_string(" ");
+    pb->push_string("(");
+    x->cond_->write(pb);
+    pb->push_string(")");
+    pb->push_string(" ");
+    x->xt_->write(pb);
 }
 
 void lang::cc::Node::Stmt::If::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::If::_T>();
-    pr(os, flags, "if");
-    pr(os, flags, "\040");
-    pr(os, flags, "(");
-    x->cond_->write(os, flags);
-    pr(os, flags, ")");
-    pr(os, flags, "\040");
-    x->xt_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::IfElse::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::IfElse::_T>();
+    pb->push_string("if");
+    pb->push_string(" ");
+    pb->push_string("(");
+    x->cond_->write(pb);
+    pb->push_string(")");
+    pb->push_string(" ");
+    x->xt_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("else");
+    pb->push_string(" ");
+    x->xf_->write(pb);
 }
 
 void lang::cc::Node::Stmt::IfElse::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::IfElse::_T>();
-    pr(os, flags, "if");
-    pr(os, flags, "\040");
-    pr(os, flags, "(");
-    x->cond_->write(os, flags);
-    pr(os, flags, ")");
-    pr(os, flags, "\040");
-    x->xt_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "else");
-    pr(os, flags, "\040");
-    x->xf_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::For::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::For::_T>();
+    pb->push_string("for");
+    pb->push_string(" ");
+    pb->push_string("(");
+    x->init_->write(pb);
+    pb->push_string(";");
+    pb->push_string(" ");
+    x->cond_->write(pb);
+    pb->push_string(";");
+    pb->push_string(" ");
+    x->incr_->write(pb);
+    pb->push_string(")");
+    pb->push_string(" ");
+    x->body_->write(pb);
 }
 
 void lang::cc::Node::Stmt::For::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::For::_T>();
-    pr(os, flags, "for");
-    pr(os, flags, "\040");
-    pr(os, flags, "(");
-    x->init_->write(os, flags);
-    pr(os, flags, ";");
-    pr(os, flags, "\040");
-    x->cond_->write(os, flags);
-    pr(os, flags, ";");
-    pr(os, flags, "\040");
-    x->incr_->write(os, flags);
-    pr(os, flags, ")");
-    pr(os, flags, "\040");
-    x->body_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::ExprExt::Expr::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::ExprExt::Expr::_T>();
+    x->e_->write(pb);
 }
 
 void lang::cc::Node::ExprExt::Expr::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::ExprExt::Expr::_T>();
-    x->e_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::ExprExt::Decl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::ExprExt::Decl::_T>();
+    x->decl_->write(pb);
 }
 
 void lang::cc::Node::ExprExt::Decl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::ExprExt::Decl::_T>();
-    x->decl_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Stmt::Switch::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Stmt::Switch::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Switch::_T>();
-    pr(os, flags, "switch");
-    pr(os, flags, "\040");
-    pr(os, flags, "(");
-    x->val_->write(os, flags);
-    pr(os, flags, ")");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string("switch");
+    pb->push_string(" ");
+    pb->push_string("(");
+    x->val_->write(pb);
+    pb->push_string(")");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
             auto xi = x->cases_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string("");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
+}
+
+void lang::cc::Node::Stmt::Switch::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::SwitchCase::Case::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::SwitchCase::Case::_T>();
+    pb->push_string("case");
+    pb->push_string(" ");
+    x->val_->write(pb);
+    pb->push_string(":");
+    pb->push_string(" ");
+    x->body_->write(pb);
 }
 
 void lang::cc::Node::SwitchCase::Case::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::SwitchCase::Case::_T>();
-    pr(os, flags, "case");
-    pr(os, flags, "\040");
-    x->val_->write(os, flags);
-    pr(os, flags, ":");
-    pr(os, flags, "\040");
-    x->body_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::SwitchCase::Default::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::SwitchCase::Default::_T>();
+    pb->push_string("default");
+    pb->push_string(":");
+    pb->push_string(" ");
+    x->body_->write(pb);
 }
 
 void lang::cc::Node::SwitchCase::Default::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::SwitchCase::Default::_T>();
-    pr(os, flags, "default");
-    pr(os, flags, ":");
-    pr(os, flags, "\040");
-    x->body_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::Break::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Break::_T>();
+    pb->push_string("break");
+    pb->push_string(";");
 }
 
 void lang::cc::Node::Stmt::Break::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Break::_T>();
-    pr(os, flags, "break");
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::Continue::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Continue::_T>();
+    pb->push_string("continue");
+    pb->push_string(";");
 }
 
 void lang::cc::Node::Stmt::Continue::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Continue::_T>();
-    pr(os, flags, "continue");
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::Return::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Return::_T>();
+    pb->push_string("return");
+    if (x->val_.is_some()) {
+        pb->push_string(" ");
+        x->val_.as_some()->write(pb);
+    }
+    pb->push_string(";");
 }
 
 void lang::cc::Node::Stmt::Return::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::Return::_T>();
-    pr(os, flags, "return");
-    if (x->val_.is_some()) {
-        pr(os, flags, "\040");
-        x->val_.as_some()->write(os, flags);
-    }
-    pr(os, flags, ";");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Paren::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Paren::_T>();
+    pb->push_string("(");
+    x->x_->write(pb);
+    pb->push_string(")");
 }
 
 void lang::cc::Node::Expr::Paren::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Paren::_T>();
-    pr(os, flags, "(");
-    x->x_->write(os, flags);
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Call::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Call::_T>();
+    x->f_->write(pb);
+    pb->push_string("(");
+    {
+        Int i;
+        bool is_iter = false;
+        bool indented = false;
+        for (i = 0; i _LT_ len(x->args_); i++) {
+            auto xi = x->args_->at_unchecked(i);
+            if (is_iter) {
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
+            }
+            is_iter = true;
+            xi->write(pb);
+        }
+    }
+    pb->push_string(")");
 }
 
 void lang::cc::Node::Expr::Call::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Call::_T>();
-    x->f_->write(os, flags);
-    pr(os, flags, "(");
-    {
-        Int i;
-        bool is_iter = false;
-        for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
-            if (is_iter) {
-                pr(os, flags, ",\040");
-            }
-            is_iter = true;
-            xi->write(os, flags);
-        }
-    }
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Index::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Index::_T>();
+    x->f_->write(pb);
+    pb->push_string("[");
+    x->arg_->write(pb);
+    pb->push_string("]");
 }
 
 void lang::cc::Node::Expr::Index::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Index::_T>();
-    x->f_->write(os, flags);
-    pr(os, flags, "[");
-    x->arg_->write(os, flags);
-    pr(os, flags, "]");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::IndexEmpty::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IndexEmpty::_T>();
+    x->f_->write(pb);
+    pb->push_string("[");
+    pb->push_string("]");
 }
 
 void lang::cc::Node::Expr::IndexEmpty::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IndexEmpty::_T>();
-    x->f_->write(os, flags);
-    pr(os, flags, "[");
-    pr(os, flags, "]");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Dot::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Dot::_T>();
+    x->x_->write(pb);
+    pb->push_string(".");
+    x->field_->write(pb);
 }
 
 void lang::cc::Node::Expr::Dot::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Dot::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, ".");
-    x->field_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Arrow::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Arrow::_T>();
+    x->x_->write(pb);
+    pb->push_string("->");
+    x->field_->write(pb);
 }
 
 void lang::cc::Node::Expr::Arrow::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Arrow::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "->");
-    x->field_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Ref::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Ref::_T>();
+    x->x_->write(pb);
+    pb->push_string("&");
 }
 
 void lang::cc::Node::Expr::Ref::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Ref::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "&");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::AddrOf::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::AddrOf::_T>();
+    pb->push_string("&");
+    x->x_->write(pb);
 }
 
 void lang::cc::Node::Expr::AddrOf::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::AddrOf::_T>();
-    pr(os, flags, "&");
-    x->x_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Deref::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Deref::_T>();
+    pb->push_string("*");
+    x->x_->write(pb);
 }
 
 void lang::cc::Node::Expr::Deref::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Deref::_T>();
-    pr(os, flags, "*");
-    x->x_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::UnaryPre::op::NOT::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NOT::_T>();
+    pb->push_string("!");
 }
 
 void lang::cc::Node::Expr::UnaryPre::op::NOT::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NOT::_T>();
-    pr(os, flags, "!");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::UnaryPre::op::NEG::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NEG::_T>();
+    pb->push_string("-");
 }
 
 void lang::cc::Node::Expr::UnaryPre::op::NEG::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NEG::_T>();
-    pr(os, flags, "-");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::UnaryPre::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::UnaryPre::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::UnaryPre::op::_W::NOT: {
-            x->as_NOT()->write(os, flags);
+            x->as_NOT()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::UnaryPre::op::_W::NEG: {
-            x->as_NEG()->write(os, flags);
+            x->as_NEG()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::UnaryPre::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::UnaryPre::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::_T>();
+    x->op_->write(pb);
+    x->x_->write(pb);
 }
 
 void lang::cc::Node::Expr::UnaryPre::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::_T>();
-    x->op_->write(os, flags);
-    x->x_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::IncDecPre::op::INC::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::INC::_T>();
+    pb->push_string("++");
 }
 
 void lang::cc::Node::Expr::IncDecPre::op::INC::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::INC::_T>();
-    pr(os, flags, "++");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::IncDecPre::op::DEC::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::DEC::_T>();
+    pb->push_string("--");
 }
 
 void lang::cc::Node::Expr::IncDecPre::op::DEC::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::DEC::_T>();
-    pr(os, flags, "--");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::IncDecPre::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::IncDecPre::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::IncDecPre::op::_W::INC: {
-            x->as_INC()->write(os, flags);
+            x->as_INC()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::IncDecPre::op::_W::DEC: {
-            x->as_DEC()->write(os, flags);
+            x->as_DEC()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::IncDecPre::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::IncDecPre::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::_T>();
+    x->op_->write(pb);
+    x->x_->write(pb);
 }
 
 void lang::cc::Node::Expr::IncDecPre::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::_T>();
-    x->op_->write(os, flags);
-    x->x_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::IncDecPost::op::INC::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::INC::_T>();
+    pb->push_string("++");
 }
 
 void lang::cc::Node::Expr::IncDecPost::op::INC::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::INC::_T>();
-    pr(os, flags, "++");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::IncDecPost::op::DEC::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::DEC::_T>();
+    pb->push_string("--");
 }
 
 void lang::cc::Node::Expr::IncDecPost::op::DEC::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::DEC::_T>();
-    pr(os, flags, "--");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::IncDecPost::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::IncDecPost::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::IncDecPost::op::_W::INC: {
-            x->as_INC()->write(os, flags);
+            x->as_INC()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::IncDecPost::op::_W::DEC: {
-            x->as_DEC()->write(os, flags);
+            x->as_DEC()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::IncDecPost::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::IncDecPost::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::_T>();
+    x->x_->write(pb);
+    x->op_->write(pb);
 }
 
 void lang::cc::Node::Expr::IncDecPost::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::_T>();
-    x->x_->write(os, flags);
-    x->op_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Assign::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Assign::_T>();
+    x->xl_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("=");
+    pb->push_string(" ");
+    x->xr_->write(pb);
 }
 
 void lang::cc::Node::Expr::Assign::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Assign::_T>();
-    x->xl_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "=");
-    pr(os, flags, "\040");
-    x->xr_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin1::op::LOR::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::LOR::_T>();
+    pb->push_string(" || ");
 }
 
 void lang::cc::Node::Expr::Bin1::op::LOR::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::LOR::_T>();
-    pr(os, flags, "\040||\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Bin1::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Bin1::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::Bin1::op::_W::LOR: {
-            x->as_LOR()->write(os, flags);
+            x->as_LOR()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::Bin1::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin1::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::_T>();
+    x->xl_->write(pb);
+    x->op_->write(pb);
+    x->xr_->write(pb);
 }
 
 void lang::cc::Node::Expr::Bin1::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::_T>();
-    x->xl_->write(os, flags);
-    x->op_->write(os, flags);
-    x->xr_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin2::op::LAND::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::LAND::_T>();
+    pb->push_string(" && ");
 }
 
 void lang::cc::Node::Expr::Bin2::op::LAND::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::LAND::_T>();
-    pr(os, flags, "\040&&\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Bin2::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Bin2::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::Bin2::op::_W::LAND: {
-            x->as_LAND()->write(os, flags);
+            x->as_LAND()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::Bin2::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin2::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::_T>();
+    x->xl_->write(pb);
+    x->op_->write(pb);
+    x->xr_->write(pb);
 }
 
 void lang::cc::Node::Expr::Bin2::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::_T>();
-    x->xl_->write(os, flags);
-    x->op_->write(os, flags);
-    x->xr_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin3::op::EQ::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::EQ::_T>();
+    pb->push_string(" == ");
 }
 
 void lang::cc::Node::Expr::Bin3::op::EQ::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::EQ::_T>();
-    pr(os, flags, "\040==\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin3::op::NE::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::NE::_T>();
+    pb->push_string(" != ");
 }
 
 void lang::cc::Node::Expr::Bin3::op::NE::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::NE::_T>();
-    pr(os, flags, "\040!=\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin3::op::LE::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LE::_T>();
+    pb->push_string(" <= ");
 }
 
 void lang::cc::Node::Expr::Bin3::op::LE::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LE::_T>();
-    pr(os, flags, "\040<=\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin3::op::GE::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GE::_T>();
+    pb->push_string(" >= ");
 }
 
 void lang::cc::Node::Expr::Bin3::op::GE::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GE::_T>();
-    pr(os, flags, "\040>=\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin3::op::LT::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LT::_T>();
+    pb->push_string(" _LT_ ");
 }
 
 void lang::cc::Node::Expr::Bin3::op::LT::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LT::_T>();
-    pr(os, flags, "\040_LT_\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin3::op::GT::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GT::_T>();
+    pb->push_string(" _GT_ ");
 }
 
 void lang::cc::Node::Expr::Bin3::op::GT::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GT::_T>();
-    pr(os, flags, "\040_GT_\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Bin3::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Bin3::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::Bin3::op::_W::EQ: {
-            x->as_EQ()->write(os, flags);
+            x->as_EQ()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin3::op::_W::NE: {
-            x->as_NE()->write(os, flags);
+            x->as_NE()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin3::op::_W::LE: {
-            x->as_LE()->write(os, flags);
+            x->as_LE()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin3::op::_W::GE: {
-            x->as_GE()->write(os, flags);
+            x->as_GE()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin3::op::_W::LT: {
-            x->as_LT()->write(os, flags);
+            x->as_LT()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin3::op::_W::GT: {
-            x->as_GT()->write(os, flags);
+            x->as_GT()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::Bin3::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin3::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::_T>();
+    x->xl_->write(pb);
+    x->op_->write(pb);
+    x->xr_->write(pb);
 }
 
 void lang::cc::Node::Expr::Bin3::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::_T>();
-    x->xl_->write(os, flags);
-    x->op_->write(os, flags);
-    x->xr_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin4::op::SHL::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::SHL::_T>();
+    pb->push_string(" << ");
 }
 
 void lang::cc::Node::Expr::Bin4::op::SHL::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::SHL::_T>();
-    pr(os, flags, "\040<<\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Bin4::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Bin4::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::Bin4::op::_W::SHL: {
-            x->as_SHL()->write(os, flags);
+            x->as_SHL()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::Bin4::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin4::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::_T>();
+    x->xl_->write(pb);
+    x->op_->write(pb);
+    x->xr_->write(pb);
 }
 
 void lang::cc::Node::Expr::Bin4::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::_T>();
-    x->xl_->write(os, flags);
-    x->op_->write(os, flags);
-    x->xr_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin5::op::PLUS::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::PLUS::_T>();
+    pb->push_string(" + ");
 }
 
 void lang::cc::Node::Expr::Bin5::op::PLUS::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::PLUS::_T>();
-    pr(os, flags, "\040+\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin5::op::MINUS::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::MINUS::_T>();
+    pb->push_string(" - ");
 }
 
 void lang::cc::Node::Expr::Bin5::op::MINUS::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::MINUS::_T>();
-    pr(os, flags, "\040-\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Bin5::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Bin5::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::Bin5::op::_W::PLUS: {
-            x->as_PLUS()->write(os, flags);
+            x->as_PLUS()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin5::op::_W::MINUS: {
-            x->as_MINUS()->write(os, flags);
+            x->as_MINUS()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::cc::Node::Expr::Bin5::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin5::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::_T>();
+    x->xl_->write(pb);
+    x->op_->write(pb);
+    x->xr_->write(pb);
 }
 
 void lang::cc::Node::Expr::Bin5::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::_T>();
-    x->xl_->write(os, flags);
-    x->op_->write(os, flags);
-    x->xr_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin6::op::TIMES::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::TIMES::_T>();
+    pb->push_string(" * ");
 }
 
 void lang::cc::Node::Expr::Bin6::op::TIMES::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::TIMES::_T>();
-    pr(os, flags, "\040*\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin6::op::DIVIDE::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::DIVIDE::_T>();
+    pb->push_string(" / ");
 }
 
 void lang::cc::Node::Expr::Bin6::op::DIVIDE::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::DIVIDE::_T>();
-    pr(os, flags, "\040/\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Bin6::op::MODULO::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::MODULO::_T>();
+    pb->push_string(" % ");
 }
 
 void lang::cc::Node::Expr::Bin6::op::MODULO::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::MODULO::_T>();
-    pr(os, flags, "\040%\040");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Bin6::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Bin6::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::_T>();
     switch (x->w_) {
         case lang::cc::Node::Expr::Bin6::op::_W::TIMES: {
-            x->as_TIMES()->write(os, flags);
+            x->as_TIMES()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin6::op::_W::DIVIDE: {
-            x->as_DIVIDE()->write(os, flags);
+            x->as_DIVIDE()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::Bin6::op::_W::MODULO: {
-            x->as_MODULO()->write(os, flags);
+            x->as_MODULO()->write(pb);
             break;
         }
         default: {
@@ -24318,134 +24998,237 @@ void lang::cc::Node::Expr::Bin6::op::_T::write(ostream& os, FmtFlags flags) {
     }
 }
 
-void lang::cc::Node::Expr::Bin6::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::_T>();
-    x->xl_->write(os, flags);
-    x->op_->write(os, flags);
-    x->xr_->write(os, flags);
+void lang::cc::Node::Expr::Bin6::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Template::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Bin6::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::_T>();
+    x->xl_->write(pb);
+    x->op_->write(pb);
+    x->xr_->write(pb);
+}
+
+void lang::cc::Node::Expr::Bin6::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Template::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Template::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "<");
+    x->x_->write(pb);
+    pb->push_string("<");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
             auto xi = x->args_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
-    pr(os, flags, ">");
+    pb->push_string(">");
+}
+
+void lang::cc::Node::Expr::Template::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::New::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::New::_T>();
+    pb->push_string("new");
+    pb->push_string(" ");
+    x->x_->write(pb);
 }
 
 void lang::cc::Node::Expr::New::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::New::_T>();
-    pr(os, flags, "new");
-    pr(os, flags, "\040");
-    x->x_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Delete::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Delete::_T>();
+    pb->push_string("delete");
+    pb->push_string(" ");
+    x->x_->write(pb);
 }
 
 void lang::cc::Node::Expr::Delete::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Delete::_T>();
-    pr(os, flags, "delete");
-    pr(os, flags, "\040");
-    x->x_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Ellipsis::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Ellipsis::_T>();
+    x->x_->write(pb);
+    pb->push_string("...");
 }
 
 void lang::cc::Node::Expr::Ellipsis::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Ellipsis::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "...");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Tilde::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Tilde::_T>();
+    pb->push_string("~");
+    x->x_->write(pb);
 }
 
 void lang::cc::Node::Expr::Tilde::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Tilde::_T>();
-    pr(os, flags, "~");
-    x->x_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Namespace::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Namespace::_T>();
+    x->x_->write(pb);
+    pb->push_string("::");
+    if (x->tilde_) {
+        pb->push_string("~");
+    }
+    x->name_->write(pb);
 }
 
 void lang::cc::Node::Expr::Namespace::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Namespace::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "::");
-    if (x->tilde_) {
-        pr(os, flags, "~");
-    }
-    x->name_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Id::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Id::_T>();
+    pb->push_string(fmt_str("{}", x->name_));
 }
 
 void lang::cc::Node::Expr::Id::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Id::_T>();
-    pr(os, flags, x->name_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Lit::Integer::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Integer::_T>();
+    pb->push_string(fmt_str("{}", x->val_));
 }
 
 void lang::cc::Node::Expr::Lit::Integer::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Integer::_T>();
-    pr(os, flags, x->val_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Lit::Str::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Str::_T>();
+    pb->push_string(fmt_str("{}", x->val_));
 }
 
 void lang::cc::Node::Expr::Lit::Str::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Str::_T>();
-    pr(os, flags, x->val_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Lit::Array::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Lit::Array::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Array::_T>();
-    pr(os, flags, "{");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
             auto xi = x->items_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
-void lang::cc::Node::Decl::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Lit::Array::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Decl::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::cc::Node::Decl::_T>();
     switch (x->w_) {
         case lang::cc::Node::Decl::_W::Struct: {
-            x->as_Struct()->write(os, flags);
+            x->as_Struct()->write(pb);
             break;
         }
         case lang::cc::Node::Decl::_W::EnumStruct: {
-            x->as_EnumStruct()->write(os, flags);
+            x->as_EnumStruct()->write(pb);
             break;
         }
         case lang::cc::Node::Decl::_W::Fun: {
-            x->as_Fun()->write(os, flags);
+            x->as_Fun()->write(pb);
             break;
         }
         case lang::cc::Node::Decl::_W::Namespace: {
-            x->as_Namespace()->write(os, flags);
+            x->as_Namespace()->write(pb);
             break;
         }
         case lang::cc::Node::Decl::_W::UsingAlias: {
-            x->as_UsingAlias()->write(os, flags);
+            x->as_UsingAlias()->write(pb);
             break;
         }
         case lang::cc::Node::Decl::_W::UsingNamespace: {
-            x->as_UsingNamespace()->write(os, flags);
+            x->as_UsingNamespace()->write(pb);
             break;
         }
         case lang::cc::Node::Decl::_W::Include: {
-            x->as_Include()->write(os, flags);
+            x->as_Include()->write(pb);
             break;
         }
         case lang::cc::Node::Decl::_W::PragmaOnce: {
-            x->as_PragmaOnce()->write(os, flags);
+            x->as_PragmaOnce()->write(pb);
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
+void lang::cc::Node::Decl::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::StructDeclDef::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::StructDeclDef::_T>();
+    switch (x->w_) {
+        case lang::cc::Node::StructDeclDef::_W::Decl: {
+            x->as_Decl()->write(pb);
+            break;
+        }
+        case lang::cc::Node::StructDeclDef::_W::Def: {
+            x->as_Def()->write(pb);
             break;
         }
         default: {
@@ -24455,14 +25238,20 @@ void lang::cc::Node::Decl::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::StructDeclDef::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::StructDeclDef::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Entry::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Entry::_T>();
     switch (x->w_) {
-        case lang::cc::Node::StructDeclDef::_W::Decl: {
-            x->as_Decl()->write(os, flags);
+        case lang::cc::Node::Entry::_W::Field: {
+            x->as_Field()->write(pb);
             break;
         }
-        case lang::cc::Node::StructDeclDef::_W::Def: {
-            x->as_Def()->write(os, flags);
+        case lang::cc::Node::Entry::_W::Fun: {
+            x->as_Fun()->write(pb);
             break;
         }
         default: {
@@ -24472,14 +25261,28 @@ void lang::cc::Node::StructDeclDef::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::Entry::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Entry::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::FunDeclDef::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::_T>();
     switch (x->w_) {
-        case lang::cc::Node::Entry::_W::Field: {
-            x->as_Field()->write(os, flags);
+        case lang::cc::Node::FunDeclDef::_W::Decl: {
+            x->as_Decl()->write(pb);
             break;
         }
-        case lang::cc::Node::Entry::_W::Fun: {
-            x->as_Fun()->write(os, flags);
+        case lang::cc::Node::FunDeclDef::_W::Def: {
+            x->as_Def()->write(pb);
+            break;
+        }
+        case lang::cc::Node::FunDeclDef::_W::Del: {
+            x->as_Del()->write(pb);
+            break;
+        }
+        case lang::cc::Node::FunDeclDef::_W::Zero: {
+            x->as_Zero()->write(pb);
             break;
         }
         default: {
@@ -24489,22 +25292,36 @@ void lang::cc::Node::Entry::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::FunDeclDef::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::FunDeclDef::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Mod::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::_T>();
     switch (x->w_) {
-        case lang::cc::Node::FunDeclDef::_W::Decl: {
-            x->as_Decl()->write(os, flags);
+        case lang::cc::Node::Mod::_W::Const: {
+            x->as_Const()->write(pb);
             break;
         }
-        case lang::cc::Node::FunDeclDef::_W::Def: {
-            x->as_Def()->write(os, flags);
+        case lang::cc::Node::Mod::_W::Inline: {
+            x->as_Inline()->write(pb);
             break;
         }
-        case lang::cc::Node::FunDeclDef::_W::Del: {
-            x->as_Del()->write(os, flags);
+        case lang::cc::Node::Mod::_W::Static: {
+            x->as_Static()->write(pb);
             break;
         }
-        case lang::cc::Node::FunDeclDef::_W::Zero: {
-            x->as_Zero()->write(os, flags);
+        case lang::cc::Node::Mod::_W::Virtual: {
+            x->as_Virtual()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Mod::_W::NoInline: {
+            x->as_NoInline()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Mod::_W::AlwaysInline: {
+            x->as_AlwaysInline()->write(pb);
             break;
         }
         default: {
@@ -24514,30 +25331,52 @@ void lang::cc::Node::FunDeclDef::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::Mod::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Mod::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Stmt::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::_T>();
     switch (x->w_) {
-        case lang::cc::Node::Mod::_W::Const: {
-            x->as_Const()->write(os, flags);
+        case lang::cc::Node::Stmt::_W::Decl: {
+            x->as_Decl()->write(pb);
             break;
         }
-        case lang::cc::Node::Mod::_W::Inline: {
-            x->as_Inline()->write(os, flags);
+        case lang::cc::Node::Stmt::_W::Expr: {
+            x->as_Expr()->write(pb);
             break;
         }
-        case lang::cc::Node::Mod::_W::Static: {
-            x->as_Static()->write(os, flags);
+        case lang::cc::Node::Stmt::_W::Block: {
+            x->as_Block()->write(pb);
             break;
         }
-        case lang::cc::Node::Mod::_W::Virtual: {
-            x->as_Virtual()->write(os, flags);
+        case lang::cc::Node::Stmt::_W::If: {
+            x->as_If()->write(pb);
             break;
         }
-        case lang::cc::Node::Mod::_W::NoInline: {
-            x->as_NoInline()->write(os, flags);
+        case lang::cc::Node::Stmt::_W::IfElse: {
+            x->as_IfElse()->write(pb);
             break;
         }
-        case lang::cc::Node::Mod::_W::AlwaysInline: {
-            x->as_AlwaysInline()->write(os, flags);
+        case lang::cc::Node::Stmt::_W::For: {
+            x->as_For()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Switch: {
+            x->as_Switch()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Break: {
+            x->as_Break()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Continue: {
+            x->as_Continue()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Return: {
+            x->as_Return()->write(pb);
             break;
         }
         default: {
@@ -24547,46 +25386,20 @@ void lang::cc::Node::Mod::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::Stmt::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Stmt::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::ExprExt::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::ExprExt::_T>();
     switch (x->w_) {
-        case lang::cc::Node::Stmt::_W::Decl: {
-            x->as_Decl()->write(os, flags);
+        case lang::cc::Node::ExprExt::_W::Expr: {
+            x->as_Expr()->write(pb);
             break;
         }
-        case lang::cc::Node::Stmt::_W::Expr: {
-            x->as_Expr()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::Block: {
-            x->as_Block()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::If: {
-            x->as_If()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::IfElse: {
-            x->as_IfElse()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::For: {
-            x->as_For()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::Switch: {
-            x->as_Switch()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::Break: {
-            x->as_Break()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::Continue: {
-            x->as_Continue()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Stmt::_W::Return: {
-            x->as_Return()->write(os, flags);
+        case lang::cc::Node::ExprExt::_W::Decl: {
+            x->as_Decl()->write(pb);
             break;
         }
         default: {
@@ -24596,14 +25409,20 @@ void lang::cc::Node::Stmt::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::ExprExt::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::ExprExt::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::SwitchCase::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::SwitchCase::_T>();
     switch (x->w_) {
-        case lang::cc::Node::ExprExt::_W::Expr: {
-            x->as_Expr()->write(os, flags);
+        case lang::cc::Node::SwitchCase::_W::Case: {
+            x->as_Case()->write(pb);
             break;
         }
-        case lang::cc::Node::ExprExt::_W::Decl: {
-            x->as_Decl()->write(os, flags);
+        case lang::cc::Node::SwitchCase::_W::Default: {
+            x->as_Default()->write(pb);
             break;
         }
         default: {
@@ -24613,14 +25432,120 @@ void lang::cc::Node::ExprExt::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::SwitchCase::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::SwitchCase::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::_T>();
     switch (x->w_) {
-        case lang::cc::Node::SwitchCase::_W::Case: {
-            x->as_Case()->write(os, flags);
+        case lang::cc::Node::Expr::_W::Paren: {
+            x->as_Paren()->write(pb);
             break;
         }
-        case lang::cc::Node::SwitchCase::_W::Default: {
-            x->as_Default()->write(os, flags);
+        case lang::cc::Node::Expr::_W::Call: {
+            x->as_Call()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Index: {
+            x->as_Index()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::IndexEmpty: {
+            x->as_IndexEmpty()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Dot: {
+            x->as_Dot()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Arrow: {
+            x->as_Arrow()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Ref: {
+            x->as_Ref()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::AddrOf: {
+            x->as_AddrOf()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Deref: {
+            x->as_Deref()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::UnaryPre: {
+            x->as_UnaryPre()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::IncDecPre: {
+            x->as_IncDecPre()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::IncDecPost: {
+            x->as_IncDecPost()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Assign: {
+            x->as_Assign()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin1: {
+            x->as_Bin1()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin2: {
+            x->as_Bin2()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin3: {
+            x->as_Bin3()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin4: {
+            x->as_Bin4()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin5: {
+            x->as_Bin5()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin6: {
+            x->as_Bin6()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Template: {
+            x->as_Template()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::New: {
+            x->as_New()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Delete: {
+            x->as_Delete()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Ellipsis: {
+            x->as_Ellipsis()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Tilde: {
+            x->as_Tilde()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Namespace: {
+            x->as_Namespace()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Id: {
+            x->as_Id()->write(pb);
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Lit: {
+            x->as_Lit()->write(pb);
             break;
         }
         default: {
@@ -24630,114 +25555,24 @@ void lang::cc::Node::SwitchCase::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::Expr::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::Expr::Lit::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Lit::_T>();
     switch (x->w_) {
-        case lang::cc::Node::Expr::_W::Paren: {
-            x->as_Paren()->write(os, flags);
+        case lang::cc::Node::Expr::Lit::_W::Integer: {
+            x->as_Integer()->write(pb);
             break;
         }
-        case lang::cc::Node::Expr::_W::Call: {
-            x->as_Call()->write(os, flags);
+        case lang::cc::Node::Expr::Lit::_W::Str: {
+            x->as_Str()->write(pb);
             break;
         }
-        case lang::cc::Node::Expr::_W::Index: {
-            x->as_Index()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::IndexEmpty: {
-            x->as_IndexEmpty()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Dot: {
-            x->as_Dot()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Arrow: {
-            x->as_Arrow()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Ref: {
-            x->as_Ref()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::AddrOf: {
-            x->as_AddrOf()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Deref: {
-            x->as_Deref()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::UnaryPre: {
-            x->as_UnaryPre()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::IncDecPre: {
-            x->as_IncDecPre()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::IncDecPost: {
-            x->as_IncDecPost()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Assign: {
-            x->as_Assign()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Bin1: {
-            x->as_Bin1()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Bin2: {
-            x->as_Bin2()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Bin3: {
-            x->as_Bin3()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Bin4: {
-            x->as_Bin4()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Bin5: {
-            x->as_Bin5()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Bin6: {
-            x->as_Bin6()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Template: {
-            x->as_Template()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::New: {
-            x->as_New()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Delete: {
-            x->as_Delete()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Ellipsis: {
-            x->as_Ellipsis()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Tilde: {
-            x->as_Tilde()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Namespace: {
-            x->as_Namespace()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Id: {
-            x->as_Id()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::Expr::_W::Lit: {
-            x->as_Lit()->write(os, flags);
+        case lang::cc::Node::Expr::Lit::_W::Array: {
+            x->as_Array()->write(pb);
             break;
         }
         default: {
@@ -24747,18 +25582,144 @@ void lang::cc::Node::Expr::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::Expr::Lit::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Lit::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::cc::Node::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::_T>();
     switch (x->w_) {
-        case lang::cc::Node::Expr::Lit::_W::Integer: {
-            x->as_Integer()->write(os, flags);
+        case lang::cc::Node::_W::Module: {
+            x->as_Module()->write(pb);
             break;
         }
-        case lang::cc::Node::Expr::Lit::_W::Str: {
-            x->as_Str()->write(os, flags);
+        case lang::cc::Node::_W::StructDeclDef: {
+            x->as_StructDeclDef()->write(pb);
             break;
         }
-        case lang::cc::Node::Expr::Lit::_W::Array: {
-            x->as_Array()->write(os, flags);
+        case lang::cc::Node::_W::Entry: {
+            x->as_Entry()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Param: {
+            x->as_Param()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::FunDeclDef: {
+            x->as_FunDeclDef()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Mod: {
+            x->as_Mod()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Decl: {
+            x->as_Decl()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Block: {
+            x->as_Block()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::TypedDecl: {
+            x->as_TypedDecl()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::ExprExt: {
+            x->as_ExprExt()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::SwitchCase: {
+            x->as_SwitchCase()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Stmt: {
+            x->as_Stmt()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr: {
+            x->as_Expr()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Struct__tmpl__args__item: {
+            x->as_Decl__Struct__tmpl__args__item()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Struct__tmpl: {
+            x->as_Decl__Struct__tmpl()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Entry__Fun__tmpl__args__item: {
+            x->as_Entry__Fun__tmpl__args__item()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Entry__Fun__tmpl: {
+            x->as_Entry__Fun__tmpl()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Param__val: {
+            x->as_Param__val()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Fun__tmpl__args__item: {
+            x->as_Decl__Fun__tmpl__args__item()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Fun__tmpl: {
+            x->as_Decl__Fun__tmpl()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__args__item: {
+            x->as_Decl__UsingAlias__tmpl__args__item()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Decl__UsingAlias__tmpl: {
+            x->as_Decl__UsingAlias__tmpl()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::TypedDecl__vars__item__val: {
+            x->as_TypedDecl__vars__item__val()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::TypedDecl__vars__item: {
+            x->as_TypedDecl__vars__item()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__UnaryPre__op: {
+            x->as_Expr__UnaryPre__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__IncDecPre__op: {
+            x->as_Expr__IncDecPre__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__IncDecPost__op: {
+            x->as_Expr__IncDecPost__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin1__op: {
+            x->as_Expr__Bin1__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin2__op: {
+            x->as_Expr__Bin2__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin3__op: {
+            x->as_Expr__Bin3__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin4__op: {
+            x->as_Expr__Bin4__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin5__op: {
+            x->as_Expr__Bin5__op()->write(pb);
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin6__op: {
+            x->as_Expr__Bin6__op()->write(pb);
             break;
         }
         default: {
@@ -24768,144 +25729,9 @@ void lang::cc::Node::Expr::Lit::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::cc::Node::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::_T>();
-    switch (x->w_) {
-        case lang::cc::Node::_W::Module: {
-            x->as_Module()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::StructDeclDef: {
-            x->as_StructDeclDef()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Entry: {
-            x->as_Entry()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Param: {
-            x->as_Param()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::FunDeclDef: {
-            x->as_FunDeclDef()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Mod: {
-            x->as_Mod()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Decl: {
-            x->as_Decl()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Block: {
-            x->as_Block()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::TypedDecl: {
-            x->as_TypedDecl()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::ExprExt: {
-            x->as_ExprExt()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::SwitchCase: {
-            x->as_SwitchCase()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Stmt: {
-            x->as_Stmt()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr: {
-            x->as_Expr()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Decl__Struct__tmpl__args__item: {
-            x->as_Decl__Struct__tmpl__args__item()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Decl__Struct__tmpl: {
-            x->as_Decl__Struct__tmpl()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Entry__Fun__tmpl__args__item: {
-            x->as_Entry__Fun__tmpl__args__item()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Entry__Fun__tmpl: {
-            x->as_Entry__Fun__tmpl()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Param__val: {
-            x->as_Param__val()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Decl__Fun__tmpl__args__item: {
-            x->as_Decl__Fun__tmpl__args__item()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Decl__Fun__tmpl: {
-            x->as_Decl__Fun__tmpl()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__args__item: {
-            x->as_Decl__UsingAlias__tmpl__args__item()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Decl__UsingAlias__tmpl: {
-            x->as_Decl__UsingAlias__tmpl()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::TypedDecl__vars__item__val: {
-            x->as_TypedDecl__vars__item__val()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::TypedDecl__vars__item: {
-            x->as_TypedDecl__vars__item()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__UnaryPre__op: {
-            x->as_Expr__UnaryPre__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__IncDecPre__op: {
-            x->as_Expr__IncDecPre__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__IncDecPost__op: {
-            x->as_Expr__IncDecPost__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__Bin1__op: {
-            x->as_Expr__Bin1__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__Bin2__op: {
-            x->as_Expr__Bin2__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__Bin3__op: {
-            x->as_Expr__Bin3__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__Bin4__op: {
-            x->as_Expr__Bin4__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__Bin5__op: {
-            x->as_Expr__Bin5__op()->write(os, flags);
-            break;
-        }
-        case lang::cc::Node::_W::Expr__Bin6__op: {
-            x->as_Expr__Bin6__op()->write(os, flags);
-            break;
-        }
-        default: {
-            AX();
-        }
-    }
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
 __attribute__((always_inline)) IntPair lang::cc::parser::action_by_vertex(lang_rt::ParserVertexId v, lang_rt::ParserLookahead la) {
@@ -35644,112 +36470,112 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Decl";
         }
         case 77: {
-            return "@0:X2=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?)";
+            return "@0:X2=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?)";
         }
         case 78: {
-            return "@0:X3=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)";
+            return "@0:X3=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)";
         }
         case 79: {
-            return "@0:X4=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?])";
+            return "@0:X4=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?])";
         }
         case 80: {
-            return "@0:Iter((`typename`\040_\040(`...`)?\040(Expr)))";
+            return "@0:Iter((`typename` _ (`...`)? (Expr)))";
         }
         case 81: {
-            return "@0:X8=(`,`\040_)";
+            return "@0:X8=(`,` _)";
         }
         case 82: {
-            return "@0:X5=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@0:X5=(`typename` _ (`...`)? (Expr))";
         }
         case 83: {
             return "@0:X6=((`...`)?)";
         }
         case 84: {
-            return "@1:X8=(`,`\040_)";
+            return "@1:X8=(`,` _)";
         }
         case 85: {
-            return "@1:X5=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@1:X5=(`typename` _ (`...`)? (Expr))";
         }
         case 86: {
             return "@1:X6=((`...`)?)";
         }
         case 87: {
-            return "@2:X5=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@2:X5=(`typename` _ (`...`)? (Expr))";
         }
         case 88: {
             return "@2:X6=((`...`)?)";
         }
         case 89: {
-            return "@0:X53=(((Expr)\040_)?)";
+            return "@0:X53=(((Expr) _)?)";
         }
         case 90: {
-            return "@0:X44=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?)";
+            return "@0:X44=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?)";
         }
         case 91: {
-            return "@0:X45=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)";
+            return "@0:X45=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)";
         }
         case 92: {
-            return "@0:X46=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?])";
+            return "@0:X46=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?])";
         }
         case 93: {
-            return "@0:Iter((`typename`\040_\040(`...`)?\040(Expr)))";
+            return "@0:Iter((`typename` _ (`...`)? (Expr)))";
         }
         case 94: {
-            return "@0:X50=(`,`\040_)";
+            return "@0:X50=(`,` _)";
         }
         case 95: {
-            return "@0:X47=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@0:X47=(`typename` _ (`...`)? (Expr))";
         }
         case 96: {
             return "@0:X48=((`...`)?)";
         }
         case 97: {
-            return "@1:X50=(`,`\040_)";
+            return "@1:X50=(`,` _)";
         }
         case 98: {
-            return "@1:X47=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@1:X47=(`typename` _ (`...`)? (Expr))";
         }
         case 99: {
             return "@1:X48=((`...`)?)";
         }
         case 100: {
-            return "@2:X47=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@2:X47=(`typename` _ (`...`)? (Expr))";
         }
         case 101: {
             return "@2:X48=((`...`)?)";
         }
         case 102: {
-            return "@0:X63=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?)";
+            return "@0:X63=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?)";
         }
         case 103: {
-            return "@0:X64=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)";
+            return "@0:X64=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)";
         }
         case 104: {
-            return "@0:X65=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?])";
+            return "@0:X65=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?])";
         }
         case 105: {
-            return "@0:Iter((`typename`\040_\040(`...`)?\040(Expr)))";
+            return "@0:Iter((`typename` _ (`...`)? (Expr)))";
         }
         case 106: {
-            return "@0:X69=(`,`\040_)";
+            return "@0:X69=(`,` _)";
         }
         case 107: {
-            return "@0:X66=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@0:X66=(`typename` _ (`...`)? (Expr))";
         }
         case 108: {
             return "@0:X67=((`...`)?)";
         }
         case 109: {
-            return "@1:X69=(`,`\040_)";
+            return "@1:X69=(`,` _)";
         }
         case 110: {
-            return "@1:X66=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@1:X66=(`typename` _ (`...`)? (Expr))";
         }
         case 111: {
             return "@1:X67=((`...`)?)";
         }
         case 112: {
-            return "@2:X66=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "@2:X66=(`typename` _ (`...`)? (Expr))";
         }
         case 113: {
             return "@2:X67=((`...`)?)";
@@ -35761,16 +36587,16 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Entry";
         }
         case 116: {
-            return "@0:X25=(((Expr)\040_)?)";
+            return "@0:X25=(((Expr) _)?)";
         }
         case 117: {
-            return "@0:X26=((Expr)\040_)";
+            return "@0:X26=((Expr) _)";
         }
         case 118: {
             return "@0:X23=(#L[Mod::_::])";
         }
         case 119: {
-            return "@0:X16=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?)";
+            return "@0:X16=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?)";
         }
         case 120: {
             return "Param";
@@ -35809,19 +36635,19 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(Decl)";
         }
         case 132: {
-            return "X9=((`:`\040_\040#L[(Expr)::+`,`\040_])?)";
+            return "X9=((`:` _ #L[(Expr)::+`,` _])?)";
         }
         case 133: {
-            return "X10=(`:`\040_\040#L[(Expr)::+`,`\040_])";
+            return "X10=(`:` _ #L[(Expr)::+`,` _])";
         }
         case 134: {
-            return "X11=(#L[(Expr)::+`,`\040_])";
+            return "X11=(#L[(Expr)::+`,` _])";
         }
         case 135: {
             return "Iter((Expr))";
         }
         case 136: {
-            return "X13=(`,`\040_)";
+            return "X13=(`,` _)";
         }
         case 137: {
             return "X14=(#B[Entry::eps])";
@@ -35830,43 +36656,43 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(Entry)";
         }
         case 139: {
-            return "X17=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)";
+            return "X17=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)";
         }
         case 140: {
-            return "X18=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?])";
+            return "X18=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?])";
         }
         case 141: {
-            return "X19=(`typename`\040_\040(`...`)?\040(Expr))";
+            return "X19=(`typename` _ (`...`)? (Expr))";
         }
         case 142: {
             return "X20=((`...`)?)";
         }
         case 143: {
-            return "Iter((`typename`\040_\040(`...`)?\040(Expr)))";
+            return "Iter((`typename` _ (`...`)? (Expr)))";
         }
         case 144: {
-            return "X22=(`,`\040_)";
+            return "X22=(`,` _)";
         }
         case 145: {
             return "Iter(Mod)";
         }
         case 146: {
-            return "X27=(#L[Param::`,`\040_:?])";
+            return "X27=(#L[Param::`,` _:?])";
         }
         case 147: {
             return "Iter(Param)";
         }
         case 148: {
-            return "X29=(`,`\040_)";
+            return "X29=(`,` _)";
         }
         case 149: {
-            return "X30=(#L[_\040Mod::eps])";
+            return "X30=(#L[_ Mod::eps])";
         }
         case 150: {
-            return "X31=(_\040Mod)";
+            return "X31=(_ Mod)";
         }
         case 151: {
-            return "Iter(_\040Mod)";
+            return "Iter(_ Mod)";
         }
         case 152: {
             return "X33=(#L[Mod::_::])";
@@ -35875,25 +36701,25 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(Mod)";
         }
         case 154: {
-            return "X35=((_\040`=`\040_\040Expr)?)";
+            return "X35=((_ `=` _ Expr)?)";
         }
         case 155: {
-            return "X36=(_\040`=`\040_\040Expr)";
+            return "X36=(_ `=` _ Expr)";
         }
         case 156: {
-            return "X37=((_\040`:`\040_\040#L[Expr::+`,`\040_])?)";
+            return "X37=((_ `:` _ #L[Expr::+`,` _])?)";
         }
         case 157: {
-            return "X38=(_\040`:`\040_\040#L[Expr::+`,`\040_])";
+            return "X38=(_ `:` _ #L[Expr::+`,` _])";
         }
         case 158: {
-            return "X39=(#L[Expr::+`,`\040_])";
+            return "X39=(#L[Expr::+`,` _])";
         }
         case 159: {
             return "Iter(Expr)";
         }
         case 160: {
-            return "X41=(`,`\040_)";
+            return "X41=(`,` _)";
         }
         case 161: {
             return "X42=(#B[(Expr)::`,`::])";
@@ -35908,25 +36734,25 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(Mod)";
         }
         case 165: {
-            return "X54=((Expr)\040_)";
+            return "X54=((Expr) _)";
         }
         case 166: {
-            return "X55=(#L[Param::`,`\040_:?])";
+            return "X55=(#L[Param::`,` _:?])";
         }
         case 167: {
             return "Iter(Param)";
         }
         case 168: {
-            return "X57=(`,`\040_)";
+            return "X57=(`,` _)";
         }
         case 169: {
-            return "X58=(#L[_\040Mod::eps])";
+            return "X58=(#L[_ Mod::eps])";
         }
         case 170: {
-            return "X59=(_\040Mod)";
+            return "X59=(_ Mod)";
         }
         case 171: {
-            return "Iter(_\040Mod)";
+            return "Iter(_ Mod)";
         }
         case 172: {
             return "X61=(#B2[Decl::eps])";
@@ -35944,22 +36770,22 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(Mod)";
         }
         case 177: {
-            return "X74=(#L[(Expr)\040(_\040`=`\040_\040Expr)?::+`,`\040_])";
+            return "X74=(#L[(Expr) (_ `=` _ Expr)?::+`,` _])";
         }
         case 178: {
-            return "X75=((Expr)\040(_\040`=`\040_\040Expr)?)";
+            return "X75=((Expr) (_ `=` _ Expr)?)";
         }
         case 179: {
-            return "X76=((_\040`=`\040_\040Expr)?)";
+            return "X76=((_ `=` _ Expr)?)";
         }
         case 180: {
-            return "X77=(_\040`=`\040_\040Expr)";
+            return "X77=(_ `=` _ Expr)";
         }
         case 181: {
-            return "Iter((Expr)\040(_\040`=`\040_\040Expr)?)";
+            return "Iter((Expr) (_ `=` _ Expr)?)";
         }
         case 182: {
-            return "X79=(`,`\040_)";
+            return "X79=(`,` _)";
         }
         case 183: {
             return "X80=(#B[SwitchCase::eps])";
@@ -35968,22 +36794,22 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(SwitchCase)";
         }
         case 185: {
-            return "X82=((_\040Expr)?)";
+            return "X82=((_ Expr)?)";
         }
         case 186: {
-            return "X83=(_\040Expr)";
+            return "X83=(_ Expr)";
         }
         case 187: {
-            return "X84=(#L[(Expr)::`,`\040_])";
+            return "X84=(#L[(Expr)::`,` _])";
         }
         case 188: {
             return "Iter((Expr))";
         }
         case 189: {
-            return "X86=(`,`\040_)";
+            return "X86=(`,` _)";
         }
         case 190: {
-            return "X87=(`!`\040|\040`-`)";
+            return "X87=(`!` | `-`)";
         }
         case 191: {
             return "X88=(`!`)";
@@ -35992,7 +36818,7 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "X89=(`-`)";
         }
         case 193: {
-            return "X90=(`++`\040|\040`--`)";
+            return "X90=(`++` | `--`)";
         }
         case 194: {
             return "X91=(`++`)";
@@ -36001,7 +36827,7 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "X92=(`--`)";
         }
         case 196: {
-            return "X93=(`++`\040|\040`--`)";
+            return "X93=(`++` | `--`)";
         }
         case 197: {
             return "X94=(`++`)";
@@ -36010,127 +36836,127 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "X95=(`--`)";
         }
         case 199: {
-            return "X96=((_\040`||`\040_))";
+            return "X96=((_ `||` _))";
         }
         case 200: {
-            return "X97=((_\040`||`\040_))";
+            return "X97=((_ `||` _))";
         }
         case 201: {
-            return "X98=(_\040`||`\040_)";
+            return "X98=(_ `||` _)";
         }
         case 202: {
-            return "X99=((_\040`&&`\040_))";
+            return "X99=((_ `&&` _))";
         }
         case 203: {
-            return "X100=((_\040`&&`\040_))";
+            return "X100=((_ `&&` _))";
         }
         case 204: {
-            return "X101=(_\040`&&`\040_)";
+            return "X101=(_ `&&` _)";
         }
         case 205: {
-            return "X102=((_\040`==`\040_)\040|\040(_\040`!=`\040_)\040|\040(_\040`<=`\040_)\040|\040(_\040`>=`\040_)\040|\040(_\040`_LT_`\040_)\040|\040(_\040`_GT_`\040_))";
+            return "X102=((_ `==` _) | (_ `!=` _) | (_ `<=` _) | (_ `>=` _) | (_ `_LT_` _) | (_ `_GT_` _))";
         }
         case 206: {
-            return "X103=((_\040`==`\040_))";
+            return "X103=((_ `==` _))";
         }
         case 207: {
-            return "X104=(_\040`==`\040_)";
+            return "X104=(_ `==` _)";
         }
         case 208: {
-            return "X105=((_\040`!=`\040_))";
+            return "X105=((_ `!=` _))";
         }
         case 209: {
-            return "X106=(_\040`!=`\040_)";
+            return "X106=(_ `!=` _)";
         }
         case 210: {
-            return "X107=((_\040`<=`\040_))";
+            return "X107=((_ `<=` _))";
         }
         case 211: {
-            return "X108=(_\040`<=`\040_)";
+            return "X108=(_ `<=` _)";
         }
         case 212: {
-            return "X109=((_\040`>=`\040_))";
+            return "X109=((_ `>=` _))";
         }
         case 213: {
-            return "X110=(_\040`>=`\040_)";
+            return "X110=(_ `>=` _)";
         }
         case 214: {
-            return "X111=((_\040`_LT_`\040_))";
+            return "X111=((_ `_LT_` _))";
         }
         case 215: {
-            return "X112=(_\040`_LT_`\040_)";
+            return "X112=(_ `_LT_` _)";
         }
         case 216: {
-            return "X113=((_\040`_GT_`\040_))";
+            return "X113=((_ `_GT_` _))";
         }
         case 217: {
-            return "X114=(_\040`_GT_`\040_)";
+            return "X114=(_ `_GT_` _)";
         }
         case 218: {
-            return "X115=((_\040`<<`\040_))";
+            return "X115=((_ `<<` _))";
         }
         case 219: {
-            return "X116=((_\040`<<`\040_))";
+            return "X116=((_ `<<` _))";
         }
         case 220: {
-            return "X117=(_\040`<<`\040_)";
+            return "X117=(_ `<<` _)";
         }
         case 221: {
-            return "X118=((_\040`+`\040_)\040|\040(_\040`-`\040_))";
+            return "X118=((_ `+` _) | (_ `-` _))";
         }
         case 222: {
-            return "X119=((_\040`+`\040_))";
+            return "X119=((_ `+` _))";
         }
         case 223: {
-            return "X120=(_\040`+`\040_)";
+            return "X120=(_ `+` _)";
         }
         case 224: {
-            return "X121=((_\040`-`\040_))";
+            return "X121=((_ `-` _))";
         }
         case 225: {
-            return "X122=(_\040`-`\040_)";
+            return "X122=(_ `-` _)";
         }
         case 226: {
-            return "X123=((_\040`*`\040_)\040|\040(_\040`/`\040_)\040|\040(_\040`%`\040_))";
+            return "X123=((_ `*` _) | (_ `/` _) | (_ `%` _))";
         }
         case 227: {
-            return "X124=((_\040`*`\040_))";
+            return "X124=((_ `*` _))";
         }
         case 228: {
-            return "X125=(_\040`*`\040_)";
+            return "X125=(_ `*` _)";
         }
         case 229: {
-            return "X126=((_\040`/`\040_))";
+            return "X126=((_ `/` _))";
         }
         case 230: {
-            return "X127=(_\040`/`\040_)";
+            return "X127=(_ `/` _)";
         }
         case 231: {
-            return "X128=((_\040`%`\040_))";
+            return "X128=((_ `%` _))";
         }
         case 232: {
-            return "X129=(_\040`%`\040_)";
+            return "X129=(_ `%` _)";
         }
         case 233: {
-            return "X130=(#L[Expr::+`,`\040_:?])";
+            return "X130=(#L[Expr::+`,` _:?])";
         }
         case 234: {
             return "Iter(Expr)";
         }
         case 235: {
-            return "X132=(`,`\040_)";
+            return "X132=(`,` _)";
         }
         case 236: {
             return "X133=(`~`?)";
         }
         case 237: {
-            return "X134=(#L[Expr::`,`\040_])";
+            return "X134=(#L[Expr::`,` _])";
         }
         case 238: {
             return "Iter(Expr)";
         }
         case 239: {
-            return "X136=(`,`\040_)";
+            return "X136=(`,` _)";
         }
         case 240: {
             return "RecurStep(Module)";
@@ -36139,112 +36965,112 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Decl)";
         }
         case 242: {
-            return "RecurStep(@0:X2=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?))";
+            return "RecurStep(@0:X2=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?))";
         }
         case 243: {
-            return "RecurStep(@0:X3=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_))";
+            return "RecurStep(@0:X3=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _))";
         }
         case 244: {
-            return "RecurStep(@0:X4=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]))";
+            return "RecurStep(@0:X4=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?]))";
         }
         case 245: {
-            return "RecurStep(@0:Iter((`typename`\040_\040(`...`)?\040(Expr))))";
+            return "RecurStep(@0:Iter((`typename` _ (`...`)? (Expr))))";
         }
         case 246: {
-            return "RecurStep(@0:X8=(`,`\040_))";
+            return "RecurStep(@0:X8=(`,` _))";
         }
         case 247: {
-            return "RecurStep(@0:X5=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@0:X5=(`typename` _ (`...`)? (Expr)))";
         }
         case 248: {
             return "RecurStep(@0:X6=((`...`)?))";
         }
         case 249: {
-            return "RecurStep(@1:X8=(`,`\040_))";
+            return "RecurStep(@1:X8=(`,` _))";
         }
         case 250: {
-            return "RecurStep(@1:X5=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@1:X5=(`typename` _ (`...`)? (Expr)))";
         }
         case 251: {
             return "RecurStep(@1:X6=((`...`)?))";
         }
         case 252: {
-            return "RecurStep(@2:X5=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@2:X5=(`typename` _ (`...`)? (Expr)))";
         }
         case 253: {
             return "RecurStep(@2:X6=((`...`)?))";
         }
         case 254: {
-            return "RecurStep(@0:X53=(((Expr)\040_)?))";
+            return "RecurStep(@0:X53=(((Expr) _)?))";
         }
         case 255: {
-            return "RecurStep(@0:X44=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?))";
+            return "RecurStep(@0:X44=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?))";
         }
         case 256: {
-            return "RecurStep(@0:X45=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_))";
+            return "RecurStep(@0:X45=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _))";
         }
         case 257: {
-            return "RecurStep(@0:X46=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]))";
+            return "RecurStep(@0:X46=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?]))";
         }
         case 258: {
-            return "RecurStep(@0:Iter((`typename`\040_\040(`...`)?\040(Expr))))";
+            return "RecurStep(@0:Iter((`typename` _ (`...`)? (Expr))))";
         }
         case 259: {
-            return "RecurStep(@0:X50=(`,`\040_))";
+            return "RecurStep(@0:X50=(`,` _))";
         }
         case 260: {
-            return "RecurStep(@0:X47=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@0:X47=(`typename` _ (`...`)? (Expr)))";
         }
         case 261: {
             return "RecurStep(@0:X48=((`...`)?))";
         }
         case 262: {
-            return "RecurStep(@1:X50=(`,`\040_))";
+            return "RecurStep(@1:X50=(`,` _))";
         }
         case 263: {
-            return "RecurStep(@1:X47=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@1:X47=(`typename` _ (`...`)? (Expr)))";
         }
         case 264: {
             return "RecurStep(@1:X48=((`...`)?))";
         }
         case 265: {
-            return "RecurStep(@2:X47=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@2:X47=(`typename` _ (`...`)? (Expr)))";
         }
         case 266: {
             return "RecurStep(@2:X48=((`...`)?))";
         }
         case 267: {
-            return "RecurStep(@0:X63=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?))";
+            return "RecurStep(@0:X63=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?))";
         }
         case 268: {
-            return "RecurStep(@0:X64=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_))";
+            return "RecurStep(@0:X64=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _))";
         }
         case 269: {
-            return "RecurStep(@0:X65=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]))";
+            return "RecurStep(@0:X65=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?]))";
         }
         case 270: {
-            return "RecurStep(@0:Iter((`typename`\040_\040(`...`)?\040(Expr))))";
+            return "RecurStep(@0:Iter((`typename` _ (`...`)? (Expr))))";
         }
         case 271: {
-            return "RecurStep(@0:X69=(`,`\040_))";
+            return "RecurStep(@0:X69=(`,` _))";
         }
         case 272: {
-            return "RecurStep(@0:X66=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@0:X66=(`typename` _ (`...`)? (Expr)))";
         }
         case 273: {
             return "RecurStep(@0:X67=((`...`)?))";
         }
         case 274: {
-            return "RecurStep(@1:X69=(`,`\040_))";
+            return "RecurStep(@1:X69=(`,` _))";
         }
         case 275: {
-            return "RecurStep(@1:X66=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@1:X66=(`typename` _ (`...`)? (Expr)))";
         }
         case 276: {
             return "RecurStep(@1:X67=((`...`)?))";
         }
         case 277: {
-            return "RecurStep(@2:X66=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(@2:X66=(`typename` _ (`...`)? (Expr)))";
         }
         case 278: {
             return "RecurStep(@2:X67=((`...`)?))";
@@ -36256,16 +37082,16 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Entry)";
         }
         case 281: {
-            return "RecurStep(@0:X25=(((Expr)\040_)?))";
+            return "RecurStep(@0:X25=(((Expr) _)?))";
         }
         case 282: {
-            return "RecurStep(@0:X26=((Expr)\040_))";
+            return "RecurStep(@0:X26=((Expr) _))";
         }
         case 283: {
             return "RecurStep(@0:X23=(#L[Mod::_::]))";
         }
         case 284: {
-            return "RecurStep(@0:X16=(((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_)?))";
+            return "RecurStep(@0:X16=(((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _)?))";
         }
         case 285: {
             return "RecurStep(Param)";
@@ -36307,19 +37133,19 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(Decl))";
         }
         case 298: {
-            return "RecurStep(X9=((`:`\040_\040#L[(Expr)::+`,`\040_])?))";
+            return "RecurStep(X9=((`:` _ #L[(Expr)::+`,` _])?))";
         }
         case 299: {
-            return "RecurStep(X10=(`:`\040_\040#L[(Expr)::+`,`\040_]))";
+            return "RecurStep(X10=(`:` _ #L[(Expr)::+`,` _]))";
         }
         case 300: {
-            return "RecurStep(X11=(#L[(Expr)::+`,`\040_]))";
+            return "RecurStep(X11=(#L[(Expr)::+`,` _]))";
         }
         case 301: {
             return "RecurStep(Iter((Expr)))";
         }
         case 302: {
-            return "RecurStep(X13=(`,`\040_))";
+            return "RecurStep(X13=(`,` _))";
         }
         case 303: {
             return "RecurStep(X14=(#B[Entry::eps]))";
@@ -36328,43 +37154,43 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(Entry))";
         }
         case 305: {
-            return "RecurStep(X17=((`template`\040`<`\040#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]\040`>`)\040_))";
+            return "RecurStep(X17=((`template` `<` #L[(`typename` _ (`...`)? (Expr))::`,` _:?] `>`) _))";
         }
         case 306: {
-            return "RecurStep(X18=(#L[(`typename`\040_\040(`...`)?\040(Expr))::`,`\040_:?]))";
+            return "RecurStep(X18=(#L[(`typename` _ (`...`)? (Expr))::`,` _:?]))";
         }
         case 307: {
-            return "RecurStep(X19=(`typename`\040_\040(`...`)?\040(Expr)))";
+            return "RecurStep(X19=(`typename` _ (`...`)? (Expr)))";
         }
         case 308: {
             return "RecurStep(X20=((`...`)?))";
         }
         case 309: {
-            return "RecurStep(Iter((`typename`\040_\040(`...`)?\040(Expr))))";
+            return "RecurStep(Iter((`typename` _ (`...`)? (Expr))))";
         }
         case 310: {
-            return "RecurStep(X22=(`,`\040_))";
+            return "RecurStep(X22=(`,` _))";
         }
         case 311: {
             return "RecurStep(Iter(Mod))";
         }
         case 312: {
-            return "RecurStep(X27=(#L[Param::`,`\040_:?]))";
+            return "RecurStep(X27=(#L[Param::`,` _:?]))";
         }
         case 313: {
             return "RecurStep(Iter(Param))";
         }
         case 314: {
-            return "RecurStep(X29=(`,`\040_))";
+            return "RecurStep(X29=(`,` _))";
         }
         case 315: {
-            return "RecurStep(X30=(#L[_\040Mod::eps]))";
+            return "RecurStep(X30=(#L[_ Mod::eps]))";
         }
         case 316: {
-            return "RecurStep(X31=(_\040Mod))";
+            return "RecurStep(X31=(_ Mod))";
         }
         case 317: {
-            return "RecurStep(Iter(_\040Mod))";
+            return "RecurStep(Iter(_ Mod))";
         }
         case 318: {
             return "RecurStep(X33=(#L[Mod::_::]))";
@@ -36373,25 +37199,25 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(Mod))";
         }
         case 320: {
-            return "RecurStep(X35=((_\040`=`\040_\040Expr)?))";
+            return "RecurStep(X35=((_ `=` _ Expr)?))";
         }
         case 321: {
-            return "RecurStep(X36=(_\040`=`\040_\040Expr))";
+            return "RecurStep(X36=(_ `=` _ Expr))";
         }
         case 322: {
-            return "RecurStep(X37=((_\040`:`\040_\040#L[Expr::+`,`\040_])?))";
+            return "RecurStep(X37=((_ `:` _ #L[Expr::+`,` _])?))";
         }
         case 323: {
-            return "RecurStep(X38=(_\040`:`\040_\040#L[Expr::+`,`\040_]))";
+            return "RecurStep(X38=(_ `:` _ #L[Expr::+`,` _]))";
         }
         case 324: {
-            return "RecurStep(X39=(#L[Expr::+`,`\040_]))";
+            return "RecurStep(X39=(#L[Expr::+`,` _]))";
         }
         case 325: {
             return "RecurStep(Iter(Expr))";
         }
         case 326: {
-            return "RecurStep(X41=(`,`\040_))";
+            return "RecurStep(X41=(`,` _))";
         }
         case 327: {
             return "RecurStep(X42=(#B[(Expr)::`,`::]))";
@@ -36406,25 +37232,25 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(Mod))";
         }
         case 331: {
-            return "RecurStep(X54=((Expr)\040_))";
+            return "RecurStep(X54=((Expr) _))";
         }
         case 332: {
-            return "RecurStep(X55=(#L[Param::`,`\040_:?]))";
+            return "RecurStep(X55=(#L[Param::`,` _:?]))";
         }
         case 333: {
             return "RecurStep(Iter(Param))";
         }
         case 334: {
-            return "RecurStep(X57=(`,`\040_))";
+            return "RecurStep(X57=(`,` _))";
         }
         case 335: {
-            return "RecurStep(X58=(#L[_\040Mod::eps]))";
+            return "RecurStep(X58=(#L[_ Mod::eps]))";
         }
         case 336: {
-            return "RecurStep(X59=(_\040Mod))";
+            return "RecurStep(X59=(_ Mod))";
         }
         case 337: {
-            return "RecurStep(Iter(_\040Mod))";
+            return "RecurStep(Iter(_ Mod))";
         }
         case 338: {
             return "RecurStep(X61=(#B2[Decl::eps]))";
@@ -36442,22 +37268,22 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(Mod))";
         }
         case 343: {
-            return "RecurStep(X74=(#L[(Expr)\040(_\040`=`\040_\040Expr)?::+`,`\040_]))";
+            return "RecurStep(X74=(#L[(Expr) (_ `=` _ Expr)?::+`,` _]))";
         }
         case 344: {
-            return "RecurStep(X75=((Expr)\040(_\040`=`\040_\040Expr)?))";
+            return "RecurStep(X75=((Expr) (_ `=` _ Expr)?))";
         }
         case 345: {
-            return "RecurStep(X76=((_\040`=`\040_\040Expr)?))";
+            return "RecurStep(X76=((_ `=` _ Expr)?))";
         }
         case 346: {
-            return "RecurStep(X77=(_\040`=`\040_\040Expr))";
+            return "RecurStep(X77=(_ `=` _ Expr))";
         }
         case 347: {
-            return "RecurStep(Iter((Expr)\040(_\040`=`\040_\040Expr)?))";
+            return "RecurStep(Iter((Expr) (_ `=` _ Expr)?))";
         }
         case 348: {
-            return "RecurStep(X79=(`,`\040_))";
+            return "RecurStep(X79=(`,` _))";
         }
         case 349: {
             return "RecurStep(X80=(#B[SwitchCase::eps]))";
@@ -36466,22 +37292,22 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(SwitchCase))";
         }
         case 351: {
-            return "RecurStep(X82=((_\040Expr)?))";
+            return "RecurStep(X82=((_ Expr)?))";
         }
         case 352: {
-            return "RecurStep(X83=(_\040Expr))";
+            return "RecurStep(X83=(_ Expr))";
         }
         case 353: {
-            return "RecurStep(X84=(#L[(Expr)::`,`\040_]))";
+            return "RecurStep(X84=(#L[(Expr)::`,` _]))";
         }
         case 354: {
             return "RecurStep(Iter((Expr)))";
         }
         case 355: {
-            return "RecurStep(X86=(`,`\040_))";
+            return "RecurStep(X86=(`,` _))";
         }
         case 356: {
-            return "RecurStep(X87=(`!`\040|\040`-`))";
+            return "RecurStep(X87=(`!` | `-`))";
         }
         case 357: {
             return "RecurStep(X88=(`!`))";
@@ -36490,7 +37316,7 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(X89=(`-`))";
         }
         case 359: {
-            return "RecurStep(X90=(`++`\040|\040`--`))";
+            return "RecurStep(X90=(`++` | `--`))";
         }
         case 360: {
             return "RecurStep(X91=(`++`))";
@@ -36499,7 +37325,7 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(X92=(`--`))";
         }
         case 362: {
-            return "RecurStep(X93=(`++`\040|\040`--`))";
+            return "RecurStep(X93=(`++` | `--`))";
         }
         case 363: {
             return "RecurStep(X94=(`++`))";
@@ -36508,127 +37334,127 @@ string lang::cc::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(X95=(`--`))";
         }
         case 365: {
-            return "RecurStep(X96=((_\040`||`\040_)))";
+            return "RecurStep(X96=((_ `||` _)))";
         }
         case 366: {
-            return "RecurStep(X97=((_\040`||`\040_)))";
+            return "RecurStep(X97=((_ `||` _)))";
         }
         case 367: {
-            return "RecurStep(X98=(_\040`||`\040_))";
+            return "RecurStep(X98=(_ `||` _))";
         }
         case 368: {
-            return "RecurStep(X99=((_\040`&&`\040_)))";
+            return "RecurStep(X99=((_ `&&` _)))";
         }
         case 369: {
-            return "RecurStep(X100=((_\040`&&`\040_)))";
+            return "RecurStep(X100=((_ `&&` _)))";
         }
         case 370: {
-            return "RecurStep(X101=(_\040`&&`\040_))";
+            return "RecurStep(X101=(_ `&&` _))";
         }
         case 371: {
-            return "RecurStep(X102=((_\040`==`\040_)\040|\040(_\040`!=`\040_)\040|\040(_\040`<=`\040_)\040|\040(_\040`>=`\040_)\040|\040(_\040`_LT_`\040_)\040|\040(_\040`_GT_`\040_)))";
+            return "RecurStep(X102=((_ `==` _) | (_ `!=` _) | (_ `<=` _) | (_ `>=` _) | (_ `_LT_` _) | (_ `_GT_` _)))";
         }
         case 372: {
-            return "RecurStep(X103=((_\040`==`\040_)))";
+            return "RecurStep(X103=((_ `==` _)))";
         }
         case 373: {
-            return "RecurStep(X104=(_\040`==`\040_))";
+            return "RecurStep(X104=(_ `==` _))";
         }
         case 374: {
-            return "RecurStep(X105=((_\040`!=`\040_)))";
+            return "RecurStep(X105=((_ `!=` _)))";
         }
         case 375: {
-            return "RecurStep(X106=(_\040`!=`\040_))";
+            return "RecurStep(X106=(_ `!=` _))";
         }
         case 376: {
-            return "RecurStep(X107=((_\040`<=`\040_)))";
+            return "RecurStep(X107=((_ `<=` _)))";
         }
         case 377: {
-            return "RecurStep(X108=(_\040`<=`\040_))";
+            return "RecurStep(X108=(_ `<=` _))";
         }
         case 378: {
-            return "RecurStep(X109=((_\040`>=`\040_)))";
+            return "RecurStep(X109=((_ `>=` _)))";
         }
         case 379: {
-            return "RecurStep(X110=(_\040`>=`\040_))";
+            return "RecurStep(X110=(_ `>=` _))";
         }
         case 380: {
-            return "RecurStep(X111=((_\040`_LT_`\040_)))";
+            return "RecurStep(X111=((_ `_LT_` _)))";
         }
         case 381: {
-            return "RecurStep(X112=(_\040`_LT_`\040_))";
+            return "RecurStep(X112=(_ `_LT_` _))";
         }
         case 382: {
-            return "RecurStep(X113=((_\040`_GT_`\040_)))";
+            return "RecurStep(X113=((_ `_GT_` _)))";
         }
         case 383: {
-            return "RecurStep(X114=(_\040`_GT_`\040_))";
+            return "RecurStep(X114=(_ `_GT_` _))";
         }
         case 384: {
-            return "RecurStep(X115=((_\040`<<`\040_)))";
+            return "RecurStep(X115=((_ `<<` _)))";
         }
         case 385: {
-            return "RecurStep(X116=((_\040`<<`\040_)))";
+            return "RecurStep(X116=((_ `<<` _)))";
         }
         case 386: {
-            return "RecurStep(X117=(_\040`<<`\040_))";
+            return "RecurStep(X117=(_ `<<` _))";
         }
         case 387: {
-            return "RecurStep(X118=((_\040`+`\040_)\040|\040(_\040`-`\040_)))";
+            return "RecurStep(X118=((_ `+` _) | (_ `-` _)))";
         }
         case 388: {
-            return "RecurStep(X119=((_\040`+`\040_)))";
+            return "RecurStep(X119=((_ `+` _)))";
         }
         case 389: {
-            return "RecurStep(X120=(_\040`+`\040_))";
+            return "RecurStep(X120=(_ `+` _))";
         }
         case 390: {
-            return "RecurStep(X121=((_\040`-`\040_)))";
+            return "RecurStep(X121=((_ `-` _)))";
         }
         case 391: {
-            return "RecurStep(X122=(_\040`-`\040_))";
+            return "RecurStep(X122=(_ `-` _))";
         }
         case 392: {
-            return "RecurStep(X123=((_\040`*`\040_)\040|\040(_\040`/`\040_)\040|\040(_\040`%`\040_)))";
+            return "RecurStep(X123=((_ `*` _) | (_ `/` _) | (_ `%` _)))";
         }
         case 393: {
-            return "RecurStep(X124=((_\040`*`\040_)))";
+            return "RecurStep(X124=((_ `*` _)))";
         }
         case 394: {
-            return "RecurStep(X125=(_\040`*`\040_))";
+            return "RecurStep(X125=(_ `*` _))";
         }
         case 395: {
-            return "RecurStep(X126=((_\040`/`\040_)))";
+            return "RecurStep(X126=((_ `/` _)))";
         }
         case 396: {
-            return "RecurStep(X127=(_\040`/`\040_))";
+            return "RecurStep(X127=(_ `/` _))";
         }
         case 397: {
-            return "RecurStep(X128=((_\040`%`\040_)))";
+            return "RecurStep(X128=((_ `%` _)))";
         }
         case 398: {
-            return "RecurStep(X129=(_\040`%`\040_))";
+            return "RecurStep(X129=(_ `%` _))";
         }
         case 399: {
-            return "RecurStep(X130=(#L[Expr::+`,`\040_:?]))";
+            return "RecurStep(X130=(#L[Expr::+`,` _:?]))";
         }
         case 400: {
             return "RecurStep(Iter(Expr))";
         }
         case 401: {
-            return "RecurStep(X132=(`,`\040_))";
+            return "RecurStep(X132=(`,` _))";
         }
         case 402: {
             return "RecurStep(X133=(`~`?))";
         }
         case 403: {
-            return "RecurStep(X134=(#L[Expr::`,`\040_]))";
+            return "RecurStep(X134=(#L[Expr::`,` _]))";
         }
         case 404: {
             return "RecurStep(Iter(Expr))";
         }
         case 405: {
-            return "RecurStep(X136=(`,`\040_))";
+            return "RecurStep(X136=(`,` _))";
         }
         default: {
             AX();

@@ -465,15 +465,23 @@ void lang_emit_writer_defs(LangCompileContext& ctx) {
         fun_ns->push_back("write");
 
         parser_lr_write_impl_gen_cpp_instr(
-            cpp_write_stmts, wr, ctx.cc_.qq_expr("x"), ctx.cc_.qq_expr("flags"),
+            cpp_write_stmts, wr, ctx.cc_.qq_expr("x"),
             fun_ns, ctx.src_base_name_, ctx.cc_, ctx);
 
         ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
             "void lang::", ctx.src_base_name_, "::", *id_nm,
-                "::write(ostream& os, FmtFlags flags) {",
+                "::write(lang_rt::PrBufStream_T& pb) {",
                 "auto x = this->rc_from_this_poly<lang::",
                 ctx.src_base_name_, "::", *id_nm, ">();",
                 *cpp_write_stmts,
+            "}")->as_Decl());
+
+        ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
+            "void lang::", ctx.src_base_name_, "::", *id_nm,
+                "::write(ostream& os, FmtFlags flags) {",
+                "auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());",
+                "this->write(pb);",
+                "pb->distill(os, flags);"
             "}")->as_Decl());
     }
 }
@@ -1130,7 +1138,7 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp(
 
 
 void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
-    cc::Node_T curr, cc::Node_T flags_curr, GenName fun_ns,
+    cc::Node_T curr, GenName fun_ns,
     string src_base_name, CppGenContext& cc, LangCompileContext& ctx) {
 
     if (wr->is_Pass()) {
@@ -1139,13 +1147,13 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
     } else if (wr->is_String()) {
         auto wc = wr->as_String();
         auto str_lit = fmt_str("\"{}\"", escape_string(wc->s_));
-        cc.qq_stmt_acc(dst, "pr(os,", flags_curr, ",", str_lit, ");");
+        cc.qq_stmt_acc(dst, "pb->push_string(", str_lit, ");");
 
     } else if (wr->is_Seq()) {
         auto wc = wr->as_Seq();
         for (auto instr : *wc->instrs_) {
             parser_lr_write_impl_gen_cpp_instr(
-                dst, instr, curr, flags_curr, fun_ns, src_base_name, cc, ctx);
+                dst, instr, curr, fun_ns, src_base_name, cc, ctx);
         }
 
     } else if (wr->is_WithSumCase()) {
@@ -1158,7 +1166,7 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
                 wc->sum_id_, src_base_name, cc);
             auto cpp_case_str_long = cc.qq_expr(src_ns, "::_W::", case_str);
             auto curr_new = cc.qq_expr(curr, fmt_str("->as_{}()", case_str));
-            parser_lr_write_impl_gen_cpp_instr(case_body, case_instr, curr_new, flags_curr, fun_ns,
+            parser_lr_write_impl_gen_cpp_instr(case_body, case_instr, curr_new, fun_ns,
                 src_base_name, cc, ctx);
             switch_cases->push_back(
                 cc.qq_switch_case("case", cpp_case_str_long, ": {", *case_body, "break; }"));
@@ -1168,7 +1176,7 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
     } else if (wr->is_WithItem()) {
         auto x_sub = cc.qq_expr(curr, "->item_");
         parser_lr_write_impl_gen_cpp_instr(
-            dst, wr->as_WithItem()->body_, x_sub, flags_curr, fun_ns, src_base_name, cc, ctx);
+            dst, wr->as_WithItem()->body_, x_sub, fun_ns, src_base_name, cc, ctx);
 
     } else if (wr->is_WithOpt() || wr->is_WithOptBool()) {
         auto x_cond = curr;
@@ -1185,7 +1193,7 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
         }
         auto x_sub = cc.qq_expr(curr, ".as_some()");
         auto if_body = make_rc<Vec<cc::Node_T>>();
-        parser_lr_write_impl_gen_cpp_instr(if_body, w_sub, x_sub, flags_curr, fun_ns,
+        parser_lr_write_impl_gen_cpp_instr(if_body, w_sub, x_sub, fun_ns,
             src_base_name, cc, ctx);
         cc.qq_stmt_acc(dst, "if (", x_cond, ") {", *if_body, "}");
 
@@ -1193,19 +1201,17 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
         auto wc = wr->as_RecList();
         auto ret_body = make_rc<Vec<cc::Node_T>>();
         
-        Int nl_init, nl_delim, nl_final;
-        auto flags_inner = flags_curr;
-        auto flags_sub = cc.qq_expr(flags_curr, ".sub_lo()");
+        Int nl_init, nl_delim, nl_final, indent_inner;
         if (wc->format_->is_Inline()) {
-            nl_init = 0; nl_delim = 0; nl_final = 0; flags_inner = flags_curr;
+            nl_init = 0; nl_delim = 0; nl_final = 0; indent_inner = 0;
         } else if (wc->format_->is_Block()) {
-            nl_init = 1; nl_delim = 1; nl_final = 1; flags_inner = flags_sub;
+            nl_init = 1; nl_delim = 1; nl_final = 1; indent_inner = 1;
         } else if (wc->format_->is_Block2()) {
-            nl_init = 1; nl_delim = 2; nl_final = 1; flags_inner = flags_sub;
+            nl_init = 1; nl_delim = 2; nl_final = 1; indent_inner = 1;
         } else if (wc->format_->is_Top()) {
-            nl_init = 0; nl_delim = 1; nl_final = 0; flags_inner = flags_curr;
+            nl_init = 0; nl_delim = 1; nl_final = 0; indent_inner = 0;
         } else if (wc->format_->is_Top2()) {
-            nl_init = 0; nl_delim = 2; nl_final = 1; flags_inner = flags_curr;
+            nl_init = 0; nl_delim = 2; nl_final = 1; indent_inner = 0;
         } else {
             AX();
         }
@@ -1215,9 +1221,11 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
         auto x_iter = cc.qq_expr(cc.gen_id_fresh(fun_ns, "is_iter"));
         auto x_true = cc.qq_expr("true");
         auto x_false = cc.qq_expr("false");
+        auto x_indented = cc.qq_expr(cc.gen_id_fresh(fun_ns, "indented"));
 
         cc.qq_stmt_acc(ret_body, "Int", x_ind, ";");
         cc.qq_stmt_acc(ret_body, "bool", x_iter, "= false;");
+        cc.qq_stmt_acc(ret_body, "bool", x_indented, "= false;");
 
         auto loop_body = make_rc<Vec<cc::Node_T>>();
         {
@@ -1226,13 +1234,14 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
             auto if_body1 = make_rc<Vec<cc::Node_T>>();
             {
                 if (wc->delim_.is_some()) {
-                    auto str_lit = fmt_str("\"{}\"", escape_string(wc->delim_.as_some()));
-                    cc.qq_stmt_acc(if_body1, "pr(os,", flags_curr, ",", str_lit, ");");                    
+                    parser_lr_write_impl_gen_cpp_instr(
+                        if_body1, wc->delim_.as_some(), x_sub, fun_ns, src_base_name,
+                        cc, ctx);
                 }
                 if (nl_delim > 0) {
                     cc.qq_stmt_acc(
-                        if_body1, flags_inner,
-                        ".advance_lines(", fmt_str("{}", nl_delim), ", os);");
+                        if_body1,
+                        "pb->push_newlines(", fmt_str("{}", nl_delim), ");");
                 }
             }
             if (if_body1->length() > 0) {
@@ -1243,9 +1252,13 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
             {
                 if (nl_init > 0) {
                     cc.qq_stmt_acc(
-                        if_body2, flags_inner,
-                        ".advance_lines(", fmt_str("{}", nl_init), ", os);");
+                        if_body2,
+                        "pb->push_newlines(", fmt_str("{}", nl_init), ");");
                 }
+                for (Int k = 0; k < indent_inner; k++) {
+                    cc.qq_stmt_acc(if_body2, "pb->push_indent();");
+                }
+                cc.qq_stmt_acc(if_body2, x_indented, "= true;");
             }
             if (if_body2->length() > 0) {
                 cc.qq_stmt_acc(loop_body, "if (!", x_iter, ") {", *if_body2, "}");
@@ -1253,7 +1266,7 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
 
             cc.qq_stmt_acc(loop_body, x_iter, "= true;");
             parser_lr_write_impl_gen_cpp_instr(
-                loop_body, wc->body_, x_sub, flags_inner, fun_ns, src_base_name, cc, ctx);
+                loop_body, wc->body_, x_sub, fun_ns, src_base_name, cc, ctx);
         }
 
         cc.qq_stmt_acc(ret_body,
@@ -1262,14 +1275,24 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
 
         if (wc->has_final_->is_Y()) {
             AT(wc->delim_.is_some());
-            auto str_lit = fmt_str("\"{}\"", escape_string(wc->delim_.as_some()));
-            cc.qq_stmt_acc(ret_body, "if (", x_iter, ") { pr(os,", flags_curr, ",",
-                str_lit, "); }");  
+            auto if_body4 = make_rc<Vec<cc::Node_T>>();
+            parser_lr_write_impl_gen_cpp_instr(
+                if_body4, wc->delim_.as_some(), x_sub, fun_ns, src_base_name,
+                cc, ctx);
+            cc.qq_stmt_acc(ret_body, "if (", x_iter, ") {", *if_body4, "}");
         }
 
         if (nl_final > 0) {
             cc.qq_stmt_acc(
-                ret_body, flags_curr, ".advance_lines(", fmt_str("{}", nl_final), ", os);");
+                ret_body, "pb->push_newlines(", fmt_str("{}", nl_final), ");");
+        }
+
+        if (indent_inner > 0) {
+            auto if_body3 = make_rc<Vec<cc::Node_T>>();
+            for (Int k = 0; k < indent_inner; k++) {
+                cc.qq_stmt_acc(if_body3, "pb->push_dedent();");
+            }
+            cc.qq_stmt_acc(ret_body, "if (", x_indented, ") {", *if_body3, "}");
         }
 
         cc.qq_stmt_acc(dst, "{", *ret_body, "}");
@@ -1278,14 +1301,23 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
         auto wc = wr->as_WithField();
         auto name_cpp = cc.qq_expr(fmt_str("{}_", wc->field_name_));
         auto curr_new = cc.qq_expr(curr, "->", name_cpp);
-        parser_lr_write_impl_gen_cpp_instr(dst, wc->body_, curr_new, flags_curr, fun_ns,
+        parser_lr_write_impl_gen_cpp_instr(dst, wc->body_, curr_new, fun_ns,
             src_base_name, cc, ctx);
 
     } else if (wr->is_Rec()) {
-        cc.qq_stmt_acc(dst, curr, "->write(os,", flags_curr, ");");
+        cc.qq_stmt_acc(dst, curr, "->write(pb);");
 
     } else if (wr->is_Prim()) {
-        cc.qq_stmt_acc(dst, "pr(os,", flags_curr, ",", curr, ");");
+        cc.qq_stmt_acc(dst, "pb->push_string(fmt_str(\"{}\",", curr, "));");
+
+    } else if (wr->is_Newline()) {
+        cc.qq_stmt_acc(dst, "pb->push_newline();");
+
+    } else if (wr->is_Indent()) {
+        cc.qq_stmt_acc(dst, "pb->push_indent();");
+
+    } else if (wr->is_Dedent()) {
+        cc.qq_stmt_acc(dst, "pb->push_dedent();");
 
     } else {
         LG_ERR(" >>> wr: {}", wr);

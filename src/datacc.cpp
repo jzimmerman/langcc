@@ -1179,19 +1179,33 @@ DataDefsResult compile_data_defs(
                 NodeV_empty(),
                 cpp_pr_debug_body)->as_Decl());
 
-        // write() prototype
+        // write() prototypes
         if (gen_write_proto) {
-            auto id_write_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
-            auto cpp_write_name = lower_name_cpp(LowerTy::WRITE_BASE, name_full, ctx);
-            auto cpp_write_params = make_rc<Vec<cc::Node_T>>();
-            auto cpp_write_param_os_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
-                cpp_write_params, id_write_fun_ns, ctx.cc_.Q_->qq("Expr", "ostream&"), "os");
-            auto cpp_write_param_flags_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
-                cpp_write_params, id_write_fun_ns, ctx.cc_.Q_->qq("Expr", "FmtFlags"), "flags");
-            cpp_fields->push_back(
-                ctx.cc_.qq("Entry", "void", cpp_write_name,
-                    "(ostream& ", cpp_write_param_os_var, ", FmtFlags",
-                    cpp_write_param_flags_var, ");"));
+            {
+                auto id_write_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
+                auto cpp_write_name = lower_name_cpp(LowerTy::WRITE_BASE, name_full, ctx);
+                auto cpp_write_params = make_rc<Vec<cc::Node_T>>();
+                auto cpp_write_param_os_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+                    cpp_write_params, id_write_fun_ns, ctx.cc_.Q_->qq("Expr", "ostream&"), "os");
+                auto cpp_write_param_flags_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+                    cpp_write_params, id_write_fun_ns, ctx.cc_.Q_->qq("Expr", "FmtFlags"), "flags");
+                cpp_fields->push_back(
+                    ctx.cc_.qq("Entry", "void", cpp_write_name,
+                        "(ostream& ", cpp_write_param_os_var, ", FmtFlags",
+                        cpp_write_param_flags_var, ");"));
+            }
+
+            {
+                auto id_write_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
+                auto cpp_write_name = lower_name_cpp(LowerTy::WRITE_BASE, name_full, ctx);
+                auto cpp_write_params = make_rc<Vec<cc::Node_T>>();
+                auto cpp_write_param_pb_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+                    cpp_write_params, id_write_fun_ns,
+                    ctx.cc_.Q_->qq("Expr", "lang_rt::PrBufStream_T&"), "pb");
+                cpp_fields->push_back(
+                    ctx.cc_.qq("Entry", "void", cpp_write_name,
+                        "(lang_rt::PrBufStream_T& ", cpp_write_param_pb_var, ");"));
+            }
         }
 
         // hash_ser_acc()

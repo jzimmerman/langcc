@@ -721,6 +721,8 @@ inline string escape_string_char(Ch ch) {
         return "\\\'";
     } else if (ch == '\\') {
         return "\\\\";
+    } else if (ch == ' ') {
+        return " ";
     } else if (ch >= 0 && ch < 128 && (isalnum(ch) || ispunct(ch))) {
         return string("") + static_cast<char>(ch);
     } else if (ch >= 0 && ch < 128) {
@@ -900,6 +902,11 @@ struct FmtFlags {
         ret.indent_curr_ = indent_curr_ + 1;
         ret.prec_curr_ = 0;
         return ret;
+    }
+
+    inline void indent_single(ostream& os) {
+        AT(indent_width_ >= 0);
+        os << str_repeat(" ", indent_width_);
     }
 
     inline void write_indent(ostream& os) {

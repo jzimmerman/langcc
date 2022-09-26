@@ -478,7 +478,7 @@ inline Option_T<string> parse_expr_extract_write_phase_const_ext(ParseExpr_T e) 
         return parse_expr_extract_write_phase_const_ext(e->as_Name()->e_);
 
     } else if (e->is_Indent() || e->is_Dedent() || e->is_Newline()) {
-        return Some<string>("");
+        return None<string>();
 
     } else {
         return None<string>();

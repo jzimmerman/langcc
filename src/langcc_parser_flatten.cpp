@@ -247,7 +247,11 @@ inline tuple<
     } else if (xb->tok_->is_Special()) {
         auto xc = xb->tok_->as_Special();
         if (xb->tok_->as_Special()->w_ == TokenBaseSpecial::Newline) {
-            ret_wr = WriteInstr::String::make("\n");
+            ret_wr = WriteInstr::Newline::make();
+        } else if (xb->tok_->as_Special()->w_ == TokenBaseSpecial::Indent) {
+            ret_wr = WriteInstr::Indent::make();
+        } else if (xb->tok_->as_Special()->w_ == TokenBaseSpecial::Dedent) {
+            ret_wr = WriteInstr::Dedent::make();
         } else {
             ret_wr = WriteInstr::Pass::make();
         }
@@ -614,6 +618,12 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_concat_
                 ret_ty_singleton = yi_ty;
                 ret_wr_items->push_back(yi_wr);
             }
+        } else if (yi->is_Newline()) {
+            ret_wr_items->push_back(WriteInstr::Newline::make());
+        } else if (yi->is_Indent()) {
+            ret_wr_items->push_back(WriteInstr::Indent::make());
+        } else if (yi->is_Dedent()) {
+            ret_wr_items->push_back(WriteInstr::Dedent::make());
         } else {
             auto yi_const_str = parse_expr_extract_write_phase_const(yi);
             ret_wr_items->push_back(WriteInstr::String::make(yi_const_str));
@@ -738,7 +748,7 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_iter_ac
         }
 
         ret_wr = WriteInstr::RecList::make(
-            y_wr, ListFormat::Inline::make(), None<string>(), HasFinalDelim::N::make());
+            y_wr, ListFormat::Inline::make(), None<WriteInstr_T>(), HasFinalDelim::N::make());
 
     } else if (x->is_List()) {
         auto xc = x->as_List();
@@ -911,9 +921,14 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_iter_ac
             AX();
         }
 
-        auto delim_str = parse_expr_extract_write_phase_const(xc->delim_);
+        WriteInstr_T delim_instr = WriteInstr::Newline::make();
+        if (!xc->delim_->is_Newline()) {
+            auto delim_str = parse_expr_extract_write_phase_const(xc->delim_);
+            delim_instr = WriteInstr::String::make(delim_str);
+        }
 
-        ret_wr = WriteInstr::RecList::make(y_wr, list_format, Some<string>(delim_str), has_final);
+        ret_wr = WriteInstr::RecList::make(
+            y_wr, list_format, Some<WriteInstr_T>(delim_instr), has_final);
 
     } else {
         AX();

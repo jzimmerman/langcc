@@ -23,7 +23,7 @@ lexer {
 parser {
     main { S }
 
-    S.R0 <- `[` id `]` newline @(`\n`);
+    S.R0 <- `[` id `]` newline;
 }
 
 test {

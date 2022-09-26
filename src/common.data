@@ -119,6 +119,9 @@ namespace common {
         def ListFormat.Top2 {}
 
     def WriteInstr {}
+        def WriteInstr.Newline {}
+        def WriteInstr.Indent {}
+        def WriteInstr.Dedent {}
         def WriteInstr.Pass {}
         def WriteInstr.Seq { instrs: Vec(WriteInstr); }
         def WriteInstr.String { s: Str; }
@@ -130,7 +133,7 @@ namespace common {
         def WriteInstr.Prim {}
         def WriteInstr.Rec { id: Ident; }
         def WriteInstr.RecList {
-            body: WriteInstr; format: ListFormat; delim: Option(Str); has_final: HasFinalDelim; }
+            body: WriteInstr; format: ListFormat; delim: Option(WriteInstr); has_final: HasFinalDelim; }
 
     def UnwindInstr {}
         def UnwindInstr.Nil { rhs_tys: Vec(GenType); }

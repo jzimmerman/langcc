@@ -2026,6 +2026,499 @@ inline ParseOutput_T<LANG_META_ARGS>
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// Pretty-printer
+////////////////////////////////////////////////////////////////////////////////
+
+}  // namespace lang_rt
+
+namespace lang_rt::PrBufStreamItem {
+    struct _T;
+}
+
+namespace lang_rt {
+    using PrBufStreamItem_T = rc_ptr<lang_rt::PrBufStreamItem::_T>;
+}
+
+namespace lang_rt::PrBufStreamItem::String {
+    struct _T;
+}
+
+namespace lang_rt::PrBufStreamItem {
+    using String_T = rc_ptr<lang_rt::PrBufStreamItem::String::_T>;
+}
+
+namespace lang_rt::PrBufStreamItem::Newline {
+    struct _T;
+}
+
+namespace lang_rt::PrBufStreamItem {
+    using Newline_T = rc_ptr<lang_rt::PrBufStreamItem::Newline::_T>;
+}
+
+namespace lang_rt::PrBufStreamItem::Indent {
+    struct _T;
+}
+
+namespace lang_rt::PrBufStreamItem {
+    using Indent_T = rc_ptr<lang_rt::PrBufStreamItem::Indent::_T>;
+}
+
+namespace lang_rt::PrBufStreamItem::Dedent {
+    struct _T;
+}
+
+namespace lang_rt::PrBufStreamItem {
+    using Dedent_T = rc_ptr<lang_rt::PrBufStreamItem::Dedent::_T>;
+}
+
+namespace lang_rt::PrBufStream {
+    struct _T;
+}
+
+namespace lang_rt {
+    using PrBufStream_T = rc_ptr<lang_rt::PrBufStream::_T>;
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem_T x);
+
+namespace lang_rt::PrBufStreamItem {
+    enum struct _W {
+        String,
+        Newline,
+        Indent,
+        Dedent,
+    };
+}
+
+namespace lang_rt::PrBufStreamItem {
+    struct _T: hash_obj, enable_rc_from_this_poly {
+        lang_rt::PrBufStreamItem::_W w_;
+        virtual ~_T();
+        _T(lang_rt::PrBufStreamItem::_W w);
+        bool is_String();
+        bool is_Newline();
+        bool is_Indent();
+        bool is_Dedent();
+        lang_rt::PrBufStreamItem::String_T as_String();
+        lang_rt::PrBufStreamItem::Newline_T as_Newline();
+        lang_rt::PrBufStreamItem::Indent_T as_Indent();
+        lang_rt::PrBufStreamItem::Dedent_T as_Dedent();
+        void hash_ser_acc_lang_rt_PrBufStreamItem(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const = 0;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStream_T x);
+
+namespace lang_rt::PrBufStream {
+    __attribute__((always_inline)) lang_rt::PrBufStream_T make(Vec_T<lang_rt::PrBufStreamItem_T> items);
+}
+
+namespace lang_rt::PrBufStream {
+    __attribute__((always_inline)) lang_rt::PrBufStream_T make_ext(ArenaPtr arena, Vec_T<lang_rt::PrBufStreamItem_T> items);
+}
+
+namespace lang_rt::PrBufStream {
+    struct _T: hash_obj, enable_rc_from_this_poly {
+        Vec_T<lang_rt::PrBufStreamItem_T> items_;
+        _T();
+        lang_rt::PrBufStream_T with_items(Vec_T<lang_rt::PrBufStreamItem_T> items);
+        void hash_ser_acc_lang_rt_PrBufStream(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+
+        inline void push_string(string x);
+        inline void push_newline();
+        inline void push_newlines(Int n);
+        inline void push_indent();
+        inline void push_dedent();
+        inline void distill(ostream& os, FmtFlags flags);
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::String_T x);
+
+namespace lang_rt::PrBufStreamItem::String {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T make(string x);
+}
+
+namespace lang_rt::PrBufStreamItem::String {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T make_ext(ArenaPtr arena, string x);
+}
+
+namespace lang_rt::PrBufStreamItem::String {
+    struct _T: lang_rt::PrBufStreamItem::_T {
+        string x_;
+        _T();
+        lang_rt::PrBufStreamItem::String_T with_x(string x);
+        void hash_ser_acc_lang_rt_PrBufStreamItem_String(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Newline_T x);
+
+namespace lang_rt::PrBufStreamItem::Newline {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T make();
+}
+
+namespace lang_rt::PrBufStreamItem::Newline {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T make_ext(ArenaPtr arena);
+}
+
+namespace lang_rt::PrBufStreamItem::Newline {
+    struct _T: lang_rt::PrBufStreamItem::_T {
+        _T();
+        void hash_ser_acc_lang_rt_PrBufStreamItem_Newline(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Indent_T x);
+
+namespace lang_rt::PrBufStreamItem::Indent {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T make();
+}
+
+namespace lang_rt::PrBufStreamItem::Indent {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T make_ext(ArenaPtr arena);
+}
+
+namespace lang_rt::PrBufStreamItem::Indent {
+    struct _T: lang_rt::PrBufStreamItem::_T {
+        _T();
+        void hash_ser_acc_lang_rt_PrBufStreamItem_Indent(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Dedent_T x);
+
+namespace lang_rt::PrBufStreamItem::Dedent {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T make();
+}
+
+namespace lang_rt::PrBufStreamItem::Dedent {
+    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T make_ext(ArenaPtr arena);
+}
+
+namespace lang_rt::PrBufStreamItem::Dedent {
+    struct _T: lang_rt::PrBufStreamItem::_T {
+        _T();
+        void hash_ser_acc_lang_rt_PrBufStreamItem_Dedent(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem_T x) {
+    switch (x->w_) {
+        case lang_rt::PrBufStreamItem::_W::String: {
+            pr_debug(os, flags, x->as_String());
+            break;
+        }
+        case lang_rt::PrBufStreamItem::_W::Newline: {
+            pr_debug(os, flags, x->as_Newline());
+            break;
+        }
+        case lang_rt::PrBufStreamItem::_W::Indent: {
+            pr_debug(os, flags, x->as_Indent());
+            break;
+        }
+        case lang_rt::PrBufStreamItem::_W::Dedent: {
+            pr_debug(os, flags, x->as_Dedent());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
+inline lang_rt::PrBufStreamItem::_T::~_T() {
+}
+
+inline lang_rt::PrBufStreamItem::_T::_T(lang_rt::PrBufStreamItem::_W w) {
+    w_ = w;
+}
+
+inline bool lang_rt::PrBufStreamItem::_T::is_String() {
+    return w_ == lang_rt::PrBufStreamItem::_W::String;
+}
+
+inline bool lang_rt::PrBufStreamItem::_T::is_Newline() {
+    return w_ == lang_rt::PrBufStreamItem::_W::Newline;
+}
+
+inline bool lang_rt::PrBufStreamItem::_T::is_Indent() {
+    return w_ == lang_rt::PrBufStreamItem::_W::Indent;
+}
+
+inline bool lang_rt::PrBufStreamItem::_T::is_Dedent() {
+    return w_ == lang_rt::PrBufStreamItem::_W::Dedent;
+}
+
+inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::_T::as_String() {
+    AT(this->is_String());
+    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::String::_T>();
+}
+
+inline lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::_T::as_Newline() {
+    AT(this->is_Newline());
+    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::Newline::_T>();
+}
+
+inline lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::_T::as_Indent() {
+    AT(this->is_Indent());
+    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::Indent::_T>();
+}
+
+inline lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::_T::as_Dedent() {
+    AT(this->is_Dedent());
+    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::Dedent::_T>();
+}
+
+inline void lang_rt::PrBufStreamItem::_T::hash_ser_acc_lang_rt_PrBufStreamItem(SerBuf& buf) const {
+    hash_ser(buf, static_cast<Int>(w_));
+}
+
+inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStream_T x) {
+    os << "lang_rt::PrBufStream {";
+    flags.sub_lo().advance_lines(1, os);
+    os << "items: ";
+    pr_debug(os, flags.sub_lo(), x->items_);
+    os << ",";
+    flags.advance_lines(1, os);
+    os << "}";
+}
+
+inline lang_rt::PrBufStream::_T::_T() {
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStream_T lang_rt::PrBufStream::make(Vec_T<lang_rt::PrBufStreamItem_T> items) {
+    auto ret = make_rc<lang_rt::PrBufStream::_T>();
+    ret->items_ = items;
+    return ret;
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStream_T lang_rt::PrBufStream::make_ext(ArenaPtr arena, Vec_T<lang_rt::PrBufStreamItem_T> items) {
+    auto ret1 = make_rc_ext<lang_rt::PrBufStream::_T>(arena);
+    ret1->items_ = items;
+    return ret1;
+}
+
+inline lang_rt::PrBufStream_T lang_rt::PrBufStream::_T::with_items(Vec_T<lang_rt::PrBufStreamItem_T> items) {
+    auto ret = make_rc<lang_rt::PrBufStream::_T>();
+    ret->items_ = items;
+    return ret;
+}
+
+inline void lang_rt::PrBufStream::_T::hash_ser_acc_lang_rt_PrBufStream(SerBuf& buf) const {
+    hash_ser(buf, items_);
+}
+
+inline void lang_rt::PrBufStream::_T::hash_ser_acc(SerBuf& buf) const {
+    this->lang_rt::PrBufStream::_T::hash_ser_acc_lang_rt_PrBufStream(buf);
+}
+
+inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::String_T x) {
+    os << "lang_rt::PrBufStreamItem::String {";
+    flags.sub_lo().advance_lines(1, os);
+    os << "x: ";
+    pr_debug(os, flags.sub_lo(), x->x_);
+    os << ",";
+    flags.advance_lines(1, os);
+    os << "}";
+}
+
+inline lang_rt::PrBufStreamItem::String::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::String) {
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make(string x) {
+    auto ret = make_rc<lang_rt::PrBufStreamItem::String::_T>();
+    ret->x_ = x;
+    return ret;
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make_ext(ArenaPtr arena, string x) {
+    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::String::_T>(arena);
+    ret1->x_ = x;
+    return ret1;
+}
+
+inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::_T::with_x(string x) {
+    auto ret = make_rc<lang_rt::PrBufStreamItem::String::_T>();
+    ret->x_ = x;
+    return ret;
+}
+
+inline void lang_rt::PrBufStreamItem::String::_T::hash_ser_acc_lang_rt_PrBufStreamItem_String(SerBuf& buf) const {
+    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+    hash_ser(buf, x_);
+}
+
+inline void lang_rt::PrBufStreamItem::String::_T::hash_ser_acc(SerBuf& buf) const {
+    this->lang_rt::PrBufStreamItem::String::_T::hash_ser_acc_lang_rt_PrBufStreamItem_String(buf);
+}
+
+inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Newline_T x) {
+    os << "lang_rt::PrBufStreamItem::Newline {";
+    os << "}";
+}
+
+inline lang_rt::PrBufStreamItem::Newline::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Newline) {
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make() {
+    auto ret = make_rc<lang_rt::PrBufStreamItem::Newline::_T>();
+    return ret;
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make_ext(ArenaPtr arena) {
+    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Newline::_T>(arena);
+    return ret1;
+}
+
+inline void lang_rt::PrBufStreamItem::Newline::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Newline(SerBuf& buf) const {
+    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+}
+
+inline void lang_rt::PrBufStreamItem::Newline::_T::hash_ser_acc(SerBuf& buf) const {
+    this->lang_rt::PrBufStreamItem::Newline::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Newline(buf);
+}
+
+inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Indent_T x) {
+    os << "lang_rt::PrBufStreamItem::Indent {";
+    os << "}";
+}
+
+inline lang_rt::PrBufStreamItem::Indent::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Indent) {
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make() {
+    auto ret = make_rc<lang_rt::PrBufStreamItem::Indent::_T>();
+    return ret;
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make_ext(ArenaPtr arena) {
+    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Indent::_T>(arena);
+    return ret1;
+}
+
+inline void lang_rt::PrBufStreamItem::Indent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Indent(SerBuf& buf) const {
+    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+}
+
+inline void lang_rt::PrBufStreamItem::Indent::_T::hash_ser_acc(SerBuf& buf) const {
+    this->lang_rt::PrBufStreamItem::Indent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Indent(buf);
+}
+
+inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Dedent_T x) {
+    os << "lang_rt::PrBufStreamItem::Dedent {";
+    os << "}";
+}
+
+inline lang_rt::PrBufStreamItem::Dedent::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Dedent) {
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make() {
+    auto ret = make_rc<lang_rt::PrBufStreamItem::Dedent::_T>();
+    return ret;
+}
+
+inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make_ext(ArenaPtr arena) {
+    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Dedent::_T>(arena);
+    return ret1;
+}
+
+inline void lang_rt::PrBufStreamItem::Dedent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Dedent(SerBuf& buf) const {
+    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+}
+
+inline void lang_rt::PrBufStreamItem::Dedent::_T::hash_ser_acc(SerBuf& buf) const {
+    this->lang_rt::PrBufStreamItem::Dedent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Dedent(buf);
+}
+
+inline void lang_rt::PrBufStream::_T::push_string(string x) {
+    items_->push(PrBufStreamItem::String::make(x));
+}
+
+inline void lang_rt::PrBufStream::_T::push_newline() {
+    items_->push(PrBufStreamItem::Newline::make());
+}
+
+inline void lang_rt::PrBufStream::_T::push_newlines(Int n) {
+    for (Int k = 0; k < n; k++) {
+        this->push_newline();
+    }
+}
+
+inline void lang_rt::PrBufStream::_T::push_indent() {
+    items_->push(PrBufStreamItem::Indent::make());
+}
+
+inline void lang_rt::PrBufStream::_T::push_dedent() {
+    items_->push(PrBufStreamItem::Dedent::make());
+}
+
+inline void lang_rt::PrBufStream::_T::distill(ostream& os, FmtFlags flags) {
+    Int i = 0;
+    while (i < items_->length()) {
+        auto item = items_->operator[](i);
+        if (item->is_String()) {
+            os << item->as_String()->x_;
+            ++i;
+
+        } else if (item->is_Newline()) {
+            Int num_nl = 0;
+            Int num_indent_net = 0;
+
+            Int j = i;
+            while (true) {
+                if (j >= items_->length()) {
+                    break;
+                }
+                auto item_j = items_->operator[](j);
+                if (item_j->is_Newline()) {
+                    ++num_nl;
+                } else if (item_j->is_Indent()) {
+                    ++num_indent_net;
+                } else if (item_j->is_Dedent()) {
+                    --num_indent_net;
+                } else if (item_j->is_String()) {
+                    break;
+                } else {
+                    AX();
+                }
+                ++j;
+            }
+            AT(num_nl >= 1);
+            for (Int k = 0; k < num_nl - 1; k++) {
+                os << endl;
+            }
+            flags.indent_curr_ = max<Int>(0, flags.indent_curr_ + num_indent_net);
+            flags.advance_lines(1, os);
+            i = j;
+
+        } else if (item->is_Indent()) {
+            flags.indent_curr_ += 1;
+            ++i;
+
+        } else if (item->is_Dedent()) {
+            flags.indent_curr_ = max<Int>(0, flags.indent_curr_ - 1);
+            ++i;
+
+        } else {
+            AX();
+        }
+    }
+}
+
+namespace lang_rt {
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Table decoding
 ////////////////////////////////////////////////////////////////////////////////
 

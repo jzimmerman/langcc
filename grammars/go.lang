@@ -363,9 +363,9 @@ parser {
     Stmt.ShortVarDecl <- xs:Ids _ `:=` _ ys:Vals;
 
     Stmt.Go <- `go` _ x:Val;
-    Stmt.Return <- `return` xs:(_ #L[Val::+`,`_])?;
-    Stmt.Break <- `break` label:(_ Id)?;
-    Stmt.Continue <- `continue` label:(_ Id)?;
+    Stmt.Return <- `return` _ xs:(_ #L[Val::+`,`_])?;
+    Stmt.Break <- `break` _ label:(_ Id)?;
+    Stmt.Continue <- `continue` _ label:(_ Id)?;
     Stmt.Goto <- `goto` _ label:Id;
     Stmt.Fallthrough <- `fallthrough`;
     Stmt.Defer <- `defer` _ x:Val;
@@ -376,7 +376,7 @@ parser {
         xt:Block
         xf:(_ `else` _ (stmt:Stmt[SI] | block:Block))?;
 
-    Stmt.For.Basic <- `for` cond:(_ Expr[V, gC, mC])? _ body:Block;
+    Stmt.For.Basic <- `for` _ cond:(_ Expr[V, gC, mC])? _ body:Block;
     Stmt.For.Extended <- `for` _
         init:~Stmt[S, gC] `;` _ cond:Expr[V, gC]? `;` _
         post:Stmt[S, gC, mC] _ body:Block;
@@ -387,34 +387,34 @@ parser {
     Stmt.For.Range.Decl <- `for` _ ids:Ids _ `:=` _ `range` _
         arg:Expr[V, gC, mC] _ body:Block;
 
-    Stmt.Switch.Expr <- `switch`
-        pre:(~Stmt[S, gC] `;`)?
-        cond:Expr[V, gC, mC, eNT]?
-        `{` cases:~ExprCaseClause* `}`;
+    Stmt.Switch.Expr <- `switch` _
+        pre:(~Stmt[S, gC] `;` _)?
+        cond:(Expr[V, gC, mC, eNT] _)?
+        `{` _ cases:~ExprCaseClause* _ `}`;
 
-        ExprCaseClause <- cond:(case_:(`case` Vals) | default_:`default`) `:` _
-            body:#L[Stmt::`;`::];
+        ExprCaseClause <- cond:(case_:(`case` _ Vals) | default_:`default`) `:` _
+            body:#B[Stmt::`;`::];
 
-    Stmt.Switch.Type_ <- `switch`
-        pre:(_ ~Stmt[S, gC] `;`)?
-        binding:(_ name:Id _ `:=`)? _
-        arg:Expr[gC, eT]
+    Stmt.Switch.Type_ <- `switch` _
+        pre:(~Stmt[S, gC] `;` _)?
+        binding:(name:Id _ `:=` _)?
+        arg:Expr[gC, eT] _
         `{` cases:~TypeCaseClause* `}`;
 
         TypeCaseClause <-
-            cond:(case_:(`case` #L[Type::+`,`]) | default_:`default`) `:` _
-            body:#L[Stmt::`;`::];
+            cond:(case_:(`case` _ #L[Type::+`,`]) | default_:`default`) `:` _
+            body:#B[Stmt::`;`::];
 
     Stmt.Select <- `select` _ `{` cases:~CommClause* `}`;
 
         CommClause <-
-            cond:(case_:(`case` ~CommClauseCase) | default_:`default`)
+            cond:(case_:(`case` _ ~CommClauseCase) | default_:`default`)
             `:` _ body:#L[Stmt::`;`::];
 
         CommClauseCase.Expr <- x:Val;
-        CommClauseCase.Send <- x:Expr[V, mR] `<-` y:Val;
-        CommClauseCase.RecvDecl <- xs:Ids `:=` ys:Vals;
-        CommClauseCase.RecvAssign <- xs:Vals `=` y:Val;
+        CommClauseCase.Send <- x:Expr[V, mR] _ `<-` _ y:Val;
+        CommClauseCase.RecvDecl <- xs:Ids _ `:=` _ ys:Vals;
+        CommClauseCase.RecvAssign <- xs:Vals _ `=` _ y:Val;
 
     Expr.Id <- name:id;
     Expr.Paren <- `(` x:ExprI `)`;

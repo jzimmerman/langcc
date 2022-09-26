@@ -1035,6 +1035,7 @@ namespace lang::cc::Node {
 namespace lang::cc::Node {
     struct _T: hash_obj, enable_rc_from_this_poly {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::_W w_;
         virtual ~_T();
         Int id_;
@@ -1128,6 +1129,7 @@ namespace lang::cc::Node::Module {
 namespace lang::cc::Node::Module {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Decl_T> decls_;
         _T();
         lang::cc::Node::Module_T with_id(Int id);
@@ -1155,6 +1157,7 @@ namespace lang::cc::Node::Param {
 namespace lang::cc::Node::Param {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Mod_T> mods_;
         lang::cc::Node::Expr_T type__;
         lang::cc::Node::Expr_T name_;
@@ -1188,6 +1191,7 @@ namespace lang::cc::Node::Block {
 namespace lang::cc::Node::Block {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Stmt_T> stmts_;
         _T();
         lang::cc::Node::Block_T with_id(Int id);
@@ -1215,6 +1219,7 @@ namespace lang::cc::Node::TypedDecl {
 namespace lang::cc::Node::TypedDecl {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Mod_T> mods_;
         lang::cc::Node::Expr_T type__;
         Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars_;
@@ -1251,6 +1256,7 @@ namespace lang::cc::Node::Decl {
 namespace lang::cc::Node::Decl {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Decl::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Decl::_W w);
@@ -1287,6 +1293,7 @@ namespace lang::cc::Node::StructDeclDef {
 namespace lang::cc::Node::StructDeclDef {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::StructDeclDef::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::StructDeclDef::_W w);
@@ -1311,6 +1318,7 @@ namespace lang::cc::Node::Entry {
 namespace lang::cc::Node::Entry {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Entry::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Entry::_W w);
@@ -1337,6 +1345,7 @@ namespace lang::cc::Node::FunDeclDef {
 namespace lang::cc::Node::FunDeclDef {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::FunDeclDef::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::FunDeclDef::_W w);
@@ -1369,6 +1378,7 @@ namespace lang::cc::Node::Mod {
 namespace lang::cc::Node::Mod {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Mod::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Mod::_W w);
@@ -1409,6 +1419,7 @@ namespace lang::cc::Node::Stmt {
 namespace lang::cc::Node::Stmt {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Stmt::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Stmt::_W w);
@@ -1449,6 +1460,7 @@ namespace lang::cc::Node::ExprExt {
 namespace lang::cc::Node::ExprExt {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::ExprExt::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::ExprExt::_W w);
@@ -1473,6 +1485,7 @@ namespace lang::cc::Node::SwitchCase {
 namespace lang::cc::Node::SwitchCase {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::SwitchCase::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::SwitchCase::_W w);
@@ -1522,6 +1535,7 @@ namespace lang::cc::Node::Expr {
 namespace lang::cc::Node::Expr {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::_W w);
@@ -1597,6 +1611,7 @@ namespace lang::cc::Node::Decl::Struct {
 namespace lang::cc::Node::Decl::Struct {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl_;
         lang::cc::Node::Expr_T name_;
         lang::cc::Node::StructDeclDef_T body_;
@@ -1628,6 +1643,7 @@ namespace lang::cc::Node::StructDeclDef::Decl {
 namespace lang::cc::Node::StructDeclDef::Decl {
     struct _T: lang::cc::Node::StructDeclDef::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::StructDeclDef::Decl_T with_id(Int id);
         lang::cc::Node::StructDeclDef::Decl_T with_bounds(lang_rt::TokenBounds bounds);
@@ -1653,6 +1669,7 @@ namespace lang::cc::Node::StructDeclDef::Def {
 namespace lang::cc::Node::StructDeclDef::Def {
     struct _T: lang::cc::Node::StructDeclDef::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Option_T<Vec_T<lang::cc::Node::Expr_T>> base_;
         Vec_T<lang::cc::Node::Entry_T> entries_;
         _T();
@@ -1682,6 +1699,7 @@ namespace lang::cc::Node::Entry::Field {
 namespace lang::cc::Node::Entry::Field {
     struct _T: lang::cc::Node::Entry::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T type__;
         lang::cc::Node::Expr_T name_;
         _T();
@@ -1711,6 +1729,7 @@ namespace lang::cc::Node::Entry::Fun {
 namespace lang::cc::Node::Entry::Fun {
     struct _T: lang::cc::Node::Entry::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl_;
         Vec_T<lang::cc::Node::Mod_T> mods_;
         Option_T<lang::cc::Node::Expr_T> ret_type_;
@@ -1750,6 +1769,7 @@ namespace lang::cc::Node::Param::val {
 namespace lang::cc::Node::Param::val {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T init_val_;
         _T();
         lang::cc::Node::Param::val_T with_id(Int id);
@@ -1777,6 +1797,7 @@ namespace lang::cc::Node::FunDeclDef::Decl {
 namespace lang::cc::Node::FunDeclDef::Decl {
     struct _T: lang::cc::Node::FunDeclDef::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::FunDeclDef::Decl_T with_id(Int id);
         lang::cc::Node::FunDeclDef::Decl_T with_bounds(lang_rt::TokenBounds bounds);
@@ -1802,6 +1823,7 @@ namespace lang::cc::Node::FunDeclDef::Def {
 namespace lang::cc::Node::FunDeclDef::Def {
     struct _T: lang::cc::Node::FunDeclDef::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Option_T<Vec_T<lang::cc::Node::Expr_T>> init_;
         lang::cc::Node::Block_T body_;
         _T();
@@ -1831,6 +1853,7 @@ namespace lang::cc::Node::FunDeclDef::Del {
 namespace lang::cc::Node::FunDeclDef::Del {
     struct _T: lang::cc::Node::FunDeclDef::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::FunDeclDef::Del_T with_id(Int id);
         lang::cc::Node::FunDeclDef::Del_T with_bounds(lang_rt::TokenBounds bounds);
@@ -1856,6 +1879,7 @@ namespace lang::cc::Node::FunDeclDef::Zero {
 namespace lang::cc::Node::FunDeclDef::Zero {
     struct _T: lang::cc::Node::FunDeclDef::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice val_;
         _T();
         lang::cc::Node::FunDeclDef::Zero_T with_id(Int id);
@@ -1883,6 +1907,7 @@ namespace lang::cc::Node::Decl::EnumStruct {
 namespace lang::cc::Node::Decl::EnumStruct {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T name_;
         Vec_T<lang::cc::Node::Expr_T> cases_;
         _T();
@@ -1912,6 +1937,7 @@ namespace lang::cc::Node::Decl::Fun {
 namespace lang::cc::Node::Decl::Fun {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl_;
         Vec_T<lang::cc::Node::Mod_T> mods_;
         Option_T<lang::cc::Node::Expr_T> ret_type_;
@@ -1951,6 +1977,7 @@ namespace lang::cc::Node::Mod::Const {
 namespace lang::cc::Node::Mod::Const {
     struct _T: lang::cc::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Mod::Const_T with_id(Int id);
         lang::cc::Node::Mod::Const_T with_bounds(lang_rt::TokenBounds bounds);
@@ -1976,6 +2003,7 @@ namespace lang::cc::Node::Mod::Inline {
 namespace lang::cc::Node::Mod::Inline {
     struct _T: lang::cc::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Mod::Inline_T with_id(Int id);
         lang::cc::Node::Mod::Inline_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2001,6 +2029,7 @@ namespace lang::cc::Node::Mod::Static {
 namespace lang::cc::Node::Mod::Static {
     struct _T: lang::cc::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Mod::Static_T with_id(Int id);
         lang::cc::Node::Mod::Static_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2026,6 +2055,7 @@ namespace lang::cc::Node::Mod::Virtual {
 namespace lang::cc::Node::Mod::Virtual {
     struct _T: lang::cc::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Mod::Virtual_T with_id(Int id);
         lang::cc::Node::Mod::Virtual_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2051,6 +2081,7 @@ namespace lang::cc::Node::Mod::NoInline {
 namespace lang::cc::Node::Mod::NoInline {
     struct _T: lang::cc::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Mod::NoInline_T with_id(Int id);
         lang::cc::Node::Mod::NoInline_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2076,6 +2107,7 @@ namespace lang::cc::Node::Mod::AlwaysInline {
 namespace lang::cc::Node::Mod::AlwaysInline {
     struct _T: lang::cc::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Mod::AlwaysInline_T with_id(Int id);
         lang::cc::Node::Mod::AlwaysInline_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2101,6 +2133,7 @@ namespace lang::cc::Node::Decl::Namespace {
 namespace lang::cc::Node::Decl::Namespace {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T name_;
         Vec_T<lang::cc::Node::Decl_T> body_;
         _T();
@@ -2130,6 +2163,7 @@ namespace lang::cc::Node::Decl::UsingAlias {
 namespace lang::cc::Node::Decl::UsingAlias {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl_;
         lang::cc::Node::Expr_T name_;
         lang::cc::Node::Expr_T val_;
@@ -2161,6 +2195,7 @@ namespace lang::cc::Node::Decl::UsingNamespace {
 namespace lang::cc::Node::Decl::UsingNamespace {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T name_;
         _T();
         lang::cc::Node::Decl::UsingNamespace_T with_id(Int id);
@@ -2188,6 +2223,7 @@ namespace lang::cc::Node::Decl::Include {
 namespace lang::cc::Node::Decl::Include {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice x_;
         _T();
         lang::cc::Node::Decl::Include_T with_id(Int id);
@@ -2215,6 +2251,7 @@ namespace lang::cc::Node::Decl::PragmaOnce {
 namespace lang::cc::Node::Decl::PragmaOnce {
     struct _T: lang::cc::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice x_;
         _T();
         lang::cc::Node::Decl::PragmaOnce_T with_id(Int id);
@@ -2242,6 +2279,7 @@ namespace lang::cc::Node::Stmt::Decl {
 namespace lang::cc::Node::Stmt::Decl {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::TypedDecl_T decl_;
         _T();
         lang::cc::Node::Stmt::Decl_T with_id(Int id);
@@ -2269,6 +2307,7 @@ namespace lang::cc::Node::Stmt::Expr {
 namespace lang::cc::Node::Stmt::Expr {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T e_;
         _T();
         lang::cc::Node::Stmt::Expr_T with_id(Int id);
@@ -2296,6 +2335,7 @@ namespace lang::cc::Node::Stmt::Block {
 namespace lang::cc::Node::Stmt::Block {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Block_T block_;
         _T();
         lang::cc::Node::Stmt::Block_T with_id(Int id);
@@ -2323,6 +2363,7 @@ namespace lang::cc::Node::Stmt::If {
 namespace lang::cc::Node::Stmt::If {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T cond_;
         lang::cc::Node::Stmt_T xt_;
         _T();
@@ -2352,6 +2393,7 @@ namespace lang::cc::Node::Stmt::IfElse {
 namespace lang::cc::Node::Stmt::IfElse {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T cond_;
         lang::cc::Node::Stmt_T xt_;
         lang::cc::Node::Stmt_T xf_;
@@ -2383,6 +2425,7 @@ namespace lang::cc::Node::Stmt::For {
 namespace lang::cc::Node::Stmt::For {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::ExprExt_T init_;
         lang::cc::Node::Expr_T cond_;
         lang::cc::Node::Expr_T incr_;
@@ -2416,6 +2459,7 @@ namespace lang::cc::Node::ExprExt::Expr {
 namespace lang::cc::Node::ExprExt::Expr {
     struct _T: lang::cc::Node::ExprExt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T e_;
         _T();
         lang::cc::Node::ExprExt::Expr_T with_id(Int id);
@@ -2443,6 +2487,7 @@ namespace lang::cc::Node::ExprExt::Decl {
 namespace lang::cc::Node::ExprExt::Decl {
     struct _T: lang::cc::Node::ExprExt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::TypedDecl_T decl_;
         _T();
         lang::cc::Node::ExprExt::Decl_T with_id(Int id);
@@ -2470,6 +2515,7 @@ namespace lang::cc::Node::Stmt::Switch {
 namespace lang::cc::Node::Stmt::Switch {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T val_;
         Vec_T<lang::cc::Node::SwitchCase_T> cases_;
         _T();
@@ -2499,6 +2545,7 @@ namespace lang::cc::Node::SwitchCase::Case {
 namespace lang::cc::Node::SwitchCase::Case {
     struct _T: lang::cc::Node::SwitchCase::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T val_;
         lang::cc::Node::Block_T body_;
         _T();
@@ -2528,6 +2575,7 @@ namespace lang::cc::Node::SwitchCase::Default {
 namespace lang::cc::Node::SwitchCase::Default {
     struct _T: lang::cc::Node::SwitchCase::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Block_T body_;
         _T();
         lang::cc::Node::SwitchCase::Default_T with_id(Int id);
@@ -2555,6 +2603,7 @@ namespace lang::cc::Node::Stmt::Break {
 namespace lang::cc::Node::Stmt::Break {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Stmt::Break_T with_id(Int id);
         lang::cc::Node::Stmt::Break_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2580,6 +2629,7 @@ namespace lang::cc::Node::Stmt::Continue {
 namespace lang::cc::Node::Stmt::Continue {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Stmt::Continue_T with_id(Int id);
         lang::cc::Node::Stmt::Continue_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2605,6 +2655,7 @@ namespace lang::cc::Node::Stmt::Return {
 namespace lang::cc::Node::Stmt::Return {
     struct _T: lang::cc::Node::Stmt::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Option_T<lang::cc::Node::Expr_T> val_;
         _T();
         lang::cc::Node::Stmt::Return_T with_id(Int id);
@@ -2632,6 +2683,7 @@ namespace lang::cc::Node::Expr::Paren {
 namespace lang::cc::Node::Expr::Paren {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::Paren_T with_id(Int id);
@@ -2659,6 +2711,7 @@ namespace lang::cc::Node::Expr::Call {
 namespace lang::cc::Node::Expr::Call {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T f_;
         Vec_T<lang::cc::Node::Expr_T> args_;
         _T();
@@ -2688,6 +2741,7 @@ namespace lang::cc::Node::Expr::Index {
 namespace lang::cc::Node::Expr::Index {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T f_;
         lang::cc::Node::Expr_T arg_;
         _T();
@@ -2717,6 +2771,7 @@ namespace lang::cc::Node::Expr::IndexEmpty {
 namespace lang::cc::Node::Expr::IndexEmpty {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T f_;
         _T();
         lang::cc::Node::Expr::IndexEmpty_T with_id(Int id);
@@ -2744,6 +2799,7 @@ namespace lang::cc::Node::Expr::Dot {
 namespace lang::cc::Node::Expr::Dot {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         lang::cc::Node::Expr_T field_;
         _T();
@@ -2773,6 +2829,7 @@ namespace lang::cc::Node::Expr::Arrow {
 namespace lang::cc::Node::Expr::Arrow {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         lang::cc::Node::Expr_T field_;
         _T();
@@ -2802,6 +2859,7 @@ namespace lang::cc::Node::Expr::Ref {
 namespace lang::cc::Node::Expr::Ref {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::Ref_T with_id(Int id);
@@ -2829,6 +2887,7 @@ namespace lang::cc::Node::Expr::AddrOf {
 namespace lang::cc::Node::Expr::AddrOf {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::AddrOf_T with_id(Int id);
@@ -2856,6 +2915,7 @@ namespace lang::cc::Node::Expr::Deref {
 namespace lang::cc::Node::Expr::Deref {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::Deref_T with_id(Int id);
@@ -2883,6 +2943,7 @@ namespace lang::cc::Node::Expr::UnaryPre {
 namespace lang::cc::Node::Expr::UnaryPre {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::UnaryPre::op_T op_;
         lang::cc::Node::Expr_T x_;
         _T();
@@ -2912,6 +2973,7 @@ namespace lang::cc::Node::Expr::IncDecPre {
 namespace lang::cc::Node::Expr::IncDecPre {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::IncDecPre::op_T op_;
         lang::cc::Node::Expr_T x_;
         _T();
@@ -2941,6 +3003,7 @@ namespace lang::cc::Node::Expr::IncDecPost {
 namespace lang::cc::Node::Expr::IncDecPost {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         lang::cc::Node::Expr::IncDecPost::op_T op_;
         _T();
@@ -2970,6 +3033,7 @@ namespace lang::cc::Node::Expr::Assign {
 namespace lang::cc::Node::Expr::Assign {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T xl_;
         lang::cc::Node::Expr_T xr_;
         _T();
@@ -2999,6 +3063,7 @@ namespace lang::cc::Node::Expr::Bin1 {
 namespace lang::cc::Node::Expr::Bin1 {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T xl_;
         lang::cc::Node::Expr::Bin1::op_T op_;
         lang::cc::Node::Expr_T xr_;
@@ -3030,6 +3095,7 @@ namespace lang::cc::Node::Expr::Bin2 {
 namespace lang::cc::Node::Expr::Bin2 {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T xl_;
         lang::cc::Node::Expr::Bin2::op_T op_;
         lang::cc::Node::Expr_T xr_;
@@ -3061,6 +3127,7 @@ namespace lang::cc::Node::Expr::Bin3 {
 namespace lang::cc::Node::Expr::Bin3 {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T xl_;
         lang::cc::Node::Expr::Bin3::op_T op_;
         lang::cc::Node::Expr_T xr_;
@@ -3092,6 +3159,7 @@ namespace lang::cc::Node::Expr::Bin4 {
 namespace lang::cc::Node::Expr::Bin4 {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T xl_;
         lang::cc::Node::Expr::Bin4::op_T op_;
         lang::cc::Node::Expr_T xr_;
@@ -3123,6 +3191,7 @@ namespace lang::cc::Node::Expr::Bin5 {
 namespace lang::cc::Node::Expr::Bin5 {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T xl_;
         lang::cc::Node::Expr::Bin5::op_T op_;
         lang::cc::Node::Expr_T xr_;
@@ -3154,6 +3223,7 @@ namespace lang::cc::Node::Expr::Bin6 {
 namespace lang::cc::Node::Expr::Bin6 {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T xl_;
         lang::cc::Node::Expr::Bin6::op_T op_;
         lang::cc::Node::Expr_T xr_;
@@ -3185,6 +3255,7 @@ namespace lang::cc::Node::Expr::Template {
 namespace lang::cc::Node::Expr::Template {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         Vec_T<lang::cc::Node::Expr_T> args_;
         _T();
@@ -3214,6 +3285,7 @@ namespace lang::cc::Node::Expr::New {
 namespace lang::cc::Node::Expr::New {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::New_T with_id(Int id);
@@ -3241,6 +3313,7 @@ namespace lang::cc::Node::Expr::Delete {
 namespace lang::cc::Node::Expr::Delete {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::Delete_T with_id(Int id);
@@ -3268,6 +3341,7 @@ namespace lang::cc::Node::Expr::Ellipsis {
 namespace lang::cc::Node::Expr::Ellipsis {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::Ellipsis_T with_id(Int id);
@@ -3295,6 +3369,7 @@ namespace lang::cc::Node::Expr::Tilde {
 namespace lang::cc::Node::Expr::Tilde {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         _T();
         lang::cc::Node::Expr::Tilde_T with_id(Int id);
@@ -3322,6 +3397,7 @@ namespace lang::cc::Node::Expr::Namespace {
 namespace lang::cc::Node::Expr::Namespace {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T x_;
         bool tilde_;
         lang::cc::Node::Expr_T name_;
@@ -3353,6 +3429,7 @@ namespace lang::cc::Node::Expr::Id {
 namespace lang::cc::Node::Expr::Id {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice name_;
         _T();
         lang::cc::Node::Expr::Id_T with_id(Int id);
@@ -3380,6 +3457,7 @@ namespace lang::cc::Node::Expr::Lit {
 namespace lang::cc::Node::Expr::Lit {
     struct _T: lang::cc::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::Lit::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::Lit::_W w);
@@ -3407,6 +3485,7 @@ namespace lang::cc::Node::Decl::Struct::tmpl {
 namespace lang::cc::Node::Decl::Struct::tmpl {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args_;
         _T();
         lang::cc::Node::Decl::Struct::tmpl_T with_id(Int id);
@@ -3434,6 +3513,7 @@ namespace lang::cc::Node::Entry::Fun::tmpl {
 namespace lang::cc::Node::Entry::Fun::tmpl {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args_;
         _T();
         lang::cc::Node::Entry::Fun::tmpl_T with_id(Int id);
@@ -3461,6 +3541,7 @@ namespace lang::cc::Node::Decl::Fun::tmpl {
 namespace lang::cc::Node::Decl::Fun::tmpl {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args_;
         _T();
         lang::cc::Node::Decl::Fun::tmpl_T with_id(Int id);
@@ -3488,6 +3569,7 @@ namespace lang::cc::Node::Decl::UsingAlias::tmpl {
 namespace lang::cc::Node::Decl::UsingAlias::tmpl {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args_;
         _T();
         lang::cc::Node::Decl::UsingAlias::tmpl_T with_id(Int id);
@@ -3515,6 +3597,7 @@ namespace lang::cc::Node::TypedDecl::vars::item {
 namespace lang::cc::Node::TypedDecl::vars::item {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T name_;
         Option_T<lang::cc::Node::TypedDecl::vars::item::val_T> val_;
         _T();
@@ -3543,6 +3626,7 @@ namespace lang::cc::Node::Expr::UnaryPre::op {
 namespace lang::cc::Node::Expr::UnaryPre::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::UnaryPre::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::UnaryPre::op::_W w);
@@ -3567,6 +3651,7 @@ namespace lang::cc::Node::Expr::IncDecPre::op {
 namespace lang::cc::Node::Expr::IncDecPre::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::IncDecPre::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::IncDecPre::op::_W w);
@@ -3591,6 +3676,7 @@ namespace lang::cc::Node::Expr::IncDecPost::op {
 namespace lang::cc::Node::Expr::IncDecPost::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::IncDecPost::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::IncDecPost::op::_W w);
@@ -3614,6 +3700,7 @@ namespace lang::cc::Node::Expr::Bin1::op {
 namespace lang::cc::Node::Expr::Bin1::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::Bin1::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::Bin1::op::_W w);
@@ -3635,6 +3722,7 @@ namespace lang::cc::Node::Expr::Bin2::op {
 namespace lang::cc::Node::Expr::Bin2::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::Bin2::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::Bin2::op::_W w);
@@ -3661,6 +3749,7 @@ namespace lang::cc::Node::Expr::Bin3::op {
 namespace lang::cc::Node::Expr::Bin3::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::Bin3::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::Bin3::op::_W w);
@@ -3692,6 +3781,7 @@ namespace lang::cc::Node::Expr::Bin4::op {
 namespace lang::cc::Node::Expr::Bin4::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::Bin4::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::Bin4::op::_W w);
@@ -3714,6 +3804,7 @@ namespace lang::cc::Node::Expr::Bin5::op {
 namespace lang::cc::Node::Expr::Bin5::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::Bin5::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::Bin5::op::_W w);
@@ -3739,6 +3830,7 @@ namespace lang::cc::Node::Expr::Bin6::op {
 namespace lang::cc::Node::Expr::Bin6::op {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr::Bin6::op::_W w_;
         virtual ~_T();
         _T(lang::cc::Node::Expr::Bin6::op::_W w);
@@ -3766,6 +3858,7 @@ namespace lang::cc::Node::Expr::Lit::Integer {
 namespace lang::cc::Node::Expr::Lit::Integer {
     struct _T: lang::cc::Node::Expr::Lit::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice val_;
         _T();
         lang::cc::Node::Expr::Lit::Integer_T with_id(Int id);
@@ -3793,6 +3886,7 @@ namespace lang::cc::Node::Expr::Lit::Str {
 namespace lang::cc::Node::Expr::Lit::Str {
     struct _T: lang::cc::Node::Expr::Lit::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice val_;
         _T();
         lang::cc::Node::Expr::Lit::Str_T with_id(Int id);
@@ -3820,6 +3914,7 @@ namespace lang::cc::Node::Expr::Lit::Array {
 namespace lang::cc::Node::Expr::Lit::Array {
     struct _T: lang::cc::Node::Expr::Lit::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::cc::Node::Expr_T> items_;
         _T();
         lang::cc::Node::Expr::Lit::Array_T with_id(Int id);
@@ -3847,6 +3942,7 @@ namespace lang::cc::Node::TypedDecl::vars::item::val {
 namespace lang::cc::Node::TypedDecl::vars::item::val {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::cc::Node::Expr_T init_val_;
         _T();
         lang::cc::Node::TypedDecl::vars::item::val_T with_id(Int id);
@@ -3874,6 +3970,7 @@ namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
 namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
     struct _T: lang::cc::Node::Expr::UnaryPre::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::UnaryPre::op::NOT_T with_id(Int id);
         lang::cc::Node::Expr::UnaryPre::op::NOT_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3899,6 +3996,7 @@ namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
 namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
     struct _T: lang::cc::Node::Expr::UnaryPre::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::UnaryPre::op::NEG_T with_id(Int id);
         lang::cc::Node::Expr::UnaryPre::op::NEG_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3924,6 +4022,7 @@ namespace lang::cc::Node::Expr::IncDecPre::op::INC {
 namespace lang::cc::Node::Expr::IncDecPre::op::INC {
     struct _T: lang::cc::Node::Expr::IncDecPre::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::IncDecPre::op::INC_T with_id(Int id);
         lang::cc::Node::Expr::IncDecPre::op::INC_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3949,6 +4048,7 @@ namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
 namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
     struct _T: lang::cc::Node::Expr::IncDecPre::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::IncDecPre::op::DEC_T with_id(Int id);
         lang::cc::Node::Expr::IncDecPre::op::DEC_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3974,6 +4074,7 @@ namespace lang::cc::Node::Expr::IncDecPost::op::INC {
 namespace lang::cc::Node::Expr::IncDecPost::op::INC {
     struct _T: lang::cc::Node::Expr::IncDecPost::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::IncDecPost::op::INC_T with_id(Int id);
         lang::cc::Node::Expr::IncDecPost::op::INC_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3999,6 +4100,7 @@ namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
 namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
     struct _T: lang::cc::Node::Expr::IncDecPost::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::IncDecPost::op::DEC_T with_id(Int id);
         lang::cc::Node::Expr::IncDecPost::op::DEC_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4024,6 +4126,7 @@ namespace lang::cc::Node::Expr::Bin1::op::LOR {
 namespace lang::cc::Node::Expr::Bin1::op::LOR {
     struct _T: lang::cc::Node::Expr::Bin1::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin1::op::LOR_T with_id(Int id);
         lang::cc::Node::Expr::Bin1::op::LOR_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4049,6 +4152,7 @@ namespace lang::cc::Node::Expr::Bin2::op::LAND {
 namespace lang::cc::Node::Expr::Bin2::op::LAND {
     struct _T: lang::cc::Node::Expr::Bin2::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin2::op::LAND_T with_id(Int id);
         lang::cc::Node::Expr::Bin2::op::LAND_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4074,6 +4178,7 @@ namespace lang::cc::Node::Expr::Bin3::op::EQ {
 namespace lang::cc::Node::Expr::Bin3::op::EQ {
     struct _T: lang::cc::Node::Expr::Bin3::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin3::op::EQ_T with_id(Int id);
         lang::cc::Node::Expr::Bin3::op::EQ_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4099,6 +4204,7 @@ namespace lang::cc::Node::Expr::Bin3::op::NE {
 namespace lang::cc::Node::Expr::Bin3::op::NE {
     struct _T: lang::cc::Node::Expr::Bin3::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin3::op::NE_T with_id(Int id);
         lang::cc::Node::Expr::Bin3::op::NE_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4124,6 +4230,7 @@ namespace lang::cc::Node::Expr::Bin3::op::LE {
 namespace lang::cc::Node::Expr::Bin3::op::LE {
     struct _T: lang::cc::Node::Expr::Bin3::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin3::op::LE_T with_id(Int id);
         lang::cc::Node::Expr::Bin3::op::LE_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4149,6 +4256,7 @@ namespace lang::cc::Node::Expr::Bin3::op::GE {
 namespace lang::cc::Node::Expr::Bin3::op::GE {
     struct _T: lang::cc::Node::Expr::Bin3::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin3::op::GE_T with_id(Int id);
         lang::cc::Node::Expr::Bin3::op::GE_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4174,6 +4282,7 @@ namespace lang::cc::Node::Expr::Bin3::op::LT {
 namespace lang::cc::Node::Expr::Bin3::op::LT {
     struct _T: lang::cc::Node::Expr::Bin3::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin3::op::LT_T with_id(Int id);
         lang::cc::Node::Expr::Bin3::op::LT_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4199,6 +4308,7 @@ namespace lang::cc::Node::Expr::Bin3::op::GT {
 namespace lang::cc::Node::Expr::Bin3::op::GT {
     struct _T: lang::cc::Node::Expr::Bin3::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin3::op::GT_T with_id(Int id);
         lang::cc::Node::Expr::Bin3::op::GT_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4224,6 +4334,7 @@ namespace lang::cc::Node::Expr::Bin4::op::SHL {
 namespace lang::cc::Node::Expr::Bin4::op::SHL {
     struct _T: lang::cc::Node::Expr::Bin4::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin4::op::SHL_T with_id(Int id);
         lang::cc::Node::Expr::Bin4::op::SHL_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4249,6 +4360,7 @@ namespace lang::cc::Node::Expr::Bin5::op::PLUS {
 namespace lang::cc::Node::Expr::Bin5::op::PLUS {
     struct _T: lang::cc::Node::Expr::Bin5::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin5::op::PLUS_T with_id(Int id);
         lang::cc::Node::Expr::Bin5::op::PLUS_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4274,6 +4386,7 @@ namespace lang::cc::Node::Expr::Bin5::op::MINUS {
 namespace lang::cc::Node::Expr::Bin5::op::MINUS {
     struct _T: lang::cc::Node::Expr::Bin5::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin5::op::MINUS_T with_id(Int id);
         lang::cc::Node::Expr::Bin5::op::MINUS_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4299,6 +4412,7 @@ namespace lang::cc::Node::Expr::Bin6::op::TIMES {
 namespace lang::cc::Node::Expr::Bin6::op::TIMES {
     struct _T: lang::cc::Node::Expr::Bin6::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin6::op::TIMES_T with_id(Int id);
         lang::cc::Node::Expr::Bin6::op::TIMES_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4324,6 +4438,7 @@ namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
 namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
     struct _T: lang::cc::Node::Expr::Bin6::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin6::op::DIVIDE_T with_id(Int id);
         lang::cc::Node::Expr::Bin6::op::DIVIDE_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4349,6 +4464,7 @@ namespace lang::cc::Node::Expr::Bin6::op::MODULO {
 namespace lang::cc::Node::Expr::Bin6::op::MODULO {
     struct _T: lang::cc::Node::Expr::Bin6::op::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::cc::Node::Expr::Bin6::op::MODULO_T with_id(Int id);
         lang::cc::Node::Expr::Bin6::op::MODULO_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4374,6 +4490,7 @@ namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
 namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();
@@ -4403,6 +4520,7 @@ namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
 namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();
@@ -4432,6 +4550,7 @@ namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
 namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();
@@ -4461,6 +4580,7 @@ namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
 namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
     struct _T: lang::cc::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();

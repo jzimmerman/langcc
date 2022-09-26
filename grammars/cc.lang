@@ -242,6 +242,40 @@ test {
 };
 ` <- Module;
 
+`struct A {
+    void foo() {
+        p = 3;
+    }
+};
+` <- Module;
+
+`struct A {
+    void foo() {
+        p = 3;
+    }
+    void bar() {
+        q = 4;
+    }
+};
+` <- Module;
+
+`namespace NS {
+    void foo() {
+        p = 3;
+    }
+
+    void bar() {
+        q = 4;
+    }
+
+    struct baz {
+        void qux() {
+        }
+        void quux() {
+        }
+    };
+}
+` <- Module;
 
 `{
     {

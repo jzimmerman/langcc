@@ -202,6 +202,7 @@ namespace lang::data::Node {
 namespace lang::data::Node {
     struct _T: hash_obj, enable_rc_from_this_poly {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::_W w_;
         virtual ~_T();
         Int id_;
@@ -245,6 +246,7 @@ namespace lang::data::Node::Module {
 namespace lang::data::Node::Module {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<lang::data::Node::Decl_T> decls_;
         _T();
         lang::data::Node::Module_T with_id(Int id);
@@ -272,6 +274,7 @@ namespace lang::data::Node::Param {
 namespace lang::data::Node::Param {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice name_;
         lang::data::Node::Expr_T type__;
         _T();
@@ -301,6 +304,7 @@ namespace lang::data::Node::Field {
 namespace lang::data::Node::Field {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice name_;
         bool no_hash__;
         lang::data::Node::Expr_T type__;
@@ -332,6 +336,7 @@ namespace lang::data::Node::SumId {
 namespace lang::data::Node::SumId {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<StrSlice> items_;
         _T();
         lang::data::Node::SumId_T with_id(Int id);
@@ -359,6 +364,7 @@ namespace lang::data::Node::Id {
 namespace lang::data::Node::Id {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         Vec_T<StrSlice> items_;
         _T();
         lang::data::Node::Id_T with_id(Int id);
@@ -387,6 +393,7 @@ namespace lang::data::Node::Decl {
 namespace lang::data::Node::Decl {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::Decl::_W w_;
         virtual ~_T();
         _T(lang::data::Node::Decl::_W w);
@@ -416,6 +423,7 @@ namespace lang::data::Node::Mod {
 namespace lang::data::Node::Mod {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::Mod::_W w_;
         virtual ~_T();
         _T(lang::data::Node::Mod::_W w);
@@ -443,6 +451,7 @@ namespace lang::data::Node::Expr {
 namespace lang::data::Node::Expr {
     struct _T: lang::data::Node::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::Expr::_W w_;
         virtual ~_T();
         _T(lang::data::Node::Expr::_W w);
@@ -470,6 +479,7 @@ namespace lang::data::Node::Decl::Include {
 namespace lang::data::Node::Decl::Include {
     struct _T: lang::data::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         StrSlice path_;
         _T();
         lang::data::Node::Decl::Include_T with_id(Int id);
@@ -497,6 +507,7 @@ namespace lang::data::Node::Decl::Namespace {
 namespace lang::data::Node::Decl::Namespace {
     struct _T: lang::data::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::Id_T name_;
         Vec_T<lang::data::Node::Decl_T> body_;
         _T();
@@ -526,6 +537,7 @@ namespace lang::data::Node::Decl::Data {
 namespace lang::data::Node::Decl::Data {
     struct _T: lang::data::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::SumId_T name_;
         Option_T<lang::data::Node::SumId_T> base_;
         Option_T<Vec_T<lang::data::Node::Param_T>> params_;
@@ -561,6 +573,7 @@ namespace lang::data::Node::Decl::Enum {
 namespace lang::data::Node::Decl::Enum {
     struct _T: lang::data::Node::Decl::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::Id_T name_;
         Vec_T<StrSlice> cases_;
         _T();
@@ -590,6 +603,7 @@ namespace lang::data::Node::Mod::Mut {
 namespace lang::data::Node::Mod::Mut {
     struct _T: lang::data::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::data::Node::Mod::Mut_T with_id(Int id);
         lang::data::Node::Mod::Mut_T with_bounds(lang_rt::TokenBounds bounds);
@@ -615,6 +629,7 @@ namespace lang::data::Node::Mod::Xform {
 namespace lang::data::Node::Mod::Xform {
     struct _T: lang::data::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::data::Node::Mod::Xform_T with_id(Int id);
         lang::data::Node::Mod::Xform_T with_bounds(lang_rt::TokenBounds bounds);
@@ -640,6 +655,7 @@ namespace lang::data::Node::Mod::Visit {
 namespace lang::data::Node::Mod::Visit {
     struct _T: lang::data::Node::Mod::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::data::Node::Mod::Visit_T with_id(Int id);
         lang::data::Node::Mod::Visit_T with_bounds(lang_rt::TokenBounds bounds);
@@ -665,6 +681,7 @@ namespace lang::data::Node::Expr::Id {
 namespace lang::data::Node::Expr::Id {
     struct _T: lang::data::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         bool ext_;
         lang::data::Node::Id_T x_;
         _T();
@@ -694,6 +711,7 @@ namespace lang::data::Node::Expr::App {
 namespace lang::data::Node::Expr::App {
     struct _T: lang::data::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         lang::data::Node::Expr_T f_;
         Vec_T<lang::data::Node::Expr_T> args_;
         _T();
@@ -723,6 +741,7 @@ namespace lang::data::Node::Expr::Type_ {
 namespace lang::data::Node::Expr::Type_ {
     struct _T: lang::data::Node::Expr::_T {
         void write(ostream& os, FmtFlags flags);
+        void write(lang_rt::PrBufStream_T& pb);
         _T();
         lang::data::Node::Expr::Type__T with_id(Int id);
         lang::data::Node::Expr::Type__T with_bounds(lang_rt::TokenBounds bounds);

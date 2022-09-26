@@ -322,7 +322,7 @@ void lexer_gen_cpp_defs(
     LangCompileContext& ctx, CppGenContext& cc, string src_base_name,
     Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_mode_dfas);
 void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
-    cc::Node_T curr, cc::Node_T flags_curr, GenName fun_ns,
+    cc::Node_T curr, GenName fun_ns,
     string src_base_name, CppGenContext& cc, LangCompileContext& ctx);
 cc::Node_T parser_lr_unwind_impl_gen_cpp(
     CppGenContext& cc, Prod_T prod_cps, Prod_T prod_flat, LangCompileContext& ctx,

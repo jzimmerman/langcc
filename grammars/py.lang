@@ -167,6 +167,11 @@ parser {
                     Id => lhs[D],
                     Dot => lhs[D] -> rhs[D],
                 };
+
+                match {
+                    Lit.Int_ => lhs[Z],
+                    _ => lhs[NZ],
+                };
             },
 
             ExprNL => {
@@ -195,7 +200,8 @@ parser {
         Expr.UnaryPre prefix;
         Expr.Bin.L7 assoc_left;
         Expr.Await;
-        Expr.Call.Args Expr.Call.Comp Expr.Index Expr.Dot postfix;
+        Expr.Call.Args Expr.Call.Comp Expr.Index
+            Expr.Dot.Z Expr.Dot.NZ postfix;
         Expr.Id Expr.IdSpecial Expr.Lit.Int_ Expr.Lit.Float Expr.Lit.Imag
             Expr.Lit.Str Expr.Lit.Bytes Expr.Paren 
             Expr.List Expr.ListComp Expr.SetConsComp Expr.SetCons
@@ -206,12 +212,12 @@ parser {
     Module <- stmts:#T[Stmt::eps];
 
     Block.Single <- stmts:StmtsSm newline;
-    Block.Multi <- newline indent stmts:#B[Stmt::eps] dedent;
+    Block.Multi <- newline indent stmts:#L[Stmt::+eps] dedent;
 
     Stmt.ClassDef <- dec:Decorator*
         `class` _ name:id args:(`(` Args `)`)? `:` body:Block;
 
-        Args <= #L[~Arg::`,`:?];
+        Args <= #L[~Arg::`,`_:?];
 
         Arg.Val <- x:Expr;
         Arg.KV.Single <- name:Id `=` val:Expr;
@@ -245,8 +251,8 @@ parser {
     Stmt.While <- `while` _ cond:Expr `:` body:Block
         xr:(`else` `:` body:Block)?;
 
-    Stmt.For <- async_:(`async` _)? `for` _ xs:#L[Expr[A]::+`,`:?]
-        `in` ys:Exprs `:` body:Block xr:(`else` `:` body:Block)?;
+    Stmt.For <- async_:(`async` _)? `for` _ xs:#L[Expr[A]::+`,`_:?] _
+        `in` _ ys:Exprs `:` body:Block xr:(`else` `:` body:Block)?;
 
     Stmt.Try <- `try` `:` body:Block
         xe:(`except` _ cl:ExceptClause `:` body:Block)*
@@ -255,8 +261,8 @@ parser {
         ExceptClause.Value <- val:Expr name:(_ `as` _ id)?;
         ExceptClause.Default <- eps;
 
-    Stmt.With <- async:`async`? `with`
-        xs:#L[x:Expr xa:(`as` Expr)?::+`,`] `:` body:Block;
+    Stmt.With <- async:(`async` _)? `with` _
+        xs:#L[x:Expr xa:(_ `as` _ Expr)?::+`,`_] `:` body:Block;
 
     Stmt.Simple <- items:StmtsSm newline;
 
@@ -273,20 +279,20 @@ parser {
         Yield.From <- `yield` _ `from` _ x:Expr;
 
     StmtSm.Import.Name <- `import` _
-        xs:#L[name:DottedName xa:(_ `as` _ id)?::+`,`];
+        xs:#L[name:DottedName xa:(_ `as` _ id)?::+`,`_];
     StmtSm.Import.From.ImportStar <- fc:~FromClause _ `import` _ `*`;
-    StmtSm.Import.From.ImportNames.Base <- fc:~FromClause _ `import`
-        xs:#L[name:id xa:(`as` id)?::+`,`:?];
+    StmtSm.Import.From.ImportNames.Base <- fc:~FromClause _ `import` _
+        xs:#L[name:id xa:(_ `as` _ id)?::+`,`_:?];
     StmtSm.Import.From.ImportNames.Paren <- fc:~FromClause _ `import` _
-        `(` xs:#L[name:id xa:(`as` id)?::+`,`:?] `)`;
+        `(` xs:#L[name:id xa:(_ `as` _ id)?::+`,`_:?] `)`;
 
         FromClause.Named <- `from`
             dots:(Single:(_ `.`) | Multi:(_ `...`))* _ name:DottedName;
         FromClause.Unnamed <- `from` dots:(Single:(_ `.`) | Multi:(_ `...`))+;
 
-    StmtSm.Global <- `global` _ xs:#L[id::+`,`];
-    StmtSm.Nonlocal <- `nonlocal` _ xs:#L[id::+`,`];
-    StmtSm.Assert <- `assert` _ xs:#L[Expr::+`,`];
+    StmtSm.Global <- `global` _ xs:#L[id::+`,`_];
+    StmtSm.Nonlocal <- `nonlocal` _ xs:#L[id::+`,`_];
+    StmtSm.Assert <- `assert` _ xs:#L[Expr::+`,`_];
 
     StmtSm.Exprs <- xs:Exprs;
     StmtSm.Assign <- xs:Exprs _ y:(`=` _ ~AssignSrc)+;
@@ -309,19 +315,19 @@ parser {
 
     Expr.ParenComp <- `(` x:~Comp `)`;
 
-        Comp <- x:Expr _ tail:CompTail;
+        Comp <- x:Expr tail:CompTail;
 
         CompClause.For <- cf:CompClauseFor;
         CompClause.If <- cf:CompClauseIf;
 
             CompClauseFor <-
-                async_:(`async` _)? `for` _ xs:#L[Expr[A, pr=*]::+`,`:?]
-                `in` y:Expr;
-            CompClauseIf <- `if` y:Expr;
-            CompTail <- cf:CompClauseFor cr:(_ CompClause)*;
+                _ async_:(`async` _)? `for` _ xs:#L[Expr[A, pr=*]::+`,`:?]
+                _ `in` _ y:Expr;
+            CompClauseIf <- _ `if` _ y:Expr;
+            CompTail <- cf:CompClauseFor cr:CompClause*;
 
-        InExprSuffix <= `in` x:Expr;
-        IfExprSuffix <= `if` x:Expr;
+        InExprSuffix <= `in` _ x:Expr;
+        IfExprSuffix <= `if` _ x:Expr;
 
         CompItemKV.Single <- xk:Expr `:` _ xv:Expr;
         CompItemKV.Splice <- `**` x:Expr;
@@ -364,14 +370,15 @@ parser {
         Subscript.Value <- x:Expr;
         Subscript.Slice <- start:Expr? `:` stop:Expr? step:(`:` v:Expr?)?;
 
-    Expr.Dot <- x:Expr `.` name:id;
+    Expr.Dot.Z <- x:Expr[Z] _ `.` name:id;  // To avoid confusing the lexer
+    Expr.Dot.NZ <- x:Expr[NZ] `.` name:id;
     Expr.Id[I] <- name:id;
     Expr.Ellipsis <- `...`;
     Expr.IdSpecial[I] <- None:`None` | True:`True` | False:`False`;
 
         CmpOp <- Lt:`<`   | Gt:`>`     | Eq:`==`
-               | Ge:`>=`  | Le:`<=`    | Ne:`!=`  | NotIn:(`not` `in`)
-               | In:`in`  | Not:`not`  | Is:`is`  | IsNot:(`is` `not`);
+               | Ge:`>=`  | Le:`<=`    | Ne:`!=`  | NotIn:(`not` _ `in`)
+               | In:`in`  | Not:`not`  | Is:`is`  | IsNot:(`is` _ `not`);
 
         BinOp1 <- #Alt[Or:`|`];
         BinOp2 <- #Alt[Xor:`^`];
@@ -382,8 +389,8 @@ parser {
         UnaryPreOp <- Plus:`+` | Minus:`-` | Tilde:`~`;
         BinOp7 <- #Alt[Ss:`**`];
 
-    Expr.Lit.Str <- x:str_lit+;
-    Expr.Lit.Bytes <- x:bytes_lit+;
+    Expr.Lit.Str <- xs:#L[str_lit::+_];
+    Expr.Lit.Bytes <- xs:#L[bytes_lit::+_];
     Expr.Lit.Int_ <- x:int_lit;
     Expr.Lit.Float <- x:float_lit;
     Expr.Lit.Imag <- x:imag_lit;
@@ -399,14 +406,29 @@ parser {
 
 test {
     `x + 3` <- ExprNL <<>>;
-    `x = 3` <- Stmt <<>>;
+
+    `x = 3` <- Module <<>>;
+
 `x = 2
 y = 2` <- Module <<>>;
+
 `if x == 2:
-    y = 2` <- Module <<>>;
+    z = 2
+` <- Module <<>>;
+
+`if x == 2:
+    z = 2` <- Module <<>>;
+
     `[]` <- ExprNL <<>>;
+
     `x + []` <- ExprNL <<>>;
-    `x = []` <- Stmt <<>>;
+
+    `x = []` <- Module <<>>;
+
+`if q == 3:
+    if r == 4:
+        s = 5` <- Module <<>>;
+
 `def f(x: int):
     x += 1
     return x + x
@@ -415,4 +437,12 @@ def g(x):
     x.y = """abc"""
     pass
 ` <- Module;
+
+`def f(x: int):
+    x += 1
+    return x + x
+def g(x):
+    x.y = """abc"""
+    pass
+` <- Module <<>>;
 }

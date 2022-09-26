@@ -48,12 +48,12 @@ parser {
     main { S }
 
     S.R0 <-
-        id newline @(`\n`) indent
-            id newline @(`\n`)
-            str_lit newline @(`\n`) dedent
-        id newline @(`\n`);
+        id newline indent
+            id newline
+            str_lit newline dedent
+        id newline;
 
-    S.R1 <- str_lit newline @(`\n`);
+    S.R1 <- str_lit newline;
 }
 
 test {

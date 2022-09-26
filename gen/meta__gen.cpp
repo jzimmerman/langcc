@@ -19517,450 +19517,678 @@ lang::meta::Node::CompileTestCase_T xform_lang_meta_Node(lang::meta::Node::Compi
     return ret->as_CompileTestCase();
 }
 
-void lang::meta::Node::Lang::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::Lang::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::Lang::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->stanzas_); i++) {
             auto xi = x->stanzas_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.advance_lines(2, os);
+                pb->push_string("");
+                pb->push_newlines(2);
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
     }
+}
+
+void lang::meta::Node::Lang::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::Stanza::Tokens::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Tokens::_T>();
+    pb->push_string("tokens");
+    pb->push_string(" ");
+    pb->push_string("{");
+    {
+        Int i;
+        bool is_iter = false;
+        bool indented = false;
+        for (i = 0; i _LT_ len(x->decls_); i++) {
+            auto xi = x->decls_->at_unchecked(i);
+            if (is_iter) {
+                pb->push_string(";");
+                pb->push_newlines(1);
+            }
+            if (!is_iter) {
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
+            }
+            is_iter = true;
+            xi->write(pb);
+        }
+        if (is_iter) {
+            pb->push_string(";");
+        }
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
+    }
+    pb->push_string("}");
 }
 
 void lang::meta::Node::Stanza::Tokens::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Tokens::_T>();
-    pr(os, flags, "tokens");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::Stanza::Lexer::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Lexer::_T>();
+    pb->push_string("lexer");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
             auto xi = x->decls_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ";");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string("");
+                pb->push_newlines(2);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
-        if (is_iter) {
-            pr(os, flags, ";");
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
         }
-        flags.advance_lines(1, os);
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
 void lang::meta::Node::Stanza::Lexer::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Lexer::_T>();
-    pr(os, flags, "lexer");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::Stanza::Parser::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Parser::_T>();
+    pb->push_string("parser");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
             auto xi = x->decls_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(2, os);
+                pb->push_string("");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
 void lang::meta::Node::Stanza::Parser::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Parser::_T>();
-    pr(os, flags, "parser");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::Stanza::Test::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Test::_T>();
+    pb->push_string("test");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
-        for (i = 0; i _LT_ len(x->decls_); i++) {
-            auto xi = x->decls_->at_unchecked(i);
+        bool indented = false;
+        for (i = 0; i _LT_ len(x->items_); i++) {
+            auto xi = x->items_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string(";");
+                pb->push_newlines(2);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        if (is_iter) {
+            pb->push_string(";");
+        }
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
 void lang::meta::Node::Stanza::Test::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::Test::_T>();
-    pr(os, flags, "test");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::Stanza::CompileTest::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::CompileTest::_T>();
+    pb->push_string("compile_test");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
             auto xi = x->items_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ";");
-                flags.sub_lo().advance_lines(2, os);
+                pb->push_string(";");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ";");
+            pb->push_string(";");
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
 void lang::meta::Node::Stanza::CompileTest::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::CompileTest::_T>();
-    pr(os, flags, "compile_test");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
-    {
-        Int i;
-        bool is_iter = false;
-        for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
-            if (is_iter) {
-                pr(os, flags, ";");
-                flags.sub_lo().advance_lines(1, os);
-            }
-            if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
-            }
-            is_iter = true;
-            xi->write(os, flags.sub_lo());
-        }
-        if (is_iter) {
-            pr(os, flags, ";");
-        }
-        flags.advance_lines(1, os);
-    }
-    pr(os, flags, "}");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::TokenDecl::op::DEF::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF::_T>();
+    pb->push_string("<-");
 }
 
 void lang::meta::Node::TokenDecl::op::DEF::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF::_T>();
-    pr(os, flags, "<-");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T>();
+    pb->push_string("<=");
 }
 
 void lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T>();
-    pr(os, flags, "<=");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::TokenDecl::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::TokenDecl::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::_T>();
     switch (x->w_) {
         case lang::meta::Node::TokenDecl::op::_W::DEF: {
-            x->as_DEF()->write(os, flags);
+            x->as_DEF()->write(pb);
             break;
         }
         case lang::meta::Node::TokenDecl::op::_W::DEF_ALIAS: {
-            x->as_DEF_ALIAS()->write(os, flags);
+            x->as_DEF_ALIAS()->write(pb);
             break;
         }
         default: {
             AX();
         }
     }
+}
+
+void lang::meta::Node::TokenDecl::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::TokenDecl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::TokenDecl::_T>();
+    pb->push_string(fmt_str("{}", x->name_));
+    pb->push_string(" ");
+    x->op_->write(pb);
+    pb->push_string(" ");
+    x->def__->write(pb);
 }
 
 void lang::meta::Node::TokenDecl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::TokenDecl::_T>();
-    pr(os, flags, x->name_);
-    pr(os, flags, "\040");
-    x->op_->write(os, flags);
-    pr(os, flags, "\040");
-    x->def__->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerDecl::Main::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerDecl::Main::_T>();
+    pb->push_string("main");
+    pb->push_string(" ");
+    pb->push_string("{");
+    pb->push_string(" ");
+    pb->push_string(fmt_str("{}", x->name_));
+    pb->push_string(" ");
+    pb->push_string("}");
 }
 
 void lang::meta::Node::LexerDecl::Main::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerDecl::Main::_T>();
-    pr(os, flags, "main");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
-    pr(os, flags, "\040");
-    pr(os, flags, x->name_);
-    pr(os, flags, "\040");
-    pr(os, flags, "}");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerDecl::Mode::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::_T>();
+    pb->push_string("mode");
+    pb->push_string(" ");
+    pb->push_string(fmt_str("{}", x->name_));
+    if (x->ws_sig__) {
+        pb->push_string(" ");
+        pb->push_string("ws_sig");
+    }
+    pb->push_string(" ");
+    pb->push_string("{");
+    {
+        Int i;
+        bool is_iter = false;
+        bool indented = false;
+        for (i = 0; i _LT_ len(x->cases_); i++) {
+            auto xi = x->cases_->at_unchecked(i);
+            if (is_iter) {
+                pb->push_string("");
+                pb->push_newlines(1);
+            }
+            if (!is_iter) {
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
+            }
+            is_iter = true;
+            xi->write(pb);
+        }
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
+    }
+    pb->push_string("}");
 }
 
 void lang::meta::Node::LexerDecl::Mode::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::_T>();
-    pr(os, flags, "mode");
-    pr(os, flags, "\040");
-    pr(os, flags, x->name_);
-    if (x->ws_sig__) {
-        pr(os, flags, "\040");
-        pr(os, flags, "ws_sig");
-    }
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
-    {
-        Int i;
-        bool is_iter = false;
-        for (i = 0; i _LT_ len(x->cases_); i++) {
-            auto xi = x->cases_->at_unchecked(i);
-            if (is_iter) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(1, os);
-            }
-            if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
-            }
-            is_iter = true;
-            xi->write(os, flags.sub_lo());
-        }
-        flags.advance_lines(1, os);
-    }
-    pr(os, flags, "}");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::LexerModeCase::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::LexerModeCase::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::LexerModeCase::_T>();
-    x->tok_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "=>");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    x->tok_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("=>");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->instrs_); i++) {
             auto xi = x->instrs_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ";");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string(";");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ";");
+            pb->push_string(";");
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
+}
+
+void lang::meta::Node::LexerModeCase::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerInstr::Emit::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Emit::_T>();
+    pb->push_string("emit");
+    if (x->arg_.is_some()) {
+        pb->push_string(" ");
+        x->arg_.as_some()->write(pb);
+    }
 }
 
 void lang::meta::Node::LexerInstr::Emit::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Emit::_T>();
-    pr(os, flags, "emit");
-    if (x->arg_.is_some()) {
-        pr(os, flags, "\040");
-        x->arg_.as_some()->write(os, flags);
-    }
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerInstr::Pass::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pass::_T>();
+    pb->push_string("pass");
 }
 
 void lang::meta::Node::LexerInstr::Pass::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pass::_T>();
-    pr(os, flags, "pass");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerInstr::Push::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Push::_T>();
+    pb->push_string("push");
+    pb->push_string(" ");
+    pb->push_string(fmt_str("{}", x->name_));
 }
 
 void lang::meta::Node::LexerInstr::Push::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Push::_T>();
-    pr(os, flags, "push");
-    pr(os, flags, "\040");
-    pr(os, flags, x->name_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerInstr::Pop::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pop::_T>();
+    pb->push_string("pop");
 }
 
 void lang::meta::Node::LexerInstr::Pop::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pop::_T>();
-    pr(os, flags, "pop");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerInstr::PopExtract::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopExtract::_T>();
+    pb->push_string("pop_extract");
 }
 
 void lang::meta::Node::LexerInstr::PopExtract::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopExtract::_T>();
-    pr(os, flags, "pop_extract");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerInstr::PopEmit::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopEmit::_T>();
+    pb->push_string("pop_emit");
+    pb->push_string(" ");
+    x->arg_->write(pb);
 }
 
 void lang::meta::Node::LexerInstr::PopEmit::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopEmit::_T>();
-    pr(os, flags, "pop_emit");
-    pr(os, flags, "\040");
-    x->arg_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::LexerInstr::MatchHistory::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::LexerInstr::MatchHistory::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::MatchHistory::_T>();
-    pr(os, flags, "match_history");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string("match_history");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
             auto xi = x->cases_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string("");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
-void lang::meta::Node::ParserDecl::Main::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::LexerInstr::MatchHistory::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::Main::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Main::_T>();
-    pr(os, flags, "main");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
-    pr(os, flags, "\040");
+    pb->push_string("main");
+    pb->push_string(" ");
+    pb->push_string("{");
+    pb->push_string(" ");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->names_); i++) {
             auto xi = x->names_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            pr(os, flags, xi);
+            pb->push_string(fmt_str("{}", xi));
         }
     }
-    pr(os, flags, "\040");
-    pr(os, flags, "}");
+    pb->push_string(" ");
+    pb->push_string("}");
 }
 
-void lang::meta::Node::ParserDecl::Prop::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParserDecl::Main::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::Prop::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Prop::_T>();
-    pr(os, flags, "prop");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
-    pr(os, flags, "\040");
+    pb->push_string("prop");
+    pb->push_string(" ");
+    pb->push_string("{");
+    pb->push_string(" ");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->props_); i++) {
             auto xi = x->props_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ";\040");
+                pb->push_string("; ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ";\040");
+            pb->push_string("; ");
         }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
-void lang::meta::Node::ParserDecl::Prec::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParserDecl::Prop::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::Prec::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Prec::_T>();
-    pr(os, flags, "prec");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string("prec");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
             auto xi = x->items_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ";");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string(";");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ";");
+            pb->push_string(";");
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
-void lang::meta::Node::ParserDecl::Attr::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParserDecl::Prec::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::Attr::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Attr::_T>();
-    pr(os, flags, "attr");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string("attr");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->clauses_); i++) {
             auto xi = x->clauses_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ";");
-                flags.sub_lo().advance_lines(2, os);
+                pb->push_string(";");
+                pb->push_newlines(2);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ";");
+            pb->push_string(";");
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
+}
+
+void lang::meta::Node::ParserDecl::Attr::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::Rule::op::DEF::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF::_T>();
+    pb->push_string("<-");
 }
 
 void lang::meta::Node::ParserDecl::Rule::op::DEF::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF::_T>();
-    pr(os, flags, "<-");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T>();
+    pb->push_string("<=");
 }
 
 void lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T>();
-    pr(os, flags, "<=");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::ParserDecl::Rule::op::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParserDecl::Rule::op::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::_T>();
     switch (x->w_) {
         case lang::meta::Node::ParserDecl::Rule::op::_W::DEF: {
-            x->as_DEF()->write(os, flags);
+            x->as_DEF()->write(pb);
             break;
         }
         case lang::meta::Node::ParserDecl::Rule::op::_W::DEF_ALIAS: {
-            x->as_DEF_ALIAS()->write(os, flags);
+            x->as_DEF_ALIAS()->write(pb);
             break;
         }
         default: {
@@ -19969,443 +20197,781 @@ void lang::meta::Node::ParserDecl::Rule::op::_T::write(ostream& os, FmtFlags fla
     }
 }
 
-void lang::meta::Node::ParserDecl::Rule::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParserDecl::Rule::op::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::Rule::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::_T>();
-    x->name_->write(os, flags);
+    x->name_->write(pb);
     if (x->lhs_attrs_.is_some()) {
-        pr(os, flags, "\040");
-        pr(os, flags, "[");
+        pb->push_string(" ");
+        pb->push_string("[");
         {
             Int i;
             bool is_iter = false;
+            bool indented = false;
             for (i = 0; i _LT_ len(x->lhs_attrs_.as_some()); i++) {
                 auto xi = x->lhs_attrs_.as_some()->at_unchecked(i);
                 if (is_iter) {
-                    pr(os, flags, ",\040");
+                    pb->push_string(", ");
+                }
+                if (!is_iter) {
+                    indented = true;
                 }
                 is_iter = true;
-                xi->write(os, flags);
+                xi->write(pb);
             }
         }
-        pr(os, flags, "]");
+        pb->push_string("]");
     }
-    pr(os, flags, "\040");
-    x->op_->write(os, flags);
-    pr(os, flags, "\040");
-    x->e_->write(os, flags);
-    pr(os, flags, ";");
+    pb->push_string(" ");
+    x->op_->write(pb);
+    pb->push_string(" ");
+    x->e_->write(pb);
+    pb->push_string(";");
+}
+
+void lang::meta::Node::ParserDecl::Rule::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserProp::NameStrict::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::NameStrict::_T>();
+    pb->push_string("name_strict");
 }
 
 void lang::meta::Node::ParserProp::NameStrict::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::NameStrict::_T>();
-    pr(os, flags, "name_strict");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserProp::LRSpec::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::LRSpec::_T>();
+    pb->push_string("LR");
+    pb->push_string("(");
+    pb->push_string(fmt_str("{}", x->k_));
+    pb->push_string(")");
 }
 
 void lang::meta::Node::ParserProp::LRSpec::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::LRSpec::_T>();
-    pr(os, flags, "LR");
-    pr(os, flags, "(");
-    pr(os, flags, x->k_);
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserProp::Err_::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::Err_::_T>();
+    pb->push_string("Err");
 }
 
 void lang::meta::Node::ParserProp::Err_::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::Err_::_T>();
-    pr(os, flags, "Err");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::PrecItem::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::PrecItem::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::PrecItem::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->ids_); i++) {
             auto xi = x->ids_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040");
+                pb->push_string(" ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
     if (x->assoc_.is_some()) {
-        pr(os, flags, "\040");
-        x->assoc_.as_some()->write(os, flags);
+        pb->push_string(" ");
+        x->assoc_.as_some()->write(pb);
     }
+}
+
+void lang::meta::Node::PrecItem::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::PrecAssoc::Left::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Left::_T>();
+    pb->push_string("assoc_left");
 }
 
 void lang::meta::Node::PrecAssoc::Left::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Left::_T>();
-    pr(os, flags, "assoc_left");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::PrecAssoc::Right::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Right::_T>();
+    pb->push_string("assoc_right");
 }
 
 void lang::meta::Node::PrecAssoc::Right::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Right::_T>();
-    pr(os, flags, "assoc_right");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::PrecAssoc::Prefix::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Prefix::_T>();
+    pb->push_string("prefix");
 }
 
 void lang::meta::Node::PrecAssoc::Prefix::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Prefix::_T>();
-    pr(os, flags, "prefix");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::PrecAssoc::Postfix::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Postfix::_T>();
+    pb->push_string("postfix");
 }
 
 void lang::meta::Node::PrecAssoc::Postfix::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Postfix::_T>();
-    pr(os, flags, "postfix");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClause::Expr::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClause::Expr::_T>();
+    x->e_->write(pb);
 }
 
 void lang::meta::Node::AttrClause::Expr::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClause::Expr::_T>();
-    x->e_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::AttrClause::Block::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::AttrClause::Block::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::AttrClause::Block::_T>();
-    pr(os, flags, "{");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
             auto xi = x->items_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ";");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string(";");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ";");
+            pb->push_string(";");
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
 }
 
-void lang::meta::Node::AttrClause::Match::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::AttrClause::Block::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClause::Match::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::AttrClause::Match::_T>();
-    pr(os, flags, "match");
-    pr(os, flags, "\040");
-    pr(os, flags, "{");
+    pb->push_string("match");
+    pb->push_string(" ");
+    pb->push_string("{");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
             auto xi = x->cases_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",");
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_string(",");
+                pb->push_newlines(1);
             }
             if (!is_iter) {
-                flags.sub_lo().advance_lines(1, os);
+                pb->push_newlines(1);
+                pb->push_indent();
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags.sub_lo());
+            xi->write(pb);
         }
         if (is_iter) {
-            pr(os, flags, ",");
+            pb->push_string(",");
         }
-        flags.advance_lines(1, os);
+        pb->push_newlines(1);
+        if (indented) {
+            pb->push_dedent();
+        }
     }
-    pr(os, flags, "}");
+    pb->push_string("}");
+}
+
+void lang::meta::Node::AttrClause::Match::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrMatchCase::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrMatchCase::_T>();
+    x->pat_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("=>");
+    pb->push_string(" ");
+    x->clause_->write(pb);
 }
 
 void lang::meta::Node::AttrMatchCase::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrMatchCase::_T>();
-    x->pat_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "=>");
-    pr(os, flags, "\040");
-    x->clause_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::AttrMatchCasePattern::Alt::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::AttrMatchCasePattern::Alt::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::Alt::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
             auto xi = x->items_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040|\040");
+                pb->push_string(" | ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
 }
 
-void lang::meta::Node::AttrMatchCasePattern::Wildcard::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::AttrMatchCasePattern::Alt::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrMatchCasePattern::Wildcard::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::Wildcard::_T>();
-    pr(os, flags, "_");
+    pb->push_string("_");
+}
+
+void lang::meta::Node::AttrMatchCasePattern::Wildcard::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExpr::LhsGeq::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::LhsGeq::_T>();
+    pb->push_string("lhs");
+    pb->push_string("[");
+    pb->push_string(fmt_str("{}", x->k_));
+    pb->push_string("]");
 }
 
 void lang::meta::Node::AttrClauseExpr::LhsGeq::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::LhsGeq::_T>();
-    pr(os, flags, "lhs");
-    pr(os, flags, "[");
-    pr(os, flags, x->k_);
-    pr(os, flags, "]");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExpr::RhsGeq::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::RhsGeq::_T>();
+    x->loc_->write(pb);
+    pb->push_string("[");
+    pb->push_string(fmt_str("{}", x->k_));
+    pb->push_string("]");
 }
 
 void lang::meta::Node::AttrClauseExpr::RhsGeq::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::RhsGeq::_T>();
-    x->loc_->write(os, flags);
-    pr(os, flags, "[");
-    pr(os, flags, x->k_);
-    pr(os, flags, "]");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExpr::Implies::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::Implies::_T>();
+    pb->push_string("lhs");
+    pb->push_string("[");
+    pb->push_string(fmt_str("{}", x->kl_));
+    pb->push_string("]");
+    pb->push_string(" ");
+    pb->push_string("->");
+    pb->push_string(" ");
+    x->loc_->write(pb);
+    pb->push_string("[");
+    pb->push_string(fmt_str("{}", x->kr_));
+    pb->push_string("]");
 }
 
 void lang::meta::Node::AttrClauseExpr::Implies::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::Implies::_T>();
-    pr(os, flags, "lhs");
-    pr(os, flags, "[");
-    pr(os, flags, x->kl_);
-    pr(os, flags, "]");
-    pr(os, flags, "\040");
-    pr(os, flags, "->");
-    pr(os, flags, "\040");
-    x->loc_->write(os, flags);
-    pr(os, flags, "[");
-    pr(os, flags, x->kr_);
-    pr(os, flags, "]");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExprRhsLoc::All::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::All::_T>();
+    pb->push_string("rhs");
 }
 
 void lang::meta::Node::AttrClauseExprRhsLoc::All::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::All::_T>();
-    pr(os, flags, "rhs");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T>();
+    pb->push_string("rhs_begin");
 }
 
 void lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T>();
-    pr(os, flags, "rhs_begin");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T>();
+    pb->push_string("rhs_mid");
 }
 
 void lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T>();
-    pr(os, flags, "rhs_mid");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExprRhsLoc::End::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::End::_T>();
+    pb->push_string("rhs_end");
 }
 
 void lang::meta::Node::AttrClauseExprRhsLoc::End::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::End::_T>();
-    pr(os, flags, "rhs_end");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::TestCase::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::TestCase::_T>();
+    pb->push_string(fmt_str("{}", x->text_));
+    if (x->sym__.is_some()) {
+        pb->push_string(" ");
+        pb->push_string("<-");
+        pb->push_string(" ");
+        pb->push_string(fmt_str("{}", x->sym__.as_some()));
+    }
+    if (x->print_exempt_) {
+        pb->push_string(" ");
+        pb->push_string("<<>>");
+    }
 }
 
 void lang::meta::Node::TestCase::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::TestCase::_T>();
-    pr(os, flags, x->text_);
-    if (x->sym__.is_some()) {
-        pr(os, flags, "\040");
-        pr(os, flags, "<-");
-        pr(os, flags, "\040");
-        pr(os, flags, x->sym__.as_some());
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::CompileTestCase::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::CompileTestCase::_T>();
+    if (x->neg_) {
+        pb->push_string("!");
     }
-    if (x->print_exempt_) {
-        pr(os, flags, "\040");
-        pr(os, flags, "<<>>");
-    }
+    pb->push_string("LR");
+    pb->push_string("(");
+    pb->push_string(fmt_str("{}", x->k_));
+    pb->push_string(")");
 }
 
 void lang::meta::Node::CompileTestCase::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::CompileTestCase::_T>();
-    if (x->neg_) {
-        pr(os, flags, "!");
-    }
-    pr(os, flags, "LR");
-    pr(os, flags, "(");
-    pr(os, flags, x->k_);
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Id::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Id::_T>();
+    x->id__->write(pb);
 }
 
 void lang::meta::Node::ParseExpr::Id::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Id::_T>();
-    x->id__->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Eof::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eof::_T>();
+    pb->push_string("eof");
 }
 
 void lang::meta::Node::ParseExpr::Eof::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eof::_T>();
-    pr(os, flags, "eof");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::False::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::False::_T>();
+    pb->push_string("false");
 }
 
 void lang::meta::Node::ParseExpr::False::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::False::_T>();
-    pr(os, flags, "false");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Eps::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eps::_T>();
+    pb->push_string("eps");
 }
 
 void lang::meta::Node::ParseExpr::Eps::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eps::_T>();
-    pr(os, flags, "eps");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Indent::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Indent::_T>();
+    pb->push_string("indent");
 }
 
 void lang::meta::Node::ParseExpr::Indent::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Indent::_T>();
-    pr(os, flags, "indent");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Dedent::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Dedent::_T>();
+    pb->push_string("dedent");
 }
 
 void lang::meta::Node::ParseExpr::Dedent::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Dedent::_T>();
-    pr(os, flags, "dedent");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Newline::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Newline::_T>();
+    pb->push_string("newline");
 }
 
 void lang::meta::Node::ParseExpr::Newline::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Newline::_T>();
-    pr(os, flags, "newline");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::UnicodeAny::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::UnicodeAny::_T>();
+    pb->push_string("unicode_any");
 }
 
 void lang::meta::Node::ParseExpr::UnicodeAny::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::UnicodeAny::_T>();
-    pr(os, flags, "unicode_any");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::AsciiBaseAny::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::AsciiBaseAny::_T>();
+    pb->push_string("ascii_base_any");
 }
 
 void lang::meta::Node::ParseExpr::AsciiBaseAny::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::AsciiBaseAny::_T>();
-    pr(os, flags, "ascii_base_any");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::ParseExpr::Alt::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParseExpr::Alt::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Alt::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->xs_); i++) {
             auto xi = x->xs_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040|\040");
+                pb->push_string(" | ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
 }
 
-void lang::meta::Node::ParseExpr::AltExplicit::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParseExpr::Alt::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::AltExplicit::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::AltExplicit::_T>();
-    pr(os, flags, "#Alt");
-    pr(os, flags, "[");
-    x->e_->write(os, flags);
-    pr(os, flags, "]");
+    pb->push_string("#Alt");
+    pb->push_string("[");
+    x->e_->write(pb);
+    pb->push_string("]");
+}
+
+void lang::meta::Node::ParseExpr::AltExplicit::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Minus::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Minus::_T>();
+    x->x_->write(pb);
+    pb->push_string(" ");
+    pb->push_string("-");
+    pb->push_string(" ");
+    x->y_->write(pb);
 }
 
 void lang::meta::Node::ParseExpr::Minus::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Minus::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "\040");
-    pr(os, flags, "-");
-    pr(os, flags, "\040");
-    x->y_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::ParseExpr::Concat::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParseExpr::Concat::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Concat::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->xs_); i++) {
             auto xi = x->xs_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, "\040");
+                pb->push_string(" ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
 }
 
-void lang::meta::Node::ParseExpr::Optional::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParseExpr::Concat::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Optional::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Optional::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "?");
+    x->x_->write(pb);
+    pb->push_string("?");
+}
+
+void lang::meta::Node::ParseExpr::Optional::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Rep::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Rep::_T>();
+    x->x_->write(pb);
+    pb->push_string("*");
 }
 
 void lang::meta::Node::ParseExpr::Rep::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Rep::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "*");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::RepNonzero::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepNonzero::_T>();
+    x->x_->write(pb);
+    pb->push_string("+");
 }
 
 void lang::meta::Node::ParseExpr::RepNonzero::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepNonzero::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "+");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::RepCount::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepCount::_T>();
+    x->x_->write(pb);
+    pb->push_string("^");
+    pb->push_string(fmt_str("{}", x->count_));
 }
 
 void lang::meta::Node::ParseExpr::RepCount::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepCount::_T>();
-    x->x_->write(os, flags);
-    pr(os, flags, "^");
-    pr(os, flags, x->count_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::CharRange::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::CharRange::_T>();
+    pb->push_string(fmt_str("{}", x->min__));
+    pb->push_string("..");
+    pb->push_string(fmt_str("{}", x->max__));
 }
 
 void lang::meta::Node::ParseExpr::CharRange::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::CharRange::_T>();
-    pr(os, flags, x->min__);
-    pr(os, flags, "..");
-    pr(os, flags, x->max__);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::StrLit::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::StrLit::_T>();
+    pb->push_string(fmt_str("{}", x->s_));
 }
 
 void lang::meta::Node::ParseExpr::StrLit::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::StrLit::_T>();
-    pr(os, flags, x->s_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Underscore::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Underscore::_T>();
+    pb->push_string("_");
 }
 
 void lang::meta::Node::ParseExpr::Underscore::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Underscore::_T>();
-    pr(os, flags, "_");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Pass::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Pass::_T>();
+    pb->push_string("@");
+    pb->push_string("(");
+    pb->push_string(fmt_str("{}", x->s_));
+    pb->push_string(")");
 }
 
 void lang::meta::Node::ParseExpr::Pass::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Pass::_T>();
-    pr(os, flags, "@");
-    pr(os, flags, "(");
-    pr(os, flags, x->s_);
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Paren::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Paren::_T>();
+    pb->push_string("(");
+    x->x_->write(pb);
+    pb->push_string(")");
 }
 
 void lang::meta::Node::ParseExpr::Paren::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Paren::_T>();
-    pr(os, flags, "(");
-    x->x_->write(os, flags);
-    pr(os, flags, ")");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Name::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Name::_T>();
+    pb->push_string(fmt_str("{}", x->name_));
+    pb->push_string(":");
+    x->e_->write(pb);
 }
 
 void lang::meta::Node::ParseExpr::Name::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Name::_T>();
-    pr(os, flags, x->name_);
-    pr(os, flags, ":");
-    x->e_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::List::end_delim::NONE::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::NONE::_T>();
+    pb->push_string("");
 }
 
 void lang::meta::Node::ParseExpr::List::end_delim::NONE::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::NONE::_T>();
-    pr(os, flags, "");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T>();
+    pb->push_string(":?");
 }
 
 void lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T>();
-    pr(os, flags, ":?");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::List::end_delim::SOME::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::SOME::_T>();
+    pb->push_string("::");
 }
 
 void lang::meta::Node::ParseExpr::List::end_delim::SOME::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::SOME::_T>();
-    pr(os, flags, "::");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::ParseExpr::List::end_delim::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParseExpr::List::end_delim::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::_T>();
     switch (x->w_) {
         case lang::meta::Node::ParseExpr::List::end_delim::_W::NONE: {
-            x->as_NONE()->write(os, flags);
+            x->as_NONE()->write(pb);
             break;
         }
         case lang::meta::Node::ParseExpr::List::end_delim::_W::OPTIONAL: {
-            x->as_OPTIONAL()->write(os, flags);
+            x->as_OPTIONAL()->write(pb);
             break;
         }
         case lang::meta::Node::ParseExpr::List::end_delim::_W::SOME: {
-            x->as_SOME()->write(os, flags);
+            x->as_SOME()->write(pb);
             break;
         }
         default: {
@@ -20414,131 +20980,252 @@ void lang::meta::Node::ParseExpr::List::end_delim::_T::write(ostream& os, FmtFla
     }
 }
 
-void lang::meta::Node::ParseExpr::List::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParseExpr::List::end_delim::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::List::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::_T>();
-    x->ty_->write(os, flags);
-    pr(os, flags, "[");
-    x->elem_->write(os, flags);
-    x->num_->write(os, flags);
-    x->delim_->write(os, flags);
-    x->end_delim_->write(os, flags);
-    pr(os, flags, "]");
+    x->ty_->write(pb);
+    pb->push_string("[");
+    x->elem_->write(pb);
+    x->num_->write(pb);
+    x->delim_->write(pb);
+    x->end_delim_->write(pb);
+    pb->push_string("]");
+}
+
+void lang::meta::Node::ParseExpr::List::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::Unfold::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Unfold::_T>();
+    pb->push_string("~");
+    x->e_->write(pb);
 }
 
 void lang::meta::Node::ParseExpr::Unfold::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::Unfold::_T>();
-    pr(os, flags, "~");
-    x->e_->write(os, flags);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::ParseExpr::AttrReq::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::ParseExpr::AttrReq::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::AttrReq::_T>();
-    x->e_->write(os, flags);
-    pr(os, flags, "[");
+    x->e_->write(pb);
+    pb->push_string("[");
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->attrs_); i++) {
             auto xi = x->attrs_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ",\040");
+                pb->push_string(", ");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            xi->write(os, flags);
+            xi->write(pb);
         }
     }
-    pr(os, flags, "]");
+    pb->push_string("]");
+}
+
+void lang::meta::Node::ParseExpr::AttrReq::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrReq::Base::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrReq::Base::_T>();
+    pb->push_string(fmt_str("{}", x->k_));
 }
 
 void lang::meta::Node::AttrReq::Base::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrReq::Base::_T>();
-    pr(os, flags, x->k_);
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrReq::PrecStar::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrReq::PrecStar::_T>();
+    pb->push_string("pr");
+    pb->push_string("=");
+    pb->push_string("*");
 }
 
 void lang::meta::Node::AttrReq::PrecStar::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrReq::PrecStar::_T>();
-    pr(os, flags, "pr");
-    pr(os, flags, "=");
-    pr(os, flags, "*");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListType::List::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::List::_T>();
+    pb->push_string("#L");
 }
 
 void lang::meta::Node::ParseExprListType::List::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::List::_T>();
-    pr(os, flags, "#L");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListType::Block::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block::_T>();
+    pb->push_string("#B");
 }
 
 void lang::meta::Node::ParseExprListType::Block::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block::_T>();
-    pr(os, flags, "#B");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListType::Block2::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block2::_T>();
+    pb->push_string("#B2");
 }
 
 void lang::meta::Node::ParseExprListType::Block2::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block2::_T>();
-    pr(os, flags, "#B2");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListType::Top::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top::_T>();
+    pb->push_string("#T");
 }
 
 void lang::meta::Node::ParseExprListType::Top::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top::_T>();
-    pr(os, flags, "#T");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListType::Top2::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top2::_T>();
+    pb->push_string("#T2");
 }
 
 void lang::meta::Node::ParseExprListType::Top2::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top2::_T>();
-    pr(os, flags, "#T2");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListNum::Ge0::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge0::_T>();
+    pb->push_string("::");
 }
 
 void lang::meta::Node::ParseExprListNum::Ge0::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge0::_T>();
-    pr(os, flags, "::");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListNum::Ge1::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge1::_T>();
+    pb->push_string("::+");
 }
 
 void lang::meta::Node::ParseExprListNum::Ge1::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge1::_T>();
-    pr(os, flags, "::+");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListNum::Ge2::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge2::_T>();
+    pb->push_string("::++");
 }
 
 void lang::meta::Node::ParseExprListNum::Ge2::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge2::_T>();
-    pr(os, flags, "::++");
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
-void lang::meta::Node::Id::_T::write(ostream& os, FmtFlags flags) {
+void lang::meta::Node::Id::_T::write(lang_rt::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::meta::Node::Id::_T>();
     {
         Int i;
         bool is_iter = false;
+        bool indented = false;
         for (i = 0; i _LT_ len(x->names_); i++) {
             auto xi = x->names_->at_unchecked(i);
             if (is_iter) {
-                pr(os, flags, ".");
+                pb->push_string(".");
+            }
+            if (!is_iter) {
+                indented = true;
             }
             is_iter = true;
-            pr(os, flags, xi);
+            pb->push_string(fmt_str("{}", xi));
+        }
+    }
+}
+
+void lang::meta::Node::Id::_T::write(ostream& os, FmtFlags flags) {
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::Stanza::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::_T>();
+    switch (x->w_) {
+        case lang::meta::Node::Stanza::_W::Tokens: {
+            x->as_Tokens()->write(pb);
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Lexer: {
+            x->as_Lexer()->write(pb);
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Parser: {
+            x->as_Parser()->write(pb);
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Test: {
+            x->as_Test()->write(pb);
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::CompileTest: {
+            x->as_CompileTest()->write(pb);
+            break;
+        }
+        default: {
+            AX();
         }
     }
 }
 
 void lang::meta::Node::Stanza::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::Stanza::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerDecl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerDecl::_T>();
     switch (x->w_) {
-        case lang::meta::Node::Stanza::_W::Tokens: {
-            x->as_Tokens()->write(os, flags);
+        case lang::meta::Node::LexerDecl::_W::Main: {
+            x->as_Main()->write(pb);
             break;
         }
-        case lang::meta::Node::Stanza::_W::Lexer: {
-            x->as_Lexer()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::Stanza::_W::Parser: {
-            x->as_Parser()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::Stanza::_W::Test: {
-            x->as_Test()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::Stanza::_W::CompileTest: {
-            x->as_CompileTest()->write(os, flags);
+        case lang::meta::Node::LexerDecl::_W::Mode: {
+            x->as_Mode()->write(pb);
             break;
         }
         default: {
@@ -20548,14 +21235,40 @@ void lang::meta::Node::Stanza::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::LexerDecl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerDecl::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::LexerInstr::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::_T>();
     switch (x->w_) {
-        case lang::meta::Node::LexerDecl::_W::Main: {
-            x->as_Main()->write(os, flags);
+        case lang::meta::Node::LexerInstr::_W::Emit: {
+            x->as_Emit()->write(pb);
             break;
         }
-        case lang::meta::Node::LexerDecl::_W::Mode: {
-            x->as_Mode()->write(os, flags);
+        case lang::meta::Node::LexerInstr::_W::Pass: {
+            x->as_Pass()->write(pb);
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::Push: {
+            x->as_Push()->write(pb);
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::Pop: {
+            x->as_Pop()->write(pb);
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::PopExtract: {
+            x->as_PopExtract()->write(pb);
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::PopEmit: {
+            x->as_PopEmit()->write(pb);
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::MatchHistory: {
+            x->as_MatchHistory()->write(pb);
             break;
         }
         default: {
@@ -20565,34 +21278,32 @@ void lang::meta::Node::LexerDecl::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::LexerInstr::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::LexerInstr::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserDecl::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::_T>();
     switch (x->w_) {
-        case lang::meta::Node::LexerInstr::_W::Emit: {
-            x->as_Emit()->write(os, flags);
+        case lang::meta::Node::ParserDecl::_W::Main: {
+            x->as_Main()->write(pb);
             break;
         }
-        case lang::meta::Node::LexerInstr::_W::Pass: {
-            x->as_Pass()->write(os, flags);
+        case lang::meta::Node::ParserDecl::_W::Prop: {
+            x->as_Prop()->write(pb);
             break;
         }
-        case lang::meta::Node::LexerInstr::_W::Push: {
-            x->as_Push()->write(os, flags);
+        case lang::meta::Node::ParserDecl::_W::Prec: {
+            x->as_Prec()->write(pb);
             break;
         }
-        case lang::meta::Node::LexerInstr::_W::Pop: {
-            x->as_Pop()->write(os, flags);
+        case lang::meta::Node::ParserDecl::_W::Attr: {
+            x->as_Attr()->write(pb);
             break;
         }
-        case lang::meta::Node::LexerInstr::_W::PopExtract: {
-            x->as_PopExtract()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::LexerInstr::_W::PopEmit: {
-            x->as_PopEmit()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::LexerInstr::_W::MatchHistory: {
-            x->as_MatchHistory()->write(os, flags);
+        case lang::meta::Node::ParserDecl::_W::Rule: {
+            x->as_Rule()->write(pb);
             break;
         }
         default: {
@@ -20602,26 +21313,24 @@ void lang::meta::Node::LexerInstr::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::ParserDecl::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParserDecl::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParserProp::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::_T>();
     switch (x->w_) {
-        case lang::meta::Node::ParserDecl::_W::Main: {
-            x->as_Main()->write(os, flags);
+        case lang::meta::Node::ParserProp::_W::NameStrict: {
+            x->as_NameStrict()->write(pb);
             break;
         }
-        case lang::meta::Node::ParserDecl::_W::Prop: {
-            x->as_Prop()->write(os, flags);
+        case lang::meta::Node::ParserProp::_W::LRSpec: {
+            x->as_LRSpec()->write(pb);
             break;
         }
-        case lang::meta::Node::ParserDecl::_W::Prec: {
-            x->as_Prec()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParserDecl::_W::Attr: {
-            x->as_Attr()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParserDecl::_W::Rule: {
-            x->as_Rule()->write(os, flags);
+        case lang::meta::Node::ParserProp::_W::Err_: {
+            x->as_Err_()->write(pb);
             break;
         }
         default: {
@@ -20631,18 +21340,28 @@ void lang::meta::Node::ParserDecl::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::ParserProp::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParserProp::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::PrecAssoc::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::_T>();
     switch (x->w_) {
-        case lang::meta::Node::ParserProp::_W::NameStrict: {
-            x->as_NameStrict()->write(os, flags);
+        case lang::meta::Node::PrecAssoc::_W::Left: {
+            x->as_Left()->write(pb);
             break;
         }
-        case lang::meta::Node::ParserProp::_W::LRSpec: {
-            x->as_LRSpec()->write(os, flags);
+        case lang::meta::Node::PrecAssoc::_W::Right: {
+            x->as_Right()->write(pb);
             break;
         }
-        case lang::meta::Node::ParserProp::_W::Err_: {
-            x->as_Err_()->write(os, flags);
+        case lang::meta::Node::PrecAssoc::_W::Prefix: {
+            x->as_Prefix()->write(pb);
+            break;
+        }
+        case lang::meta::Node::PrecAssoc::_W::Postfix: {
+            x->as_Postfix()->write(pb);
             break;
         }
         default: {
@@ -20652,22 +21371,24 @@ void lang::meta::Node::ParserProp::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::PrecAssoc::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::PrecAssoc::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClause::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClause::_T>();
     switch (x->w_) {
-        case lang::meta::Node::PrecAssoc::_W::Left: {
-            x->as_Left()->write(os, flags);
+        case lang::meta::Node::AttrClause::_W::Expr: {
+            x->as_Expr()->write(pb);
             break;
         }
-        case lang::meta::Node::PrecAssoc::_W::Right: {
-            x->as_Right()->write(os, flags);
+        case lang::meta::Node::AttrClause::_W::Block: {
+            x->as_Block()->write(pb);
             break;
         }
-        case lang::meta::Node::PrecAssoc::_W::Prefix: {
-            x->as_Prefix()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::PrecAssoc::_W::Postfix: {
-            x->as_Postfix()->write(os, flags);
+        case lang::meta::Node::AttrClause::_W::Match: {
+            x->as_Match()->write(pb);
             break;
         }
         default: {
@@ -20677,18 +21398,20 @@ void lang::meta::Node::PrecAssoc::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::AttrClause::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClause::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrMatchCasePattern::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::_T>();
     switch (x->w_) {
-        case lang::meta::Node::AttrClause::_W::Expr: {
-            x->as_Expr()->write(os, flags);
+        case lang::meta::Node::AttrMatchCasePattern::_W::Alt: {
+            x->as_Alt()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrClause::_W::Block: {
-            x->as_Block()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::AttrClause::_W::Match: {
-            x->as_Match()->write(os, flags);
+        case lang::meta::Node::AttrMatchCasePattern::_W::Wildcard: {
+            x->as_Wildcard()->write(pb);
             break;
         }
         default: {
@@ -20698,14 +21421,24 @@ void lang::meta::Node::AttrClause::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::AttrMatchCasePattern::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExpr::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::_T>();
     switch (x->w_) {
-        case lang::meta::Node::AttrMatchCasePattern::_W::Alt: {
-            x->as_Alt()->write(os, flags);
+        case lang::meta::Node::AttrClauseExpr::_W::LhsGeq: {
+            x->as_LhsGeq()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrMatchCasePattern::_W::Wildcard: {
-            x->as_Wildcard()->write(os, flags);
+        case lang::meta::Node::AttrClauseExpr::_W::RhsGeq: {
+            x->as_RhsGeq()->write(pb);
+            break;
+        }
+        case lang::meta::Node::AttrClauseExpr::_W::Implies: {
+            x->as_Implies()->write(pb);
             break;
         }
         default: {
@@ -20715,18 +21448,28 @@ void lang::meta::Node::AttrMatchCasePattern::_T::write(ostream& os, FmtFlags fla
 }
 
 void lang::meta::Node::AttrClauseExpr::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrClauseExprRhsLoc::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::_T>();
     switch (x->w_) {
-        case lang::meta::Node::AttrClauseExpr::_W::LhsGeq: {
-            x->as_LhsGeq()->write(os, flags);
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::All: {
+            x->as_All()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrClauseExpr::_W::RhsGeq: {
-            x->as_RhsGeq()->write(os, flags);
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::Begin: {
+            x->as_Begin()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrClauseExpr::_W::Implies: {
-            x->as_Implies()->write(os, flags);
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::Mid: {
+            x->as_Mid()->write(pb);
+            break;
+        }
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::End: {
+            x->as_End()->write(pb);
             break;
         }
         default: {
@@ -20736,22 +21479,116 @@ void lang::meta::Node::AttrClauseExpr::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::AttrClauseExprRhsLoc::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExpr::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::_T>();
     switch (x->w_) {
-        case lang::meta::Node::AttrClauseExprRhsLoc::_W::All: {
-            x->as_All()->write(os, flags);
+        case lang::meta::Node::ParseExpr::_W::Id: {
+            x->as_Id()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrClauseExprRhsLoc::_W::Begin: {
-            x->as_Begin()->write(os, flags);
+        case lang::meta::Node::ParseExpr::_W::Eof: {
+            x->as_Eof()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrClauseExprRhsLoc::_W::Mid: {
-            x->as_Mid()->write(os, flags);
+        case lang::meta::Node::ParseExpr::_W::False: {
+            x->as_False()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrClauseExprRhsLoc::_W::End: {
-            x->as_End()->write(os, flags);
+        case lang::meta::Node::ParseExpr::_W::Eps: {
+            x->as_Eps()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Indent: {
+            x->as_Indent()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Dedent: {
+            x->as_Dedent()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Newline: {
+            x->as_Newline()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::UnicodeAny: {
+            x->as_UnicodeAny()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::AsciiBaseAny: {
+            x->as_AsciiBaseAny()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Alt: {
+            x->as_Alt()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::AltExplicit: {
+            x->as_AltExplicit()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Minus: {
+            x->as_Minus()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Concat: {
+            x->as_Concat()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Optional: {
+            x->as_Optional()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Rep: {
+            x->as_Rep()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::RepNonzero: {
+            x->as_RepNonzero()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::RepCount: {
+            x->as_RepCount()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::CharRange: {
+            x->as_CharRange()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::StrLit: {
+            x->as_StrLit()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Underscore: {
+            x->as_Underscore()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Pass: {
+            x->as_Pass()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Paren: {
+            x->as_Paren()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Name: {
+            x->as_Name()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::List: {
+            x->as_List()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Unfold: {
+            x->as_Unfold()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::AttrReq: {
+            x->as_AttrReq()->write(pb);
             break;
         }
         default: {
@@ -20761,110 +21598,20 @@ void lang::meta::Node::AttrClauseExprRhsLoc::_T::write(ostream& os, FmtFlags fla
 }
 
 void lang::meta::Node::ParseExpr::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExpr::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::AttrReq::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::AttrReq::_T>();
     switch (x->w_) {
-        case lang::meta::Node::ParseExpr::_W::Id: {
-            x->as_Id()->write(os, flags);
+        case lang::meta::Node::AttrReq::_W::Base: {
+            x->as_Base()->write(pb);
             break;
         }
-        case lang::meta::Node::ParseExpr::_W::Eof: {
-            x->as_Eof()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::False: {
-            x->as_False()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Eps: {
-            x->as_Eps()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Indent: {
-            x->as_Indent()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Dedent: {
-            x->as_Dedent()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Newline: {
-            x->as_Newline()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::UnicodeAny: {
-            x->as_UnicodeAny()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::AsciiBaseAny: {
-            x->as_AsciiBaseAny()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Alt: {
-            x->as_Alt()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::AltExplicit: {
-            x->as_AltExplicit()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Minus: {
-            x->as_Minus()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Concat: {
-            x->as_Concat()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Optional: {
-            x->as_Optional()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Rep: {
-            x->as_Rep()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::RepNonzero: {
-            x->as_RepNonzero()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::RepCount: {
-            x->as_RepCount()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::CharRange: {
-            x->as_CharRange()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::StrLit: {
-            x->as_StrLit()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Underscore: {
-            x->as_Underscore()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Pass: {
-            x->as_Pass()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Paren: {
-            x->as_Paren()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Name: {
-            x->as_Name()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::List: {
-            x->as_List()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::Unfold: {
-            x->as_Unfold()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExpr::_W::AttrReq: {
-            x->as_AttrReq()->write(os, flags);
+        case lang::meta::Node::AttrReq::_W::PrecStar: {
+            x->as_PrecStar()->write(pb);
             break;
         }
         default: {
@@ -20874,14 +21621,32 @@ void lang::meta::Node::ParseExpr::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::AttrReq::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::AttrReq::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListType::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::_T>();
     switch (x->w_) {
-        case lang::meta::Node::AttrReq::_W::Base: {
-            x->as_Base()->write(os, flags);
+        case lang::meta::Node::ParseExprListType::_W::List: {
+            x->as_List()->write(pb);
             break;
         }
-        case lang::meta::Node::AttrReq::_W::PrecStar: {
-            x->as_PrecStar()->write(os, flags);
+        case lang::meta::Node::ParseExprListType::_W::Block: {
+            x->as_Block()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExprListType::_W::Block2: {
+            x->as_Block2()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExprListType::_W::Top: {
+            x->as_Top()->write(pb);
+            break;
+        }
+        case lang::meta::Node::ParseExprListType::_W::Top2: {
+            x->as_Top2()->write(pb);
             break;
         }
         default: {
@@ -20891,26 +21656,24 @@ void lang::meta::Node::AttrReq::_T::write(ostream& os, FmtFlags flags) {
 }
 
 void lang::meta::Node::ParseExprListType::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListType::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::ParseExprListNum::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::_T>();
     switch (x->w_) {
-        case lang::meta::Node::ParseExprListType::_W::List: {
-            x->as_List()->write(os, flags);
+        case lang::meta::Node::ParseExprListNum::_W::Ge0: {
+            x->as_Ge0()->write(pb);
             break;
         }
-        case lang::meta::Node::ParseExprListType::_W::Block: {
-            x->as_Block()->write(os, flags);
+        case lang::meta::Node::ParseExprListNum::_W::Ge1: {
+            x->as_Ge1()->write(pb);
             break;
         }
-        case lang::meta::Node::ParseExprListType::_W::Block2: {
-            x->as_Block2()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExprListType::_W::Top: {
-            x->as_Top()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::ParseExprListType::_W::Top2: {
-            x->as_Top2()->write(os, flags);
+        case lang::meta::Node::ParseExprListNum::_W::Ge2: {
+            x->as_Ge2()->write(pb);
             break;
         }
         default: {
@@ -20920,18 +21683,112 @@ void lang::meta::Node::ParseExprListType::_T::write(ostream& os, FmtFlags flags)
 }
 
 void lang::meta::Node::ParseExprListNum::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::_T>();
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
+}
+
+void lang::meta::Node::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::meta::Node::_T>();
     switch (x->w_) {
-        case lang::meta::Node::ParseExprListNum::_W::Ge0: {
-            x->as_Ge0()->write(os, flags);
+        case lang::meta::Node::_W::Lang: {
+            x->as_Lang()->write(pb);
             break;
         }
-        case lang::meta::Node::ParseExprListNum::_W::Ge1: {
-            x->as_Ge1()->write(os, flags);
+        case lang::meta::Node::_W::Stanza: {
+            x->as_Stanza()->write(pb);
             break;
         }
-        case lang::meta::Node::ParseExprListNum::_W::Ge2: {
-            x->as_Ge2()->write(os, flags);
+        case lang::meta::Node::_W::TokenDecl: {
+            x->as_TokenDecl()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::LexerDecl: {
+            x->as_LexerDecl()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::LexerModeCase: {
+            x->as_LexerModeCase()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::LexerInstr: {
+            x->as_LexerInstr()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::ParserDecl: {
+            x->as_ParserDecl()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::ParserProp: {
+            x->as_ParserProp()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::PrecItem: {
+            x->as_PrecItem()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::PrecAssoc: {
+            x->as_PrecAssoc()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::AttrClause: {
+            x->as_AttrClause()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::AttrMatchCase: {
+            x->as_AttrMatchCase()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::AttrMatchCasePattern: {
+            x->as_AttrMatchCasePattern()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::AttrClauseExpr: {
+            x->as_AttrClauseExpr()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::AttrClauseExprRhsLoc: {
+            x->as_AttrClauseExprRhsLoc()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::TestCase: {
+            x->as_TestCase()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::CompileTestCase: {
+            x->as_CompileTestCase()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::ParseExpr: {
+            x->as_ParseExpr()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::AttrReq: {
+            x->as_AttrReq()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::ParseExprListType: {
+            x->as_ParseExprListType()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::ParseExprListNum: {
+            x->as_ParseExprListNum()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::Id: {
+            x->as_Id()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::TokenDecl__op: {
+            x->as_TokenDecl__op()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::ParserDecl__Rule__op: {
+            x->as_ParserDecl__Rule__op()->write(pb);
+            break;
+        }
+        case lang::meta::Node::_W::ParseExpr__List__end_delim: {
+            x->as_ParseExpr__List__end_delim()->write(pb);
             break;
         }
         default: {
@@ -20941,112 +21798,9 @@ void lang::meta::Node::ParseExprListNum::_T::write(ostream& os, FmtFlags flags) 
 }
 
 void lang::meta::Node::_T::write(ostream& os, FmtFlags flags) {
-    auto x = this->rc_from_this_poly<lang::meta::Node::_T>();
-    switch (x->w_) {
-        case lang::meta::Node::_W::Lang: {
-            x->as_Lang()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::Stanza: {
-            x->as_Stanza()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::TokenDecl: {
-            x->as_TokenDecl()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::LexerDecl: {
-            x->as_LexerDecl()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::LexerModeCase: {
-            x->as_LexerModeCase()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::LexerInstr: {
-            x->as_LexerInstr()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::ParserDecl: {
-            x->as_ParserDecl()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::ParserProp: {
-            x->as_ParserProp()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::PrecItem: {
-            x->as_PrecItem()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::PrecAssoc: {
-            x->as_PrecAssoc()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::AttrClause: {
-            x->as_AttrClause()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::AttrMatchCase: {
-            x->as_AttrMatchCase()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::AttrMatchCasePattern: {
-            x->as_AttrMatchCasePattern()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::AttrClauseExpr: {
-            x->as_AttrClauseExpr()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::AttrClauseExprRhsLoc: {
-            x->as_AttrClauseExprRhsLoc()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::TestCase: {
-            x->as_TestCase()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::CompileTestCase: {
-            x->as_CompileTestCase()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::ParseExpr: {
-            x->as_ParseExpr()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::AttrReq: {
-            x->as_AttrReq()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::ParseExprListType: {
-            x->as_ParseExprListType()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::ParseExprListNum: {
-            x->as_ParseExprListNum()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::Id: {
-            x->as_Id()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::TokenDecl__op: {
-            x->as_TokenDecl__op()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::ParserDecl__Rule__op: {
-            x->as_ParserDecl__Rule__op()->write(os, flags);
-            break;
-        }
-        case lang::meta::Node::_W::ParseExpr__List__end_delim: {
-            x->as_ParseExpr__List__end_delim()->write(os, flags);
-            break;
-        }
-        default: {
-            AX();
-        }
-    }
+    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+    this->write(pb);
+    pb->distill(os, flags);
 }
 
 __attribute__((always_inline)) IntPair lang::meta::parser::action_by_vertex(lang_rt::ParserVertexId v, lang_rt::ParserLookahead la) {
@@ -28068,7 +28822,7 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(CompileTestCase)";
         }
         case 120: {
-            return "X12=(`<-`\040|\040`<=`)";
+            return "X12=(`<-` | `<=`)";
         }
         case 121: {
             return "X13=(`<-`)";
@@ -28077,10 +28831,10 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "X14=(`<=`)";
         }
         case 123: {
-            return "X15=((_\040`ws_sig`)?)";
+            return "X15=((_ `ws_sig`)?)";
         }
         case 124: {
-            return "X16=(_\040`ws_sig`)";
+            return "X16=(_ `ws_sig`)";
         }
         case 125: {
             return "X17=(#B[LexerModeCase::eps])";
@@ -28095,10 +28849,10 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(LexerInstr)";
         }
         case 129: {
-            return "X21=((_\040ParseExpr)?)";
+            return "X21=((_ ParseExpr)?)";
         }
         case 130: {
-            return "X22=(_\040ParseExpr)";
+            return "X22=(_ ParseExpr)";
         }
         case 131: {
             return "X23=(#B[LexerModeCase::eps])";
@@ -28107,22 +28861,22 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(LexerModeCase)";
         }
         case 133: {
-            return "X25=(#L[(id)::+`,`\040_])";
+            return "X25=(#L[(id)::+`,` _])";
         }
         case 134: {
             return "Iter((id))";
         }
         case 135: {
-            return "X27=(`,`\040_)";
+            return "X27=(`,` _)";
         }
         case 136: {
-            return "X28=(#L[ParserProp::`;`\040_::])";
+            return "X28=(#L[ParserProp::`;` _::])";
         }
         case 137: {
             return "Iter(ParserProp)";
         }
         case 138: {
-            return "X30=(`;`\040_)";
+            return "X30=(`;` _)";
         }
         case 139: {
             return "X31=(#B[PrecItem::`;`::])";
@@ -28137,22 +28891,22 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(AttrClause)";
         }
         case 143: {
-            return "X35=((_\040`[`\040#L[AttrReq::`,`\040_]\040`]`)?)";
+            return "X35=((_ `[` #L[AttrReq::`,` _] `]`)?)";
         }
         case 144: {
-            return "X36=(_\040`[`\040#L[AttrReq::`,`\040_]\040`]`)";
+            return "X36=(_ `[` #L[AttrReq::`,` _] `]`)";
         }
         case 145: {
-            return "X37=(#L[AttrReq::`,`\040_])";
+            return "X37=(#L[AttrReq::`,` _])";
         }
         case 146: {
             return "Iter(AttrReq)";
         }
         case 147: {
-            return "X39=(`,`\040_)";
+            return "X39=(`,` _)";
         }
         case 148: {
-            return "X40=(`<-`\040|\040`<=`)";
+            return "X40=(`<-` | `<=`)";
         }
         case 149: {
             return "X41=(`<-`)";
@@ -28167,10 +28921,10 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(Id)";
         }
         case 153: {
-            return "X45=((_\040PrecAssoc)?)";
+            return "X45=((_ PrecAssoc)?)";
         }
         case 154: {
-            return "X46=(_\040PrecAssoc)";
+            return "X46=(_ PrecAssoc)";
         }
         case 155: {
             return "X47=(#B[AttrClause::`;`::])";
@@ -28185,37 +28939,37 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(AttrMatchCase)";
         }
         case 159: {
-            return "X51=(#L[Id::+_\040`|`\040_])";
+            return "X51=(#L[Id::+_ `|` _])";
         }
         case 160: {
             return "Iter(Id)";
         }
         case 161: {
-            return "X53=(_\040`|`\040_)";
+            return "X53=(_ `|` _)";
         }
         case 162: {
-            return "X54=((_\040`<-`\040_\040(id))?)";
+            return "X54=((_ `<-` _ (id))?)";
         }
         case 163: {
-            return "X55=(_\040`<-`\040_\040(id))";
+            return "X55=(_ `<-` _ (id))";
         }
         case 164: {
-            return "X56=((_\040`<<>>`)?)";
+            return "X56=((_ `<<>>`)?)";
         }
         case 165: {
-            return "X57=(_\040`<<>>`)";
+            return "X57=(_ `<<>>`)";
         }
         case 166: {
             return "X58=(`!`?)";
         }
         case 167: {
-            return "X59=(#L[ParseExpr::++_\040`|`\040_])";
+            return "X59=(#L[ParseExpr::++_ `|` _])";
         }
         case 168: {
             return "Iter(ParseExpr)";
         }
         case 169: {
-            return "X61=(_\040`|`\040_)";
+            return "X61=(_ `|` _)";
         }
         case 170: {
             return "X62=(#L[ParseExpr::++_])";
@@ -28224,7 +28978,7 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "Iter(ParseExpr)";
         }
         case 172: {
-            return "X64=(eps\040|\040`:?`\040|\040`::`)";
+            return "X64=(eps | `:?` | `::`)";
         }
         case 173: {
             return "X65=(eps)";
@@ -28236,13 +28990,13 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "X67=(`::`)";
         }
         case 176: {
-            return "X68=(#L[AttrReq::`,`\040_])";
+            return "X68=(#L[AttrReq::`,` _])";
         }
         case 177: {
             return "Iter(AttrReq)";
         }
         case 178: {
-            return "X70=(`,`\040_)";
+            return "X70=(`,` _)";
         }
         case 179: {
             return "X71=(#L[(id)::+`.`])";
@@ -28356,7 +29110,7 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(CompileTestCase))";
         }
         case 216: {
-            return "RecurStep(X12=(`<-`\040|\040`<=`))";
+            return "RecurStep(X12=(`<-` | `<=`))";
         }
         case 217: {
             return "RecurStep(X13=(`<-`))";
@@ -28365,10 +29119,10 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(X14=(`<=`))";
         }
         case 219: {
-            return "RecurStep(X15=((_\040`ws_sig`)?))";
+            return "RecurStep(X15=((_ `ws_sig`)?))";
         }
         case 220: {
-            return "RecurStep(X16=(_\040`ws_sig`))";
+            return "RecurStep(X16=(_ `ws_sig`))";
         }
         case 221: {
             return "RecurStep(X17=(#B[LexerModeCase::eps]))";
@@ -28383,10 +29137,10 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(LexerInstr))";
         }
         case 225: {
-            return "RecurStep(X21=((_\040ParseExpr)?))";
+            return "RecurStep(X21=((_ ParseExpr)?))";
         }
         case 226: {
-            return "RecurStep(X22=(_\040ParseExpr))";
+            return "RecurStep(X22=(_ ParseExpr))";
         }
         case 227: {
             return "RecurStep(X23=(#B[LexerModeCase::eps]))";
@@ -28395,22 +29149,22 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(LexerModeCase))";
         }
         case 229: {
-            return "RecurStep(X25=(#L[(id)::+`,`\040_]))";
+            return "RecurStep(X25=(#L[(id)::+`,` _]))";
         }
         case 230: {
             return "RecurStep(Iter((id)))";
         }
         case 231: {
-            return "RecurStep(X27=(`,`\040_))";
+            return "RecurStep(X27=(`,` _))";
         }
         case 232: {
-            return "RecurStep(X28=(#L[ParserProp::`;`\040_::]))";
+            return "RecurStep(X28=(#L[ParserProp::`;` _::]))";
         }
         case 233: {
             return "RecurStep(Iter(ParserProp))";
         }
         case 234: {
-            return "RecurStep(X30=(`;`\040_))";
+            return "RecurStep(X30=(`;` _))";
         }
         case 235: {
             return "RecurStep(X31=(#B[PrecItem::`;`::]))";
@@ -28425,22 +29179,22 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(AttrClause))";
         }
         case 239: {
-            return "RecurStep(X35=((_\040`[`\040#L[AttrReq::`,`\040_]\040`]`)?))";
+            return "RecurStep(X35=((_ `[` #L[AttrReq::`,` _] `]`)?))";
         }
         case 240: {
-            return "RecurStep(X36=(_\040`[`\040#L[AttrReq::`,`\040_]\040`]`))";
+            return "RecurStep(X36=(_ `[` #L[AttrReq::`,` _] `]`))";
         }
         case 241: {
-            return "RecurStep(X37=(#L[AttrReq::`,`\040_]))";
+            return "RecurStep(X37=(#L[AttrReq::`,` _]))";
         }
         case 242: {
             return "RecurStep(Iter(AttrReq))";
         }
         case 243: {
-            return "RecurStep(X39=(`,`\040_))";
+            return "RecurStep(X39=(`,` _))";
         }
         case 244: {
-            return "RecurStep(X40=(`<-`\040|\040`<=`))";
+            return "RecurStep(X40=(`<-` | `<=`))";
         }
         case 245: {
             return "RecurStep(X41=(`<-`))";
@@ -28455,10 +29209,10 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(Id))";
         }
         case 249: {
-            return "RecurStep(X45=((_\040PrecAssoc)?))";
+            return "RecurStep(X45=((_ PrecAssoc)?))";
         }
         case 250: {
-            return "RecurStep(X46=(_\040PrecAssoc))";
+            return "RecurStep(X46=(_ PrecAssoc))";
         }
         case 251: {
             return "RecurStep(X47=(#B[AttrClause::`;`::]))";
@@ -28473,37 +29227,37 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(AttrMatchCase))";
         }
         case 255: {
-            return "RecurStep(X51=(#L[Id::+_\040`|`\040_]))";
+            return "RecurStep(X51=(#L[Id::+_ `|` _]))";
         }
         case 256: {
             return "RecurStep(Iter(Id))";
         }
         case 257: {
-            return "RecurStep(X53=(_\040`|`\040_))";
+            return "RecurStep(X53=(_ `|` _))";
         }
         case 258: {
-            return "RecurStep(X54=((_\040`<-`\040_\040(id))?))";
+            return "RecurStep(X54=((_ `<-` _ (id))?))";
         }
         case 259: {
-            return "RecurStep(X55=(_\040`<-`\040_\040(id)))";
+            return "RecurStep(X55=(_ `<-` _ (id)))";
         }
         case 260: {
-            return "RecurStep(X56=((_\040`<<>>`)?))";
+            return "RecurStep(X56=((_ `<<>>`)?))";
         }
         case 261: {
-            return "RecurStep(X57=(_\040`<<>>`))";
+            return "RecurStep(X57=(_ `<<>>`))";
         }
         case 262: {
             return "RecurStep(X58=(`!`?))";
         }
         case 263: {
-            return "RecurStep(X59=(#L[ParseExpr::++_\040`|`\040_]))";
+            return "RecurStep(X59=(#L[ParseExpr::++_ `|` _]))";
         }
         case 264: {
             return "RecurStep(Iter(ParseExpr))";
         }
         case 265: {
-            return "RecurStep(X61=(_\040`|`\040_))";
+            return "RecurStep(X61=(_ `|` _))";
         }
         case 266: {
             return "RecurStep(X62=(#L[ParseExpr::++_]))";
@@ -28512,7 +29266,7 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(ParseExpr))";
         }
         case 268: {
-            return "RecurStep(X64=(eps\040|\040`:?`\040|\040`::`))";
+            return "RecurStep(X64=(eps | `:?` | `::`))";
         }
         case 269: {
             return "RecurStep(X65=(eps))";
@@ -28524,13 +29278,13 @@ string lang::meta::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(X67=(`::`))";
         }
         case 272: {
-            return "RecurStep(X68=(#L[AttrReq::`,`\040_]))";
+            return "RecurStep(X68=(#L[AttrReq::`,` _]))";
         }
         case 273: {
             return "RecurStep(Iter(AttrReq))";
         }
         case 274: {
-            return "RecurStep(X70=(`,`\040_))";
+            return "RecurStep(X70=(`,` _))";
         }
         case 275: {
             return "RecurStep(X71=(#L[(id)::+`.`]))";
