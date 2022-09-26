@@ -72,7 +72,7 @@ to generated C++ code that implements those datatypes
 as well as datatypes with type parameters.
 The generated code includes the (reference-counted) C++ implementations
 of the corresponding algebraic datatypes as structs with inheritance,
-as well as a number of other features:~e.g.,
+as well as a number of other features: e.g.,
 functions for testing and downcasting sum types,
 functions for substituting fields of product types,
 functions for debug-printing elements of each datatype,
@@ -335,11 +335,11 @@ We mention a number of additional features of the parser stanza:
     in fact, the former is so common that we have the special notation `_`
     (as used in the example above) to denote ``@(` `)``.
   
-  - The special expression `eps`` may be used to denote the empty concatenation.
+  - The special expression `eps` may be used to denote the empty concatenation.
   
-  - The special expression `#Alt(e)` may be used to denote
+  - The special expression `#Alt[e]` may be used to denote
     the singleton alternation. To the parser, this is equivalent to the
-    expression `e`,`
+    expression `e`,
     but it may be important semantically for the generated AST.
   
   - The expression `e*` may be used to denote a repeated expression `e`.
@@ -395,7 +395,7 @@ for the given value of `k`.
 
 The `test` stanza describes a series of parsing tests to be performed when `langcc`
 compiles the language.
-Parsing tests are of the form `` `abc`; `` (resp., `` `abc\#\#def;` ``),
+Parsing tests are of the form `` `abc`; `` (resp., `` `abc##def;` ``),
 indicating that parsing should succeed (resp., fail at the position indicated by `##`)
 on the given string.
 In addition, by default, parsing tests will verify that the pretty-printer outputs the same
@@ -542,7 +542,7 @@ Int expr_eval(Expr_T e, const unordered_map<string, Int>& env) {
 
 As this example shows, it is straightforward to decompose the AST sum types
 to obtain the values enclosed.
-We mention one additional feature:~note that in the case of division by zero,
+We mention one additional feature: note that in the case of division by zero,
 we throw an error that includes the syntax element `cc->op_`.
 In fact, this syntax element carries with it its position in the input,
 which enables us to produce, at top level, error messages of the following form:
