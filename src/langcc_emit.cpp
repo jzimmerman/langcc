@@ -178,17 +178,17 @@ void lexer_gen_cpp_defs(
                 "__attribute__((always_inline)) lang_rt::DFAActionWithToken",
                     "acc(lang_rt::DFAVertexId v);",
                 "__attribute__((always_inline)) IntPair step_exec(",
-                    "ptr<lang_rt::LexerState> st,",
-                    "ptr<lang_rt::SymItemVec> emit_dst,",
-                    "ptr<lang_rt::LexWhitespaceState> ws_state,",
+                    "Ptr<lang_rt::LexerState> st,",
+                    "Ptr<lang_rt::SymItemVec> emit_dst,",
+                    "Ptr<lang_rt::LexWhitespaceState> ws_state,",
                     "lang_rt::DFAActionId acc,",
                     "lang_rt::TokenId tok,",
                     "Int& in_i,",
                     "Int& tok_lo,",
                     "Int& tok_hi);",
                 "Int proc_mode_loop(",
-                    "ptr<lang_rt::LexerState> st,",
-                    "ptr<lang_rt::SymItemVec> emit_dst,",
+                    "Ptr<lang_rt::LexerState> st,",
+                    "Ptr<lang_rt::SymItemVec> emit_dst,",
                     "Int mode_start_pos,",
                     "Int mode_buf_pos);",
             "}"
@@ -300,9 +300,9 @@ void lexer_gen_cpp_defs(
         ctx.cc_.dst_defs_->push_back(ctx.cc_.qq("Decl",
             "namespace lang::", src_base_name, "::lexer::", name, "{",
                 "__attribute__((always_inline)) IntPair step_exec(",
-                    "ptr<lang_rt::LexerState> st,",
-                    "ptr<lang_rt::SymItemVec> emit_dst,",
-                    "ptr<lang_rt::LexWhitespaceState> ws_state,",
+                    "Ptr<lang_rt::LexerState> st,",
+                    "Ptr<lang_rt::SymItemVec> emit_dst,",
+                    "Ptr<lang_rt::LexWhitespaceState> ws_state,",
                     "lang_rt::DFAActionId acc,",
                     "lang_rt::TokenId tok,",
                     "Int& in_i,",
@@ -378,27 +378,35 @@ void data_gen_dtype_acc(
 
     if (is_top) {
         data_fields->push_back(
-            data.Q_->qq_ext(Some<string>("Field"), "id no_hash: Int;"));
+            data.Q_->qq_ext(Some<string>("Entry"), "id no_hash: Int;"));
         data_fields->push_back(
-            data.Q_->qq_ext(Some<string>("Field"), "bounds no_hash: ^lang_rt::TokenBounds;"));
+            data.Q_->qq_ext(Some<string>("Entry"), "bounds no_hash: ^lang_rt::TokenBounds;"));
         data_fields->push_back(
-            data.Q_->qq_ext(Some<string>("Field"), "is_top: bool;"));
+            data.Q_->qq_ext(Some<string>("Entry"), "is_top: bool;"));
 
         // NOTE: following are undefined if is_top is false
         data_fields->push_back(
-            data.Q_->qq_ext(Some<string>("Field"), "sym: ^lang_rt::ParserSymId;"));
+            data.Q_->qq_ext(Some<string>("Entry"), "sym: ^lang_rt::ParserSymId;"));
         data_fields->push_back(
-            data.Q_->qq_ext(Some<string>("Field"), "attr: ^lang_rt::ParserAttrMask;"));
+            data.Q_->qq_ext(Some<string>("Entry"), "attr: ^lang_rt::ParserAttrMask;"));
         data_fields->push_back(
-            data.Q_->qq_ext(Some<string>("Field"), "first_k: ^lang_rt::ParserLookahead;"));
+            data.Q_->qq_ext(Some<string>("Entry"), "first_k: ^lang_rt::ParserLookahead;"));
     }
 
     for (auto [field_id, field_ty] : *dt->fields_) {
         data_fields->push_back(
-            data.Q_->qq_ext(Some<string>("Field"),
+            data.Q_->qq_ext(Some<string>("Entry"),
                 data_gen_id_base_to_string(field_id), ":",
                 data_gen_type_to_node(data, field_ty), ";"));
     }
+
+    data_fields->push_back(
+        data.Q_->qq_ext(Some<string>("Entry"),
+            "method write(os: Ref(^ostream), flags: ^FmtFlags): void;"));
+
+    data_fields->push_back(
+        data.Q_->qq_ext(Some<string>("Entry"),
+            "method write(pb: Ref(^lang_rt::PrBufStream_T)): void;"));
 
     if (!override_parent) {
         if (is_top) {
@@ -436,7 +444,7 @@ void lang_emit_datatype_defs(LangCompileContext& ctx) {
 
     LOG(2, " === Datatype decl module:\n{}\n\n", data_mod);
 
-    auto data_res = compile_data_defs(data_mod, None<string>(), true);
+    auto data_res = compile_data_defs(data_mod, None<string>());
 
     if (data_res.hpp_decls.is_some()) {
         for (auto decl : *data_res.hpp_decls.as_some()->as_Module()->decls_) {
@@ -1776,17 +1784,17 @@ void lang_emit_global_defs(LangCompileContext& ctx) {
             auto tr_fun = ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
                 "inline __attribute__((always_inline)) Int lang::", ctx.src_base_name_,
                     "::lexer::", mode->name_.to_std_string(), "::proc_mode_loop_opt(",
-                "    ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st,",
-                "    ptr<lang_rt::SymItemVec> emit_dst,",
+                "    Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st,",
+                "    Ptr<lang_rt::SymItemVec> emit_dst,",
                 "    Int mode_start_pos, Int mode_buf_pos) {",
 
                     "lang_rt::SymItemVec emit_dst_sub;",
                     "Int in_i = mode_start_pos;",
-                    "ptr<Ch> in_data = st->in_->data_.begin();",
+                    "Ptr<Ch> in_data = st->in_->data_.begin();",
                     "Int in_data_len = st->in_->data_len_;",
                     "Int tok_lo;",
                     "Int tok_hi;",
-                    "ptr<lang_rt::LexWhitespaceState> ws_state = nullptr;",
+                    "Ptr<lang_rt::LexWhitespaceState> ws_state = nullptr;",
 
                     "for (cc_nop(); true; cc_nop()) {",
                     "    tok_lo = in_i;",
@@ -1833,8 +1841,8 @@ void lang_emit_global_defs(LangCompileContext& ctx) {
                 "namespace lang::",
                     ctx.src_base_name_, "::lexer::", mode->name_.to_std_string(), "{",
                     "inline __attribute__((always_inline)) Int proc_mode_loop_opt(",
-                    "ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st,",
-                    "ptr<lang_rt::SymItemVec> emit_dst,",
+                    "Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st,",
+                    "Ptr<lang_rt::SymItemVec> emit_dst,",
                     "Int mode_start_pos, Int mode_buf_pos);",
                 "}")->as_Decl());
 
@@ -1850,14 +1858,14 @@ void lang_emit_global_defs(LangCompileContext& ctx) {
             auto loop_fun = ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
                 "inline __attribute__((always_inline)) Int lang::", ctx.src_base_name_,
                     "::lexer::", mode->name_.to_std_string(), "::proc_mode_loop_opt(",
-                "    ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st,",
-                "    ptr<lang_rt::SymItemVec> emit_dst,",
+                "    Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st,",
+                "    Ptr<lang_rt::SymItemVec> emit_dst,",
                 "    Int mode_start_pos, Int mode_buf_pos) {",
 
                 "    lang_rt::SymItemVec emit_dst_sub;",
                 "    bool read_eof = false;",
                 "    Int in_i = mode_start_pos;",
-                "    ptr<Ch> in_data = st->in_->data_.begin();",
+                "    Ptr<Ch> in_data = st->in_->data_.begin();",
                 "    Int in_data_len = st->in_->data_len_;",
                 "    auto label_ids_ascii = st->label_ids_ascii_->begin();",
                 "    Int tok_lo;",
@@ -1944,8 +1952,8 @@ void lang_emit_global_defs(LangCompileContext& ctx) {
                 "namespace lang::", ctx.src_base_name_, "::lexer::",
                     mode->name_.to_std_string(), "{",
                     "inline __attribute__((always_inline)) Int proc_mode_loop_opt(",
-                    "ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st,",
-                    "ptr<lang_rt::SymItemVec> emit_dst,",
+                    "Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st,",
+                    "Ptr<lang_rt::SymItemVec> emit_dst,",
                     "Int mode_start_pos, Int mode_buf_pos);",
                 "}")->as_Decl());
 

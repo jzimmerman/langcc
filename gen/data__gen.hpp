@@ -13,9 +13,9 @@ namespace lang::data::lexer::body {
 
     __attribute__((always_inline)) lang_rt::DFAActionWithToken acc(lang_rt::DFAVertexId v);
 
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
 
-    Int proc_mode_loop(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    Int proc_mode_loop(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }
 
 namespace lang::data::lexer::comment_single {
@@ -23,9 +23,9 @@ namespace lang::data::lexer::comment_single {
 
     __attribute__((always_inline)) lang_rt::DFAActionWithToken acc(lang_rt::DFAVertexId v);
 
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
 
-    Int proc_mode_loop(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    Int proc_mode_loop(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }
 
 #pragma once
@@ -104,12 +104,20 @@ namespace lang::data::Node {
     using Param_T = rc_ptr<lang::data::Node::Param::_T>;
 }
 
-namespace lang::data::Node::Field {
+namespace lang::data::Node::Entry::Field {
     struct _T;
 }
 
-namespace lang::data::Node {
-    using Field_T = rc_ptr<lang::data::Node::Field::_T>;
+namespace lang::data::Node::Entry {
+    using Field_T = rc_ptr<lang::data::Node::Entry::Field::_T>;
+}
+
+namespace lang::data::Node::Entry::Method {
+    struct _T;
+}
+
+namespace lang::data::Node::Entry {
+    using Method_T = rc_ptr<lang::data::Node::Entry::Method::_T>;
 }
 
 namespace lang::data::Node::Expr::Id {
@@ -168,6 +176,14 @@ namespace lang::data::Node {
     using Mod_T = rc_ptr<lang::data::Node::Mod::_T>;
 }
 
+namespace lang::data::Node::Entry {
+    struct _T;
+}
+
+namespace lang::data::Node {
+    using Entry_T = rc_ptr<lang::data::Node::Entry::_T>;
+}
+
 namespace lang::data::Node::Expr {
     struct _T;
 }
@@ -190,19 +206,19 @@ namespace lang::data::Node {
     enum struct _W {
         Module,
         Param,
-        Field,
         SumId,
         Id,
         Decl,
         Mod,
+        Entry,
         Expr,
     };
 }
 
 namespace lang::data::Node {
     struct _T: hash_obj, enable_rc_from_this_poly {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::_W w_;
         virtual ~_T();
         Int id_;
@@ -214,19 +230,19 @@ namespace lang::data::Node {
         _T(lang::data::Node::_W w);
         bool is_Module();
         bool is_Param();
-        bool is_Field();
         bool is_SumId();
         bool is_Id();
         bool is_Decl();
         bool is_Mod();
+        bool is_Entry();
         bool is_Expr();
         lang::data::Node::Module_T as_Module();
         lang::data::Node::Param_T as_Param();
-        lang::data::Node::Field_T as_Field();
         lang::data::Node::SumId_T as_SumId();
         lang::data::Node::Id_T as_Id();
         lang::data::Node::Decl_T as_Decl();
         lang::data::Node::Mod_T as_Mod();
+        lang::data::Node::Entry_T as_Entry();
         lang::data::Node::Expr_T as_Expr();
         void hash_ser_acc_lang_data_Node(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
@@ -245,8 +261,8 @@ namespace lang::data::Node::Module {
 
 namespace lang::data::Node::Module {
     struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::data::Node::Decl_T> decls_;
         _T();
         lang::data::Node::Module_T with_id(Int id);
@@ -273,8 +289,8 @@ namespace lang::data::Node::Param {
 
 namespace lang::data::Node::Param {
     struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice name_;
         lang::data::Node::Expr_T type__;
         _T();
@@ -291,38 +307,6 @@ namespace lang::data::Node::Param {
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Field_T x);
-
-namespace lang::data::Node::Field {
-    __attribute__((always_inline)) lang::data::Node::Field_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
-}
-
-namespace lang::data::Node::Field {
-    __attribute__((always_inline)) lang::data::Node::Field_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
-}
-
-namespace lang::data::Node::Field {
-    struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
-        StrSlice name_;
-        bool no_hash__;
-        lang::data::Node::Expr_T type__;
-        _T();
-        lang::data::Node::Field_T with_id(Int id);
-        lang::data::Node::Field_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::data::Node::Field_T with_is_top(bool is_top);
-        lang::data::Node::Field_T with_sym(lang_rt::ParserSymId sym);
-        lang::data::Node::Field_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::data::Node::Field_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::data::Node::Field_T with_name(StrSlice name);
-        lang::data::Node::Field_T with_no_hash_(bool no_hash_);
-        lang::data::Node::Field_T with_type_(lang::data::Node::Expr_T type_);
-        void hash_ser_acc_lang_data_Node_Field(SerBuf& buf) const;
-        virtual void hash_ser_acc(SerBuf& buf) const;
-    };
-}
-
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x);
 
 namespace lang::data::Node::SumId {
@@ -335,8 +319,8 @@ namespace lang::data::Node::SumId {
 
 namespace lang::data::Node::SumId {
     struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<StrSlice> items_;
         _T();
         lang::data::Node::SumId_T with_id(Int id);
@@ -363,8 +347,8 @@ namespace lang::data::Node::Id {
 
 namespace lang::data::Node::Id {
     struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<StrSlice> items_;
         _T();
         lang::data::Node::Id_T with_id(Int id);
@@ -392,8 +376,8 @@ namespace lang::data::Node::Decl {
 
 namespace lang::data::Node::Decl {
     struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::Decl::_W w_;
         virtual ~_T();
         _T(lang::data::Node::Decl::_W w);
@@ -422,8 +406,8 @@ namespace lang::data::Node::Mod {
 
 namespace lang::data::Node::Mod {
     struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::Mod::_W w_;
         virtual ~_T();
         _T(lang::data::Node::Mod::_W w);
@@ -434,6 +418,31 @@ namespace lang::data::Node::Mod {
         lang::data::Node::Mod::Xform_T as_Xform();
         lang::data::Node::Mod::Visit_T as_Visit();
         void hash_ser_acc_lang_data_Node_Mod(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const = 0;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x);
+
+namespace lang::data::Node::Entry {
+    enum struct _W {
+        Field,
+        Method,
+    };
+}
+
+namespace lang::data::Node::Entry {
+    struct _T: lang::data::Node::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        lang::data::Node::Entry::_W w_;
+        virtual ~_T();
+        _T(lang::data::Node::Entry::_W w);
+        bool is_Field();
+        bool is_Method();
+        lang::data::Node::Entry::Field_T as_Field();
+        lang::data::Node::Entry::Method_T as_Method();
+        void hash_ser_acc_lang_data_Node_Entry(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
 }
@@ -450,8 +459,8 @@ namespace lang::data::Node::Expr {
 
 namespace lang::data::Node::Expr {
     struct _T: lang::data::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::Expr::_W w_;
         virtual ~_T();
         _T(lang::data::Node::Expr::_W w);
@@ -478,8 +487,8 @@ namespace lang::data::Node::Decl::Include {
 
 namespace lang::data::Node::Decl::Include {
     struct _T: lang::data::Node::Decl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice path_;
         _T();
         lang::data::Node::Decl::Include_T with_id(Int id);
@@ -506,8 +515,8 @@ namespace lang::data::Node::Decl::Namespace {
 
 namespace lang::data::Node::Decl::Namespace {
     struct _T: lang::data::Node::Decl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::Id_T name_;
         Vec_T<lang::data::Node::Decl_T> body_;
         _T();
@@ -527,22 +536,22 @@ namespace lang::data::Node::Decl::Namespace {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x);
 
 namespace lang::data::Node::Decl::Data {
-    __attribute__((always_inline)) lang::data::Node::Decl::Data_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Field_T> fields);
+    __attribute__((always_inline)) lang::data::Node::Decl::Data_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries);
 }
 
 namespace lang::data::Node::Decl::Data {
-    __attribute__((always_inline)) lang::data::Node::Decl::Data_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Field_T> fields);
+    __attribute__((always_inline)) lang::data::Node::Decl::Data_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries);
 }
 
 namespace lang::data::Node::Decl::Data {
     struct _T: lang::data::Node::Decl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::SumId_T name_;
         Option_T<lang::data::Node::SumId_T> base_;
         Option_T<Vec_T<lang::data::Node::Param_T>> params_;
         Vec_T<lang::data::Node::Mod_T> mods_;
-        Vec_T<lang::data::Node::Field_T> fields_;
+        Vec_T<lang::data::Node::Entry_T> entries_;
         _T();
         lang::data::Node::Decl::Data_T with_id(Int id);
         lang::data::Node::Decl::Data_T with_bounds(lang_rt::TokenBounds bounds);
@@ -554,7 +563,7 @@ namespace lang::data::Node::Decl::Data {
         lang::data::Node::Decl::Data_T with_base(Option_T<lang::data::Node::SumId_T> base);
         lang::data::Node::Decl::Data_T with_params(Option_T<Vec_T<lang::data::Node::Param_T>> params);
         lang::data::Node::Decl::Data_T with_mods(Vec_T<lang::data::Node::Mod_T> mods);
-        lang::data::Node::Decl::Data_T with_fields(Vec_T<lang::data::Node::Field_T> fields);
+        lang::data::Node::Decl::Data_T with_entries(Vec_T<lang::data::Node::Entry_T> entries);
         void hash_ser_acc_lang_data_Node_Decl_Data(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
@@ -572,8 +581,8 @@ namespace lang::data::Node::Decl::Enum {
 
 namespace lang::data::Node::Decl::Enum {
     struct _T: lang::data::Node::Decl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::Id_T name_;
         Vec_T<StrSlice> cases_;
         _T();
@@ -602,8 +611,8 @@ namespace lang::data::Node::Mod::Mut {
 
 namespace lang::data::Node::Mod::Mut {
     struct _T: lang::data::Node::Mod::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::data::Node::Mod::Mut_T with_id(Int id);
         lang::data::Node::Mod::Mut_T with_bounds(lang_rt::TokenBounds bounds);
@@ -628,8 +637,8 @@ namespace lang::data::Node::Mod::Xform {
 
 namespace lang::data::Node::Mod::Xform {
     struct _T: lang::data::Node::Mod::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::data::Node::Mod::Xform_T with_id(Int id);
         lang::data::Node::Mod::Xform_T with_bounds(lang_rt::TokenBounds bounds);
@@ -654,8 +663,8 @@ namespace lang::data::Node::Mod::Visit {
 
 namespace lang::data::Node::Mod::Visit {
     struct _T: lang::data::Node::Mod::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::data::Node::Mod::Visit_T with_id(Int id);
         lang::data::Node::Mod::Visit_T with_bounds(lang_rt::TokenBounds bounds);
@@ -664,6 +673,74 @@ namespace lang::data::Node::Mod::Visit {
         lang::data::Node::Mod::Visit_T with_attr(lang_rt::ParserAttrMask attr);
         lang::data::Node::Mod::Visit_T with_first_k(lang_rt::ParserLookahead first_k);
         void hash_ser_acc_lang_data_Node_Mod_Visit(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x);
+
+namespace lang::data::Node::Entry::Field {
+    __attribute__((always_inline)) lang::data::Node::Entry::Field_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
+}
+
+namespace lang::data::Node::Entry::Field {
+    __attribute__((always_inline)) lang::data::Node::Entry::Field_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
+}
+
+namespace lang::data::Node::Entry::Field {
+    struct _T: lang::data::Node::Entry::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        StrSlice name_;
+        bool no_hash__;
+        lang::data::Node::Expr_T type__;
+        _T();
+        lang::data::Node::Entry::Field_T with_id(Int id);
+        lang::data::Node::Entry::Field_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::data::Node::Entry::Field_T with_is_top(bool is_top);
+        lang::data::Node::Entry::Field_T with_sym(lang_rt::ParserSymId sym);
+        lang::data::Node::Entry::Field_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::data::Node::Entry::Field_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::data::Node::Entry::Field_T with_name(StrSlice name);
+        lang::data::Node::Entry::Field_T with_no_hash_(bool no_hash_);
+        lang::data::Node::Entry::Field_T with_type_(lang::data::Node::Expr_T type_);
+        void hash_ser_acc_lang_data_Node_Entry_Field(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x);
+
+namespace lang::data::Node::Entry::Method {
+    __attribute__((always_inline)) lang::data::Node::Entry::Method_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type);
+}
+
+namespace lang::data::Node::Entry::Method {
+    __attribute__((always_inline)) lang::data::Node::Entry::Method_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type);
+}
+
+namespace lang::data::Node::Entry::Method {
+    struct _T: lang::data::Node::Entry::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        bool virtual__;
+        bool interface__;
+        StrSlice name_;
+        Vec_T<lang::data::Node::Param_T> params_;
+        lang::data::Node::Expr_T ret_type_;
+        _T();
+        lang::data::Node::Entry::Method_T with_id(Int id);
+        lang::data::Node::Entry::Method_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::data::Node::Entry::Method_T with_is_top(bool is_top);
+        lang::data::Node::Entry::Method_T with_sym(lang_rt::ParserSymId sym);
+        lang::data::Node::Entry::Method_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::data::Node::Entry::Method_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::data::Node::Entry::Method_T with_virtual_(bool virtual_);
+        lang::data::Node::Entry::Method_T with_interface_(bool interface_);
+        lang::data::Node::Entry::Method_T with_name(StrSlice name);
+        lang::data::Node::Entry::Method_T with_params(Vec_T<lang::data::Node::Param_T> params);
+        lang::data::Node::Entry::Method_T with_ret_type(lang::data::Node::Expr_T ret_type);
+        void hash_ser_acc_lang_data_Node_Entry_Method(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
@@ -680,8 +757,8 @@ namespace lang::data::Node::Expr::Id {
 
 namespace lang::data::Node::Expr::Id {
     struct _T: lang::data::Node::Expr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         bool ext_;
         lang::data::Node::Id_T x_;
         _T();
@@ -710,8 +787,8 @@ namespace lang::data::Node::Expr::App {
 
 namespace lang::data::Node::Expr::App {
     struct _T: lang::data::Node::Expr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::data::Node::Expr_T f_;
         Vec_T<lang::data::Node::Expr_T> args_;
         _T();
@@ -740,8 +817,8 @@ namespace lang::data::Node::Expr::Type_ {
 
 namespace lang::data::Node::Expr::Type_ {
     struct _T: lang::data::Node::Expr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::data::Node::Expr::Type__T with_id(Int id);
         lang::data::Node::Expr::Type__T with_bounds(lang_rt::TokenBounds bounds);
@@ -780,7 +857,11 @@ void visit_lang_data_Node(lang::data::Node::Mod::Visit_T x, function<void(lang::
 
 void visit_lang_data_Node(lang::data::Node::Mod_T x, function<void(lang::data::Node_T)> f);
 
-void visit_lang_data_Node(lang::data::Node::Field_T x, function<void(lang::data::Node_T)> f);
+void visit_lang_data_Node(lang::data::Node::Entry::Field_T x, function<void(lang::data::Node_T)> f);
+
+void visit_lang_data_Node(lang::data::Node::Entry::Method_T x, function<void(lang::data::Node_T)> f);
+
+void visit_lang_data_Node(lang::data::Node::Entry_T x, function<void(lang::data::Node_T)> f);
 
 void visit_lang_data_Node(lang::data::Node::Decl::Data_T x, function<void(lang::data::Node_T)> f);
 
@@ -818,7 +899,11 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod::Visit_T x, funct
 
 lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Field_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry::Field_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
+
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry::Method_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
+
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
 
 lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Data_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
 
@@ -864,7 +949,11 @@ lang::data::Node::Mod::Xform_T xform_lang_data_Node(lang::data::Node::Mod::Xform
 
 lang::data::Node::Mod::Visit_T xform_lang_data_Node(lang::data::Node::Mod::Visit_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
 
-lang::data::Node::Field_T xform_lang_data_Node(lang::data::Node::Field_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
+lang::data::Node::Entry_T xform_lang_data_Node(lang::data::Node::Entry_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
+
+lang::data::Node::Entry::Field_T xform_lang_data_Node(lang::data::Node::Entry::Field_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
+
+lang::data::Node::Entry::Method_T xform_lang_data_Node(lang::data::Node::Entry::Method_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
 
 lang::data::Node::Decl::Enum_T xform_lang_data_Node(lang::data::Node::Decl::Enum_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
 
@@ -925,9 +1014,9 @@ namespace lang::data {
 }
 
 namespace lang::data::lexer::body {
-    inline __attribute__((always_inline)) Int proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    inline __attribute__((always_inline)) Int proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }
 
 namespace lang::data::lexer::comment_single {
-    inline __attribute__((always_inline)) Int proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    inline __attribute__((always_inline)) Int proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }

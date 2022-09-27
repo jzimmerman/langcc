@@ -894,7 +894,7 @@ namespace lang::cc::lexer::body {
 }
 
 namespace lang::cc::lexer::body {
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
         auto ret = make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
@@ -956,7 +956,7 @@ namespace lang::cc::lexer::comment_single {
 }
 
 namespace lang::cc::lexer::comment_single {
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
         auto ret = make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
@@ -2890,8 +2890,8 @@ void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr_T x) {
             pr_debug(os, flags, x->as_Arrow());
             break;
         }
-        case lang::cc::Node::Expr::_W::Ref: {
-            pr_debug(os, flags, x->as_Ref());
+        case lang::cc::Node::Expr::_W::Ref_: {
+            pr_debug(os, flags, x->as_Ref_());
             break;
         }
         case lang::cc::Node::Expr::_W::AddrOf: {
@@ -3011,8 +3011,8 @@ bool lang::cc::Node::Expr::_T::is_Arrow() {
     return w_ == lang::cc::Node::Expr::_W::Arrow;
 }
 
-bool lang::cc::Node::Expr::_T::is_Ref() {
-    return w_ == lang::cc::Node::Expr::_W::Ref;
+bool lang::cc::Node::Expr::_T::is_Ref_() {
+    return w_ == lang::cc::Node::Expr::_W::Ref_;
 }
 
 bool lang::cc::Node::Expr::_T::is_AddrOf() {
@@ -3125,9 +3125,9 @@ lang::cc::Node::Expr::Arrow_T lang::cc::Node::Expr::_T::as_Arrow() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Arrow::_T>();
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::_T::as_Ref() {
-    AT(this->is_Ref());
-    return this->rc_from_this_poly<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::_T::as_Ref_() {
+    AT(this->is_Ref_());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Ref_::_T>();
 }
 
 lang::cc::Node::Expr::AddrOf_T lang::cc::Node::Expr::_T::as_AddrOf() {
@@ -10721,8 +10721,8 @@ void lang::cc::Node::Expr::Arrow::_T::hash_ser_acc(SerBuf& buf) const {
     this->lang::cc::Node::Expr::Arrow::_T::hash_ser_acc_lang_cc_Node_Expr_Arrow(buf);
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ref_T x) {
-    os << "lang::cc::Node::Expr::Ref {";
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ref__T x) {
+    os << "lang::cc::Node::Expr::Ref_ {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
     pr_debug(os, flags.sub_lo(), x->id_);
@@ -10755,11 +10755,11 @@ void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ref_T x) {
     os << "}";
 }
 
-lang::cc::Node::Expr::Ref::_T::_T() : lang::cc::Node::Expr::_T(lang::cc::Node::Expr::_W::Ref) {
+lang::cc::Node::Expr::Ref_::_T::_T() : lang::cc::Node::Expr::_T(lang::cc::Node::Expr::_W::Ref_) {
 }
 
-__attribute__((always_inline)) lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+__attribute__((always_inline)) lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -10770,8 +10770,8 @@ __attribute__((always_inline)) lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr:
     return ret;
 }
 
-__attribute__((always_inline)) lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x) {
-    auto ret1 = make_rc_ext<lang::cc::Node::Expr::Ref::_T>(arena);
+__attribute__((always_inline)) lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x) {
+    auto ret1 = make_rc_ext<lang::cc::Node::Expr::Ref_::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -10782,8 +10782,8 @@ __attribute__((always_inline)) lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr:
     return ret1;
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_id(Int id) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::_T::with_id(Int id) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -10794,8 +10794,8 @@ lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_id(Int id) {
     return ret;
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::_T::with_bounds(lang_rt::TokenBounds bounds) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -10806,8 +10806,8 @@ lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_bounds(lang_rt::
     return ret;
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::_T::with_is_top(bool is_top) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -10818,8 +10818,8 @@ lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_is_top(bool is_t
     return ret;
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::_T::with_sym(lang_rt::ParserSymId sym) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -10830,8 +10830,8 @@ lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_sym(lang_rt::Par
     return ret;
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::_T::with_attr(lang_rt::ParserAttrMask attr) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -10842,8 +10842,8 @@ lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_attr(lang_rt::Pa
     return ret;
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::_T::with_first_k(lang_rt::ParserLookahead first_k) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -10854,8 +10854,8 @@ lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_first_k(lang_rt:
     return ret;
 }
 
-lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_x(lang::cc::Node::Expr_T x) {
-    auto ret = make_rc<lang::cc::Node::Expr::Ref::_T>();
+lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::Ref_::_T::with_x(lang::cc::Node::Expr_T x) {
+    auto ret = make_rc<lang::cc::Node::Expr::Ref_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -10866,7 +10866,7 @@ lang::cc::Node::Expr::Ref_T lang::cc::Node::Expr::Ref::_T::with_x(lang::cc::Node
     return ret;
 }
 
-void lang::cc::Node::Expr::Ref::_T::hash_ser_acc_lang_cc_Node_Expr_Ref(SerBuf& buf) const {
+void lang::cc::Node::Expr::Ref_::_T::hash_ser_acc_lang_cc_Node_Expr_Ref_(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node_Expr(buf);
     hash_ser(buf, is_top_);
     hash_ser(buf, sym_);
@@ -10875,8 +10875,8 @@ void lang::cc::Node::Expr::Ref::_T::hash_ser_acc_lang_cc_Node_Expr_Ref(SerBuf& b
     hash_ser(buf, x_);
 }
 
-void lang::cc::Node::Expr::Ref::_T::hash_ser_acc(SerBuf& buf) const {
-    this->lang::cc::Node::Expr::Ref::_T::hash_ser_acc_lang_cc_Node_Expr_Ref(buf);
+void lang::cc::Node::Expr::Ref_::_T::hash_ser_acc(SerBuf& buf) const {
+    this->lang::cc::Node::Expr::Ref_::_T::hash_ser_acc_lang_cc_Node_Expr_Ref_(buf);
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::AddrOf_T x) {
@@ -19833,7 +19833,7 @@ void visit_lang_cc_Node(lang::cc::Node::Expr::Arrow_T x, function<void(lang::cc:
     f(x);
 }
 
-void visit_lang_cc_Node(lang::cc::Node::Expr::Ref_T x, function<void(lang::cc::Node_T)> f) {
+void visit_lang_cc_Node(lang::cc::Node::Expr::Ref__T x, function<void(lang::cc::Node_T)> f) {
     visit_lang_cc_Node(x->x_, f);
     f(x);
 }
@@ -20247,8 +20247,8 @@ void visit_lang_cc_Node(lang::cc::Node::Expr_T x, function<void(lang::cc::Node_T
             visit_lang_cc_Node(x->as_Arrow(), f);
             break;
         }
-        case lang::cc::Node::Expr::_W::Ref: {
-            visit_lang_cc_Node(x->as_Ref(), f);
+        case lang::cc::Node::Expr::_W::Ref_: {
+            visit_lang_cc_Node(x->as_Ref_(), f);
             break;
         }
         case lang::cc::Node::Expr::_W::AddrOf: {
@@ -21091,9 +21091,9 @@ lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Arrow_T x, function<l
     return f(z);
 }
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Ref_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f) {
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Ref__T x, function<lang::cc::Node_T(lang::cc::Node_T)> f) {
     lang::cc::Node::Expr_T y = xform_lang_cc_Node(x->x_, f);
-    lang::cc::Node::Expr::Ref_T z = lang::cc::Node::Expr::Ref::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_, y);
+    lang::cc::Node::Expr::Ref__T z = lang::cc::Node::Expr::Ref_::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_, y);
     return f(z);
 }
 
@@ -21581,8 +21581,8 @@ lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr_T x, function<lang::cc
             return ret5;
             break;
         }
-        case lang::cc::Node::Expr::_W::Ref: {
-            auto ret6 = xformT_lang_cc_Node(x->as_Ref(), f);
+        case lang::cc::Node::Expr::_W::Ref_: {
+            auto ret6 = xformT_lang_cc_Node(x->as_Ref_(), f);
             return ret6;
             break;
         }
@@ -22650,9 +22650,9 @@ lang::cc::Node::Expr::Arrow_T xform_lang_cc_Node(lang::cc::Node::Expr::Arrow_T x
     return ret->as_Expr()->as_Arrow();
 }
 
-lang::cc::Node::Expr::Ref_T xform_lang_cc_Node(lang::cc::Node::Expr::Ref_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f) {
+lang::cc::Node::Expr::Ref__T xform_lang_cc_Node(lang::cc::Node::Expr::Ref__T x, function<lang::cc::Node_T(lang::cc::Node_T)> f) {
     lang::cc::Node_T ret = xformT_lang_cc_Node(x, f);
-    return ret->as_Expr()->as_Ref();
+    return ret->as_Expr()->as_Ref_();
 }
 
 lang::cc::Node::Expr::AddrOf_T xform_lang_cc_Node(lang::cc::Node::Expr::AddrOf_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f) {
@@ -24417,13 +24417,13 @@ void lang::cc::Node::Expr::Arrow::_T::write(ostream& os, FmtFlags flags) {
     pb->distill(os, flags);
 }
 
-void lang::cc::Node::Expr::Ref::_T::write(lang_rt::PrBufStream_T& pb) {
-    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Ref::_T>();
+void lang::cc::Node::Expr::Ref_::_T::write(lang_rt::PrBufStream_T& pb) {
+    auto x = this->rc_from_this_poly<lang::cc::Node::Expr::Ref_::_T>();
     x->x_->write(pb);
     pb->push_string("&");
 }
 
-void lang::cc::Node::Expr::Ref::_T::write(ostream& os, FmtFlags flags) {
+void lang::cc::Node::Expr::Ref_::_T::write(ostream& os, FmtFlags flags) {
     auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
@@ -25464,8 +25464,8 @@ void lang::cc::Node::Expr::_T::write(lang_rt::PrBufStream_T& pb) {
             x->as_Arrow()->write(pb);
             break;
         }
-        case lang::cc::Node::Expr::_W::Ref: {
-            x->as_Ref()->write(pb);
+        case lang::cc::Node::Expr::_W::Ref_: {
+            x->as_Ref_()->write(pb);
             break;
         }
         case lang::cc::Node::Expr::_W::AddrOf: {
@@ -29680,7 +29680,7 @@ namespace lang::cc::parser {
         sr_len = sr_len - 2;
         auto x = reinterpret_cast<ptr<lang::cc::Node::Expr::_T>>(res1.v_)->rc_from_this_poly<lang::cc::Node::Expr::_T>();
         x.decref();
-        auto ret = lang::cc::Node::Expr::Ref::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x);
+        auto ret = lang::cc::Node::Expr::Ref_::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x);
         ret.incref();
         auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
@@ -40125,11 +40125,11 @@ string lang::cc::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int attr
     }
 }
 
-inline __attribute__((always_inline)) Int lang::cc::lexer::body::proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
+inline __attribute__((always_inline)) Int lang::cc::lexer::body::proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
     lang_rt::SymItemVec emit_dst_sub;
     bool read_eof = false;
     Int in_i = mode_start_pos;
-    ptr<Ch> in_data = st->in_->data_.begin();
+    Ptr<Ch> in_data = st->in_->data_.begin();
     Int in_data_len = st->in_->data_len_;
     auto label_ids_ascii = st->label_ids_ascii_->begin();
     Int tok_lo;
@@ -40198,14 +40198,14 @@ inline __attribute__((always_inline)) Int lang::cc::lexer::body::proc_mode_loop_
     }
 }
 
-inline __attribute__((always_inline)) Int lang::cc::lexer::comment_single::proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
+inline __attribute__((always_inline)) Int lang::cc::lexer::comment_single::proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
     lang_rt::SymItemVec emit_dst_sub;
     Int in_i = mode_start_pos;
-    ptr<Ch> in_data = st->in_->data_.begin();
+    Ptr<Ch> in_data = st->in_->data_.begin();
     Int in_data_len = st->in_->data_len_;
     Int tok_lo;
     Int tok_hi;
-    ptr<lang_rt::LexWhitespaceState> ws_state = nullptr;
+    Ptr<lang_rt::LexWhitespaceState> ws_state = nullptr;
     for (cc_nop(); true; cc_nop()) {
         tok_lo = in_i;
         lang_rt::DFAActionId best_act = lang_rt::DFATable::NO_ACTION;

@@ -1,7 +1,8 @@
 
 tokens {
     kw <= `def` | `enum` | `namespace` | `Type`
-        | `mut` | `xform` | `visit` | `#include` | `no_hash`;
+        | `mut` | `xform` | `visit` | `#include` | `no_hash`
+        | `method` | `virtual` | `interface`;
     idBase <- ((`a`..`z` | `A`..`Z` | `_`) (`a`..`z` | `A`..`Z` | `0`..`9` | `_`)*) - kw;
     op <= `.` | `:` | `;` | `::` | `{` | `}` | `(` | `)` | `,` | `^` | `<:`;
     str_lit <- `"` (unicode_any - `"`)* `"`;
@@ -26,7 +27,9 @@ lexer {
 }
 
 parser {
-    main { Module, Decl, Field, Expr, Id, SumId }
+    main { Module, Decl, Entry, Expr, Id, SumId }
+
+    prop { name_strict; }
 
     Module <- decls:#T2[Decl::eps];
 
@@ -36,7 +39,7 @@ parser {
         `def` _ name:SumId base:(_ `<:` _ SumId)?
         params:(`(` #L[Param::`,`_] `)`)? _
         mods:#L[Mod::_::]
-        `{` fields:#B[Field::eps] `}`;
+        `{` entries:#B[Entry::eps] `}`;
     Decl.Enum <-
         `enum` _ name:Id `{` cases:#B[idBase::`;`::] `}`;
 
@@ -46,7 +49,10 @@ parser {
 
     Param <- name:idBase `:` _ type_:Expr;
 
-    Field <- name:idBase no_hash_:(_ `no_hash`)? `:` _ type_:Expr `;`;
+    Entry.Field <- name:idBase no_hash_:(_ `no_hash`)? `:` _ type_:Expr `;`;
+    Entry.Method <-
+        `method` virtual_:(_ `virtual`)? interface_:(_ `interface`)? _
+        name:idBase `(` params:#L[Param::`,`_] `)` `:` _ ret_type:Expr `;`;
 
     Expr.Id <- ext:`^`? x:Id;
     Expr.App <- f:Expr `(` args:#L[Expr::`,`_] `)`;

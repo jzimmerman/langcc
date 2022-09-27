@@ -579,6 +579,8 @@ bool lang_name_is_lower_reserved(string x) {
     res->insert("not");
     res->insert("Option");
     res->insert("or");
+    res->insert("Ptr");
+    res->insert("Ref");
     res->insert("return");
     res->insert("static");
     res->insert("string");

@@ -360,6 +360,7 @@ Map<GenName, GenName>& builtins_cpp() {
         return ret;
     }
     ret.insert(name_lit({"bool"}), name_lit({"bool"}));
+    ret.insert(name_lit({"void"}), name_lit({"void"}));
     ret.insert(name_lit({"Int"}), name_lit({"Int"}));
     ret.insert(name_lit({"u32"}), name_lit({"u32"}));
     ret.insert(name_lit({"IntPair"}), name_lit({"IntPair"}));
@@ -367,6 +368,8 @@ Map<GenName, GenName>& builtins_cpp() {
     ret.insert(name_lit({"StrSlice"}), name_lit({"StrSlice"}));
     ret.insert(name_lit({"Char"}), name_lit({"Ch"}));
     ret.insert(name_lit({"Unit"}), name_lit({"Unit"}));
+    ret.insert(name_lit({"Ptr"}), name_lit({"Ptr"}));
+    ret.insert(name_lit({"Ref"}), name_lit({"Ref"}));
     ret.insert(name_lit({"Vec"}), name_lit({"Vec_T"}));
     ret.insert(name_lit({"Set"}), name_lit({"Set_T"}));
     ret.insert(name_lit({"Map"}), name_lit({"Map_T"}));
@@ -439,34 +442,55 @@ cc::Node_T data_type_expr_to_cpp(
 
 
 pair<
-    Vec_T<pair<IdBase, data::Node::Field_T>>,
-    Vec_T<pair<IdBase, data::Node::Field_T>>>
+    Vec_T<pair<IdBase, data::Node::Entry::Field_T>>,
+    Vec_T<pair<IdBase, data::Node::Entry::Field_T>>>
 dt_extract_def_fields_full(GenName curr, DataCompileContext& ctx) {
 
     auto dt = ctx.data_leaves_->operator[](curr);
-    auto fields_full = make_rc<Vec<pair<IdBase, data::Node::Field_T>>>();
-    auto fields_proper = make_rc<Vec<pair<IdBase, data::Node::Field_T>>>();
+    auto fields_full = make_rc<Vec<pair<IdBase, data::Node::Entry::Field_T>>>();
+    auto fields_proper = make_rc<Vec<pair<IdBase, data::Node::Entry::Field_T>>>();
     auto fields_full_s = make_rc<Set<IdBase>>();
     auto anc = ctx.dt_ancestors(curr);
     AR_ge(anc->length(), 1);
-    for (const auto& [q, _] : *anc) {
+    for (auto [q, _] : *anc) {
         auto q_dt = ctx.data_leaves_->operator[](q);
-        for (const auto& data_field : *q_dt->fields_) {
-            auto data_field_name = data_field->name_.to_std_string();
-            if (fields_full_s->contains(data_field_name)) {
-                LG_ERR("Field {} is shadowed by datatype {}\n",
-                    data_field_name, name_sep_to_underscores(curr));
-                AX();
+        for (auto data_entry : *q_dt->entries_) {
+            if (data_entry->is_Field()) {
+                auto cc = data_entry->as_Field();
+                auto data_field_name = cc->name_.to_std_string();
+                if (fields_full_s->contains(data_field_name)) {
+                    LG_ERR("Field {} is shadowed by datatype {}\n",
+                        data_field_name, name_sep_to_underscores(curr));
+                    AX();
+                }
+                fields_full_s->insert(data_field_name);
+                fields_full->push_back(make_pair(data_field_name, cc));
             }
-            fields_full_s->insert(data_field_name);
-            fields_full->push_back(make_pair(data_field_name, data_field));
         }
     }
-    for (const auto& data_field : *dt->fields_) {
-        auto data_field_name = data_field->name_.to_std_string();
-        fields_proper->push_back(make_pair(data_field_name, data_field));
+    for (auto data_entry : *dt->entries_) {
+        if (data_entry->is_Field()) {
+            auto cc = data_entry->as_Field();
+            auto data_field_name = cc->name_.to_std_string();
+            fields_proper->push_back(make_pair(data_field_name, cc));
+        }
     }
     return make_pair(fields_full, fields_proper);
+}
+
+
+Vec_T<pair<IdBase, data::Node::Entry::Method_T>>
+dt_extract_def_methods(GenName curr, DataCompileContext& ctx) {
+    auto dt = ctx.data_leaves_->operator[](curr);
+    auto methods = make_rc<Vec<pair<IdBase, data::Node::Entry::Method_T>>>();
+    for (auto data_entry : *dt->entries_) {
+        if (data_entry->is_Method()) {
+            auto cc = data_entry->as_Method();
+            auto method_name = cc->name_.to_std_string();
+            methods->push_back(make_pair(method_name, cc));
+        }
+    }
+    return methods;
 }
 
 
@@ -697,7 +721,7 @@ void data_gen_xform_fn(
     } else {
         auto cpp_make_args = make_rc<Vec<cc::Node_T>>();
         auto [fields_full, _] = dt_extract_def_fields_full(curr, ctx);
-        for (const auto& [__, q] : *fields_full) {
+        for (auto [__, q] : *fields_full) {
             auto field_name = q->name_;
             auto cpp_field_proj = ctx.cc_.qq(
                 "Expr", cpp_xform_param_x_var, "->", fmt_str("{}_", field_name));
@@ -831,7 +855,7 @@ void data_gen_xform_id_fn(
 
 
 DataDefsResult compile_data_defs(
-    lang::data::Node_T src, Option_T<string> header_name, bool gen_write_proto) {
+    lang::data::Node_T src, Option_T<string> header_name) {
 
     DataCompileContext ctx;
 
@@ -1179,33 +1203,39 @@ DataDefsResult compile_data_defs(
                 NodeV_empty(),
                 cpp_pr_debug_body)->as_Decl());
 
-        // write() prototypes
-        if (gen_write_proto) {
-            {
-                auto id_write_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
-                auto cpp_write_name = lower_name_cpp(LowerTy::WRITE_BASE, name_full, ctx);
-                auto cpp_write_params = make_rc<Vec<cc::Node_T>>();
-                auto cpp_write_param_os_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
-                    cpp_write_params, id_write_fun_ns, ctx.cc_.Q_->qq("Expr", "ostream&"), "os");
-                auto cpp_write_param_flags_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
-                    cpp_write_params, id_write_fun_ns, ctx.cc_.Q_->qq("Expr", "FmtFlags"), "flags");
-                cpp_fields->push_back(
-                    ctx.cc_.qq("Entry", "void", cpp_write_name,
-                        "(ostream& ", cpp_write_param_os_var, ", FmtFlags",
-                        cpp_write_param_flags_var, ");"));
-            }
+        auto methods = dt_extract_def_methods(name_full, ctx);
 
-            {
-                auto id_write_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
-                auto cpp_write_name = lower_name_cpp(LowerTy::WRITE_BASE, name_full, ctx);
-                auto cpp_write_params = make_rc<Vec<cc::Node_T>>();
-                auto cpp_write_param_pb_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
-                    cpp_write_params, id_write_fun_ns,
-                    ctx.cc_.Q_->qq("Expr", "lang_rt::PrBufStream_T&"), "pb");
-                cpp_fields->push_back(
-                    ctx.cc_.qq("Entry", "void", cpp_write_name,
-                        "(lang_rt::PrBufStream_T& ", cpp_write_param_pb_var, ");"));
+        for (auto [_, method] : *methods) {
+            auto def_ns = name_full;
+            auto cpp_method_name = ctx.cc_.gen_cpp_id_base(method->name_.to_std_string());
+            auto cpp_ret_type = data_type_expr_to_cpp(method->ret_type_, def_ns, ctx);
+            auto lex_args = ctx.cc_.Q_->make_lex_builder();
+            if (method->virtual__ && method->interface__) {
+                LG_ERR("Method {} cannot be both `virtual` and `interface`", method->name_);
+                AX();
             }
+            if (method->virtual__ || method->interface__) {
+                ctx.cc_.Q_->qq_args_acc(lex_args, "virtual");
+            }
+            ctx.cc_.Q_->qq_args_acc(lex_args, cpp_ret_type, cpp_method_name, "(");
+            bool fresh = true;
+            for (auto param : *method->params_) {
+                if (!fresh) {
+                    ctx.cc_.Q_->qq_args_acc(lex_args, ",");
+                }
+                fresh = false;
+                auto cpp_arg_ty = data_type_expr_to_cpp(param->type__, def_ns, ctx);
+                ctx.cc_.Q_->qq_args_acc(lex_args, cpp_arg_ty);
+                ctx.cc_.Q_->qq_args_acc(lex_args,
+                    ctx.cc_.gen_cpp_id_base(param->name_.to_std_string()));
+            }
+            if (method->interface__) {
+                ctx.cc_.Q_->qq_args_acc(lex_args, ") = 0;");
+            } else {
+                ctx.cc_.Q_->qq_args_acc(lex_args, ");");
+            }
+            cpp_fields->push(
+                ctx.cc_.Q_->qq_inner(Some<string>("Entry"), lex_args));
         }
 
         // hash_ser_acc()
@@ -1303,7 +1333,7 @@ DataDefsResult compile_data_defs(
             }
         }
 
-        for (const auto& q : *fields_proper) {
+        for (auto q : *fields_proper) {
             auto data_field_name = q.first;
             auto data_field_type = q.second;
             auto def_ns = name_full;

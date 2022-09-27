@@ -485,7 +485,7 @@ parser {
     Expr.MapType <- `map` `[` key_ty:TypeI `]` elem_ty:Type;
     Expr.StructType <- `struct` _ `{` fields:#B[FieldDecl::`;`:?] `}`;
     Expr.InterfaceType <- `interface` _
-        `{` entries:#L[(method:MethodSpec | id_:Expr[I2])::`;`:?] `}`;
+        `{` entries:#L[(method_:MethodSpec | id_:Expr[I2])::`;`:?] `}`;
 
         FieldDecl <- body:~FieldDeclBody tag:(_ str_lit)?;
         FieldDeclBody.Standard <- ids:#L[Id::+`,`] _ ty:Type;

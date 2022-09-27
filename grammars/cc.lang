@@ -81,7 +81,7 @@ parser {
         Expr.UnaryPre prefix;
         Expr.IncDecPost postfix;
         Expr.IncDecPre prefix;
-        Expr.Ref postfix;
+        Expr.Ref_ postfix;
         Expr.Call Expr.Index Expr.IndexEmpty Expr.Template postfix;
         Expr.Tilde prefix;
         Expr.AddrOf Expr.Deref prefix;
@@ -108,7 +108,7 @@ parser {
 
         match {
             Expr.Template => lhs[aT] -> rhs_begin[aT],
-            Expr.Id | Expr.Ref => lhs[aT],
+            Expr.Id | Expr.Ref_ => lhs[aT],
             Expr.Tilde => lhs[aT] -> rhs_end[aT],
             Expr.Namespace => lhs[aT] -> rhs[aT],
         };
@@ -195,7 +195,7 @@ parser {
 
     Expr.Dot <- x:Expr `.` field:Expr;
     Expr.Arrow <- x:Expr `->` field:Expr;
-    Expr.Ref <- x:Type `&`;
+    Expr.Ref_ <- x:Type `&`;
     Expr.AddrOf <- `&` x:Expr;
     Expr.Deref <- `*` x:Expr;
     Expr.UnaryPre <- op:(NOT:`!` | NEG:`-`) x:Expr;

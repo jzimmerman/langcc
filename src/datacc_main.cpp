@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
     auto src = parse->res_.as_some();
 
     auto ret = compile_data_defs(
-        src, Some(fmt_str("{}__data_gen.hpp", src_base_name)), false);
+        src, Some(fmt_str("{}__data_gen.hpp", src_base_name)));
 
     auto dst_path_cpp = fmt_str("{}/{}__data_gen.cpp", dst_path, src_base_name);
     auto dst_path_hpp = fmt_str("{}/{}__data_gen.hpp", dst_path, src_base_name);

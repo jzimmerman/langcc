@@ -948,7 +948,7 @@ namespace lang::meta::lexer::body {
 }
 
 namespace lang::meta::lexer::body {
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
         auto ret = make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
@@ -1014,7 +1014,7 @@ namespace lang::meta::lexer::comment_single {
 }
 
 namespace lang::meta::lexer::comment_single {
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
         auto ret = make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
@@ -31292,11 +31292,11 @@ string lang::meta::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
     }
 }
 
-inline __attribute__((always_inline)) Int lang::meta::lexer::body::proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
+inline __attribute__((always_inline)) Int lang::meta::lexer::body::proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
     lang_rt::SymItemVec emit_dst_sub;
     bool read_eof = false;
     Int in_i = mode_start_pos;
-    ptr<Ch> in_data = st->in_->data_.begin();
+    Ptr<Ch> in_data = st->in_->data_.begin();
     Int in_data_len = st->in_->data_len_;
     auto label_ids_ascii = st->label_ids_ascii_->begin();
     Int tok_lo;
@@ -31365,14 +31365,14 @@ inline __attribute__((always_inline)) Int lang::meta::lexer::body::proc_mode_loo
     }
 }
 
-inline __attribute__((always_inline)) Int lang::meta::lexer::comment_single::proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
+inline __attribute__((always_inline)) Int lang::meta::lexer::comment_single::proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
     lang_rt::SymItemVec emit_dst_sub;
     Int in_i = mode_start_pos;
-    ptr<Ch> in_data = st->in_->data_.begin();
+    Ptr<Ch> in_data = st->in_->data_.begin();
     Int in_data_len = st->in_->data_len_;
     Int tok_lo;
     Int tok_hi;
-    ptr<lang_rt::LexWhitespaceState> ws_state = nullptr;
+    Ptr<lang_rt::LexWhitespaceState> ws_state = nullptr;
     for (cc_nop(); true; cc_nop()) {
         tok_lo = in_i;
         lang_rt::DFAActionId best_act = lang_rt::DFATable::NO_ACTION;

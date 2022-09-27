@@ -13,9 +13,9 @@ namespace lang::meta::lexer::body {
 
     __attribute__((always_inline)) lang_rt::DFAActionWithToken acc(lang_rt::DFAVertexId v);
 
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
 
-    Int proc_mode_loop(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    Int proc_mode_loop(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }
 
 namespace lang::meta::lexer::comment_single {
@@ -23,9 +23,9 @@ namespace lang::meta::lexer::comment_single {
 
     __attribute__((always_inline)) lang_rt::DFAActionWithToken acc(lang_rt::DFAVertexId v);
 
-    __attribute__((always_inline)) IntPair step_exec(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
+    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
 
-    Int proc_mode_loop(ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    Int proc_mode_loop(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }
 
 #pragma once
@@ -922,8 +922,8 @@ namespace lang::meta::Node {
 
 namespace lang::meta::Node {
     struct _T: hash_obj, enable_rc_from_this_poly {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::_W w_;
         virtual ~_T();
         Int id_;
@@ -1000,8 +1000,8 @@ namespace lang::meta::Node::Lang {
 
 namespace lang::meta::Node::Lang {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::Stanza_T> stanzas_;
         _T();
         lang::meta::Node::Lang_T with_id(Int id);
@@ -1028,8 +1028,8 @@ namespace lang::meta::Node::TokenDecl {
 
 namespace lang::meta::Node::TokenDecl {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice name_;
         lang::meta::Node::TokenDecl::op_T op_;
         lang::meta::Node::ParseExpr_T def__;
@@ -1060,8 +1060,8 @@ namespace lang::meta::Node::LexerModeCase {
 
 namespace lang::meta::Node::LexerModeCase {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T tok_;
         Vec_T<lang::meta::Node::LexerInstr_T> instrs_;
         _T();
@@ -1090,8 +1090,8 @@ namespace lang::meta::Node::PrecItem {
 
 namespace lang::meta::Node::PrecItem {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::Id_T> ids_;
         Option_T<lang::meta::Node::PrecAssoc_T> assoc_;
         _T();
@@ -1120,8 +1120,8 @@ namespace lang::meta::Node::AttrMatchCase {
 
 namespace lang::meta::Node::AttrMatchCase {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrMatchCasePattern_T pat_;
         lang::meta::Node::AttrClause_T clause_;
         _T();
@@ -1150,8 +1150,8 @@ namespace lang::meta::Node::TestCase {
 
 namespace lang::meta::Node::TestCase {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice text_;
         Option_T<StrSlice> sym__;
         bool print_exempt_;
@@ -1182,8 +1182,8 @@ namespace lang::meta::Node::CompileTestCase {
 
 namespace lang::meta::Node::CompileTestCase {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         bool neg_;
         StrSlice k_;
         _T();
@@ -1212,8 +1212,8 @@ namespace lang::meta::Node::Id {
 
 namespace lang::meta::Node::Id {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<StrSlice> names_;
         _T();
         lang::meta::Node::Id_T with_id(Int id);
@@ -1242,8 +1242,8 @@ namespace lang::meta::Node::Stanza {
 
 namespace lang::meta::Node::Stanza {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::Stanza::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::Stanza::_W w);
@@ -1273,8 +1273,8 @@ namespace lang::meta::Node::LexerDecl {
 
 namespace lang::meta::Node::LexerDecl {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::LexerDecl::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::LexerDecl::_W w);
@@ -1303,8 +1303,8 @@ namespace lang::meta::Node::LexerInstr {
 
 namespace lang::meta::Node::LexerInstr {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::LexerInstr::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::LexerInstr::_W w);
@@ -1341,8 +1341,8 @@ namespace lang::meta::Node::ParserDecl {
 
 namespace lang::meta::Node::ParserDecl {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParserDecl::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::ParserDecl::_W w);
@@ -1373,8 +1373,8 @@ namespace lang::meta::Node::ParserProp {
 
 namespace lang::meta::Node::ParserProp {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParserProp::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::ParserProp::_W w);
@@ -1402,8 +1402,8 @@ namespace lang::meta::Node::PrecAssoc {
 
 namespace lang::meta::Node::PrecAssoc {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::PrecAssoc::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::PrecAssoc::_W w);
@@ -1432,8 +1432,8 @@ namespace lang::meta::Node::AttrClause {
 
 namespace lang::meta::Node::AttrClause {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrClause::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::AttrClause::_W w);
@@ -1459,8 +1459,8 @@ namespace lang::meta::Node::AttrMatchCasePattern {
 
 namespace lang::meta::Node::AttrMatchCasePattern {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrMatchCasePattern::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::AttrMatchCasePattern::_W w);
@@ -1485,8 +1485,8 @@ namespace lang::meta::Node::AttrClauseExpr {
 
 namespace lang::meta::Node::AttrClauseExpr {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrClauseExpr::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::AttrClauseExpr::_W w);
@@ -1514,8 +1514,8 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc {
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrClauseExprRhsLoc::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::AttrClauseExprRhsLoc::_W w);
@@ -1567,8 +1567,8 @@ namespace lang::meta::Node::ParseExpr {
 
 namespace lang::meta::Node::ParseExpr {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::ParseExpr::_W w);
@@ -1640,8 +1640,8 @@ namespace lang::meta::Node::AttrReq {
 
 namespace lang::meta::Node::AttrReq {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrReq::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::AttrReq::_W w);
@@ -1668,8 +1668,8 @@ namespace lang::meta::Node::ParseExprListType {
 
 namespace lang::meta::Node::ParseExprListType {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExprListType::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::ParseExprListType::_W w);
@@ -1700,8 +1700,8 @@ namespace lang::meta::Node::ParseExprListNum {
 
 namespace lang::meta::Node::ParseExprListNum {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExprListNum::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::ParseExprListNum::_W w);
@@ -1728,8 +1728,8 @@ namespace lang::meta::Node::Stanza::Tokens {
 
 namespace lang::meta::Node::Stanza::Tokens {
     struct _T: lang::meta::Node::Stanza::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::TokenDecl_T> decls_;
         _T();
         lang::meta::Node::Stanza::Tokens_T with_id(Int id);
@@ -1756,8 +1756,8 @@ namespace lang::meta::Node::Stanza::Lexer {
 
 namespace lang::meta::Node::Stanza::Lexer {
     struct _T: lang::meta::Node::Stanza::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::LexerDecl_T> decls_;
         _T();
         lang::meta::Node::Stanza::Lexer_T with_id(Int id);
@@ -1784,8 +1784,8 @@ namespace lang::meta::Node::Stanza::Parser {
 
 namespace lang::meta::Node::Stanza::Parser {
     struct _T: lang::meta::Node::Stanza::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::ParserDecl_T> decls_;
         _T();
         lang::meta::Node::Stanza::Parser_T with_id(Int id);
@@ -1812,8 +1812,8 @@ namespace lang::meta::Node::Stanza::Test {
 
 namespace lang::meta::Node::Stanza::Test {
     struct _T: lang::meta::Node::Stanza::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::TestCase_T> items_;
         _T();
         lang::meta::Node::Stanza::Test_T with_id(Int id);
@@ -1840,8 +1840,8 @@ namespace lang::meta::Node::Stanza::CompileTest {
 
 namespace lang::meta::Node::Stanza::CompileTest {
     struct _T: lang::meta::Node::Stanza::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::CompileTestCase_T> items_;
         _T();
         lang::meta::Node::Stanza::CompileTest_T with_id(Int id);
@@ -1867,8 +1867,8 @@ namespace lang::meta::Node::TokenDecl::op {
 
 namespace lang::meta::Node::TokenDecl::op {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::TokenDecl::op::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::TokenDecl::op::_W w);
@@ -1893,8 +1893,8 @@ namespace lang::meta::Node::LexerDecl::Main {
 
 namespace lang::meta::Node::LexerDecl::Main {
     struct _T: lang::meta::Node::LexerDecl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice name_;
         _T();
         lang::meta::Node::LexerDecl::Main_T with_id(Int id);
@@ -1921,8 +1921,8 @@ namespace lang::meta::Node::LexerDecl::Mode {
 
 namespace lang::meta::Node::LexerDecl::Mode {
     struct _T: lang::meta::Node::LexerDecl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice name_;
         bool ws_sig__;
         Vec_T<lang::meta::Node::LexerModeCase_T> cases_;
@@ -1953,8 +1953,8 @@ namespace lang::meta::Node::LexerInstr::Emit {
 
 namespace lang::meta::Node::LexerInstr::Emit {
     struct _T: lang::meta::Node::LexerInstr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Option_T<lang::meta::Node::ParseExpr_T> arg_;
         _T();
         lang::meta::Node::LexerInstr::Emit_T with_id(Int id);
@@ -1981,8 +1981,8 @@ namespace lang::meta::Node::LexerInstr::Pass {
 
 namespace lang::meta::Node::LexerInstr::Pass {
     struct _T: lang::meta::Node::LexerInstr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::LexerInstr::Pass_T with_id(Int id);
         lang::meta::Node::LexerInstr::Pass_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2007,8 +2007,8 @@ namespace lang::meta::Node::LexerInstr::Push {
 
 namespace lang::meta::Node::LexerInstr::Push {
     struct _T: lang::meta::Node::LexerInstr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice name_;
         _T();
         lang::meta::Node::LexerInstr::Push_T with_id(Int id);
@@ -2035,8 +2035,8 @@ namespace lang::meta::Node::LexerInstr::Pop {
 
 namespace lang::meta::Node::LexerInstr::Pop {
     struct _T: lang::meta::Node::LexerInstr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::LexerInstr::Pop_T with_id(Int id);
         lang::meta::Node::LexerInstr::Pop_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2061,8 +2061,8 @@ namespace lang::meta::Node::LexerInstr::PopExtract {
 
 namespace lang::meta::Node::LexerInstr::PopExtract {
     struct _T: lang::meta::Node::LexerInstr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::LexerInstr::PopExtract_T with_id(Int id);
         lang::meta::Node::LexerInstr::PopExtract_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2087,8 +2087,8 @@ namespace lang::meta::Node::LexerInstr::PopEmit {
 
 namespace lang::meta::Node::LexerInstr::PopEmit {
     struct _T: lang::meta::Node::LexerInstr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T arg_;
         _T();
         lang::meta::Node::LexerInstr::PopEmit_T with_id(Int id);
@@ -2115,8 +2115,8 @@ namespace lang::meta::Node::LexerInstr::MatchHistory {
 
 namespace lang::meta::Node::LexerInstr::MatchHistory {
     struct _T: lang::meta::Node::LexerInstr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::LexerModeCase_T> cases_;
         _T();
         lang::meta::Node::LexerInstr::MatchHistory_T with_id(Int id);
@@ -2143,8 +2143,8 @@ namespace lang::meta::Node::ParserDecl::Main {
 
 namespace lang::meta::Node::ParserDecl::Main {
     struct _T: lang::meta::Node::ParserDecl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<StrSlice> names_;
         _T();
         lang::meta::Node::ParserDecl::Main_T with_id(Int id);
@@ -2171,8 +2171,8 @@ namespace lang::meta::Node::ParserDecl::Prop {
 
 namespace lang::meta::Node::ParserDecl::Prop {
     struct _T: lang::meta::Node::ParserDecl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::ParserProp_T> props_;
         _T();
         lang::meta::Node::ParserDecl::Prop_T with_id(Int id);
@@ -2199,8 +2199,8 @@ namespace lang::meta::Node::ParserDecl::Prec {
 
 namespace lang::meta::Node::ParserDecl::Prec {
     struct _T: lang::meta::Node::ParserDecl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::PrecItem_T> items_;
         _T();
         lang::meta::Node::ParserDecl::Prec_T with_id(Int id);
@@ -2227,8 +2227,8 @@ namespace lang::meta::Node::ParserDecl::Attr {
 
 namespace lang::meta::Node::ParserDecl::Attr {
     struct _T: lang::meta::Node::ParserDecl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::AttrClause_T> clauses_;
         _T();
         lang::meta::Node::ParserDecl::Attr_T with_id(Int id);
@@ -2255,8 +2255,8 @@ namespace lang::meta::Node::ParserDecl::Rule {
 
 namespace lang::meta::Node::ParserDecl::Rule {
     struct _T: lang::meta::Node::ParserDecl::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::Id_T name_;
         Option_T<Vec_T<lang::meta::Node::AttrReq_T>> lhs_attrs_;
         lang::meta::Node::ParserDecl::Rule::op_T op_;
@@ -2289,8 +2289,8 @@ namespace lang::meta::Node::ParserProp::NameStrict {
 
 namespace lang::meta::Node::ParserProp::NameStrict {
     struct _T: lang::meta::Node::ParserProp::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParserProp::NameStrict_T with_id(Int id);
         lang::meta::Node::ParserProp::NameStrict_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2315,8 +2315,8 @@ namespace lang::meta::Node::ParserProp::LRSpec {
 
 namespace lang::meta::Node::ParserProp::LRSpec {
     struct _T: lang::meta::Node::ParserProp::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice k_;
         _T();
         lang::meta::Node::ParserProp::LRSpec_T with_id(Int id);
@@ -2343,8 +2343,8 @@ namespace lang::meta::Node::ParserProp::Err_ {
 
 namespace lang::meta::Node::ParserProp::Err_ {
     struct _T: lang::meta::Node::ParserProp::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParserProp::Err__T with_id(Int id);
         lang::meta::Node::ParserProp::Err__T with_bounds(lang_rt::TokenBounds bounds);
@@ -2369,8 +2369,8 @@ namespace lang::meta::Node::PrecAssoc::Left {
 
 namespace lang::meta::Node::PrecAssoc::Left {
     struct _T: lang::meta::Node::PrecAssoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::PrecAssoc::Left_T with_id(Int id);
         lang::meta::Node::PrecAssoc::Left_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2395,8 +2395,8 @@ namespace lang::meta::Node::PrecAssoc::Right {
 
 namespace lang::meta::Node::PrecAssoc::Right {
     struct _T: lang::meta::Node::PrecAssoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::PrecAssoc::Right_T with_id(Int id);
         lang::meta::Node::PrecAssoc::Right_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2421,8 +2421,8 @@ namespace lang::meta::Node::PrecAssoc::Prefix {
 
 namespace lang::meta::Node::PrecAssoc::Prefix {
     struct _T: lang::meta::Node::PrecAssoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::PrecAssoc::Prefix_T with_id(Int id);
         lang::meta::Node::PrecAssoc::Prefix_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2447,8 +2447,8 @@ namespace lang::meta::Node::PrecAssoc::Postfix {
 
 namespace lang::meta::Node::PrecAssoc::Postfix {
     struct _T: lang::meta::Node::PrecAssoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::PrecAssoc::Postfix_T with_id(Int id);
         lang::meta::Node::PrecAssoc::Postfix_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2473,8 +2473,8 @@ namespace lang::meta::Node::AttrClause::Expr {
 
 namespace lang::meta::Node::AttrClause::Expr {
     struct _T: lang::meta::Node::AttrClause::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrClauseExpr_T e_;
         _T();
         lang::meta::Node::AttrClause::Expr_T with_id(Int id);
@@ -2501,8 +2501,8 @@ namespace lang::meta::Node::AttrClause::Block {
 
 namespace lang::meta::Node::AttrClause::Block {
     struct _T: lang::meta::Node::AttrClause::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::AttrClause_T> items_;
         _T();
         lang::meta::Node::AttrClause::Block_T with_id(Int id);
@@ -2529,8 +2529,8 @@ namespace lang::meta::Node::AttrClause::Match {
 
 namespace lang::meta::Node::AttrClause::Match {
     struct _T: lang::meta::Node::AttrClause::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::AttrMatchCase_T> cases_;
         _T();
         lang::meta::Node::AttrClause::Match_T with_id(Int id);
@@ -2557,8 +2557,8 @@ namespace lang::meta::Node::AttrMatchCasePattern::Alt {
 
 namespace lang::meta::Node::AttrMatchCasePattern::Alt {
     struct _T: lang::meta::Node::AttrMatchCasePattern::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::Id_T> items_;
         _T();
         lang::meta::Node::AttrMatchCasePattern::Alt_T with_id(Int id);
@@ -2585,8 +2585,8 @@ namespace lang::meta::Node::AttrMatchCasePattern::Wildcard {
 
 namespace lang::meta::Node::AttrMatchCasePattern::Wildcard {
     struct _T: lang::meta::Node::AttrMatchCasePattern::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::AttrMatchCasePattern::Wildcard_T with_id(Int id);
         lang::meta::Node::AttrMatchCasePattern::Wildcard_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2611,8 +2611,8 @@ namespace lang::meta::Node::AttrClauseExpr::LhsGeq {
 
 namespace lang::meta::Node::AttrClauseExpr::LhsGeq {
     struct _T: lang::meta::Node::AttrClauseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice k_;
         _T();
         lang::meta::Node::AttrClauseExpr::LhsGeq_T with_id(Int id);
@@ -2639,8 +2639,8 @@ namespace lang::meta::Node::AttrClauseExpr::RhsGeq {
 
 namespace lang::meta::Node::AttrClauseExpr::RhsGeq {
     struct _T: lang::meta::Node::AttrClauseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::AttrClauseExprRhsLoc_T loc_;
         StrSlice k_;
         _T();
@@ -2669,8 +2669,8 @@ namespace lang::meta::Node::AttrClauseExpr::Implies {
 
 namespace lang::meta::Node::AttrClauseExpr::Implies {
     struct _T: lang::meta::Node::AttrClauseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice kl_;
         lang::meta::Node::AttrClauseExprRhsLoc_T loc_;
         StrSlice kr_;
@@ -2701,8 +2701,8 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::All {
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::All {
     struct _T: lang::meta::Node::AttrClauseExprRhsLoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::AttrClauseExprRhsLoc::All_T with_id(Int id);
         lang::meta::Node::AttrClauseExprRhsLoc::All_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2727,8 +2727,8 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::Begin {
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::Begin {
     struct _T: lang::meta::Node::AttrClauseExprRhsLoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::AttrClauseExprRhsLoc::Begin_T with_id(Int id);
         lang::meta::Node::AttrClauseExprRhsLoc::Begin_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2753,8 +2753,8 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::Mid {
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::Mid {
     struct _T: lang::meta::Node::AttrClauseExprRhsLoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::AttrClauseExprRhsLoc::Mid_T with_id(Int id);
         lang::meta::Node::AttrClauseExprRhsLoc::Mid_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2779,8 +2779,8 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::End {
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::End {
     struct _T: lang::meta::Node::AttrClauseExprRhsLoc::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::AttrClauseExprRhsLoc::End_T with_id(Int id);
         lang::meta::Node::AttrClauseExprRhsLoc::End_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2805,8 +2805,8 @@ namespace lang::meta::Node::ParseExpr::Id {
 
 namespace lang::meta::Node::ParseExpr::Id {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::Id_T id__;
         _T();
         lang::meta::Node::ParseExpr::Id_T with_id(Int id);
@@ -2833,8 +2833,8 @@ namespace lang::meta::Node::ParseExpr::Eof {
 
 namespace lang::meta::Node::ParseExpr::Eof {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::Eof_T with_id(Int id);
         lang::meta::Node::ParseExpr::Eof_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2859,8 +2859,8 @@ namespace lang::meta::Node::ParseExpr::False {
 
 namespace lang::meta::Node::ParseExpr::False {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::False_T with_id(Int id);
         lang::meta::Node::ParseExpr::False_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2885,8 +2885,8 @@ namespace lang::meta::Node::ParseExpr::Eps {
 
 namespace lang::meta::Node::ParseExpr::Eps {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::Eps_T with_id(Int id);
         lang::meta::Node::ParseExpr::Eps_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2911,8 +2911,8 @@ namespace lang::meta::Node::ParseExpr::Indent {
 
 namespace lang::meta::Node::ParseExpr::Indent {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::Indent_T with_id(Int id);
         lang::meta::Node::ParseExpr::Indent_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2937,8 +2937,8 @@ namespace lang::meta::Node::ParseExpr::Dedent {
 
 namespace lang::meta::Node::ParseExpr::Dedent {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::Dedent_T with_id(Int id);
         lang::meta::Node::ParseExpr::Dedent_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2963,8 +2963,8 @@ namespace lang::meta::Node::ParseExpr::Newline {
 
 namespace lang::meta::Node::ParseExpr::Newline {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::Newline_T with_id(Int id);
         lang::meta::Node::ParseExpr::Newline_T with_bounds(lang_rt::TokenBounds bounds);
@@ -2989,8 +2989,8 @@ namespace lang::meta::Node::ParseExpr::UnicodeAny {
 
 namespace lang::meta::Node::ParseExpr::UnicodeAny {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::UnicodeAny_T with_id(Int id);
         lang::meta::Node::ParseExpr::UnicodeAny_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3015,8 +3015,8 @@ namespace lang::meta::Node::ParseExpr::AsciiBaseAny {
 
 namespace lang::meta::Node::ParseExpr::AsciiBaseAny {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::AsciiBaseAny_T with_id(Int id);
         lang::meta::Node::ParseExpr::AsciiBaseAny_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3041,8 +3041,8 @@ namespace lang::meta::Node::ParseExpr::Alt {
 
 namespace lang::meta::Node::ParseExpr::Alt {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::ParseExpr_T> xs_;
         _T();
         lang::meta::Node::ParseExpr::Alt_T with_id(Int id);
@@ -3069,8 +3069,8 @@ namespace lang::meta::Node::ParseExpr::AltExplicit {
 
 namespace lang::meta::Node::ParseExpr::AltExplicit {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T e_;
         _T();
         lang::meta::Node::ParseExpr::AltExplicit_T with_id(Int id);
@@ -3097,8 +3097,8 @@ namespace lang::meta::Node::ParseExpr::Minus {
 
 namespace lang::meta::Node::ParseExpr::Minus {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T x_;
         lang::meta::Node::ParseExpr_T y_;
         _T();
@@ -3127,8 +3127,8 @@ namespace lang::meta::Node::ParseExpr::Concat {
 
 namespace lang::meta::Node::ParseExpr::Concat {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         Vec_T<lang::meta::Node::ParseExpr_T> xs_;
         _T();
         lang::meta::Node::ParseExpr::Concat_T with_id(Int id);
@@ -3155,8 +3155,8 @@ namespace lang::meta::Node::ParseExpr::Optional {
 
 namespace lang::meta::Node::ParseExpr::Optional {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T x_;
         _T();
         lang::meta::Node::ParseExpr::Optional_T with_id(Int id);
@@ -3183,8 +3183,8 @@ namespace lang::meta::Node::ParseExpr::Rep {
 
 namespace lang::meta::Node::ParseExpr::Rep {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T x_;
         _T();
         lang::meta::Node::ParseExpr::Rep_T with_id(Int id);
@@ -3211,8 +3211,8 @@ namespace lang::meta::Node::ParseExpr::RepNonzero {
 
 namespace lang::meta::Node::ParseExpr::RepNonzero {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T x_;
         _T();
         lang::meta::Node::ParseExpr::RepNonzero_T with_id(Int id);
@@ -3239,8 +3239,8 @@ namespace lang::meta::Node::ParseExpr::RepCount {
 
 namespace lang::meta::Node::ParseExpr::RepCount {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T x_;
         StrSlice count_;
         _T();
@@ -3269,8 +3269,8 @@ namespace lang::meta::Node::ParseExpr::CharRange {
 
 namespace lang::meta::Node::ParseExpr::CharRange {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice min__;
         StrSlice max__;
         _T();
@@ -3299,8 +3299,8 @@ namespace lang::meta::Node::ParseExpr::StrLit {
 
 namespace lang::meta::Node::ParseExpr::StrLit {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice s_;
         _T();
         lang::meta::Node::ParseExpr::StrLit_T with_id(Int id);
@@ -3327,8 +3327,8 @@ namespace lang::meta::Node::ParseExpr::Underscore {
 
 namespace lang::meta::Node::ParseExpr::Underscore {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::Underscore_T with_id(Int id);
         lang::meta::Node::ParseExpr::Underscore_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3353,8 +3353,8 @@ namespace lang::meta::Node::ParseExpr::Pass {
 
 namespace lang::meta::Node::ParseExpr::Pass {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice s_;
         _T();
         lang::meta::Node::ParseExpr::Pass_T with_id(Int id);
@@ -3381,8 +3381,8 @@ namespace lang::meta::Node::ParseExpr::Paren {
 
 namespace lang::meta::Node::ParseExpr::Paren {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T x_;
         _T();
         lang::meta::Node::ParseExpr::Paren_T with_id(Int id);
@@ -3409,8 +3409,8 @@ namespace lang::meta::Node::ParseExpr::Name {
 
 namespace lang::meta::Node::ParseExpr::Name {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice name_;
         lang::meta::Node::ParseExpr_T e_;
         _T();
@@ -3439,8 +3439,8 @@ namespace lang::meta::Node::ParseExpr::List {
 
 namespace lang::meta::Node::ParseExpr::List {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExprListType_T ty_;
         lang::meta::Node::ParseExpr_T elem_;
         lang::meta::Node::ParseExprListNum_T num_;
@@ -3475,8 +3475,8 @@ namespace lang::meta::Node::ParseExpr::Unfold {
 
 namespace lang::meta::Node::ParseExpr::Unfold {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T e_;
         _T();
         lang::meta::Node::ParseExpr::Unfold_T with_id(Int id);
@@ -3503,8 +3503,8 @@ namespace lang::meta::Node::ParseExpr::AttrReq {
 
 namespace lang::meta::Node::ParseExpr::AttrReq {
     struct _T: lang::meta::Node::ParseExpr::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr_T e_;
         Vec_T<lang::meta::Node::AttrReq_T> attrs_;
         _T();
@@ -3533,8 +3533,8 @@ namespace lang::meta::Node::AttrReq::Base {
 
 namespace lang::meta::Node::AttrReq::Base {
     struct _T: lang::meta::Node::AttrReq::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice k_;
         _T();
         lang::meta::Node::AttrReq::Base_T with_id(Int id);
@@ -3561,8 +3561,8 @@ namespace lang::meta::Node::AttrReq::PrecStar {
 
 namespace lang::meta::Node::AttrReq::PrecStar {
     struct _T: lang::meta::Node::AttrReq::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::AttrReq::PrecStar_T with_id(Int id);
         lang::meta::Node::AttrReq::PrecStar_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3587,8 +3587,8 @@ namespace lang::meta::Node::ParseExprListType::List {
 
 namespace lang::meta::Node::ParseExprListType::List {
     struct _T: lang::meta::Node::ParseExprListType::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListType::List_T with_id(Int id);
         lang::meta::Node::ParseExprListType::List_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3613,8 +3613,8 @@ namespace lang::meta::Node::ParseExprListType::Block {
 
 namespace lang::meta::Node::ParseExprListType::Block {
     struct _T: lang::meta::Node::ParseExprListType::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListType::Block_T with_id(Int id);
         lang::meta::Node::ParseExprListType::Block_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3639,8 +3639,8 @@ namespace lang::meta::Node::ParseExprListType::Block2 {
 
 namespace lang::meta::Node::ParseExprListType::Block2 {
     struct _T: lang::meta::Node::ParseExprListType::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListType::Block2_T with_id(Int id);
         lang::meta::Node::ParseExprListType::Block2_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3665,8 +3665,8 @@ namespace lang::meta::Node::ParseExprListType::Top {
 
 namespace lang::meta::Node::ParseExprListType::Top {
     struct _T: lang::meta::Node::ParseExprListType::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListType::Top_T with_id(Int id);
         lang::meta::Node::ParseExprListType::Top_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3691,8 +3691,8 @@ namespace lang::meta::Node::ParseExprListType::Top2 {
 
 namespace lang::meta::Node::ParseExprListType::Top2 {
     struct _T: lang::meta::Node::ParseExprListType::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListType::Top2_T with_id(Int id);
         lang::meta::Node::ParseExprListType::Top2_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3717,8 +3717,8 @@ namespace lang::meta::Node::ParseExprListNum::Ge0 {
 
 namespace lang::meta::Node::ParseExprListNum::Ge0 {
     struct _T: lang::meta::Node::ParseExprListNum::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListNum::Ge0_T with_id(Int id);
         lang::meta::Node::ParseExprListNum::Ge0_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3743,8 +3743,8 @@ namespace lang::meta::Node::ParseExprListNum::Ge1 {
 
 namespace lang::meta::Node::ParseExprListNum::Ge1 {
     struct _T: lang::meta::Node::ParseExprListNum::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListNum::Ge1_T with_id(Int id);
         lang::meta::Node::ParseExprListNum::Ge1_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3769,8 +3769,8 @@ namespace lang::meta::Node::ParseExprListNum::Ge2 {
 
 namespace lang::meta::Node::ParseExprListNum::Ge2 {
     struct _T: lang::meta::Node::ParseExprListNum::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExprListNum::Ge2_T with_id(Int id);
         lang::meta::Node::ParseExprListNum::Ge2_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3795,8 +3795,8 @@ namespace lang::meta::Node::TokenDecl::op::DEF {
 
 namespace lang::meta::Node::TokenDecl::op::DEF {
     struct _T: lang::meta::Node::TokenDecl::op::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::TokenDecl::op::DEF_T with_id(Int id);
         lang::meta::Node::TokenDecl::op::DEF_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3821,8 +3821,8 @@ namespace lang::meta::Node::TokenDecl::op::DEF_ALIAS {
 
 namespace lang::meta::Node::TokenDecl::op::DEF_ALIAS {
     struct _T: lang::meta::Node::TokenDecl::op::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::TokenDecl::op::DEF_ALIAS_T with_id(Int id);
         lang::meta::Node::TokenDecl::op::DEF_ALIAS_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3846,8 +3846,8 @@ namespace lang::meta::Node::ParserDecl::Rule::op {
 
 namespace lang::meta::Node::ParserDecl::Rule::op {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParserDecl::Rule::op::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::ParserDecl::Rule::op::_W w);
@@ -3872,8 +3872,8 @@ namespace lang::meta::Node::ParseExpr::List::end_delim {
 
 namespace lang::meta::Node::ParseExpr::List::end_delim {
     struct _T: lang::meta::Node::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         lang::meta::Node::ParseExpr::List::end_delim::_W w_;
         virtual ~_T();
         _T(lang::meta::Node::ParseExpr::List::end_delim::_W w);
@@ -3900,8 +3900,8 @@ namespace lang::meta::Node::ParserDecl::Rule::op::DEF {
 
 namespace lang::meta::Node::ParserDecl::Rule::op::DEF {
     struct _T: lang::meta::Node::ParserDecl::Rule::op::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParserDecl::Rule::op::DEF_T with_id(Int id);
         lang::meta::Node::ParserDecl::Rule::op::DEF_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3926,8 +3926,8 @@ namespace lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS {
 
 namespace lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS {
     struct _T: lang::meta::Node::ParserDecl::Rule::op::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T with_id(Int id);
         lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3952,8 +3952,8 @@ namespace lang::meta::Node::ParseExpr::List::end_delim::NONE {
 
 namespace lang::meta::Node::ParseExpr::List::end_delim::NONE {
     struct _T: lang::meta::Node::ParseExpr::List::end_delim::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::List::end_delim::NONE_T with_id(Int id);
         lang::meta::Node::ParseExpr::List::end_delim::NONE_T with_bounds(lang_rt::TokenBounds bounds);
@@ -3978,8 +3978,8 @@ namespace lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL {
 
 namespace lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL {
     struct _T: lang::meta::Node::ParseExpr::List::end_delim::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T with_id(Int id);
         lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4004,8 +4004,8 @@ namespace lang::meta::Node::ParseExpr::List::end_delim::SOME {
 
 namespace lang::meta::Node::ParseExpr::List::end_delim::SOME {
     struct _T: lang::meta::Node::ParseExpr::List::end_delim::_T {
-        void write(ostream& os, FmtFlags flags);
-        void write(lang_rt::PrBufStream_T& pb);
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
         _T();
         lang::meta::Node::ParseExpr::List::end_delim::SOME_T with_id(Int id);
         lang::meta::Node::ParseExpr::List::end_delim::SOME_T with_bounds(lang_rt::TokenBounds bounds);
@@ -4717,9 +4717,9 @@ namespace lang::meta {
 }
 
 namespace lang::meta::lexer::body {
-    inline __attribute__((always_inline)) Int proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    inline __attribute__((always_inline)) Int proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }
 
 namespace lang::meta::lexer::comment_single {
-    inline __attribute__((always_inline)) Int proc_mode_loop_opt(ptr<lang_rt::LexerModeDesc> mode, ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
+    inline __attribute__((always_inline)) Int proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos);
 }

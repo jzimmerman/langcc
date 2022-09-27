@@ -42,5 +42,4 @@ struct DataDefsResult {
 };
 
 
-DataDefsResult compile_data_defs(lang::data::Node_T src, Option_T<string> header_name,
-    bool gen_write_proto);
+DataDefsResult compile_data_defs(lang::data::Node_T src, Option_T<string> header_name);

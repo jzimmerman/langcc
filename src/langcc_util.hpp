@@ -84,8 +84,9 @@ struct Unit {};
 
 using IntPair = pair<Int, Int>;
 
-template<typename T> using ptr = T*;
-template<typename T> using ref = T&;
+template<typename T> using ptr = T*;  // TODO: remove
+template<typename T> using Ptr = T*;
+template<typename T> using Ref = T&;
 
 inline void cc_nop() {}
 
