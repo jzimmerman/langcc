@@ -45,7 +45,7 @@ in the source repository for more details.
 which can be invoked as follows:
 
 ```
-langcc X.lang gen_path
+langcc [options] X.lang gen_path
 ```
 
 to compile a BNF-style language specification (`X.lang`)
@@ -55,6 +55,14 @@ a lexer, a parser, and a pretty-printer for terms in the language.
 In order to use the generated code, simply include the file `gen_path/X__gen.hpp`
 and compile and link against the file `gen_path/X__gen.cpp`.
 
+The following are valid command-line options for `langcc`:
+- `-h`: Generate a header-only implementation, instead of the usual (`.hpp`, `.cpp` pair).
+- `-q`: Quiet mode.
+- `-v`: Verbose level 1 (the default).
+- `-vv`: Verbose level 2.
+- `-vvv`: Verbose level 3.
+- `-vvvv`: Verbose level 4.
+
 ### datacc
 
 `datacc` is an internal component which `langcc` uses to generate many of its
@@ -62,7 +70,7 @@ data structures, but which can also be used as a standalone command-line tool.
 It can be invoked as follows:
 
 ```
-datacc X.data gen_path
+datacc [options] X.data gen_path
 ```
 
 to compile a declarative specification of some algebraic datatypes (`X.data`)
@@ -77,6 +85,9 @@ functions for testing and downcasting sum types,
 functions for substituting fields of product types,
 functions for debug-printing elements of each datatype,
 and functions for cached value-based SHA-256 hashing of elements of each datatype.
+
+The following are valid command-line options for `datacc`:
+- `-h`: Generate a header-only implementation, instead of the usual (`.hpp`, `.cpp` pair).
 
 ## Input language
 

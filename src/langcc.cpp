@@ -5,7 +5,7 @@
 
 LangCompileResult_T compile_lang_inner(
     lang::meta::Node_T src, Int k, Gensym_T gen_meta, LexOutput_T lex_res,
-    string src_base_name, string dst_path) {
+    string src_base_name, string dst_path, HeaderMode header_mode) {
 
     AR_ge(k, 0);
 
@@ -52,7 +52,7 @@ LangCompileResult_T compile_lang_inner(
 
     LOG(1, "Generating AST datatype definitions");
 
-    lang_emit_datatype_defs(ctx);
+    lang_emit_datatype_defs(ctx, header_mode);
 
     LOG(1, "Generating AST writer definitions");
 
@@ -68,7 +68,7 @@ LangCompileResult_T compile_lang_inner(
     lang_emit_test_defs(ctx);
     lang_emit_debug_defs(ctx);
 
-    lang_emit_extract_final(ctx);
+    lang_emit_extract_final(ctx, header_mode);
 
     return LangCompileResult::Ok::make(
         ctx.hpp_path_, ctx.cpp_path_, ctx.cpp_test_path_, ctx.cpp_debug_path_);
@@ -77,10 +77,10 @@ LangCompileResult_T compile_lang_inner(
 
 LangCompileResult_T compile_lang(
     lang::meta::Node_T src, Int k, Gensym_T gen_meta, LexOutput_T lex_res,
-    string src_base_name, string dst_path) {
+    string src_base_name, string dst_path, HeaderMode header_mode) {
 
     try {
-        return compile_lang_inner(src, k, gen_meta, lex_res, src_base_name, dst_path);
+        return compile_lang_inner(src, k, gen_meta, lex_res, src_base_name, dst_path, header_mode);
     } catch (const LangCompileResult::Error_T& res) {
         return res;
     }
@@ -116,7 +116,9 @@ string lang_get_src_base_name(string src_path) {
 }
 
 
-LangCompileResult_T compile_lang_path(string src_path, string dst_path, Option_T<Int> k) {
+LangCompileResult_T compile_lang_path(
+    string src_path, string dst_path, Option_T<Int> k, HeaderMode header_mode) {
+
     auto src_base_name = lang_get_src_base_name(src_path);
     auto [src, gen_meta, lex_res] = load_lang_path(src_path);
 
@@ -125,11 +127,13 @@ LangCompileResult_T compile_lang_path(string src_path, string dst_path, Option_T
         kr = k.as_some();
     }
 
-    return compile_lang(src, kr, gen_meta, lex_res, src_base_name, dst_path);
+    return compile_lang(src, kr, gen_meta, lex_res, src_base_name, dst_path, header_mode);
 }
 
 
-LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run_tests) {
+LangCompileResult_T compile_lang_full(
+    string src_path, string dst_path, RunTests run_tests, HeaderMode header_mode) {
+
     makedirs(dst_path);
 
     auto [src, _, __] = load_lang_path(src_path);
@@ -137,7 +141,7 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
     if (compile_tests.is_some()) {
         for (auto test : *compile_tests.as_some()->items_) {
             auto test_k = string_to_int(test->k_.to_std_string()).as_some();
-            auto test_res = compile_lang_path(src_path, dst_path, Some<Int>(test_k));
+            auto test_res = compile_lang_path(src_path, dst_path, Some<Int>(test_k), header_mode);
             if (test_res->is_Ok()) {
                 if (test->neg_) {
                     LG_ERR("Unexpected compilation success: k={}", test_k);
@@ -154,12 +158,12 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
         }
     }
 
-    auto res = compile_lang_path(src_path, dst_path, None<Int>());
+    auto res = compile_lang_path(src_path, dst_path, None<Int>(), header_mode);
     if (res->is_Error()) {
         return res;
     }
 
-    if (run_tests) {
+    if (run_tests == RunTests::Y) {
         makedirs("build/gen_test_bin");
 
 #ifdef __MACOS__
@@ -198,7 +202,9 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, bool run
         cmds.push(fmt_str("./{}", dst_path));
         cmds.push("-I");
         cmds.push("./src");
-        cmds.push(res->as_Ok()->cpp_path_);
+        if (header_mode == HeaderMode::N) {
+            cmds.push(res->as_Ok()->cpp_path_);
+        }
         cmds.push(res->as_Ok()->cpp_test_path_);
 
         string cmd;
@@ -232,7 +238,7 @@ bool test_lang(string test_name) {
     string src_path = fmt_str("grammars/test/{}.lang", test_name);
     string dst_path = "build/gen_test_src";
     auto [src, _, __] = load_lang_path(src_path);
-    auto stat = compile_lang_full(src_path, dst_path, true);
+    auto stat = compile_lang_full(src_path, dst_path, RunTests::Y, HeaderMode::N);
     if (stat->is_Error() && !lang_is_expected_fail(src)) {
         LG_ERR("Error:\n\n{}\n\n", stat->as_Error());
         return false;

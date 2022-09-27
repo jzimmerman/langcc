@@ -427,7 +427,7 @@ void data_gen_dtype_acc(
 }
 
 
-void lang_emit_datatype_defs(LangCompileContext& ctx) {
+void lang_emit_datatype_defs(LangCompileContext& ctx, HeaderMode header_mode) {
     for (auto [id, dt] : *ctx.gen_dt_map_) {
         auto parent = id;
         if (id->xs_->length() > 0) {
@@ -444,7 +444,7 @@ void lang_emit_datatype_defs(LangCompileContext& ctx) {
 
     LOG(2, " === Datatype decl module:\n{}\n\n", data_mod);
 
-    auto data_res = compile_data_defs(data_mod, None<string>());
+    auto data_res = compile_data_defs(data_mod, None<string>(), header_mode);
 
     if (data_res.hpp_decls.is_some()) {
         for (auto decl : *data_res.hpp_decls.as_some()->as_Module()->decls_) {
@@ -589,7 +589,7 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
         auto [_, cpp_prod_struct_ty] = parser_lr_unwind_impl_gen_name_to_cpp_struct(
             ty->as_Named()->id_, src_base_name, cc);
         auto res_ptr = cc.qq_expr(
-            "reinterpret_cast<ptr<", cpp_prod_struct_ty, ">>(", val, ".v_)");
+            "reinterpret_cast<Ptr<", cpp_prod_struct_ty, ">>(", val, ".v_)");
         auto res_init = res_ptr;
         if (do_take) {
             res_init = cc.qq_expr(res_init, "->rc_from_this_poly<", cpp_prod_struct_ty, ">()");
@@ -615,7 +615,7 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
             cc, false, ty->as_Optional()->item_ty_, src_base_name, ctx);
         auto cpp_ret_ty = cc.qq_expr("Option_T<", cpp_item_ty, ">");
 
-        auto res_ptr = cc.qq_expr("reinterpret_cast<ptr<", cpp_ret_ty, ">>(", val, ".v_)");
+        auto res_ptr = cc.qq_expr("reinterpret_cast<Ptr<", cpp_ret_ty, ">>(", val, ".v_)");
         auto res_init = res_ptr;
         if (do_take) {
             res_init = cc.qq_expr(
@@ -630,7 +630,7 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
             cc, false, ty->as_Vector()->elem_ty_, src_base_name, ctx);
         auto cpp_ret_ty = cc.qq_expr("Vec<", cpp_elem_ty, ">");
 
-        auto res_ptr = cc.qq_expr("reinterpret_cast<ptr<", cpp_ret_ty, ">>(", val, ".v_)");
+        auto res_ptr = cc.qq_expr("reinterpret_cast<Ptr<", cpp_ret_ty, ">>(", val, ".v_)");
         auto res_init = res_ptr;
         if (do_take) {
             res_init = cc.qq_expr(
@@ -644,7 +644,7 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
         return res;
 
     } else if (ty->is_Bool()) {
-        auto res_ptr = cc.qq_expr("reinterpret_cast<ptr<bool>>(", val, ".v_)");
+        auto res_ptr = cc.qq_expr("reinterpret_cast<Ptr<bool>>(", val, ".v_)");
         auto res_init = res_ptr;
         if (do_take) {
             res_init = cc.qq_expr("rc_from_ptr_ext_take<bool>(", res_ptr, ", st->unw_arena_)");
@@ -2143,15 +2143,15 @@ void lang_emit_debug_defs(LangCompileContext& ctx) {
 }
 
 
-void lang_emit_extract_final(LangCompileContext& ctx) {
-    auto cc_res = ctx.cc_.extract_mods();
+void lang_emit_extract_final(LangCompileContext& ctx, HeaderMode header_mode) {
+    auto cc_res = ctx.cc_.extract_mods(header_mode);
     auto cc_hpp_mod = cc_res.first;
     auto cc_cpp_mod = cc_res.second;
 
-    auto cc_test_res = ctx.cc_test_.extract_mods();
+    auto cc_test_res = ctx.cc_test_.extract_mods(HeaderMode::N);
     auto cc_test_cpp_mod = cc_test_res.second;
 
-    auto cc_debug_res = ctx.cc_debug_.extract_mods();
+    auto cc_debug_res = ctx.cc_debug_.extract_mods(HeaderMode::N);
     auto cc_debug_cpp_mod = cc_debug_res.second;
 
     if (cc_hpp_mod.is_some()) {

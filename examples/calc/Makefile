@@ -46,10 +46,10 @@ LFLAGS = $(LFLAGS_EXTRA) $(LFLAGS_TCMALLOC)
 
 HPP_SRC = $(wildcard src/*.hpp)
 
-IMPLICIT_SRC = $(HPP_SRC)
+IMPLICIT_SRC = $(HPP_SRC) gen/calc__gen.hpp
 
-gen/calc__gen.cpp: calc.lang Makefile
-	langcc calc.lang gen
+gen/calc__gen.hpp: calc.lang Makefile
+	langcc -h calc.lang gen
 
 $(BUILD)/%.o: %.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
@@ -59,7 +59,7 @@ $(BUILD)/%.o: gen/%.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-build/calc: $(BUILD)/calc__gen.o $(BUILD)/calc_main.o Makefile
+build/calc: $(BUILD)/calc_main.o gen/calc__gen.hpp Makefile
 	mkdir -p $(BUILD)
-	$(CC) $(CFLAGS) -o $(BUILD)/calc $(BUILD)/calc_main.o $(BUILD)/calc__gen.o $(LFLAGS)
+	$(CC) $(CFLAGS) -o $(BUILD)/calc $(BUILD)/calc_main.o $(LFLAGS)
 	$(DSYMUTIL_MAYBE) $@

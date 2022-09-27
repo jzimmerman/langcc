@@ -306,13 +306,13 @@ pair<Vec_T<Int>, Vec_T<Int>> parser_lr_action_by_vertex_impl_table_opt(
 
 // Code generation
 void lang_emit_preambles(LangCompileContext& ctx);
-void lang_emit_datatype_defs(LangCompileContext& ctx);
+void lang_emit_datatype_defs(LangCompileContext& ctx, HeaderMode header_mode);
 void lang_emit_writer_defs(LangCompileContext& ctx);
 void lang_emit_parser_defs(LangCompileContext& ctx);
 void lang_emit_global_defs(LangCompileContext& ctx);
 void lang_emit_test_defs(LangCompileContext& ctx);
 void lang_emit_debug_defs(LangCompileContext& ctx);
-void lang_emit_extract_final(LangCompileContext& ctx);
+void lang_emit_extract_final(LangCompileContext& ctx, HeaderMode header_mode);
 data::Node_T data_gen_type_to_node(DataGenContext data, common::GenType_T ty);
 void data_gen_dtype_acc(
     DataGenContext data, common::Ident_T id, common::GenDatatype_T dt,

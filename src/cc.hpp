@@ -4,6 +4,11 @@
 
 #include "cc__gen.hpp"
 
+enum struct HeaderMode {
+    N,
+    Y,
+};
+
 using namespace lang;
 using namespace lang_rt;
 
@@ -156,16 +161,31 @@ struct CppGenContext {
         }
     }
 
-    inline pair<Option_T<lang::cc::Node_T>, Option_T<lang::cc::Node_T>> extract_mods() {
-        auto hpp_mod = None<lang::cc::Node_T>();
-        if (dst_decls_->length() > 0) {
-            hpp_mod = Some<lang::cc::Node_T>(Q_->qq_ext(Some<string>("Module"), *dst_decls_));
+    inline pair<Option_T<lang::cc::Node_T>, Option_T<lang::cc::Node_T>> extract_mods(
+        HeaderMode header_mode) {
+
+        if (header_mode == HeaderMode::Y) {
+            auto hpp_mod = None<lang::cc::Node_T>();
+            auto dst_all = make_rc<Vec<lang::cc::Node_T>>();
+            dst_all->extend(dst_decls_);
+            dst_all->extend(dst_defs_);
+            if (dst_all->length() > 0) {
+                hpp_mod = Some<lang::cc::Node_T>(Q_->qq_ext(Some<string>("Module"), *dst_all));
+            }
+            auto cpp_mod = None<lang::cc::Node_T>();
+            return make_pair(hpp_mod, cpp_mod);
+
+        } else {
+            auto hpp_mod = None<lang::cc::Node_T>();
+            if (dst_decls_->length() > 0) {
+                hpp_mod = Some<lang::cc::Node_T>(Q_->qq_ext(Some<string>("Module"), *dst_decls_));
+            }
+            auto cpp_mod = None<lang::cc::Node_T>();
+            if (dst_defs_->length() > 0) {
+                cpp_mod = Some<lang::cc::Node_T>(Q_->qq_ext(Some<string>("Module"), *dst_defs_));
+            }
+            return make_pair(hpp_mod, cpp_mod);
         }
-        auto cpp_mod = None<lang::cc::Node_T>();
-        if (dst_defs_->length() > 0) {
-            cpp_mod = Some<lang::cc::Node_T>(Q_->qq_ext(Some<string>("Module"), *dst_defs_));
-        }
-        return make_pair(hpp_mod, cpp_mod);
     }
 };
 

@@ -361,4 +361,6 @@ namespace common {
             def LangCompileResult.Error.Other { desc: Str; }
 
     enum IsOwnDatatype { N; Y; }
+
+    enum RunTests { N; Y; }
 }

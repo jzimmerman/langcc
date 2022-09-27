@@ -156,8 +156,8 @@ inline void pr(ostream& os, FmtFlags flags, SymItem item) {
 using LexerStepFn = lang_rt::DFAVertexId (*)(lang_rt::DFAVertexId, lang_rt::DFALabelId);
 using LexerAccFn = lang_rt::DFAActionWithToken (*)(lang_rt::DFAVertexId);
 using LexerStepExecFn = IntPair (*)(
-    ptr<lang_rt::LexerState> st, ptr<lang_rt::SymItemVec> emit_dst,
-    ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc,
+    Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst,
+    Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc,
     lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
 
 using ParserProcStatePtr = ParserProcState*;
@@ -1318,7 +1318,7 @@ inline __attribute__((always_inline)) void lexer_state_eof_fail(Int& in_i, Lexer
 }
 
 inline __attribute__((always_inline)) Int lexer_proc_mode_loop(LexerModeDesc* mode,
-    ptr<lang_rt::LexerState> st, lang_rt::SymItemVec* emit_dst, Int mode_start_pos,
+    Ptr<lang_rt::LexerState> st, lang_rt::SymItemVec* emit_dst, Int mode_start_pos,
     Int mode_buf_pos) {
 
     return mode->proc_mode_loop_opt_fn_(mode, st, emit_dst, mode_start_pos, mode_buf_pos);

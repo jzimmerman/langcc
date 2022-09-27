@@ -23,6 +23,7 @@ int main(int argc, char** argv) {
     }
 
     Int log_level = 1;
+    HeaderMode header_mode = HeaderMode::N;
     for (auto param : *params) {
         if (param == "-q") {
             log_level = 0;
@@ -34,6 +35,8 @@ int main(int argc, char** argv) {
             log_level = 3;
         } else if (param == "-vvvv") {
             log_level = 4;
+        } else if (param == "-h") {
+            header_mode = HeaderMode::Y;
         } else {
             LG_ERR("Parameter not recognized: {}", param);
             return 1;
@@ -44,7 +47,7 @@ int main(int argc, char** argv) {
     string src_path = args->operator[](0);
     string dst_path = args->operator[](1);
 
-    auto stat = compile_lang_full(src_path, dst_path, true);
+    auto stat = compile_lang_full(src_path, dst_path, RunTests::Y, header_mode);
     if (stat->is_Error()) {
         LG_ERR("langcc compile error:\n\n{}\n\n", stat->as_Error());
         return 1;

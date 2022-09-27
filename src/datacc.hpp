@@ -42,4 +42,5 @@ struct DataDefsResult {
 };
 
 
-DataDefsResult compile_data_defs(lang::data::Node_T src, Option_T<string> header_name);
+DataDefsResult compile_data_defs(
+    lang::data::Node_T src, Option_T<string> header_name, HeaderMode header_mode);

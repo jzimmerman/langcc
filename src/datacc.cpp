@@ -520,6 +520,7 @@ void data_gen_xform_fn(
     GenName star,
     GenName curr,
     Set_T<GenName>& vis,
+    HeaderMode header_mode,
     DataCompileContext& ctx);
 
 Option_T<cc::Node_T> lower_xform_field_entry(
@@ -527,6 +528,7 @@ Option_T<cc::Node_T> lower_xform_field_entry(
     GenName star, GenName curr, Set_T<GenName> vis,
     Vec_T<cc::Node_T>& dst, cc::Node_T src, cc::Node_T src_f,
     data::Node::Expr_T ty, const GenName& src_ns, const GenName& gen_ns,
+    HeaderMode header_mode,
     DataCompileContext& ctx) {
 
     if (ty->is_Id()) {
@@ -539,7 +541,7 @@ Option_T<cc::Node_T> lower_xform_field_entry(
             auto is_indirect = name_full_pair.as_some().second;
 
             if (is_indirect) {
-                data_gen_xform_fn(xform_ty, star, name_full, vis, ctx);
+                data_gen_xform_fn(xform_ty, star, name_full, vis, header_mode, ctx);
                 auto top_ty = !ctx.is_ancestor(star, name_full);
                 if (xform_ty == XformTy::Xform) {
                     auto ret = ctx.cc_.gen_cpp_decl_var_init(
@@ -587,7 +589,7 @@ Option_T<cc::Node_T> lower_xform_field_entry(
             auto loop_body = make_rc<Vec<cc::Node_T>>();
             auto ret_i = lower_xform_field_entry(xform_ty, star, curr, vis, loop_body,
                 ctx.cc_.qq("Expr", src, "->at_unchecked(", loop_ind, ")"), src_f, arg,
-                src_ns, gen_ns, ctx);
+                src_ns, gen_ns, header_mode, ctx);
 
             if (xform_ty == XformTy::Xform) {
                 loop_body->push_back(ctx.cc_.qq("Stmt", ret.as_some(), "->push_back(",
@@ -617,7 +619,8 @@ Option_T<cc::Node_T> lower_xform_field_entry(
             auto if_body = make_rc<Vec<cc::Node_T>>();
 
             auto ret_i = lower_xform_field_entry(xform_ty, star, curr, vis, if_body,
-                ctx.cc_.qq("Expr", src, ".as_some()"), src_f, arg, src_ns, gen_ns, ctx);
+                ctx.cc_.qq("Expr", src, ".as_some()"), src_f, arg, src_ns, gen_ns,
+                    header_mode, ctx);
 
             if (xform_ty == XformTy::Xform) {
                 if_body->push_back(
@@ -639,11 +642,21 @@ Option_T<cc::Node_T> lower_xform_field_entry(
 }
 
 
+inline Vec_T<cc::Node_T> inline_maybe_mods(HeaderMode header_mode, DataCompileContext& ctx) {
+    auto mods = make_rc<Vec<cc::Node_T>>();
+    if (header_mode == HeaderMode::Y) {
+        mods->push_back(ctx.cc_.qq("Mod", "inline"));
+    }
+    return mods;
+}
+
+
 void data_gen_xform_fn(
     XformTy xform_ty,
     GenName star,
     GenName curr,
     Set_T<GenName>& vis,
+    HeaderMode header_mode,
     DataCompileContext& ctx) {
 
     if (vis->contains(curr)) {
@@ -683,7 +696,7 @@ void data_gen_xform_fn(
     if (is_sum) {
         auto cpp_switch_cases = make_rc<Vec<cc::Node_T>>();
         for (const auto& [sum_case, sum_case_name] : *ctx.sum_cases_->operator[](curr)) {
-            data_gen_xform_fn(xform_ty, star, sum_case_name, vis, ctx);
+            data_gen_xform_fn(xform_ty, star, sum_case_name, vis, header_mode, ctx);
             auto switch_case_body = make_rc<Vec<cc::Node_T>>();
 
             cc::Node_T cpp_v;
@@ -728,7 +741,7 @@ void data_gen_xform_fn(
             auto field_type = q->type__;
             auto cpp_field_item = lower_xform_field_entry(
                 xform_ty, star, curr, vis, cpp_xform_body, cpp_field_proj,
-                cpp_xform_param_f_var, field_type, curr, id_xform_fun_ns, ctx);
+                cpp_xform_param_f_var, field_type, curr, id_xform_fun_ns, header_mode, ctx);
 
             if (xform_ty == XformTy::Xform) {
                 cpp_make_args->push_back(cpp_field_item.as_some());
@@ -780,7 +793,7 @@ void data_gen_xform_fn(
     ctx.cc_.push_def(cpp_template_params,
         ctx.cc_.gen_cpp_fun_body(
             cpp_template_params,
-            NodeV_empty(),
+            inline_maybe_mods(header_mode, ctx),
             ret_ty,
             cpp_xform_name_full,
             cpp_xform_params,
@@ -792,6 +805,7 @@ void data_gen_xform_fn(
 void data_gen_xform_id_fn(
     GenName star,
     GenName curr,
+    HeaderMode header_mode,
     DataCompileContext& ctx) {
 
     auto star_dt = ctx.data_leaves_->operator[](star);
@@ -845,7 +859,7 @@ void data_gen_xform_id_fn(
     ctx.cc_.push_def(cpp_template_params,
         ctx.cc_.gen_cpp_fun_body(
             cpp_template_params,
-            NodeV_empty(),
+            inline_maybe_mods(header_mode, ctx),
             Some<cc::Node_T>(ret_ty),
             cpp_xform_name_full,
             cpp_xform_params,
@@ -855,7 +869,7 @@ void data_gen_xform_id_fn(
 
 
 DataDefsResult compile_data_defs(
-    lang::data::Node_T src, Option_T<string> header_name) {
+    lang::data::Node_T src, Option_T<string> header_name, HeaderMode header_mode) {
 
     DataCompileContext ctx;
 
@@ -875,7 +889,7 @@ DataDefsResult compile_data_defs(
             fmt_str("#include {}", path))->as_Decl());
     }
 
-    if (header_name.is_some()) {
+    if (header_name.is_some() && header_mode == HeaderMode::N) {
         ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
             fmt_str("#include \"{}\"", header_name.as_some()))->as_Decl());
     }
@@ -923,13 +937,12 @@ DataDefsResult compile_data_defs(
         ctx.cc_.dst_defs_->push_back(
             ctx.cc_.gen_cpp_fun_body(
                 NodeV_empty(),
-                NodeV_empty(),
+                inline_maybe_mods(header_mode, ctx),
                 Some(ctx.cc_.gen_cpp_id_base("void")),
                 cpp_hash_ser_name_full,
                 cpp_hash_ser_params,
                 NodeV_empty(),
                 cpp_hash_ser_body)->as_Decl());
-
 
         // pr_debug()
         auto id_pr_debug_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
@@ -967,7 +980,7 @@ DataDefsResult compile_data_defs(
         ctx.cc_.dst_defs_->push_back(
             ctx.cc_.gen_cpp_fun_body(
                 NodeV_empty(),
-                NodeV_empty(),
+                inline_maybe_mods(header_mode, ctx),
                 Some(ctx.cc_.gen_cpp_id_base("void")),
                 cpp_pr_debug_name_full,
                 cpp_pr_debug_params,
@@ -1196,7 +1209,7 @@ DataDefsResult compile_data_defs(
         ctx.cc_.push_def(cpp_template_params,
             ctx.cc_.gen_cpp_fun_body(
                 cpp_template_params,
-                NodeV_empty(),
+                inline_maybe_mods(header_mode, ctx),
                 Some(ctx.cc_.gen_cpp_id_base("void")),
                 cpp_pr_debug_name_full,
                 cpp_pr_debug_params,
@@ -1492,6 +1505,7 @@ DataDefsResult compile_data_defs(
         if (is_sum) {
             // virtual dtor
             ctx.cc_.dst_defs_->push_back(ctx.cc_.qq("Decl",
+                (header_mode == HeaderMode::Y ? "inline" : ""),
                 lower_name_cpp(LowerTy::STRUCT, name_full, ctx),
                 "::~_T() {}")->as_Decl());
         }
@@ -1535,7 +1549,7 @@ DataDefsResult compile_data_defs(
         ctx.cc_.push_def(cpp_template_params,
             ctx.cc_.gen_cpp_fun_body(
                 cpp_template_params,
-                NodeV_empty(),
+                inline_maybe_mods(header_mode, ctx),
                 None<cc::Node_T>(),
                 cpp_name_with_append(ctx.cc_,
                     ctx.cc_.gen_cpp_id_with_template_args_acc(
@@ -1550,6 +1564,9 @@ DataDefsResult compile_data_defs(
         if (!is_sum) {
             auto mods = make_rc<Vec<cc::Node_T>>();
             mods->push_back(ctx.cc_.qq("Mod", "__attribute__((always_inline))"));
+            if (header_mode == HeaderMode::Y) {
+                mods->push_back(ctx.cc_.qq("Mod", "inline"));
+            }
 
             // make()
             ctx.cc_.push_def(cpp_template_params,
@@ -1585,7 +1602,7 @@ DataDefsResult compile_data_defs(
                 ctx.cc_.push_def(cpp_template_params,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
-                        NodeV_empty(),
+                        inline_maybe_mods(header_mode, ctx),
                         Some(
                             ctx.cc_.gen_cpp_id_with_template_args_acc(
                                 lower_name_cpp(LowerTy::STRUCT_RC_ALIAS, name_full, ctx),
@@ -1609,7 +1626,7 @@ DataDefsResult compile_data_defs(
                 ctx.cc_.push_def(cpp_template_params,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
-                        NodeV_empty(),
+                        inline_maybe_mods(header_mode, ctx),
                         Some(ctx.cc_.gen_cpp_id_base("bool")),
                         lower_name_cpp(
                             LowerTy::SUM_IS_FULL, name_full, ctx, Some(name_lit({sum_case,}))),
@@ -1625,7 +1642,7 @@ DataDefsResult compile_data_defs(
                 ctx.cc_.push_def(cpp_template_params,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
-                        NodeV_empty(),
+                        inline_maybe_mods(header_mode, ctx),
                         Some<cc::Node_T>(cpp_sub_name_full_ptr),
                         lower_name_cpp(LowerTy::SUM_AS_FULL, name_full, ctx,
                             Some(name_lit({sum_case,}))),
@@ -1640,7 +1657,7 @@ DataDefsResult compile_data_defs(
             ctx.cc_.push_def(cpp_template_params,
                 ctx.cc_.gen_cpp_fun_body(
                     cpp_template_params,
-                    NodeV_empty(),
+                    inline_maybe_mods(header_mode, ctx),
                     Some<cc::Node_T>(name_to_cpp_direct(name_lit({"void"}), ctx.cc_)),
                     lower_name_cpp(LowerTy::HASH_SER_ACC_INST_FULL, name_full, ctx,
                         None<GenName>(), Some<Vec_T<cc::Node_T>>(cpp_template_params)),
@@ -1654,7 +1671,7 @@ DataDefsResult compile_data_defs(
                 ctx.cc_.push_def(cpp_template_params,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
-                        NodeV_empty(),
+                        inline_maybe_mods(header_mode, ctx),
                         Some<cc::Node_T>(name_to_cpp_direct(name_lit({"void"}), ctx.cc_)),
                         lower_name_cpp(LowerTy::HASH_SER_ACC_FULL, name_full, ctx,
                             None<GenName>(), Some<Vec_T<cc::Node_T>>(cpp_template_params)),
@@ -1671,22 +1688,22 @@ DataDefsResult compile_data_defs(
 
         if (has_mod_visit(p.second)) {
             auto vis = make_rc<Set<GenName>>();
-            data_gen_xform_fn(XformTy::Visit, p.first, p.first, vis, ctx);
+            data_gen_xform_fn(XformTy::Visit, p.first, p.first, vis, header_mode, ctx);
         }
 
         if (has_mod_xform(p.second)) {
             auto vis = make_rc<Set<GenName>>();
-            data_gen_xform_fn(XformTy::Xform, p.first, p.first, vis, ctx);
+            data_gen_xform_fn(XformTy::Xform, p.first, p.first, vis, header_mode, ctx);
 
             for (auto vis_i : *vis) {
                 if (ctx.is_ancestor(p.first, vis_i)) {
-                    data_gen_xform_id_fn(p.first, vis_i, ctx);
+                    data_gen_xform_id_fn(p.first, vis_i, header_mode, ctx);
                 }
             }
         }
     }
 
-    auto [hpp_mod, cpp_mod] = ctx.cc_.extract_mods();
+    auto [hpp_mod, cpp_mod] = ctx.cc_.extract_mods(header_mode);
 
     DataDefsResult ret;
     ret.hpp_decls = hpp_mod;
