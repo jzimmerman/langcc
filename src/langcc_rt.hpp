@@ -2031,6 +2031,24 @@ inline ParseOutput_T<LANG_META_ARGS>
 
 }  // namespace lang_rt
 
+// namespace lang_rt {
+//     def PrBufStreamItem {}
+//         def PrBufStreamItem.String { x: Str; }
+//         def PrBufStreamItem.Newline {}
+//         def PrBufStreamItem.Indent {}
+//         def PrBufStreamItem.Dedent {}
+//
+//     def PrBufStream {
+//         items: Vec(PrBufStreamItem);
+//         method distill(os: Ref(^ostream), flags: ^FmtFlags): void;
+//         method push_string(x: Str): void;
+//         method push_newline(): void;
+//         method push_newlines(n: Int): void;
+//         method push_indent(): void;
+//         method push_dedent(): void;
+//     }
+// }
+
 namespace lang_rt::PrBufStreamItem {
     struct _T;
 }
@@ -2120,18 +2138,17 @@ namespace lang_rt::PrBufStream {
 
 namespace lang_rt::PrBufStream {
     struct _T: hash_obj, enable_rc_from_this_poly {
+        void distill(Ref<ostream> os, FmtFlags flags);
+        void push_string(string x);
+        void push_newline();
+        void push_newlines(Int n);
+        void push_indent();
+        void push_dedent();
         Vec_T<lang_rt::PrBufStreamItem_T> items_;
         _T();
         lang_rt::PrBufStream_T with_items(Vec_T<lang_rt::PrBufStreamItem_T> items);
         void hash_ser_acc_lang_rt_PrBufStream(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
-
-        inline void push_string(string x);
-        inline void push_newline();
-        inline void push_newlines(Int n);
-        inline void push_indent();
-        inline void push_dedent();
-        inline void distill(ostream& os, FmtFlags flags);
     };
 }
 
@@ -2293,13 +2310,13 @@ inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStream_T x) {
 inline lang_rt::PrBufStream::_T::_T() {
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStream_T lang_rt::PrBufStream::make(Vec_T<lang_rt::PrBufStreamItem_T> items) {
+__attribute__((always_inline)) inline lang_rt::PrBufStream_T lang_rt::PrBufStream::make(Vec_T<lang_rt::PrBufStreamItem_T> items) {
     auto ret = make_rc<lang_rt::PrBufStream::_T>();
     ret->items_ = items;
     return ret;
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStream_T lang_rt::PrBufStream::make_ext(ArenaPtr arena, Vec_T<lang_rt::PrBufStreamItem_T> items) {
+__attribute__((always_inline)) inline lang_rt::PrBufStream_T lang_rt::PrBufStream::make_ext(ArenaPtr arena, Vec_T<lang_rt::PrBufStreamItem_T> items) {
     auto ret1 = make_rc_ext<lang_rt::PrBufStream::_T>(arena);
     ret1->items_ = items;
     return ret1;
@@ -2332,13 +2349,13 @@ inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Stri
 inline lang_rt::PrBufStreamItem::String::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::String) {
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make(string x) {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make(string x) {
     auto ret = make_rc<lang_rt::PrBufStreamItem::String::_T>();
     ret->x_ = x;
     return ret;
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make_ext(ArenaPtr arena, string x) {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make_ext(ArenaPtr arena, string x) {
     auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::String::_T>(arena);
     ret1->x_ = x;
     return ret1;
@@ -2367,12 +2384,12 @@ inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Newl
 inline lang_rt::PrBufStreamItem::Newline::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Newline) {
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make() {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make() {
     auto ret = make_rc<lang_rt::PrBufStreamItem::Newline::_T>();
     return ret;
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make_ext(ArenaPtr arena) {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make_ext(ArenaPtr arena) {
     auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Newline::_T>(arena);
     return ret1;
 }
@@ -2393,12 +2410,12 @@ inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Inde
 inline lang_rt::PrBufStreamItem::Indent::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Indent) {
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make() {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make() {
     auto ret = make_rc<lang_rt::PrBufStreamItem::Indent::_T>();
     return ret;
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make_ext(ArenaPtr arena) {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make_ext(ArenaPtr arena) {
     auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Indent::_T>(arena);
     return ret1;
 }
@@ -2419,12 +2436,12 @@ inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Dede
 inline lang_rt::PrBufStreamItem::Dedent::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Dedent) {
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make() {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make() {
     auto ret = make_rc<lang_rt::PrBufStreamItem::Dedent::_T>();
     return ret;
 }
 
-inline __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make_ext(ArenaPtr arena) {
+__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make_ext(ArenaPtr arena) {
     auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Dedent::_T>(arena);
     return ret1;
 }
