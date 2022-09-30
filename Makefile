@@ -59,13 +59,13 @@ ifeq ($(shell uname), Darwin)
 		HOMEBREW_BASE = /opt/homebrew
 	endif
 
-	CFLAGS_EXTRA = -D__MACOS__ -D__MACOS_SDKROOT__=$(SDKROOT) -mmacosx-version-min=12.0
+	CFLAGS_EXTRA = -D__CC__=$(CC) -D__MACOS__ -D__MACOS_SDKROOT__=$(SDKROOT) -mmacosx-version-min=12.0
 	LFLAGS_EXTRA = -L/opt/local/lib -L$(HOMEBREW_BASE)/opt/gperftools/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib -ldl
 	CC = clang++
 	DSYMUTIL_MAYBE = dsymutil
 	LLVM_SYM_PATH = $(HOMEBREW_BASE)/opt/llvm/bin/llvm-symbolizer
 else
-	CFLAGS_EXTRA =
+	CFLAGS_EXTRA = -D__CC__=$(CC) -Wno-attributes
 	LFLAGS_EXTRA = -lunwind -ldl
 	CC = clang++
 	DSYMUTIL_MAYBE = true

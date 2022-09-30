@@ -1434,7 +1434,9 @@ DataDefsResult compile_data_defs(
 
         if (!is_sum) {
             auto mods = make_rc<Vec<cc::Node_T>>();
-            mods->push_back(ctx.cc_.qq("Mod", "__attribute__((always_inline))"));
+            if (header_mode == HeaderMode::Y) {
+                mods->push_back(ctx.cc_.qq("Mod", "__attribute__((always_inline))"));
+            }
 
             // make()
             ctx.cc_.dst_decls_->push_back(
@@ -1563,9 +1565,9 @@ DataDefsResult compile_data_defs(
 
         if (!is_sum) {
             auto mods = make_rc<Vec<cc::Node_T>>();
-            mods->push_back(ctx.cc_.qq("Mod", "__attribute__((always_inline))"));
             if (header_mode == HeaderMode::Y) {
                 mods->push_back(ctx.cc_.qq("Mod", "inline"));
+                mods->push_back(ctx.cc_.qq("Mod", "__attribute__((always_inline))"));
             }
 
             // make()

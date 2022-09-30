@@ -1361,7 +1361,7 @@ void lang_emit_parser_defs(LangCompileContext& ctx) {
 
     ctx.cc_.dst_decls_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"), "namespace lang::",
         ctx.src_base_name_, "::parser {",
-        "__attribute__((always_inline)) IntPair action_by_vertex(",
+        "IntPair action_by_vertex(",
             "lang_rt::ParserVertexId v, lang_rt::ParserLookahead la);",
     "}")->as_Decl());
 
@@ -1375,7 +1375,7 @@ void lang_emit_parser_defs(LangCompileContext& ctx) {
         auto cpp_table_init_list = ctx.cc_.gen_cpp_init_list_u16(table_init_list);
 
         ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-            "__attribute__((always_inline)) IntPair lang::",
+            "IntPair lang::",
                 ctx.src_base_name_, "::parser::action_by_vertex(",
                     "lang_rt::ParserVertexId v, lang_rt::ParserLookahead la) {",
                 "static const u16_array tt = ", cpp_table_init_list, ";",
@@ -1389,7 +1389,7 @@ void lang_emit_parser_defs(LangCompileContext& ctx) {
 
         AR_eq(static_cast<Int>(ParserActionData_W::SHIFT), 4);
         ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-            "__attribute__((always_inline)) IntPair lang::", ctx.src_base_name_,
+            "IntPair lang::", ctx.src_base_name_,
                 "::parser::action_by_vertex(lang_rt::ParserVertexId v,",
                 "lang_rt::ParserLookahead la) {",
                 "static const u16_array tt_acc_raw = ", tt_acc_init_list, ";",
@@ -1406,7 +1406,7 @@ void lang_emit_parser_defs(LangCompileContext& ctx) {
         ctx.cc_.Q_->qq_ext(
             Some<string>("Decl"),
             "namespace lang::", ctx.src_base_name_, "::parser {",
-            "__attribute__((always_inline)) lang_rt::ParserVertexId vertex_dfa_step(",
+            "lang_rt::ParserVertexId vertex_dfa_step(",
                 "lang_rt::ParserVertexId v, lang_rt::ParserSymId sym,",
                 "lang_rt::ParserAttrMask attr);",
         "}")->as_Decl());
@@ -1417,7 +1417,7 @@ void lang_emit_parser_defs(LangCompileContext& ctx) {
         auto cpp_table_init_list = ctx.cc_.gen_cpp_init_list_u16(table_init_list);
 
         ctx.cc_.dst_defs_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
-            "__attribute__((always_inline)) lang_rt::ParserVertexId lang::", ctx.src_base_name_,
+            "lang_rt::ParserVertexId lang::", ctx.src_base_name_,
                 "::parser::vertex_dfa_step(lang_rt::ParserVertexId v, lang_rt::ParserSymId sym,",
                 "lang_rt::ParserAttrMask attr) {",
                 "static const u16_array tt = ", cpp_table_init_list, ";",

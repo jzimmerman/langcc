@@ -1119,11 +1119,11 @@ namespace lang::cc::Node {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Module_T x);
 
 namespace lang::cc::Node::Module {
-    __attribute__((always_inline)) lang::cc::Node::Module_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl_T> decls);
+    lang::cc::Node::Module_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl_T> decls);
 }
 
 namespace lang::cc::Node::Module {
-    __attribute__((always_inline)) lang::cc::Node::Module_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl_T> decls);
+    lang::cc::Node::Module_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl_T> decls);
 }
 
 namespace lang::cc::Node::Module {
@@ -1147,11 +1147,11 @@ namespace lang::cc::Node::Module {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Param_T x);
 
 namespace lang::cc::Node::Param {
-    __attribute__((always_inline)) lang::cc::Node::Param_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::Param::val_T> val);
+    lang::cc::Node::Param_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::Param::val_T> val);
 }
 
 namespace lang::cc::Node::Param {
-    __attribute__((always_inline)) lang::cc::Node::Param_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::Param::val_T> val);
+    lang::cc::Node::Param_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::Param::val_T> val);
 }
 
 namespace lang::cc::Node::Param {
@@ -1181,11 +1181,11 @@ namespace lang::cc::Node::Param {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Block_T x);
 
 namespace lang::cc::Node::Block {
-    __attribute__((always_inline)) lang::cc::Node::Block_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Stmt_T> stmts);
+    lang::cc::Node::Block_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Stmt_T> stmts);
 }
 
 namespace lang::cc::Node::Block {
-    __attribute__((always_inline)) lang::cc::Node::Block_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Stmt_T> stmts);
+    lang::cc::Node::Block_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Stmt_T> stmts);
 }
 
 namespace lang::cc::Node::Block {
@@ -1209,11 +1209,11 @@ namespace lang::cc::Node::Block {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl_T x);
 
 namespace lang::cc::Node::TypedDecl {
-    __attribute__((always_inline)) lang::cc::Node::TypedDecl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
+    lang::cc::Node::TypedDecl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
 }
 
 namespace lang::cc::Node::TypedDecl {
-    __attribute__((always_inline)) lang::cc::Node::TypedDecl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
+    lang::cc::Node::TypedDecl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
 }
 
 namespace lang::cc::Node::TypedDecl {
@@ -1601,11 +1601,11 @@ namespace lang::cc::Node::Expr {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct_T x);
 
 namespace lang::cc::Node::Decl::Struct {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Struct_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
+    lang::cc::Node::Decl::Struct_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Struct {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Struct_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
+    lang::cc::Node::Decl::Struct_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Struct {
@@ -1633,11 +1633,11 @@ namespace lang::cc::Node::Decl::Struct {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef::Decl_T x);
 
 namespace lang::cc::Node::StructDeclDef::Decl {
-    __attribute__((always_inline)) lang::cc::Node::StructDeclDef::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::StructDeclDef::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::StructDeclDef::Decl {
-    __attribute__((always_inline)) lang::cc::Node::StructDeclDef::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::StructDeclDef::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::StructDeclDef::Decl {
@@ -1659,11 +1659,11 @@ namespace lang::cc::Node::StructDeclDef::Decl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef::Def_T x);
 
 namespace lang::cc::Node::StructDeclDef::Def {
-    __attribute__((always_inline)) lang::cc::Node::StructDeclDef::Def_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> base, Vec_T<lang::cc::Node::Entry_T> entries);
+    lang::cc::Node::StructDeclDef::Def_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> base, Vec_T<lang::cc::Node::Entry_T> entries);
 }
 
 namespace lang::cc::Node::StructDeclDef::Def {
-    __attribute__((always_inline)) lang::cc::Node::StructDeclDef::Def_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> base, Vec_T<lang::cc::Node::Entry_T> entries);
+    lang::cc::Node::StructDeclDef::Def_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> base, Vec_T<lang::cc::Node::Entry_T> entries);
 }
 
 namespace lang::cc::Node::StructDeclDef::Def {
@@ -1689,11 +1689,11 @@ namespace lang::cc::Node::StructDeclDef::Def {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Field_T x);
 
 namespace lang::cc::Node::Entry::Field {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Field_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Entry::Field_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Entry::Field {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Field_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Entry::Field_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Entry::Field {
@@ -1719,11 +1719,11 @@ namespace lang::cc::Node::Entry::Field {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun_T x);
 
 namespace lang::cc::Node::Entry::Fun {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Entry::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Entry::Fun {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Entry::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Entry::Fun {
@@ -1759,11 +1759,11 @@ namespace lang::cc::Node::Entry::Fun {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Param::val_T x);
 
 namespace lang::cc::Node::Param::val {
-    __attribute__((always_inline)) lang::cc::Node::Param::val_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
+    lang::cc::Node::Param::val_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
 }
 
 namespace lang::cc::Node::Param::val {
-    __attribute__((always_inline)) lang::cc::Node::Param::val_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
+    lang::cc::Node::Param::val_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
 }
 
 namespace lang::cc::Node::Param::val {
@@ -1787,11 +1787,11 @@ namespace lang::cc::Node::Param::val {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Decl_T x);
 
 namespace lang::cc::Node::FunDeclDef::Decl {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::FunDeclDef::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::FunDeclDef::Decl {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::FunDeclDef::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::FunDeclDef::Decl {
@@ -1813,11 +1813,11 @@ namespace lang::cc::Node::FunDeclDef::Decl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Def_T x);
 
 namespace lang::cc::Node::FunDeclDef::Def {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Def_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> init, lang::cc::Node::Block_T body);
+    lang::cc::Node::FunDeclDef::Def_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> init, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::FunDeclDef::Def {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Def_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> init, lang::cc::Node::Block_T body);
+    lang::cc::Node::FunDeclDef::Def_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<Vec_T<lang::cc::Node::Expr_T>> init, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::FunDeclDef::Def {
@@ -1843,11 +1843,11 @@ namespace lang::cc::Node::FunDeclDef::Def {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Del_T x);
 
 namespace lang::cc::Node::FunDeclDef::Del {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Del_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::FunDeclDef::Del_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::FunDeclDef::Del {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Del_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::FunDeclDef::Del_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::FunDeclDef::Del {
@@ -1869,11 +1869,11 @@ namespace lang::cc::Node::FunDeclDef::Del {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Zero_T x);
 
 namespace lang::cc::Node::FunDeclDef::Zero {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Zero_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+    lang::cc::Node::FunDeclDef::Zero_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
 namespace lang::cc::Node::FunDeclDef::Zero {
-    __attribute__((always_inline)) lang::cc::Node::FunDeclDef::Zero_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+    lang::cc::Node::FunDeclDef::Zero_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
 namespace lang::cc::Node::FunDeclDef::Zero {
@@ -1897,11 +1897,11 @@ namespace lang::cc::Node::FunDeclDef::Zero {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::EnumStruct_T x);
 
 namespace lang::cc::Node::Decl::EnumStruct {
-    __attribute__((always_inline)) lang::cc::Node::Decl::EnumStruct_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Expr_T> cases);
+    lang::cc::Node::Decl::EnumStruct_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Expr_T> cases);
 }
 
 namespace lang::cc::Node::Decl::EnumStruct {
-    __attribute__((always_inline)) lang::cc::Node::Decl::EnumStruct_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Expr_T> cases);
+    lang::cc::Node::Decl::EnumStruct_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Expr_T> cases);
 }
 
 namespace lang::cc::Node::Decl::EnumStruct {
@@ -1927,11 +1927,11 @@ namespace lang::cc::Node::Decl::EnumStruct {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun_T x);
 
 namespace lang::cc::Node::Decl::Fun {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Decl::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Fun {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Decl::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Fun {
@@ -1967,11 +1967,11 @@ namespace lang::cc::Node::Decl::Fun {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Const_T x);
 
 namespace lang::cc::Node::Mod::Const {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Const_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Const_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Const {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Const_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Const_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Const {
@@ -1993,11 +1993,11 @@ namespace lang::cc::Node::Mod::Const {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Inline_T x);
 
 namespace lang::cc::Node::Mod::Inline {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Inline_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Inline_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Inline {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Inline_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Inline_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Inline {
@@ -2019,11 +2019,11 @@ namespace lang::cc::Node::Mod::Inline {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Static_T x);
 
 namespace lang::cc::Node::Mod::Static {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Static_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Static_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Static {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Static_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Static_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Static {
@@ -2045,11 +2045,11 @@ namespace lang::cc::Node::Mod::Static {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Virtual_T x);
 
 namespace lang::cc::Node::Mod::Virtual {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Virtual_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Virtual_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Virtual {
-    __attribute__((always_inline)) lang::cc::Node::Mod::Virtual_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::Virtual_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::Virtual {
@@ -2071,11 +2071,11 @@ namespace lang::cc::Node::Mod::Virtual {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::NoInline_T x);
 
 namespace lang::cc::Node::Mod::NoInline {
-    __attribute__((always_inline)) lang::cc::Node::Mod::NoInline_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::NoInline_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::NoInline {
-    __attribute__((always_inline)) lang::cc::Node::Mod::NoInline_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::NoInline_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::NoInline {
@@ -2097,11 +2097,11 @@ namespace lang::cc::Node::Mod::NoInline {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::AlwaysInline_T x);
 
 namespace lang::cc::Node::Mod::AlwaysInline {
-    __attribute__((always_inline)) lang::cc::Node::Mod::AlwaysInline_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::AlwaysInline_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::AlwaysInline {
-    __attribute__((always_inline)) lang::cc::Node::Mod::AlwaysInline_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Mod::AlwaysInline_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Mod::AlwaysInline {
@@ -2123,11 +2123,11 @@ namespace lang::cc::Node::Mod::AlwaysInline {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Namespace_T x);
 
 namespace lang::cc::Node::Decl::Namespace {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Namespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Decl_T> body);
+    lang::cc::Node::Decl::Namespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Decl_T> body);
 }
 
 namespace lang::cc::Node::Decl::Namespace {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Namespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Decl_T> body);
+    lang::cc::Node::Decl::Namespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Decl_T> body);
 }
 
 namespace lang::cc::Node::Decl::Namespace {
@@ -2153,11 +2153,11 @@ namespace lang::cc::Node::Decl::Namespace {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias_T x);
 
 namespace lang::cc::Node::Decl::UsingAlias {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingAlias_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
+    lang::cc::Node::Decl::UsingAlias_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingAlias_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
+    lang::cc::Node::Decl::UsingAlias_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias {
@@ -2185,11 +2185,11 @@ namespace lang::cc::Node::Decl::UsingAlias {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingNamespace_T x);
 
 namespace lang::cc::Node::Decl::UsingNamespace {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingNamespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::UsingNamespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::UsingNamespace {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingNamespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::UsingNamespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::UsingNamespace {
@@ -2213,11 +2213,11 @@ namespace lang::cc::Node::Decl::UsingNamespace {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Include_T x);
 
 namespace lang::cc::Node::Decl::Include {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Include_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
+    lang::cc::Node::Decl::Include_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::Include {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Include_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
+    lang::cc::Node::Decl::Include_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::Include {
@@ -2241,11 +2241,11 @@ namespace lang::cc::Node::Decl::Include {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::PragmaOnce_T x);
 
 namespace lang::cc::Node::Decl::PragmaOnce {
-    __attribute__((always_inline)) lang::cc::Node::Decl::PragmaOnce_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
+    lang::cc::Node::Decl::PragmaOnce_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::PragmaOnce {
-    __attribute__((always_inline)) lang::cc::Node::Decl::PragmaOnce_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
+    lang::cc::Node::Decl::PragmaOnce_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice x);
 }
 
 namespace lang::cc::Node::Decl::PragmaOnce {
@@ -2269,11 +2269,11 @@ namespace lang::cc::Node::Decl::PragmaOnce {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Decl_T x);
 
 namespace lang::cc::Node::Stmt::Decl {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
+    lang::cc::Node::Stmt::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
 }
 
 namespace lang::cc::Node::Stmt::Decl {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
+    lang::cc::Node::Stmt::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
 }
 
 namespace lang::cc::Node::Stmt::Decl {
@@ -2297,11 +2297,11 @@ namespace lang::cc::Node::Stmt::Decl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Expr_T x);
 
 namespace lang::cc::Node::Stmt::Expr {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Expr_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
+    lang::cc::Node::Stmt::Expr_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
 }
 
 namespace lang::cc::Node::Stmt::Expr {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Expr_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
+    lang::cc::Node::Stmt::Expr_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
 }
 
 namespace lang::cc::Node::Stmt::Expr {
@@ -2325,11 +2325,11 @@ namespace lang::cc::Node::Stmt::Expr {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Block_T x);
 
 namespace lang::cc::Node::Stmt::Block {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Block_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T block);
+    lang::cc::Node::Stmt::Block_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T block);
 }
 
 namespace lang::cc::Node::Stmt::Block {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Block_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T block);
+    lang::cc::Node::Stmt::Block_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T block);
 }
 
 namespace lang::cc::Node::Stmt::Block {
@@ -2353,11 +2353,11 @@ namespace lang::cc::Node::Stmt::Block {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::If_T x);
 
 namespace lang::cc::Node::Stmt::If {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::If_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt);
+    lang::cc::Node::Stmt::If_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt);
 }
 
 namespace lang::cc::Node::Stmt::If {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::If_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt);
+    lang::cc::Node::Stmt::If_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt);
 }
 
 namespace lang::cc::Node::Stmt::If {
@@ -2383,11 +2383,11 @@ namespace lang::cc::Node::Stmt::If {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::IfElse_T x);
 
 namespace lang::cc::Node::Stmt::IfElse {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::IfElse_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt, lang::cc::Node::Stmt_T xf);
+    lang::cc::Node::Stmt::IfElse_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt, lang::cc::Node::Stmt_T xf);
 }
 
 namespace lang::cc::Node::Stmt::IfElse {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::IfElse_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt, lang::cc::Node::Stmt_T xf);
+    lang::cc::Node::Stmt::IfElse_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Stmt_T xt, lang::cc::Node::Stmt_T xf);
 }
 
 namespace lang::cc::Node::Stmt::IfElse {
@@ -2415,11 +2415,11 @@ namespace lang::cc::Node::Stmt::IfElse {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::For_T x);
 
 namespace lang::cc::Node::Stmt::For {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::For_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::ExprExt_T init, lang::cc::Node::Expr_T cond, lang::cc::Node::Expr_T incr, lang::cc::Node::Block_T body);
+    lang::cc::Node::Stmt::For_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::ExprExt_T init, lang::cc::Node::Expr_T cond, lang::cc::Node::Expr_T incr, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::Stmt::For {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::For_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::ExprExt_T init, lang::cc::Node::Expr_T cond, lang::cc::Node::Expr_T incr, lang::cc::Node::Block_T body);
+    lang::cc::Node::Stmt::For_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::ExprExt_T init, lang::cc::Node::Expr_T cond, lang::cc::Node::Expr_T incr, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::Stmt::For {
@@ -2449,11 +2449,11 @@ namespace lang::cc::Node::Stmt::For {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::ExprExt::Expr_T x);
 
 namespace lang::cc::Node::ExprExt::Expr {
-    __attribute__((always_inline)) lang::cc::Node::ExprExt::Expr_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
+    lang::cc::Node::ExprExt::Expr_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
 }
 
 namespace lang::cc::Node::ExprExt::Expr {
-    __attribute__((always_inline)) lang::cc::Node::ExprExt::Expr_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
+    lang::cc::Node::ExprExt::Expr_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T e);
 }
 
 namespace lang::cc::Node::ExprExt::Expr {
@@ -2477,11 +2477,11 @@ namespace lang::cc::Node::ExprExt::Expr {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::ExprExt::Decl_T x);
 
 namespace lang::cc::Node::ExprExt::Decl {
-    __attribute__((always_inline)) lang::cc::Node::ExprExt::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
+    lang::cc::Node::ExprExt::Decl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
 }
 
 namespace lang::cc::Node::ExprExt::Decl {
-    __attribute__((always_inline)) lang::cc::Node::ExprExt::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
+    lang::cc::Node::ExprExt::Decl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::TypedDecl_T decl);
 }
 
 namespace lang::cc::Node::ExprExt::Decl {
@@ -2505,11 +2505,11 @@ namespace lang::cc::Node::ExprExt::Decl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Switch_T x);
 
 namespace lang::cc::Node::Stmt::Switch {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Switch_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, Vec_T<lang::cc::Node::SwitchCase_T> cases);
+    lang::cc::Node::Stmt::Switch_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, Vec_T<lang::cc::Node::SwitchCase_T> cases);
 }
 
 namespace lang::cc::Node::Stmt::Switch {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Switch_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, Vec_T<lang::cc::Node::SwitchCase_T> cases);
+    lang::cc::Node::Stmt::Switch_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, Vec_T<lang::cc::Node::SwitchCase_T> cases);
 }
 
 namespace lang::cc::Node::Stmt::Switch {
@@ -2535,11 +2535,11 @@ namespace lang::cc::Node::Stmt::Switch {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase::Case_T x);
 
 namespace lang::cc::Node::SwitchCase::Case {
-    __attribute__((always_inline)) lang::cc::Node::SwitchCase::Case_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, lang::cc::Node::Block_T body);
+    lang::cc::Node::SwitchCase::Case_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::SwitchCase::Case {
-    __attribute__((always_inline)) lang::cc::Node::SwitchCase::Case_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, lang::cc::Node::Block_T body);
+    lang::cc::Node::SwitchCase::Case_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T val, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::SwitchCase::Case {
@@ -2565,11 +2565,11 @@ namespace lang::cc::Node::SwitchCase::Case {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase::Default_T x);
 
 namespace lang::cc::Node::SwitchCase::Default {
-    __attribute__((always_inline)) lang::cc::Node::SwitchCase::Default_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T body);
+    lang::cc::Node::SwitchCase::Default_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::SwitchCase::Default {
-    __attribute__((always_inline)) lang::cc::Node::SwitchCase::Default_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T body);
+    lang::cc::Node::SwitchCase::Default_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Block_T body);
 }
 
 namespace lang::cc::Node::SwitchCase::Default {
@@ -2593,11 +2593,11 @@ namespace lang::cc::Node::SwitchCase::Default {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Break_T x);
 
 namespace lang::cc::Node::Stmt::Break {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Break_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Stmt::Break_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Stmt::Break {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Break_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Stmt::Break_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Stmt::Break {
@@ -2619,11 +2619,11 @@ namespace lang::cc::Node::Stmt::Break {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Continue_T x);
 
 namespace lang::cc::Node::Stmt::Continue {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Continue_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Stmt::Continue_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Stmt::Continue {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Continue_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Stmt::Continue_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Stmt::Continue {
@@ -2645,11 +2645,11 @@ namespace lang::cc::Node::Stmt::Continue {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Return_T x);
 
 namespace lang::cc::Node::Stmt::Return {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Return_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Expr_T> val);
+    lang::cc::Node::Stmt::Return_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Expr_T> val);
 }
 
 namespace lang::cc::Node::Stmt::Return {
-    __attribute__((always_inline)) lang::cc::Node::Stmt::Return_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Expr_T> val);
+    lang::cc::Node::Stmt::Return_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Expr_T> val);
 }
 
 namespace lang::cc::Node::Stmt::Return {
@@ -2673,11 +2673,11 @@ namespace lang::cc::Node::Stmt::Return {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Paren_T x);
 
 namespace lang::cc::Node::Expr::Paren {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Paren_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Paren_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Paren {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Paren_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Paren_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Paren {
@@ -2701,11 +2701,11 @@ namespace lang::cc::Node::Expr::Paren {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Call_T x);
 
 namespace lang::cc::Node::Expr::Call {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Call_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, Vec_T<lang::cc::Node::Expr_T> args);
+    lang::cc::Node::Expr::Call_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, Vec_T<lang::cc::Node::Expr_T> args);
 }
 
 namespace lang::cc::Node::Expr::Call {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Call_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, Vec_T<lang::cc::Node::Expr_T> args);
+    lang::cc::Node::Expr::Call_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, Vec_T<lang::cc::Node::Expr_T> args);
 }
 
 namespace lang::cc::Node::Expr::Call {
@@ -2731,11 +2731,11 @@ namespace lang::cc::Node::Expr::Call {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Index_T x);
 
 namespace lang::cc::Node::Expr::Index {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Index_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, lang::cc::Node::Expr_T arg);
+    lang::cc::Node::Expr::Index_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, lang::cc::Node::Expr_T arg);
 }
 
 namespace lang::cc::Node::Expr::Index {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Index_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, lang::cc::Node::Expr_T arg);
+    lang::cc::Node::Expr::Index_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f, lang::cc::Node::Expr_T arg);
 }
 
 namespace lang::cc::Node::Expr::Index {
@@ -2761,11 +2761,11 @@ namespace lang::cc::Node::Expr::Index {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IndexEmpty_T x);
 
 namespace lang::cc::Node::Expr::IndexEmpty {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IndexEmpty_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f);
+    lang::cc::Node::Expr::IndexEmpty_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f);
 }
 
 namespace lang::cc::Node::Expr::IndexEmpty {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IndexEmpty_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f);
+    lang::cc::Node::Expr::IndexEmpty_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T f);
 }
 
 namespace lang::cc::Node::Expr::IndexEmpty {
@@ -2789,11 +2789,11 @@ namespace lang::cc::Node::Expr::IndexEmpty {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Dot_T x);
 
 namespace lang::cc::Node::Expr::Dot {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Dot_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
+    lang::cc::Node::Expr::Dot_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
 }
 
 namespace lang::cc::Node::Expr::Dot {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Dot_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
+    lang::cc::Node::Expr::Dot_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
 }
 
 namespace lang::cc::Node::Expr::Dot {
@@ -2819,11 +2819,11 @@ namespace lang::cc::Node::Expr::Dot {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Arrow_T x);
 
 namespace lang::cc::Node::Expr::Arrow {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Arrow_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
+    lang::cc::Node::Expr::Arrow_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
 }
 
 namespace lang::cc::Node::Expr::Arrow {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Arrow_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
+    lang::cc::Node::Expr::Arrow_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T field);
 }
 
 namespace lang::cc::Node::Expr::Arrow {
@@ -2849,11 +2849,11 @@ namespace lang::cc::Node::Expr::Arrow {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ref__T x);
 
 namespace lang::cc::Node::Expr::Ref_ {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Ref__T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Ref__T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Ref_ {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Ref__T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Ref__T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Ref_ {
@@ -2877,11 +2877,11 @@ namespace lang::cc::Node::Expr::Ref_ {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::AddrOf_T x);
 
 namespace lang::cc::Node::Expr::AddrOf {
-    __attribute__((always_inline)) lang::cc::Node::Expr::AddrOf_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::AddrOf_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::AddrOf {
-    __attribute__((always_inline)) lang::cc::Node::Expr::AddrOf_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::AddrOf_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::AddrOf {
@@ -2905,11 +2905,11 @@ namespace lang::cc::Node::Expr::AddrOf {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Deref_T x);
 
 namespace lang::cc::Node::Expr::Deref {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Deref_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Deref_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Deref {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Deref_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Deref_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Deref {
@@ -2933,11 +2933,11 @@ namespace lang::cc::Node::Expr::Deref {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre_T x);
 
 namespace lang::cc::Node::Expr::UnaryPre {
-    __attribute__((always_inline)) lang::cc::Node::Expr::UnaryPre_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::UnaryPre::op_T op, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::UnaryPre_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::UnaryPre::op_T op, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre {
-    __attribute__((always_inline)) lang::cc::Node::Expr::UnaryPre_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::UnaryPre::op_T op, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::UnaryPre_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::UnaryPre::op_T op, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre {
@@ -2963,11 +2963,11 @@ namespace lang::cc::Node::Expr::UnaryPre {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre_T x);
 
 namespace lang::cc::Node::Expr::IncDecPre {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPre_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::IncDecPre::op_T op, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::IncDecPre_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::IncDecPre::op_T op, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPre_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::IncDecPre::op_T op, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::IncDecPre_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr::IncDecPre::op_T op, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre {
@@ -2993,11 +2993,11 @@ namespace lang::cc::Node::Expr::IncDecPre {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost_T x);
 
 namespace lang::cc::Node::Expr::IncDecPost {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPost_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr::IncDecPost::op_T op);
+    lang::cc::Node::Expr::IncDecPost_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr::IncDecPost::op_T op);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPost_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr::IncDecPost::op_T op);
+    lang::cc::Node::Expr::IncDecPost_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr::IncDecPost::op_T op);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost {
@@ -3023,11 +3023,11 @@ namespace lang::cc::Node::Expr::IncDecPost {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Assign_T x);
 
 namespace lang::cc::Node::Expr::Assign {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Assign_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Assign_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Assign {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Assign_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Assign_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Assign {
@@ -3053,11 +3053,11 @@ namespace lang::cc::Node::Expr::Assign {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1_T x);
 
 namespace lang::cc::Node::Expr::Bin1 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin1_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin1::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin1_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin1::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin1 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin1_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin1::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin1_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin1::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin1 {
@@ -3085,11 +3085,11 @@ namespace lang::cc::Node::Expr::Bin1 {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2_T x);
 
 namespace lang::cc::Node::Expr::Bin2 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin2_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin2::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin2_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin2::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin2 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin2_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin2::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin2_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin2::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin2 {
@@ -3117,11 +3117,11 @@ namespace lang::cc::Node::Expr::Bin2 {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3_T x);
 
 namespace lang::cc::Node::Expr::Bin3 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin3::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin3_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin3::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin3 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin3::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin3_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin3::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin3 {
@@ -3149,11 +3149,11 @@ namespace lang::cc::Node::Expr::Bin3 {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4_T x);
 
 namespace lang::cc::Node::Expr::Bin4 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin4_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin4::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin4_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin4::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin4 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin4_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin4::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin4_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin4::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin4 {
@@ -3181,11 +3181,11 @@ namespace lang::cc::Node::Expr::Bin4 {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5_T x);
 
 namespace lang::cc::Node::Expr::Bin5 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin5_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin5::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin5_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin5::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin5 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin5_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin5::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin5_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin5::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin5 {
@@ -3213,11 +3213,11 @@ namespace lang::cc::Node::Expr::Bin5 {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6_T x);
 
 namespace lang::cc::Node::Expr::Bin6 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin6::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin6_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin6::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin6 {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin6::op_T op, lang::cc::Node::Expr_T xr);
+    lang::cc::Node::Expr::Bin6_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T xl, lang::cc::Node::Expr::Bin6::op_T op, lang::cc::Node::Expr_T xr);
 }
 
 namespace lang::cc::Node::Expr::Bin6 {
@@ -3245,11 +3245,11 @@ namespace lang::cc::Node::Expr::Bin6 {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Template_T x);
 
 namespace lang::cc::Node::Expr::Template {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Template_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, Vec_T<lang::cc::Node::Expr_T> args);
+    lang::cc::Node::Expr::Template_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, Vec_T<lang::cc::Node::Expr_T> args);
 }
 
 namespace lang::cc::Node::Expr::Template {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Template_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, Vec_T<lang::cc::Node::Expr_T> args);
+    lang::cc::Node::Expr::Template_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, Vec_T<lang::cc::Node::Expr_T> args);
 }
 
 namespace lang::cc::Node::Expr::Template {
@@ -3275,11 +3275,11 @@ namespace lang::cc::Node::Expr::Template {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::New_T x);
 
 namespace lang::cc::Node::Expr::New {
-    __attribute__((always_inline)) lang::cc::Node::Expr::New_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::New_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::New {
-    __attribute__((always_inline)) lang::cc::Node::Expr::New_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::New_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::New {
@@ -3303,11 +3303,11 @@ namespace lang::cc::Node::Expr::New {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Delete_T x);
 
 namespace lang::cc::Node::Expr::Delete {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Delete_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Delete_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Delete {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Delete_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Delete_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Delete {
@@ -3331,11 +3331,11 @@ namespace lang::cc::Node::Expr::Delete {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ellipsis_T x);
 
 namespace lang::cc::Node::Expr::Ellipsis {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Ellipsis_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Ellipsis_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Ellipsis {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Ellipsis_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Ellipsis_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Ellipsis {
@@ -3359,11 +3359,11 @@ namespace lang::cc::Node::Expr::Ellipsis {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Tilde_T x);
 
 namespace lang::cc::Node::Expr::Tilde {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Tilde_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Tilde_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Tilde {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Tilde_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+    lang::cc::Node::Expr::Tilde_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr::Tilde {
@@ -3387,11 +3387,11 @@ namespace lang::cc::Node::Expr::Tilde {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Namespace_T x);
 
 namespace lang::cc::Node::Expr::Namespace {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Namespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, bool tilde, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Expr::Namespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, bool tilde, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Expr::Namespace {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Namespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, bool tilde, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Expr::Namespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T x, bool tilde, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Expr::Namespace {
@@ -3419,11 +3419,11 @@ namespace lang::cc::Node::Expr::Namespace {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Id_T x);
 
 namespace lang::cc::Node::Expr::Id {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Id_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name);
+    lang::cc::Node::Expr::Id_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name);
 }
 
 namespace lang::cc::Node::Expr::Id {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Id_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name);
+    lang::cc::Node::Expr::Id_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name);
 }
 
 namespace lang::cc::Node::Expr::Id {
@@ -3475,11 +3475,11 @@ namespace lang::cc::Node::Expr::Lit {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl_T x);
 
 namespace lang::cc::Node::Decl::Struct::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Struct::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args);
+    lang::cc::Node::Decl::Struct::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Struct::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args);
+    lang::cc::Node::Decl::Struct::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl {
@@ -3503,11 +3503,11 @@ namespace lang::cc::Node::Decl::Struct::tmpl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl_T x);
 
 namespace lang::cc::Node::Entry::Fun::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Fun::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args);
+    lang::cc::Node::Entry::Fun::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Entry::Fun::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Fun::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args);
+    lang::cc::Node::Entry::Fun::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Entry::Fun::tmpl {
@@ -3531,11 +3531,11 @@ namespace lang::cc::Node::Entry::Fun::tmpl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl_T x);
 
 namespace lang::cc::Node::Decl::Fun::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Fun::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args);
+    lang::cc::Node::Decl::Fun::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Fun::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args);
+    lang::cc::Node::Decl::Fun::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl {
@@ -3559,11 +3559,11 @@ namespace lang::cc::Node::Decl::Fun::tmpl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl_T x);
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingAlias::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args);
+    lang::cc::Node::Decl::UsingAlias::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingAlias::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args);
+    lang::cc::Node::Decl::UsingAlias::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl {
@@ -3587,11 +3587,11 @@ namespace lang::cc::Node::Decl::UsingAlias::tmpl {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl::vars::item_T x);
 
 namespace lang::cc::Node::TypedDecl::vars::item {
-    __attribute__((always_inline)) lang::cc::Node::TypedDecl::vars::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::TypedDecl::vars::item::val_T> val);
+    lang::cc::Node::TypedDecl::vars::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::TypedDecl::vars::item::val_T> val);
 }
 
 namespace lang::cc::Node::TypedDecl::vars::item {
-    __attribute__((always_inline)) lang::cc::Node::TypedDecl::vars::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::TypedDecl::vars::item::val_T> val);
+    lang::cc::Node::TypedDecl::vars::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T name, Option_T<lang::cc::Node::TypedDecl::vars::item::val_T> val);
 }
 
 namespace lang::cc::Node::TypedDecl::vars::item {
@@ -3848,11 +3848,11 @@ namespace lang::cc::Node::Expr::Bin6::op {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Integer_T x);
 
 namespace lang::cc::Node::Expr::Lit::Integer {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Lit::Integer_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+    lang::cc::Node::Expr::Lit::Integer_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
 namespace lang::cc::Node::Expr::Lit::Integer {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Lit::Integer_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+    lang::cc::Node::Expr::Lit::Integer_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
 namespace lang::cc::Node::Expr::Lit::Integer {
@@ -3876,11 +3876,11 @@ namespace lang::cc::Node::Expr::Lit::Integer {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Str_T x);
 
 namespace lang::cc::Node::Expr::Lit::Str {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Lit::Str_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+    lang::cc::Node::Expr::Lit::Str_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
 namespace lang::cc::Node::Expr::Lit::Str {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Lit::Str_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+    lang::cc::Node::Expr::Lit::Str_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
 namespace lang::cc::Node::Expr::Lit::Str {
@@ -3904,11 +3904,11 @@ namespace lang::cc::Node::Expr::Lit::Str {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Array_T x);
 
 namespace lang::cc::Node::Expr::Lit::Array {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Lit::Array_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Expr_T> items);
+    lang::cc::Node::Expr::Lit::Array_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Expr_T> items);
 }
 
 namespace lang::cc::Node::Expr::Lit::Array {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Lit::Array_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Expr_T> items);
+    lang::cc::Node::Expr::Lit::Array_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Expr_T> items);
 }
 
 namespace lang::cc::Node::Expr::Lit::Array {
@@ -3932,11 +3932,11 @@ namespace lang::cc::Node::Expr::Lit::Array {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl::vars::item::val_T x);
 
 namespace lang::cc::Node::TypedDecl::vars::item::val {
-    __attribute__((always_inline)) lang::cc::Node::TypedDecl::vars::item::val_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
+    lang::cc::Node::TypedDecl::vars::item::val_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
 }
 
 namespace lang::cc::Node::TypedDecl::vars::item::val {
-    __attribute__((always_inline)) lang::cc::Node::TypedDecl::vars::item::val_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
+    lang::cc::Node::TypedDecl::vars::item::val_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::cc::Node::Expr_T init_val);
 }
 
 namespace lang::cc::Node::TypedDecl::vars::item::val {
@@ -3960,11 +3960,11 @@ namespace lang::cc::Node::TypedDecl::vars::item::val {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op::NOT_T x);
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
-    __attribute__((always_inline)) lang::cc::Node::Expr::UnaryPre::op::NOT_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::UnaryPre::op::NOT_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
-    __attribute__((always_inline)) lang::cc::Node::Expr::UnaryPre::op::NOT_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::UnaryPre::op::NOT_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
@@ -3986,11 +3986,11 @@ namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op::NEG_T x);
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
-    __attribute__((always_inline)) lang::cc::Node::Expr::UnaryPre::op::NEG_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::UnaryPre::op::NEG_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
-    __attribute__((always_inline)) lang::cc::Node::Expr::UnaryPre::op::NEG_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::UnaryPre::op::NEG_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
@@ -4012,11 +4012,11 @@ namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op::INC_T x);
 
 namespace lang::cc::Node::Expr::IncDecPre::op::INC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPre::op::INC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPre::op::INC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op::INC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPre::op::INC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPre::op::INC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op::INC {
@@ -4038,11 +4038,11 @@ namespace lang::cc::Node::Expr::IncDecPre::op::INC {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op::DEC_T x);
 
 namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPre::op::DEC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPre::op::DEC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPre::op::DEC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPre::op::DEC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
@@ -4064,11 +4064,11 @@ namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op::INC_T x);
 
 namespace lang::cc::Node::Expr::IncDecPost::op::INC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPost::op::INC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPost::op::INC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op::INC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPost::op::INC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPost::op::INC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op::INC {
@@ -4090,11 +4090,11 @@ namespace lang::cc::Node::Expr::IncDecPost::op::INC {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op::DEC_T x);
 
 namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPost::op::DEC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPost::op::DEC_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
-    __attribute__((always_inline)) lang::cc::Node::Expr::IncDecPost::op::DEC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::IncDecPost::op::DEC_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
@@ -4116,11 +4116,11 @@ namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1::op::LOR_T x);
 
 namespace lang::cc::Node::Expr::Bin1::op::LOR {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin1::op::LOR_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin1::op::LOR_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin1::op::LOR {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin1::op::LOR_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin1::op::LOR_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin1::op::LOR {
@@ -4142,11 +4142,11 @@ namespace lang::cc::Node::Expr::Bin1::op::LOR {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2::op::LAND_T x);
 
 namespace lang::cc::Node::Expr::Bin2::op::LAND {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin2::op::LAND_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin2::op::LAND_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin2::op::LAND {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin2::op::LAND_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin2::op::LAND_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin2::op::LAND {
@@ -4168,11 +4168,11 @@ namespace lang::cc::Node::Expr::Bin2::op::LAND {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::EQ_T x);
 
 namespace lang::cc::Node::Expr::Bin3::op::EQ {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::EQ_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::EQ_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::EQ {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::EQ_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::EQ_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::EQ {
@@ -4194,11 +4194,11 @@ namespace lang::cc::Node::Expr::Bin3::op::EQ {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::NE_T x);
 
 namespace lang::cc::Node::Expr::Bin3::op::NE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::NE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::NE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::NE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::NE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::NE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::NE {
@@ -4220,11 +4220,11 @@ namespace lang::cc::Node::Expr::Bin3::op::NE {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::LE_T x);
 
 namespace lang::cc::Node::Expr::Bin3::op::LE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::LE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::LE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::LE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::LE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::LE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::LE {
@@ -4246,11 +4246,11 @@ namespace lang::cc::Node::Expr::Bin3::op::LE {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::GE_T x);
 
 namespace lang::cc::Node::Expr::Bin3::op::GE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::GE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::GE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::GE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::GE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::GE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::GE {
@@ -4272,11 +4272,11 @@ namespace lang::cc::Node::Expr::Bin3::op::GE {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::LT_T x);
 
 namespace lang::cc::Node::Expr::Bin3::op::LT {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::LT_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::LT_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::LT {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::LT_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::LT_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::LT {
@@ -4298,11 +4298,11 @@ namespace lang::cc::Node::Expr::Bin3::op::LT {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::GT_T x);
 
 namespace lang::cc::Node::Expr::Bin3::op::GT {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::GT_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::GT_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::GT {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin3::op::GT_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin3::op::GT_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::GT {
@@ -4324,11 +4324,11 @@ namespace lang::cc::Node::Expr::Bin3::op::GT {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4::op::SHL_T x);
 
 namespace lang::cc::Node::Expr::Bin4::op::SHL {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin4::op::SHL_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin4::op::SHL_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin4::op::SHL {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin4::op::SHL_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin4::op::SHL_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin4::op::SHL {
@@ -4350,11 +4350,11 @@ namespace lang::cc::Node::Expr::Bin4::op::SHL {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op::PLUS_T x);
 
 namespace lang::cc::Node::Expr::Bin5::op::PLUS {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin5::op::PLUS_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin5::op::PLUS_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin5::op::PLUS {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin5::op::PLUS_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin5::op::PLUS_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin5::op::PLUS {
@@ -4376,11 +4376,11 @@ namespace lang::cc::Node::Expr::Bin5::op::PLUS {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op::MINUS_T x);
 
 namespace lang::cc::Node::Expr::Bin5::op::MINUS {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin5::op::MINUS_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin5::op::MINUS_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin5::op::MINUS {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin5::op::MINUS_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin5::op::MINUS_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin5::op::MINUS {
@@ -4402,11 +4402,11 @@ namespace lang::cc::Node::Expr::Bin5::op::MINUS {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::TIMES_T x);
 
 namespace lang::cc::Node::Expr::Bin6::op::TIMES {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6::op::TIMES_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin6::op::TIMES_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::TIMES {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6::op::TIMES_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin6::op::TIMES_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::TIMES {
@@ -4428,11 +4428,11 @@ namespace lang::cc::Node::Expr::Bin6::op::TIMES {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::DIVIDE_T x);
 
 namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6::op::DIVIDE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin6::op::DIVIDE_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6::op::DIVIDE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin6::op::DIVIDE_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
@@ -4454,11 +4454,11 @@ namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::MODULO_T x);
 
 namespace lang::cc::Node::Expr::Bin6::op::MODULO {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6::op::MODULO_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin6::op::MODULO_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::MODULO {
-    __attribute__((always_inline)) lang::cc::Node::Expr::Bin6::op::MODULO_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::cc::Node::Expr::Bin6::op::MODULO_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::MODULO {
@@ -4480,11 +4480,11 @@ namespace lang::cc::Node::Expr::Bin6::op::MODULO {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::args::item_T x);
 
 namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Struct::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::Struct::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Struct::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::Struct::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
@@ -4510,11 +4510,11 @@ namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::args::item_T x);
 
 namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Fun::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Entry::Fun::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Entry::Fun::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Entry::Fun::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
@@ -4540,11 +4540,11 @@ namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::args::item_T x);
 
 namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Fun::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::Fun::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Decl::Fun::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::Fun::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
@@ -4570,11 +4570,11 @@ namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T x);
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
-    __attribute__((always_inline)) lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
@@ -5318,11 +5318,11 @@ lang::cc::Node::Decl::Include_T xform_lang_cc_Node(lang::cc::Node::Decl::Include
 lang::cc::Node::Decl::PragmaOnce_T xform_lang_cc_Node(lang::cc::Node::Decl::PragmaOnce_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 namespace lang::cc::parser {
-    __attribute__((always_inline)) IntPair action_by_vertex(lang_rt::ParserVertexId v, lang_rt::ParserLookahead la);
+    IntPair action_by_vertex(lang_rt::ParserVertexId v, lang_rt::ParserLookahead la);
 }
 
 namespace lang::cc::parser {
-    __attribute__((always_inline)) lang_rt::ParserVertexId vertex_dfa_step(lang_rt::ParserVertexId v, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr);
+    lang_rt::ParserVertexId vertex_dfa_step(lang_rt::ParserVertexId v, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr);
 }
 
 namespace lang::cc::parser {

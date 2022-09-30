@@ -252,11 +252,11 @@ namespace lang::data::Node {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Module_T x);
 
 namespace lang::data::Node::Module {
-    __attribute__((always_inline)) lang::data::Node::Module_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::data::Node::Decl_T> decls);
+    lang::data::Node::Module_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::data::Node::Decl_T> decls);
 }
 
 namespace lang::data::Node::Module {
-    __attribute__((always_inline)) lang::data::Node::Module_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::data::Node::Decl_T> decls);
+    lang::data::Node::Module_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::data::Node::Decl_T> decls);
 }
 
 namespace lang::data::Node::Module {
@@ -280,11 +280,11 @@ namespace lang::data::Node::Module {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Param_T x);
 
 namespace lang::data::Node::Param {
-    __attribute__((always_inline)) lang::data::Node::Param_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, lang::data::Node::Expr_T type_);
+    lang::data::Node::Param_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, lang::data::Node::Expr_T type_);
 }
 
 namespace lang::data::Node::Param {
-    __attribute__((always_inline)) lang::data::Node::Param_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, lang::data::Node::Expr_T type_);
+    lang::data::Node::Param_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, lang::data::Node::Expr_T type_);
 }
 
 namespace lang::data::Node::Param {
@@ -310,11 +310,11 @@ namespace lang::data::Node::Param {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x);
 
 namespace lang::data::Node::SumId {
-    __attribute__((always_inline)) lang::data::Node::SumId_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
+    lang::data::Node::SumId_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
 }
 
 namespace lang::data::Node::SumId {
-    __attribute__((always_inline)) lang::data::Node::SumId_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
+    lang::data::Node::SumId_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
 }
 
 namespace lang::data::Node::SumId {
@@ -338,11 +338,11 @@ namespace lang::data::Node::SumId {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Id_T x);
 
 namespace lang::data::Node::Id {
-    __attribute__((always_inline)) lang::data::Node::Id_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
+    lang::data::Node::Id_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
 }
 
 namespace lang::data::Node::Id {
-    __attribute__((always_inline)) lang::data::Node::Id_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
+    lang::data::Node::Id_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items);
 }
 
 namespace lang::data::Node::Id {
@@ -478,11 +478,11 @@ namespace lang::data::Node::Expr {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x);
 
 namespace lang::data::Node::Decl::Include {
-    __attribute__((always_inline)) lang::data::Node::Decl::Include_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path);
+    lang::data::Node::Decl::Include_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path);
 }
 
 namespace lang::data::Node::Decl::Include {
-    __attribute__((always_inline)) lang::data::Node::Decl::Include_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path);
+    lang::data::Node::Decl::Include_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path);
 }
 
 namespace lang::data::Node::Decl::Include {
@@ -506,11 +506,11 @@ namespace lang::data::Node::Decl::Include {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Namespace_T x);
 
 namespace lang::data::Node::Decl::Namespace {
-    __attribute__((always_inline)) lang::data::Node::Decl::Namespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<lang::data::Node::Decl_T> body);
+    lang::data::Node::Decl::Namespace_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<lang::data::Node::Decl_T> body);
 }
 
 namespace lang::data::Node::Decl::Namespace {
-    __attribute__((always_inline)) lang::data::Node::Decl::Namespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<lang::data::Node::Decl_T> body);
+    lang::data::Node::Decl::Namespace_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<lang::data::Node::Decl_T> body);
 }
 
 namespace lang::data::Node::Decl::Namespace {
@@ -536,11 +536,11 @@ namespace lang::data::Node::Decl::Namespace {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x);
 
 namespace lang::data::Node::Decl::Data {
-    __attribute__((always_inline)) lang::data::Node::Decl::Data_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries);
+    lang::data::Node::Decl::Data_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries);
 }
 
 namespace lang::data::Node::Decl::Data {
-    __attribute__((always_inline)) lang::data::Node::Decl::Data_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries);
+    lang::data::Node::Decl::Data_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries);
 }
 
 namespace lang::data::Node::Decl::Data {
@@ -572,11 +572,11 @@ namespace lang::data::Node::Decl::Data {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Enum_T x);
 
 namespace lang::data::Node::Decl::Enum {
-    __attribute__((always_inline)) lang::data::Node::Decl::Enum_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<StrSlice> cases);
+    lang::data::Node::Decl::Enum_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<StrSlice> cases);
 }
 
 namespace lang::data::Node::Decl::Enum {
-    __attribute__((always_inline)) lang::data::Node::Decl::Enum_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<StrSlice> cases);
+    lang::data::Node::Decl::Enum_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<StrSlice> cases);
 }
 
 namespace lang::data::Node::Decl::Enum {
@@ -602,11 +602,11 @@ namespace lang::data::Node::Decl::Enum {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Mut_T x);
 
 namespace lang::data::Node::Mod::Mut {
-    __attribute__((always_inline)) lang::data::Node::Mod::Mut_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Mod::Mut_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Mod::Mut {
-    __attribute__((always_inline)) lang::data::Node::Mod::Mut_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Mod::Mut_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Mod::Mut {
@@ -628,11 +628,11 @@ namespace lang::data::Node::Mod::Mut {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Xform_T x);
 
 namespace lang::data::Node::Mod::Xform {
-    __attribute__((always_inline)) lang::data::Node::Mod::Xform_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Mod::Xform_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Mod::Xform {
-    __attribute__((always_inline)) lang::data::Node::Mod::Xform_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Mod::Xform_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Mod::Xform {
@@ -654,11 +654,11 @@ namespace lang::data::Node::Mod::Xform {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Visit_T x);
 
 namespace lang::data::Node::Mod::Visit {
-    __attribute__((always_inline)) lang::data::Node::Mod::Visit_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Mod::Visit_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Mod::Visit {
-    __attribute__((always_inline)) lang::data::Node::Mod::Visit_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Mod::Visit_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Mod::Visit {
@@ -680,11 +680,11 @@ namespace lang::data::Node::Mod::Visit {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x);
 
 namespace lang::data::Node::Entry::Field {
-    __attribute__((always_inline)) lang::data::Node::Entry::Field_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
+    lang::data::Node::Entry::Field_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
 }
 
 namespace lang::data::Node::Entry::Field {
-    __attribute__((always_inline)) lang::data::Node::Entry::Field_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
+    lang::data::Node::Entry::Field_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
 }
 
 namespace lang::data::Node::Entry::Field {
@@ -712,11 +712,11 @@ namespace lang::data::Node::Entry::Field {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x);
 
 namespace lang::data::Node::Entry::Method {
-    __attribute__((always_inline)) lang::data::Node::Entry::Method_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type);
+    lang::data::Node::Entry::Method_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type);
 }
 
 namespace lang::data::Node::Entry::Method {
-    __attribute__((always_inline)) lang::data::Node::Entry::Method_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type);
+    lang::data::Node::Entry::Method_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type);
 }
 
 namespace lang::data::Node::Entry::Method {
@@ -748,11 +748,11 @@ namespace lang::data::Node::Entry::Method {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Id_T x);
 
 namespace lang::data::Node::Expr::Id {
-    __attribute__((always_inline)) lang::data::Node::Expr::Id_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x);
+    lang::data::Node::Expr::Id_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x);
 }
 
 namespace lang::data::Node::Expr::Id {
-    __attribute__((always_inline)) lang::data::Node::Expr::Id_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x);
+    lang::data::Node::Expr::Id_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x);
 }
 
 namespace lang::data::Node::Expr::Id {
@@ -778,11 +778,11 @@ namespace lang::data::Node::Expr::Id {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::App_T x);
 
 namespace lang::data::Node::Expr::App {
-    __attribute__((always_inline)) lang::data::Node::Expr::App_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Expr_T f, Vec_T<lang::data::Node::Expr_T> args);
+    lang::data::Node::Expr::App_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Expr_T f, Vec_T<lang::data::Node::Expr_T> args);
 }
 
 namespace lang::data::Node::Expr::App {
-    __attribute__((always_inline)) lang::data::Node::Expr::App_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Expr_T f, Vec_T<lang::data::Node::Expr_T> args);
+    lang::data::Node::Expr::App_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Expr_T f, Vec_T<lang::data::Node::Expr_T> args);
 }
 
 namespace lang::data::Node::Expr::App {
@@ -808,11 +808,11 @@ namespace lang::data::Node::Expr::App {
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Type__T x);
 
 namespace lang::data::Node::Expr::Type_ {
-    __attribute__((always_inline)) lang::data::Node::Expr::Type__T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Expr::Type__T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Expr::Type_ {
-    __attribute__((always_inline)) lang::data::Node::Expr::Type__T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
+    lang::data::Node::Expr::Type__T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k);
 }
 
 namespace lang::data::Node::Expr::Type_ {
@@ -958,11 +958,11 @@ lang::data::Node::Entry::Method_T xform_lang_data_Node(lang::data::Node::Entry::
 lang::data::Node::Decl::Enum_T xform_lang_data_Node(lang::data::Node::Decl::Enum_T x, function<lang::data::Node_T(lang::data::Node_T)> f);
 
 namespace lang::data::parser {
-    __attribute__((always_inline)) IntPair action_by_vertex(lang_rt::ParserVertexId v, lang_rt::ParserLookahead la);
+    IntPair action_by_vertex(lang_rt::ParserVertexId v, lang_rt::ParserLookahead la);
 }
 
 namespace lang::data::parser {
-    __attribute__((always_inline)) lang_rt::ParserVertexId vertex_dfa_step(lang_rt::ParserVertexId v, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr);
+    lang_rt::ParserVertexId vertex_dfa_step(lang_rt::ParserVertexId v, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr);
 }
 
 namespace lang::data::parser {

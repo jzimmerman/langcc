@@ -231,7 +231,7 @@ struct ParseOutput : enable_rc_from_this<ParseOutput<LANG_META_ARGS>> {
         LexOutput_T lex, ParseError_T err);
 };
 
-inline Ch lex_decode_utf8(const char* x, Int& i, Int n);
+inline __attribute__((noinline)) Ch lex_decode_utf8(const char* x, Int& i, Int n);
 
 template<LANG_META_PARAMS>
 struct NodeAllocDecrefObj: NodeAllocDecrefInterface {

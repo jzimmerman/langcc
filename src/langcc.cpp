@@ -172,7 +172,12 @@ LangCompileResult_T compile_lang_full(
 #endif
 
         Vec<string> cmds;
-        cmds.push("clang++");
+        string cc = STRINGIFY(__CC__);
+        cmds.push(cc);
+
+#ifndef __MACOS__
+        cmds.push("-Wno-attributes");
+#endif
 
 #ifdef __MACOS__
         cmds.push("-D");
@@ -194,10 +199,7 @@ LangCompileResult_T compile_lang_full(
         cmds.push("-fno-omit-frame-pointer");
 #ifdef __MACOS__
         cmds.push("-mmacosx-version-min=12.0");
-#else
-        cmds.push("-lunwind");
 #endif
-        cmds.push("-ldl");
         cmds.push("-I");
         cmds.push(fmt_str("./{}", dst_path));
         cmds.push("-I");
@@ -206,6 +208,10 @@ LangCompileResult_T compile_lang_full(
             cmds.push(res->as_Ok()->cpp_path_);
         }
         cmds.push(res->as_Ok()->cpp_test_path_);
+#ifndef __MACOS__
+        cmds.push("-lunwind");
+#endif
+        cmds.push("-ldl");
 
         string cmd;
         for (auto cmd_i : cmds) {
