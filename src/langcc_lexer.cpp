@@ -412,12 +412,12 @@ void lexer_step_exec_compile_instr_acc(
 
     auto cpp_advance_instr = cc.qq("Stmt", "in_i = tok_hi;");
     auto cpp_consume_instr = cc.qq("Stmt", "cc_nop();");
-    if (mode->ws_sig__) {
+    if (mode->ws_sig__.is_some()) {
         cpp_consume_instr = cc.qq("Stmt",
             "if (!mode_switch) { ws_state->consume(tok_lo, tok_hi, emit_dst); }");
     }
     auto cpp_non_ws_token_instr = cc.qq("Stmt", "cc_nop();");
-    if (mode->ws_sig__) {
+    if (mode->ws_sig__.is_some()) {
         cpp_non_ws_token_instr = cc.qq("Stmt",
             "if (!mode_switch) { ws_state->non_ws_token(emit_dst); }");
     }
@@ -432,20 +432,20 @@ void lexer_step_exec_compile_instr_acc(
             Int arg_id = ctx.tokens_top_by_id_rev_[arg];
             cpp_tok_emit = cc.qq("Expr", fmt_str("{}", arg_id));
         }
-        if (mode->ws_sig__) {
+        if (mode->ws_sig__.is_some()) {
             dst->push_back(cpp_non_ws_token_instr);
         }
         dst->push_back(cc.qq("Stmt",
             "st->enqueue_emit_ext(emit_dst, ws_state, ",
             cpp_tok_emit, ", tok_lo, tok_hi, true);"));
         dst->push_back(cpp_advance_instr);
-        if (mode->ws_sig__ && ic->arg_.is_none()) {
+        if (mode->ws_sig__.is_some() && ic->arg_.is_none()) {
             dst->push_back(cpp_consume_instr);
         }
 
     } else if (instr->is_Pass()) {
         dst->push_back(cpp_advance_instr);
-        if (mode->ws_sig__) {
+        if (mode->ws_sig__.is_some()) {
             dst->push_back(cpp_consume_instr);
         }
 
@@ -662,7 +662,7 @@ Option_T<LexerModeTrivial_T> lexer_extract_trivial_maybe(meta::Node::LexerDecl::
     ret.cases_ = make_rc<Vec<pair<Option_T<Vec_T<Ch>>, LexerInstrs>>>();
 
 
-    if (mode->ws_sig__) {
+    if (mode->ws_sig__.is_some()) {
         return None<LexerModeTrivial_T>();
     }
 

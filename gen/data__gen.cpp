@@ -8680,8 +8680,8 @@ inline __attribute__((always_inline)) Int lang::data::lexer::body::proc_mode_loo
     Int tok_hi;
     rc_ptr<lang_rt::LexWhitespaceState> ws_state_rc;
     lang_rt::LexWhitespaceState * ws_state = nullptr;
-    if (mode->ws_sig_) {
-        ws_state_rc = make_rc<lang_rt::LexWhitespaceState>(st, st->tok_to_sym_, mode_buf_pos, in_data, mode->ws_newline_ind_, mode->ws_indent_ind_, mode->ws_dedent_ind_, mode->ws_err_mixed_indent_ind_, mode->ws_err_text_after_lc_ind_, mode->ws_err_delim_mismatch_ind_);
+    if (mode->ws_sig_.is_some()) {
+        ws_state_rc = make_rc<lang_rt::LexWhitespaceState>(st, st->tok_to_sym_, mode_buf_pos, in_data, mode->ws_newline_ind_, mode->ws_indent_ind_, mode->ws_dedent_ind_, mode->ws_err_mixed_indent_ind_, mode->ws_err_text_after_lc_ind_, mode->ws_err_delim_mismatch_ind_, mode->ws_sig_.as_some());
         ws_state = ws_state_rc.get();
     }
     for (cc_nop(); true; cc_nop()) {
@@ -8803,14 +8803,14 @@ lang::data::LangDesc_T lang::data::init() {
     body->step_exec_fn_ = lexer::body::step_exec;
     body->proc_mode_loop_opt_fn_ = lexer::body::proc_mode_loop_opt;
     ret->lexer_mode_descs_->push(body);
-    body->ws_sig_ = false;
+    body->ws_sig_ = None<lang_rt::WsSigSpec>();
     auto comment_single = make_rc<lang_rt::LexerModeDesc>();
     comment_single->step_fn_ = lexer::comment_single::step;
     comment_single->acc_fn_ = lexer::comment_single::acc;
     comment_single->step_exec_fn_ = lexer::comment_single::step_exec;
     comment_single->proc_mode_loop_opt_fn_ = lexer::comment_single::proc_mode_loop_opt;
     ret->lexer_mode_descs_->push(comment_single);
-    comment_single->ws_sig_ = false;
+    comment_single->ws_sig_ = None<lang_rt::WsSigSpec>();
     ret->label_ids_ascii_ = lexer::label_ids_ascii();
     ret->label_ids_unicode_ = lexer::label_ids_unicode();
     ret->lexer_main_mode_ = 0;

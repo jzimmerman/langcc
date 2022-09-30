@@ -1665,6 +1665,16 @@ void lang_emit_parser_defs(LangCompileContext& ctx) {
 }
 
 
+inline Ch string_extract_lang_char_seq_single(
+    string s_raw, lang::meta::Node_T e, LangCompileContext& ctx) {
+    auto chs = string_extract_lang_char_seq(s_raw);
+    if (chs.is_none() || chs.as_some().size() != 1) {
+        ctx.error(e, "Invalid character range");
+    }
+    return chs.as_some()[0];
+}
+
+
 void lang_emit_global_defs(LangCompileContext& ctx) {
     ctx.cc_.dst_decls_->push_back(
         ctx.cc_.Q_->qq_ext(
@@ -1872,12 +1882,12 @@ void lang_emit_global_defs(LangCompileContext& ctx) {
                 "    Int tok_hi;",
                 "    rc_ptr<lang_rt::LexWhitespaceState> ws_state_rc;",
                 "    lang_rt::LexWhitespaceState* ws_state = nullptr;",
-                "    if (mode->ws_sig_) {",
+                "    if (mode->ws_sig_.is_some()) {",
                 "        ws_state_rc = make_rc<lang_rt::LexWhitespaceState>(st,",
                 "            st->tok_to_sym_, mode_buf_pos, in_data,",
                 "            mode->ws_newline_ind_, mode->ws_indent_ind_, mode->ws_dedent_ind_,",
                 "            mode->ws_err_mixed_indent_ind_, mode->ws_err_text_after_lc_ind_,",
-                "            mode->ws_err_delim_mismatch_ind_);",
+                "            mode->ws_err_delim_mismatch_ind_, mode->ws_sig_.as_some());",
                 "        ws_state = ws_state_rc.get();",
                 "    }",
                 "    for (cc_nop(); true; cc_nop()) {",
@@ -1970,13 +1980,66 @@ void lang_emit_global_defs(LangCompileContext& ctx) {
             ctx.cc_.Q_->qq_ext(Some<string>("Stmt"),
                 "ret->lexer_mode_descs_->push(", mode->name_.to_std_string(), ");"));
 
-        ctx.cc_.qq_stmt_acc(lexer_mode_descs, mode->name_.to_std_string(), "->ws_sig_ = ",
-            fmt_str("{}", mode->ws_sig__), ";");
+        if (mode->ws_sig__.is_some()) {
+            auto ws = mode->ws_sig__.as_some();
+            cc::Node_T cc_lc;
+            cc::Node_T cc_delim;
+            if (ws->spec_.is_some()) {
+                auto sp = ws->spec_.as_some();
+                cc_lc = ctx.cc_.qq_expr("None<Ch>()");
+                if (sp->lc_.is_some()) {
+                    auto v_lc = string_extract_lang_char_seq_single(
+                        sp->lc_.as_some().to_std_string(), mode->ws_sig__.as_some(), ctx);
+                    cc_lc = ctx.cc_.qq_expr("Some<Ch>(", fmt_str("{}", v_lc), ")");
+                }
+                {
+                    auto lex_args = ctx.cc_.Q_->make_lex_builder();
+                    ctx.cc_.Q_->qq_args_acc(lex_args, "{");
+                    if (sp->delims_->length() % 2 != 0) {
+                        ctx.error(
+                            mode->ws_sig__.as_some(),
+                            "Delimiters must come in sequential matching pairs");
+                        AX();
+                    }
+                    for (Int k = 0; k < sp->delims_->length(); k += 2) {
+                        auto v_delim0 = string_extract_lang_char_seq_single(
+                            sp->delims_->operator[](k).to_std_string(),
+                            mode->ws_sig__.as_some(), ctx);
+                        auto v_delim1 = string_extract_lang_char_seq_single(
+                            sp->delims_->operator[](k+1).to_std_string(),
+                            mode->ws_sig__.as_some(), ctx);
+                        if (k > 0) {
+                            ctx.cc_.Q_->qq_args_acc(lex_args, ",");
+                        }
+                        ctx.cc_.Q_->qq_args_acc(lex_args, "{");
+                        ctx.cc_.Q_->qq_args_acc(lex_args, fmt_str("{}", Int(Ch(v_delim0))));
+                        ctx.cc_.Q_->qq_args_acc(lex_args, ",");
+                        ctx.cc_.Q_->qq_args_acc(lex_args, fmt_str("{}", Int(Ch(v_delim1))));
+                        ctx.cc_.Q_->qq_args_acc(lex_args, "}");
+                    }
+                    ctx.cc_.Q_->qq_args_acc(lex_args, "}");
+                    cc_delim = ctx.cc_.Q_->qq_inner(Some<string>("Expr"), lex_args);
+                }
+            } else {
+                cc_lc = ctx.cc_.qq_expr("Some<Ch>(", fmt_str("{}", Int(Ch('\\'))), ")");
+                cc_delim = ctx.cc_.qq_expr("{",
+                    "{", fmt_str("{}", Int(Ch('['))), ",", fmt_str("{}", Int(Ch(']'))), "},"
+                    "{", fmt_str("{}", Int(Ch('{'))), ",", fmt_str("{}", Int(Ch('}'))), "},"
+                    "{", fmt_str("{}", Int(Ch('('))), ",", fmt_str("{}", Int(Ch(')'))), "}"
+                "}");
+            }
+            auto cc_spec = ctx.cc_.qq_expr("lang_rt::WsSigSpec(", cc_lc, ",", cc_delim, ")");
+            ctx.cc_.qq_stmt_acc(lexer_mode_descs, mode->name_.to_std_string(),
+                "->ws_sig_ = Some<lang_rt::WsSigSpec>(", cc_spec, ");");
+        } else {
+            ctx.cc_.qq_stmt_acc(lexer_mode_descs, mode->name_.to_std_string(),
+                "->ws_sig_ = None<lang_rt::WsSigSpec>();");
+        }
 
         bool any_ws = false;
         for (auto& decl : *ctx.lexer_->decls_) {
             if (decl->is_Mode()) {
-                if (decl->as_Mode()->ws_sig__) {
+                if (decl->as_Mode()->ws_sig__.is_some()) {
                     any_ws = true;
                 }
             }

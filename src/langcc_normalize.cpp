@@ -203,7 +203,7 @@ void lang_init_validate(LangCompileContext& ctx) {
     bool any_ws = false;
     for (auto& decl : *ctx.lexer_->decls_) {
         if (decl->is_Mode()) {
-            if (decl->as_Mode()->ws_sig__) {
+            if (decl->as_Mode()->ws_sig__.is_some()) {
                 any_ws = true;
             }
         }
@@ -254,11 +254,6 @@ void lang_init_validate(LangCompileContext& ctx) {
         ws_toks->push_back(TokenBase::Special::make(TokenBaseSpecial::ErrMixedIndent));
         ws_toks->push_back(TokenBase::Special::make(TokenBaseSpecial::ErrTextAfterLC));
         ws_toks->push_back(TokenBase::Special::make(TokenBaseSpecial::ErrDelimMismatch));
-        for (Ch ch : {'\\', '{', '}', '(', ')', '[', ']'}) {
-            auto ch_v = make_rc<Vec<Ch>>();
-            ch_v->push_back(ch);
-            ws_toks->push_back(TokenBase::LitStr::make(ch_v));
-        }
 
         for (auto tok : *ws_toks) {
             auto tok_expr = parse_expr_base_from_token(tok);

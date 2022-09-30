@@ -942,6 +942,19 @@ RC_STRUCT(LexerState);
 
 using LexerStateRef = LexerState_T&;
 
+struct WsSigSpec {
+    Option_T<Ch> line_continuation_;
+    Vec_T<pair<Ch, Ch>> delims_;
+
+    inline WsSigSpec(Option_T<Ch> line_continuation, vector<pair<Ch, Ch>> delims) {
+        line_continuation_ = line_continuation;
+        delims_ = make_rc<Vec<pair<Ch, Ch>>>();
+        for (auto delim : delims) {
+            delims_->push(delim);
+        }
+    }
+};
+
 struct LexerModeDesc: enable_rc_from_this<LexerModeDesc> {
     Int (*proc_mode_loop_opt_fn_)(
         LexerModeDesc* mode, LexerState* st, SymItemVec* emit_dst,
@@ -951,7 +964,7 @@ struct LexerModeDesc: enable_rc_from_this<LexerModeDesc> {
     LexerAccFn acc_fn_;
     LexerStepExecFn step_exec_fn_;
 
-    bool ws_sig_;
+    Option_T<WsSigSpec> ws_sig_;
     Int ws_newline_ind_;
     Int ws_indent_ind_;
     Int ws_dedent_ind_;
@@ -1033,6 +1046,7 @@ struct LexWhitespaceState {
     Vec_T<Ch> ws_buf_curr_;
     Vec<Vec_T<Ch>> ws_buf_stack_;
 
+    WsSigSpec ws_sig_spec_;
     TokenId tok_id_newline_;
     TokenId tok_id_indent_;
     TokenId tok_id_dedent_;
@@ -1048,7 +1062,7 @@ struct LexWhitespaceState {
         Int buf_pos, Ch* input_data,
         TokenId tok_id_newline, TokenId tok_id_indent, TokenId tok_id_dedent,
         TokenId tok_id_err_incons, TokenId tok_id_err_text_after_lc,
-        TokenId tok_id_err_delim_mismatch) {
+        TokenId tok_id_err_delim_mismatch, WsSigSpec ws_sig_spec) : ws_sig_spec_(ws_sig_spec) {
 
         st_ = st;
 
@@ -1058,6 +1072,8 @@ struct LexWhitespaceState {
         input_data_ = input_data;
         ws_buf_is_line_start_ = true;
         ws_buf_is_lc_curr_ = false;
+
+        ws_sig_spec_ = ws_sig_spec;
 
         tok_id_newline_ = tok_id_newline;
         tok_id_indent_ = tok_id_indent;
@@ -1152,26 +1168,25 @@ struct LexWhitespaceState {
     }
 
     inline void delim_update(Ch ch, SymItemVec* dst) {
-        if (ch == '(' || ch == '[' || ch == '{') {
-            delim_stack_.push(ch);
-            return;
+        for (auto p : *this->ws_sig_spec_.delims_) {
+            if (ch == p.first) {
+                delim_stack_.push(ch);
+                return;
+            }
         }
-        if (ch == ')' && delim_stack_.length() > 0 && delim_stack_.back() == '(') {
-            delim_stack_.pop();
-            return;
+        for (auto p : *this->ws_sig_spec_.delims_) {
+            if (ch == p.second && delim_stack_.length() > 0 &&
+                delim_stack_.back() == p.first) {
+                delim_stack_.pop();
+                return;
+            }
         }
-        if (ch == ']' && delim_stack_.length() > 0 && delim_stack_.back() == '[') {
-            delim_stack_.pop();
-            return;
-        }
-        if (ch == '}' && delim_stack_.length() > 0 && delim_stack_.back() == '{') {
-            delim_stack_.pop();
-            return;
-        }
-        if (ch == ')' || ch == ']' || ch == '}') {
-            this->dst_gen_push_item(
-                dst, SymItem::make_lex_token(
-                    tok_id_err_delim_mismatch_, tok_to_sym_, scan_i_, scan_i_+1));
+        for (auto p : *this->ws_sig_spec_.delims_) {
+            if (ch == p.second) {
+                this->dst_gen_push_item(
+                    dst, SymItem::make_lex_token(
+                        tok_id_err_delim_mismatch_, tok_to_sym_, scan_i_, scan_i_+1));
+            }
         }
     }
 
@@ -1201,7 +1216,9 @@ struct LexWhitespaceState {
             }
 
             auto is_ws = (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\x0c');
-            auto is_lc = (c == '\\');
+            auto is_lc = (
+                this->ws_sig_spec_.line_continuation_.is_some() &&
+                c == this->ws_sig_spec_.line_continuation_.as_some());
 
             if (is_ws && (c != '\n')) {
                 if (ws_buf_is_line_start_) {

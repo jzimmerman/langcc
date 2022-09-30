@@ -84,7 +84,10 @@ parser {
     TokenDecl <- name:IdBase _ op:(DEF:`<-` | DEF_ALIAS:`<=`) _ def_:ParseExpr;
 
     LexerDecl.Main <- `main` _ `{` _ name:IdBase _ `}`;
-    LexerDecl.Mode <- `mode` _ name:IdBase ws_sig_:(_ `ws_sig`)? _ `{` cases:#B[LexerModeCase::eps] `}`;
+    LexerDecl.Mode <- `mode` _ name:IdBase ws_sig_:(_ `ws_sig` spec:WsSigSpec?)? _
+        `{` cases:#B[LexerModeCase::eps] `}`;
+
+        WsSigSpec <= `(` lc:(str_lit `;` _)? _ delims: #L[str_lit::`,`_] `)`;
 
         LexerModeCase <- tok:ParseExpr _ `=>` _ `{` instrs:#B[LexerInstr::`;`::] `}`;
 

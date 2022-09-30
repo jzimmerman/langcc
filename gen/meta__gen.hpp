@@ -120,6 +120,22 @@ namespace lang::meta::Node::LexerDecl {
     using Main_T = rc_ptr<lang::meta::Node::LexerDecl::Main::_T>;
 }
 
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
+    struct _T;
+}
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
+    using spec_T = rc_ptr<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T>;
+}
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
+    struct _T;
+}
+
+namespace lang::meta::Node::LexerDecl::Mode {
+    using ws_sig__T = rc_ptr<lang::meta::Node::LexerDecl::Mode::ws_sig_::_T>;
+}
+
 namespace lang::meta::Node::LexerDecl::Mode {
     struct _T;
 }
@@ -895,6 +911,8 @@ namespace lang::meta::Node {
         Lang,
         TokenDecl__op,
         TokenDecl,
+        LexerDecl__Mode__ws_sig___spec,
+        LexerDecl__Mode__ws_sig_,
         LexerModeCase,
         ParserDecl__Rule__op,
         PrecItem,
@@ -936,6 +954,8 @@ namespace lang::meta::Node {
         bool is_Lang();
         bool is_TokenDecl__op();
         bool is_TokenDecl();
+        bool is_LexerDecl__Mode__ws_sig___spec();
+        bool is_LexerDecl__Mode__ws_sig_();
         bool is_LexerModeCase();
         bool is_ParserDecl__Rule__op();
         bool is_PrecItem();
@@ -961,6 +981,8 @@ namespace lang::meta::Node {
         lang::meta::Node::Lang_T as_Lang();
         lang::meta::Node::TokenDecl::op_T as_TokenDecl__op();
         lang::meta::Node::TokenDecl_T as_TokenDecl();
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T as_LexerDecl__Mode__ws_sig___spec();
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T as_LexerDecl__Mode__ws_sig_();
         lang::meta::Node::LexerModeCase_T as_LexerModeCase();
         lang::meta::Node::ParserDecl::Rule::op_T as_ParserDecl__Rule__op();
         lang::meta::Node::PrecItem_T as_PrecItem();
@@ -1912,11 +1934,11 @@ namespace lang::meta::Node::LexerDecl::Main {
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode_T x);
 
 namespace lang::meta::Node::LexerDecl::Mode {
-    lang::meta::Node::LexerDecl::Mode_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool ws_sig_, Vec_T<lang::meta::Node::LexerModeCase_T> cases);
+    lang::meta::Node::LexerDecl::Mode_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_, Vec_T<lang::meta::Node::LexerModeCase_T> cases);
 }
 
 namespace lang::meta::Node::LexerDecl::Mode {
-    lang::meta::Node::LexerDecl::Mode_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool ws_sig_, Vec_T<lang::meta::Node::LexerModeCase_T> cases);
+    lang::meta::Node::LexerDecl::Mode_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_, Vec_T<lang::meta::Node::LexerModeCase_T> cases);
 }
 
 namespace lang::meta::Node::LexerDecl::Mode {
@@ -1924,7 +1946,7 @@ namespace lang::meta::Node::LexerDecl::Mode {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice name_;
-        bool ws_sig__;
+        Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig__;
         Vec_T<lang::meta::Node::LexerModeCase_T> cases_;
         _T();
         lang::meta::Node::LexerDecl::Mode_T with_id(Int id);
@@ -1934,7 +1956,7 @@ namespace lang::meta::Node::LexerDecl::Mode {
         lang::meta::Node::LexerDecl::Mode_T with_attr(lang_rt::ParserAttrMask attr);
         lang::meta::Node::LexerDecl::Mode_T with_first_k(lang_rt::ParserLookahead first_k);
         lang::meta::Node::LexerDecl::Mode_T with_name(StrSlice name);
-        lang::meta::Node::LexerDecl::Mode_T with_ws_sig_(bool ws_sig_);
+        lang::meta::Node::LexerDecl::Mode_T with_ws_sig_(Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_);
         lang::meta::Node::LexerDecl::Mode_T with_cases(Vec_T<lang::meta::Node::LexerModeCase_T> cases);
         void hash_ser_acc_lang_meta_Node_LexerDecl_Mode(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
@@ -3835,6 +3857,34 @@ namespace lang::meta::Node::TokenDecl::op::DEF_ALIAS {
     };
 }
 
+void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig__T x);
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
+    lang::meta::Node::LexerDecl::Mode::ws_sig__T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T> spec);
+}
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
+    lang::meta::Node::LexerDecl::Mode::ws_sig__T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T> spec);
+}
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
+    struct _T: lang::meta::Node::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T> spec_;
+        _T();
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T with_id(Int id);
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T with_bounds(lang_rt::TokenBounds bounds);
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T with_is_top(bool is_top);
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T with_sym(lang_rt::ParserSymId sym);
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T with_attr(lang_rt::ParserAttrMask attr);
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T with_spec(Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T> spec);
+        void hash_ser_acc_lang_meta_Node_LexerDecl_Mode_ws_sig_(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op_T x);
 
 namespace lang::meta::Node::ParserDecl::Rule::op {
@@ -3885,6 +3935,36 @@ namespace lang::meta::Node::ParseExpr::List::end_delim {
         lang::meta::Node::ParseExpr::List::end_delim::SOME_T as_SOME();
         void hash_ser_acc_lang_meta_Node_ParseExpr_List_end_delim(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x);
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
+    lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<StrSlice> lc, Vec_T<StrSlice> delims);
+}
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
+    lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<StrSlice> lc, Vec_T<StrSlice> delims);
+}
+
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
+    struct _T: lang::meta::Node::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        Option_T<StrSlice> lc_;
+        Vec_T<StrSlice> delims_;
+        _T();
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_id(Int id);
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_is_top(bool is_top);
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_sym(lang_rt::ParserSymId sym);
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_lc(Option_T<StrSlice> lc);
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T with_delims(Vec_T<StrSlice> delims);
+        void hash_ser_acc_lang_meta_Node_LexerDecl_Mode_ws_sig__spec(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
@@ -4120,6 +4200,10 @@ void visit_lang_meta_Node(lang::meta::Node::Stanza::Tokens_T x, function<void(la
 
 void visit_lang_meta_Node(lang::meta::Node::LexerDecl::Main_T x, function<void(lang::meta::Node_T)> f);
 
+void visit_lang_meta_Node(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x, function<void(lang::meta::Node_T)> f);
+
+void visit_lang_meta_Node(lang::meta::Node::LexerDecl::Mode::ws_sig__T x, function<void(lang::meta::Node_T)> f);
+
 void visit_lang_meta_Node(lang::meta::Node::LexerInstr::Emit_T x, function<void(lang::meta::Node_T)> f);
 
 void visit_lang_meta_Node(lang::meta::Node::LexerInstr::Pass_T x, function<void(lang::meta::Node_T)> f);
@@ -4333,6 +4417,10 @@ lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::TokenDecl_T x, functi
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::Stanza::Tokens_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::LexerDecl::Main_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::LexerDecl::Mode::ws_sig__T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::LexerInstr::Emit_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
@@ -4559,6 +4647,10 @@ lang::meta::Node::LexerDecl_T xform_lang_meta_Node(lang::meta::Node::LexerDecl_T
 lang::meta::Node::LexerDecl::Main_T xform_lang_meta_Node(lang::meta::Node::LexerDecl::Main_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::LexerDecl::Mode_T xform_lang_meta_Node(lang::meta::Node::LexerDecl::Mode_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node::LexerDecl::Mode::ws_sig__T xform_lang_meta_Node(lang::meta::Node::LexerDecl::Mode::ws_sig__T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T xform_lang_meta_Node(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::LexerModeCase_T xform_lang_meta_Node(lang::meta::Node::LexerModeCase_T x, function<lang::meta::Node_T(lang::meta::Node_T)> f);
 

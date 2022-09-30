@@ -580,7 +580,7 @@ to generate its own compiler front-end. In fact, we do this in the canonical
 implementation; see the files [bootstrap.sh](https://github.com/jzimmerman/langcc/blob/main/bootstrap.sh)
 and [grammars/meta.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/meta.lang)
 for more details.
-The metalanguage is surprisingly concise, requiring only 189 lines of code.
+The metalanguage is surprisingly concise, requiring only 192 lines of code.
 The following is a brief excerpt:
 
 ```

@@ -75,7 +75,7 @@ tokens {
 lexer {
     main { body }
 
-    mode body ws_sig {
+    mode body ws_sig(`\\`; `[`, `]`, `{`, `}`, `(`, `)`) {
         top => { emit; }
         ws => { pass; }
         `\\` => { pass; }
