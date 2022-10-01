@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
 set -u
-sudo apt install build-essential llvm-dev libunwind-dev libgoogle-perftools-dev
+sudo apt update
+sudo apt install make llvm-14-dev libunwind-dev libgoogle-perftools-dev
