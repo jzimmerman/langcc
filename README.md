@@ -58,6 +58,8 @@ The build has been tested on Ubuntu 22.04 and macOS 12.5,
 but should also run on some other versions of Ubuntu
 and macOS with minor adaptations.
 
+![Ubuntu CI](https://github.com/jzimmerman/langcc/actions/workflows/ci-ubuntu.yml/badge.svg?event=push) &nbsp; ![macOS CI](https://github.com/jzimmerman/langcc/actions/workflows/ci-macos.yml/badge.svg?event=push)
+
 For Ubuntu 22.04:
 ```
 ./deps_ubuntu.sh
@@ -70,6 +72,7 @@ For macOS 12.5 (requires Homebrew):
 make -j8
 sudo make install
 ```
+
 And, in order to bootstrap the ``langcc`` front-end itself, subsequently run:
 ```
 ./bootstrap.sh
