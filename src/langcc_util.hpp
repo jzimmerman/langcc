@@ -968,6 +968,14 @@ inline void pr_debug(ostream& os, FmtFlags flags, u32 x) {
     pr(os, flags, x);
 }
 
+inline void pr(ostream& os, FmtFlags flags, u64 x) {
+    os << x;
+}
+
+inline void pr_debug(ostream& os, FmtFlags flags, u64 x) {
+    pr(os, flags, x);
+}
+
 inline void pr(ostream& os, FmtFlags flags, f32 x) {
     os << x;
 }
@@ -1001,10 +1009,6 @@ inline void pr_debug(ostream& os, FmtFlags flags, Ch x) {
 }
 
 inline void pr(ostream& os, FmtFlags flags, i32 x) {
-    os << x;
-}
-
-inline void pr(ostream& os, FmtFlags flags, size_t x) {
     os << x;
 }
 
@@ -2478,7 +2482,7 @@ inline void ser(SerBuf& buf, const HashVal& x) {
 // or security-critical applications.
 inline HashVal hash_data(const u8* data, Int len) {
     HashVal ret;
-    AR_eq(picosha2::k_digest_size, 32);
+    AR_eq(Int(picosha2::k_digest_size), 32);
     vector<char> dst(32, 0);
     picosha2::hash256(string(reinterpret_cast<const char*>(data), len), dst);
     memcpy(&ret.v_[0], dst.data(), 32);
@@ -3787,7 +3791,8 @@ inline bool run_unit_tests() {
     }
 
     if (res_fail.size() > 0) {
-        LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n", res_succ.size(), res_fail.size());
+        LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n",
+            Int(res_succ.size()), Int(res_fail.size()));
         for (auto name : res_fail) {
             auto test = get_unit_tests_terminated().at(name);
             LOG(1, " ===== Failure({}): {}\n", test.ret_desc(), test.desc_.name_);
@@ -3798,7 +3803,8 @@ inline bool run_unit_tests() {
         }
     }
 
-    LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n", res_succ.size(), res_fail.size());
+    LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n",
+        Int(res_succ.size()), Int(res_fail.size()));
 
     if (res_fail.size() > 0) {
         LOG(0, "Succeeded:");

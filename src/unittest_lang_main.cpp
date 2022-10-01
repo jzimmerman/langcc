@@ -22,7 +22,7 @@ int main(i32 argc, char** argv) {
             auto v = str_split(path, "/");
             auto path_last = v.operator[](v.size() - 1);
             auto w = str_split(path_last, ".lang");
-            AR_eq(w.size(), 2);
+            AR_eq(Int(w.size()), 2);
             string s = w[0];
             ss.push_back(s);
         }
