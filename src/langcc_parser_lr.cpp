@@ -1213,27 +1213,6 @@ LookaheadPartsNested lr_prop_part(
 }
 
 
-Int lr_conflict_exemplar_length_total(LRStringExemplarBidir_T exr) {
-    Int ret = 0;
-    for (auto x : *exr->pre_) {
-        ret += x->contents_->v_->length();
-    }
-    for (auto x : *exr->post_) {
-        ret += x->contents_->v_->length();
-    }
-    return ret;
-}
-
-
-Int lr_conflict_exemplar_length_pre(LRStringExemplarBidirBounded_T exr) {
-    Int ret = 0;
-    for (auto x : *exr->pre_) {
-        ret += x->contents_->v_->length();
-    }
-    return ret;
-}
-
-
 LRStringExemplar_T lr_conflict_extract_exemplar_sym(LRSym_T sym, AttrSet_T attr,
     GrammarSymConstrGen_T G_gen) {
 
@@ -1284,6 +1263,216 @@ Vec_T<LRStringExemplarBounded_T> lr_conflict_extract_exemplars_tail(
         LG_ERR("lr_conflict_extract_exemplars_tail unknown: {}", v);
         AX();
     }
+}
+
+
+Int lr_conflict_nfa_search_post_buffer_len_heuristic(
+    Vec_T<LRStringExemplarBounded_T> buf, GrammarSymConstrGen_T G_gen) {
+
+    Int ret = 0;
+    for (auto x : *buf) {
+        Option_T<Int> x_len_min = None<Int>();
+        for (auto [q_attr, qss] : *G_gen->operator[](x->sym_->as_Base()->sym_)) {
+            if (!attr_set_meets_bounds_relaxed(q_attr, x->bounds_)) {
+                continue;
+            }
+            for (auto [_, qss_str] : *qss->items_) {
+                if (x_len_min.is_none() || qss_str->v_->length() < x_len_min.as_some()) {
+                    x_len_min = Some<Int>(qss_str->v_->length());
+                }
+            }
+        }
+        ret += x_len_min.as_some();
+    }
+    return ret;
+}
+
+
+template<typename T, typename U> pair<T, U> pair_neg(pair<T, U> x) {
+    return make_pair(- x.first, - x.second);
+}
+
+
+template<typename T, typename U> pair<T, U> pair_fst_add(pair<T, U> x, T inc) {
+    return make_pair(x.first + inc, x.second);
+}
+
+
+template<typename T, typename U> pair<T, U> pair_snd_add(pair<T, U> x, U inc) {
+    return make_pair(x.first, x.second + inc);
+}
+
+
+Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
+    LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre, SymStr_T la, GrammarSymConstrGen_T G_gen,
+    GrammarProdConstrs_T G_constrs) {
+
+    Int k = la->v_->length();
+
+    using Len = IntPair;  // (length in symbols, number of eps/RS-edges)
+    using LookaheadIndex = Int;
+    using PrePathIndex = Int;
+    using SearchVertex_T = tuple<
+        LRVertex_T, PrePathIndex, LookaheadIndex, Vec_T<LRStringExemplarBounded_T>>;
+    auto tail_init = lr_conflict_extract_exemplars_tail(w, false, G_gen, G_constrs);
+    SearchVertex_T v0 = make_tuple(w, pre->length(), 0, tail_init);
+    auto vis_len = make_rc<Map<SearchVertex_T, Len>>();
+    using BackEdge_T = pair<Option_T<LRStringExemplar_T>, SearchVertex_T>;
+    auto vis_pred = make_rc<Map<SearchVertex_T, Option_T<BackEdge_T>>>();
+    vis_len->insert(v0, make_pair(0, 0));
+    vis_pred->insert(v0, None<BackEdge_T>());
+    auto vs = make_rc<VecUniq<SearchVertex_T>>();
+    Int vi0 = vs->insert(v0);
+    priority_queue<pair<Len, Int>> Q;
+    Len len0 = make_pair(lr_conflict_nfa_search_post_buffer_len_heuristic(tail_init, G_gen), 0);
+    Q.push(make_pair(pair_neg(len0), vi0));
+
+    auto N_start = N->G_->V_->operator[](N->start_.as_some());
+    auto vs_tgt = make_rc<Vec<SearchVertex_T>>();
+    Int k_tgt = k;
+    while (k_tgt > 0) {
+        if (!la->v_->operator[](k_tgt - 1)->is_EndMarker()) {
+            break;
+        }
+        --k_tgt;
+    }
+    SearchVertex_T v_tgt = make_tuple(
+        N_start, 0, k_tgt, make_rc<Vec<LRStringExemplarBounded_T>>());
+
+    while (!Q.empty()) {
+        auto [len_bound_curr, vi_curr] = Q.top();
+        Q.pop();
+        len_bound_curr = make_pair(- len_bound_curr.first, - len_bound_curr.second);
+
+        if (vis_len->contains_key(v_tgt) && vis_len->operator[](v_tgt) <= len_bound_curr) {
+            break;
+        }
+
+        auto v_curr = vs->operator[](vi_curr);
+        auto len_curr = vis_len->operator[](v_curr);
+        auto [x, pre_ind, la_ind, buf] = v_curr;
+
+        LOG(4, "lr_conflict_nfa_search_post: search v_curr = {}", v_curr);
+
+        if (buf->length() > 0) {
+            auto fst = buf->operator[](0);
+            for (auto [q_attr, qss] : *G_gen->operator[](fst->sym_->as_Base()->sym_)) {
+                if (!attr_set_meets_bounds_relaxed(q_attr, fst->bounds_)) {
+                    continue;
+                }
+
+                for (auto [_, qss_str] : *qss->items_) {
+                    bool ok = true;
+                    Int match_len = min<Int>(
+                        k - la_ind, qss_str->v_->length());
+                    for (Int j = 0; j < match_len; j++) {
+                        if (val_hash(qss_str->v_->operator[](j)) !=
+                            val_hash(la->v_->operator[](la_ind + j))) {
+                            ok = false;
+                            break;
+                        }
+                    }
+                    if (!ok) {
+                        continue;
+                    }
+
+                    auto buf_nbr = buf->slice(1, buf->length());
+                    auto x_nbr = make_tuple(x, pre_ind, la_ind + match_len, buf_nbr);
+                    auto vi_nbr = vs->insert(x_nbr);
+                    auto len_nbr = make_pair(
+                        len_curr.first + qss_str->v_->length(), len_curr.second);
+                    auto str_exr = LRStringExemplar::make(fst->sym_, q_attr, qss_str);
+                    BackEdge_T v_curr_be = make_pair(Some<LRStringExemplar_T>(str_exr), v_curr);
+                    if (!vis_len->contains_key(x_nbr) || vis_len->operator[](x_nbr) > len_nbr) {
+                        vis_len->insert(x_nbr, len_nbr);
+                        vis_pred->insert(x_nbr, Some<BackEdge_T>(v_curr_be));
+                        auto tail_len_h = lr_conflict_nfa_search_post_buffer_len_heuristic(
+                            buf_nbr, G_gen);
+                        Q.push(make_pair(pair_neg(pair_fst_add(len_nbr, tail_len_h)), vi_nbr));
+                    }
+                }
+            }
+
+        } else {  // buf->length() == 0
+            auto es = NFA::incoming_edges(N, x);
+            for (auto [lbl, ys] : *es) {
+                for (auto y : *ys) {
+                    bool is_recurstep = lbl->is_Sym_() && lbl->as_Sym_()->sym_->is_RecurStep();
+
+                    if (lbl->is_Eps() || is_recurstep) {
+                        if (is_recurstep) {
+                            if (pre_ind == 0) {
+                                continue;
+                            }
+                            if (val_hash(lbl) != val_hash(pre->operator[](pre_ind - 1))) {
+                                continue;
+                            }
+                        }
+
+                        auto buf_nbr = lr_conflict_extract_exemplars_tail(y, true, G_gen, G_constrs);
+                        auto x_nbr = make_tuple(
+                            y, pre_ind - (is_recurstep ? 1 : 0), la_ind, buf_nbr);
+                        auto vi_nbr = vs->insert(x_nbr);
+                        auto len_nbr = pair_snd_add(len_curr, Int(1));
+                        BackEdge_T v_curr_be = make_pair(None<LRStringExemplar_T>(), v_curr);
+
+                        if (!vis_len->contains_key(x_nbr) || vis_len->operator[](x_nbr) > len_nbr) {
+                            vis_len->insert(x_nbr, len_nbr);
+                            vis_pred->insert(x_nbr, Some<BackEdge_T>(v_curr_be));
+                            auto tail_len_h = lr_conflict_nfa_search_post_buffer_len_heuristic(
+                                buf_nbr, G_gen);
+                            Q.push(make_pair(pair_neg(pair_fst_add(len_nbr, tail_len_h)), vi_nbr));
+                        }
+
+                    } else {
+                        if (pre_ind == 0) {
+                            continue;
+                        }
+                        if (val_hash(lbl) != val_hash(pre->operator[](pre_ind - 1))) {
+                            continue;
+                        }
+
+                        auto buf_nbr = make_rc<Vec<LRStringExemplarBounded_T>>();
+                        auto x_nbr = make_tuple(y, pre_ind - 1, la_ind, buf_nbr);
+                        auto vi_nbr = vs->insert(x_nbr);
+                        auto len_nbr = len_curr;
+                        BackEdge_T v_curr_be = make_pair(None<LRStringExemplar_T>(), v_curr);
+
+                        if (!vis_len->contains_key(x_nbr) || vis_len->operator[](x_nbr) > len_nbr) {
+                            vis_len->insert(x_nbr, len_nbr);
+                            vis_pred->insert(x_nbr, Some<BackEdge_T>(v_curr_be));
+                            auto tail_len_h = lr_conflict_nfa_search_post_buffer_len_heuristic(
+                                buf_nbr, G_gen);
+                            Q.push(make_pair(pair_neg(pair_fst_add(len_nbr, tail_len_h)), vi_nbr));
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    auto ret = make_rc<Vec<LRStringExemplar_T>>();
+
+    if (!vis_pred->contains_key(v_tgt)) {
+        LG_ERR("Conflict search failed: {}", v_tgt);
+        AX();
+    }
+
+    auto v_curr = v_tgt;
+    while (true) {
+        auto be = vis_pred->operator[](v_curr);
+        if (be.is_none()) {
+            break;
+        }
+        if (be.as_some().first.is_some()) {
+            ret->push(be.as_some().first.as_some());
+        }
+        v_curr = be.as_some().second;
+    }
+    ret->reverse();
+
+    return ret;
 }
 
 
@@ -1355,6 +1544,36 @@ void pr(ostream& os, FmtFlags flags, LRConflict_T conf) {
     }
 
     fmt(os, "{}", td);
+}
+
+
+Set_T<LRVertex_T> lr_dfa_vertex_without_lookahead(Set_T<LRVertex_T> vs) {
+    auto ret = make_rc<Set<LRVertex_T>>();
+    for (auto v : *vs) {
+        ret->insert(lr_vertex_without_lookahead(v));
+    }
+    return ret;
+}
+
+
+Int lr_exemplar_bidir_len_total(LRStringExemplarBidir_T x) {
+    Int ret = 0;
+    for (auto str_exr : *x->pre_) {
+        ret += str_exr->contents_->v_->length();
+    }
+    for (auto str_exr : *x->post_) {
+        ret += str_exr->contents_->v_->length();
+    }
+    return ret;
+}
+
+
+Int lr_conflict_len_total(LRConflict_T confl) {
+    Int ret = 0;
+    for (auto exr : *confl->items_) {
+        ret += lr_exemplar_bidir_len_total(exr->exr_);
+    }
+    return ret;
 }
 
 
@@ -1515,14 +1734,16 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
 
     LOG(4, " === LR({}) subset NFA:\n{}\n\n", k, D);
 
-    auto lr_conflict_vs = make_rc<Vec<Set_T<LRVertex_T>>>();
+    auto lr_conflict_vs = make_rc<Set<
+        tuple<Set_T<LRVertex_T>, SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>>>();
+        // DFA vertex, lookahead, map from action to NFA vertices
 
     for (auto vs : *D->G_->V_) {
         auto vsi = D->G_->V_->index_of_maybe(vs).as_some();
         auto mm = lr_tabulate_nfa_acc(N, vs);
-        for (auto [_, ma] : *mm) {
+        for (auto [la, ma] : *mm) {
             if (ma->length() > 1) {
-                lr_conflict_vs->push_back(vs);
+                lr_conflict_vs->insert(make_tuple(vs, la, ma));
             }
         }
     }
@@ -1589,16 +1810,12 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
         LOG(1, "Compiling parser: tabulating conflicts");
     }
 
-    auto lr_conflicts_raw = make_rc<Map<
-        Set_T<LRVertex_T>,
-            // NOTE: lookahead-stripped
-        Map_T<Vec_T<LRLabel_T>, Map_T<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>>
-            // NOTE: not lookahead-stripped
-    >>();
+    auto lr_conflict_cand = make_rc<Map<Set_T<LRAction_T>, Vec_T<LRConflict_T>>>();
 
-    for (auto vs : *lr_conflict_vs) {
-        auto buf = make_rc<Vec<LRLabel_T>>();
+    for (auto [vs, la, mm] : *lr_conflict_vs) {
+        auto pre = make_rc<Vec<LRStringExemplar_T>>();
         auto vs_curr = vs;
+        auto buf = make_rc<Vec<LRLabel_T>>();
         while (true) {
             auto [_, back_curr] = m_pred->operator[](vs_curr);
             if (back_curr.is_none()) {
@@ -1609,328 +1826,66 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
             vs_curr = vs_next;
         }
         buf->reverse();
-        auto mm = lr_tabulate_nfa_acc(N, vs);
+        for (auto lbl : *buf) {
+            auto exr = lr_conflict_extract_exemplar_sym(
+                lbl->as_Sym_()->sym_, lbl->as_Sym_()->attr_, G_gen);
+            pre->push(exr);
+        }
 
-        for (auto [la, accs]: *mm) {
-            if (accs->length() <= 1) {
-                continue;
-            }
-
-            auto accs_set = make_rc<Set<LRAction_T>>();
-            for (auto [acc, vs] : *accs) {
-                accs_set->insert(acc);
-            }
-
-            auto vs_stripped = make_rc<Set<LRVertex_T>>();
-            for (auto [acc, vs_inner] : *accs) {
-                for (auto v : *vs_inner) {
-                    auto vi = N->G_->V_->index_of_maybe(v).as_some();
-                    if (N->acc_->operator[](vi)->length() > 0) {
-                        vs_stripped->insert(lr_vertex_without_lookahead(v));
-                    }
+        auto confl_items = make_rc<Vec<LRConflictExemplar_T>>();
+        auto accs = make_rc<Set<LRAction_T>>();
+        for (auto [acc, ws] : *mm) {
+            accs->insert(acc);
+            auto len_min = None<Int>();
+            auto exr_min = None<LRConflictExemplar_T>();
+            for (auto w : *ws) {
+                auto post = lr_conflict_nfa_search_post(
+                    N, w, buf, la, G_gen, ctx.Gr_cps_prod_constrs_);
+                auto exr = LRStringExemplarBidir::make(pre, post);
+                if (len_min.is_none() || lr_exemplar_bidir_len_total(exr) < len_min.as_some()) {
+                    len_min = Some<Int>(lr_exemplar_bidir_len_total(exr));
+                    exr_min = Some<LRConflictExemplar_T>(LRConflictExemplar::make(exr, la, acc));
                 }
             }
+            confl_items->push(exr_min.as_some());
+        }
+        auto confl = LRConflict::make(confl_items);
+        if (!lr_conflict_cand->contains_key(accs)) {
+            lr_conflict_cand->insert(accs, make_rc<Vec<LRConflict_T>>());
+        }
+        lr_conflict_cand->operator[](accs)->push(confl);
+    }
 
-            for (auto [acc, vs_inner] : *accs) {
-                for (auto v : *vs_inner) {
-                    if (!lr_conflicts_raw->contains_key(vs_stripped)) {
-                        lr_conflicts_raw->insert(
-                            vs_stripped,
-                            make_rc<Map<Vec_T<LRLabel_T>,
-                                Map_T<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>>>());
-                    }
-                    if (!lr_conflicts_raw->operator[](vs_stripped)->contains_key(buf)) {
-                        lr_conflicts_raw->operator[](vs_stripped)->insert(
-                            buf, make_rc<Map<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>>());
-                    }
-                    if (!lr_conflicts_raw->operator[](vs_stripped)->operator[](buf)
-                        ->contains_key(la)) {
-                        lr_conflicts_raw->operator[](vs_stripped)->operator[](buf)->insert(
-                            la, make_rc<Map<LRAction_T, Set_T<LRVertex_T>>>());
-                    }
-                    if (!lr_conflicts_raw->operator[](vs_stripped)->operator[](buf)->operator[](la)
-                        ->contains_key(acc)) {
-                        lr_conflicts_raw->operator[](vs_stripped)->operator[](buf)->operator[](la)
-                        ->insert(acc, make_rc<Set<LRVertex_T>>());
-                    }
-                    lr_conflicts_raw->operator[](vs_stripped)->operator[](buf)->operator[](la)
-                        ->operator[](acc)->insert(v);
-                }
+    LOG(3, "lr_conflict_cand:\n{}\n\n", lr_conflict_cand);
+
+    auto lr_conflicts_pre = make_rc<Vec<LRConflict_T>>();
+
+    for (auto [accs, cand] : *lr_conflict_cand) {
+        auto len_min = None<Int>();
+        auto confl_sel = None<LRConflict_T>();
+
+        for (auto confl : *cand) {
+            auto confl_len = lr_conflict_len_total(confl);
+            if (len_min.is_none() || confl_len < len_min.as_some()) {
+                len_min = Some<Int>(confl_len);
+                confl_sel = Some<LRConflict_T>(confl);
             }
         }
+
+        lr_conflicts_pre->push(confl_sel.as_some());
     }
 
-    LOG(3, "lr_conflicts_raw:\n\n");
-    Int ci = 0;
-    for (auto [ck, cv] : *lr_conflicts_raw) {
-        LOG(3, "   -- lr_conflicts_raw {}:\n{}\n\n{}\n\n", ci+1, ck, cv);
-        ++ci;
+    vector<IntPair> inds;
+    for (Int i = 0; i < lr_conflicts_pre->length(); i++) {
+        inds.push_back(
+            make_pair(lr_conflict_len_total(lr_conflicts_pre->operator[](i)), i));
     }
-
-    auto lr_conflicts_raw_l = lr_conflicts_raw->items_to_vec();
+    std::sort(inds.begin(), inds.end());
 
     auto lr_conflicts = make_rc<Vec<LRConflict_T>>();
 
-    if (lr_conflict_vs->length() > 0) {
-        LOG(1, "Compiling parser: finding exemplars for conflicts");
-    }
-
-    for (Int conf_i = 0; conf_i < lr_conflicts_raw_l->length(); conf_i++) {
-        auto [mk, mv] = lr_conflicts_raw_l->operator[](conf_i);
-
-        auto conf_best = None<LRConflict_T>();
-        auto path_len_total_best = None<Int>();
-
-        // Try each element to see which gives the best estimated path length.
-        for (auto [lbls, mmv] : *mv) {
-            using BackEdge_T = pair<pair<Int, LRVertex_T>, LRStringExemplarBidirBounded_T>;
-            auto m_pred = make_rc<Map<pair<Int, LRVertex_T>, pair<Int, Option_T<BackEdge_T>>>>();
-            {
-                priority_queue<tuple<Int, Int, Int>> Q;
-                auto hit = make_rc<Set<IntPair>>();
-                auto vi_start = N->start_.as_some();
-                auto v_start = N->G_->V_->operator[](vi_start);
-                m_pred->insert(make_pair(0, v_start), make_pair(0, None<BackEdge_T>()));
-                Q.push(make_tuple(0, 0, vi_start));
-                while (!Q.empty()) {
-                    auto [curr_len, curr_prog, curr_vi] = Q.top();
-                        // (total estimated string length, progress index in path, vertex index)
-                    curr_len = - curr_len;
-
-                    Q.pop();
-                    if (hit->contains(make_pair(curr_prog, curr_vi))) {
-                        continue;
-                    }
-                    hit->insert(make_pair(curr_prog, curr_vi));
-                    AR_le(curr_prog, lbls->length());
-
-                    auto curr_v = N->G_->V_->operator[](curr_vi);
-                    auto es = NFA::outgoing_edges(N, curr_v);
-                    for (auto [lbl, nbrs] : *es) {
-                        if (!lbl->is_Eps() && (
-                            curr_prog == lbls->length() ||
-                            (val_hash(lbl) != val_hash(lbls->operator[](curr_prog))))) {
-                            continue;
-                        }
-
-                        auto edge_pre = make_rc<Vec<LRStringExemplar_T>>();
-                        auto edge_post = make_rc<Vec<LRStringExemplarBounded_T>>();
-                        if (lbl->is_Eps() || lbl->as_Sym_()->sym_->is_RecurStep()) {
-                            if (lbl->is_Sym_() && lbl->as_Sym_()->sym_->is_RecurStep()) {
-                                auto contents = make_rc<Vec<LRSym_T>>();
-                                contents->push_back(lbl->as_Sym_()->sym_);
-                                LRStringExemplar_T sym_exr = LRStringExemplar::make(
-                                    lbl->as_Sym_()->sym_, attr_set_empty(),
-                                    SymStr::make(contents));
-                                edge_pre->push_back(sym_exr);
-                            }
-                            edge_post = lr_conflict_extract_exemplars_tail(
-                                curr_v, true, G_gen, ctx.Gr_cps_prod_constrs_);
-                        } else if (lbl->is_Sym_()) {
-                            edge_pre->push_back(lr_conflict_extract_exemplar_sym(
-                                lbl->as_Sym_()->sym_, lbl->as_Sym_()->attr_, G_gen));
-                        } else {
-                            AX();
-                        }
-
-                        auto edge = LRStringExemplarBidirBounded::make(edge_pre, edge_post);
-                        Int new_len = curr_len + lr_conflict_exemplar_length_pre(edge);
-                        for (auto nbr : *nbrs) {
-                            auto next_prog = curr_prog + 1;
-                            if (lbl->is_Eps()) {
-                                next_prog = curr_prog;
-                            }
-                            auto next = make_pair(next_prog, nbr);
-                            if (!m_pred->contains_key(next) ||
-                                 m_pred->operator[](next).first > new_len) {
-                                auto be = make_pair(make_pair(curr_prog, curr_v), edge);
-                                m_pred->insert(next, make_pair(new_len, Some<BackEdge_T>(be)));
-                                Q.push(make_tuple(
-                                    - new_len,
-                                    next_prog,
-                                    N->G_->V_->index_of_maybe(nbr).as_some()));
-                            }
-                        }
-                    }
-                }
-            }
-
-            for (auto [la, acc_vm] : *mmv) {
-                auto conf_cand_curr_items = make_rc<Vec<LRConflictExemplar_T>>();
-                Int path_len_total_curr = 0;
-
-                // Find a (heuristic) minimal exemplar for each possible action
-                // and its corresponding vertices, subject to the given lookahead la,
-                // then measure the total length of the exemplar and add it to
-                // path_len_total_curr.
-                for (auto [acc, curr_acc_vs] : *acc_vm) {
-                    auto conf_exr_min_inner = None<LRConflictExemplar_T>();
-                    auto conf_exr_min_len_inner = None<Int>();
-
-                    // Further, in the inner loop, minimize over representative vertices
-                    // for the selected action acc.
-                    for (auto v : *curr_acc_vs) {
-                        auto k_curr = make_pair(lbls->length(), v);
-                        auto path_pre = make_rc<Vec<LRStringExemplar_T>>();
-                        auto path_post = lr_conflict_extract_exemplars_tail(
-                            v, false, G_gen, ctx.Gr_cps_prod_constrs_);
-                        while (true) {
-                            if (!m_pred->contains_key(k_curr)) {
-                                LG_ERR("Not found: {}\nm_pred:\n{}\n\n", k_curr, m_pred);
-                                AX();
-                            }
-                            auto [_, be] = m_pred->operator[](k_curr);
-                            if (be.is_none()) {
-                                break;
-                            }
-                            auto [k_prev, exr_curr] = be.as_some();
-                            for (auto x : *exr_curr->pre_) {
-                                path_pre->push_front(x);
-                            }
-                            for (auto x : *exr_curr->post_) {
-                                path_post->push_back(x);
-                            }
-                            k_curr = k_prev;
-                        }
-
-                        // path_post may not match lookahead; do an additional search on
-                        // the space of strings.
-                        using StrBackEdge_T = tuple<IntPair, AttrSet_T, SymStr_T>;
-                            // ((path index, la index), edge)
-                        auto m_pred = make_rc<Map<IntPair, pair<Int, Option_T<StrBackEdge_T>>>>();
-                        {
-                            auto pm = path_post->length();
-                            auto pn = k;
-                            priority_queue<pair<Int, IntPair>> Q;
-                                // (string len, (path index [0..pm], la index [0..pn]))
-                            auto hit = make_rc<Set<IntPair>>();
-                            m_pred->insert(make_pair(0, 0), make_pair(0, None<StrBackEdge_T>()));
-                            Q.push(make_pair(0, make_pair(0, 0)));
-                            while (!Q.empty()) {
-                                auto [len_curr, p_curr] = Q.top();
-                                auto [path_ind, la_ind] = p_curr;
-                                len_curr = - len_curr;
-                                Q.pop();
-                                if (hit->contains(p_curr)) {
-                                    continue;
-                                }
-                                hit->insert(p_curr);
-                                AR_le(path_ind, pm);
-                                AR_le(la_ind, pn);
-                                if (path_ind == pm) {
-                                    continue;
-                                }
-
-                                auto q = path_post->operator[](path_ind);
-
-                                for (auto [q_attr, qss] :
-                                    *G_gen->operator[](q->sym_->as_Base()->sym_)) {
-
-                                    if (!attr_set_meets_bounds_relaxed(q_attr, q->bounds_)) {
-                                        continue;
-                                    }
-                                    for (auto [_, qss_str] : *qss->items_) {
-                                        bool ok = true;
-                                        Int match_len = min<Int>(
-                                            pn - la_ind, qss_str->v_->length());
-                                        for (Int j = 0; j < match_len; j++) {
-                                            if (val_hash(qss_str->v_->operator[](j)) !=
-                                                val_hash(la->v_->operator[](la_ind + j))) {
-                                                ok = false;
-                                                break;
-                                            }
-                                        }
-                                        if (!ok) {
-                                            continue;
-                                        }
-                                        auto p_next = make_pair(path_ind + 1, la_ind + match_len);
-
-                                        auto len_next = len_curr + qss_str->v_->length();
-                                        if (!m_pred->contains_key(p_next) ||
-                                            m_pred->operator[](p_next).first > len_next) {
-
-                                            auto be = make_tuple(p_curr, q_attr, qss_str);
-                                            m_pred->insert(
-                                                p_next, make_pair(
-                                                    len_next, Some<StrBackEdge_T>(be)));
-                                            Q.push(make_pair(- len_next, p_next));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        auto res_k = None<IntPair>();
-                        auto k_eff = k;
-                        while (k_eff > 0 && la->v_->operator[](k_eff-1)->is_EndMarker()) {
-                            --k_eff;
-                        }
-                        auto mk = make_pair(path_post->length(), k_eff);
-                        if (m_pred->contains_key(mk)) {
-                            res_k = Some<IntPair>(mk);
-                        }
-
-                        Vec_T<LRStringExemplar_T> path_post_resolved;
-                        if (res_k.is_some()) {
-                            AT(res_k.is_some());
-                            path_post_resolved = make_rc<Vec<LRStringExemplar_T>>();
-                            {
-                                auto curr = res_k.as_some();
-                                Int i = path_post->length();
-                                while (true) {
-                                    auto [_, be] = m_pred->operator[](curr);
-                                    if (be.is_none()) {
-                                        break;
-                                    }
-                                    --i;
-                                    auto [prev, q_attr, qss_str] = be.as_some();
-                                    auto item = LRStringExemplar::make(
-                                        path_post->operator[](i)->sym_, q_attr, qss_str);
-                                    path_post_resolved->push_front(item);
-                                    curr = prev;
-                                }
-                            }
-                        } else {
-                            LG_ERR("Unable to match lookahead");
-                            AX();
-                        }
-
-                        auto path = LRStringExemplarBidir::make(path_pre, path_post_resolved);
-                        auto conf_full_exr_cand = LRConflictExemplar::make(path, la, acc);
-
-                        auto len_cand_inner = lr_conflict_exemplar_length_total(path);
-
-                        if (conf_exr_min_len_inner.is_none() ||
-                            len_cand_inner < conf_exr_min_len_inner.as_some()) {
-
-                            conf_exr_min_len_inner = Some<Int>(len_cand_inner);
-                            conf_exr_min_inner = Some<LRConflictExemplar_T>(conf_full_exr_cand);
-                        }
-                    }
-
-                    AT(conf_exr_min_len_inner.is_some());
-                    AT(conf_exr_min_inner.is_some());
-                    conf_cand_curr_items->push_back(conf_exr_min_inner.as_some());
-                    path_len_total_curr += conf_exr_min_len_inner.as_some();
-                }
-
-                auto conf_cand_curr = LRConflict::make(conf_cand_curr_items);
-
-                LOG(3, "conf_cand_curr la: {}", la);
-                LOG(3, "conf_cand_curr len: {}", path_len_total_curr);
-                LOG(3, "conf_cand_curr:\n{}", conf_cand_curr);
-
-                if (path_len_total_best.is_none() ||
-                    path_len_total_curr < path_len_total_best.as_some()) {
-
-                    conf_best = Some<LRConflict_T>(conf_cand_curr);
-                    path_len_total_best = Some<Int>(path_len_total_curr);
-                }
-            }
-        }
-
-        AT(conf_best.is_some());
-        lr_conflicts->push_back(conf_best.as_some());
+    for (auto [_, ii] : inds) {
+        lr_conflicts->push(lr_conflicts_pre->operator[](ii));
     }
 
     ctx.parser_nfa_final_ = N;

@@ -1,0 +1,31 @@
+
+tokens {
+    top <= `a`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { S }
+
+    S.X <- ~X;
+    S.Y <- ~Y;
+
+    X <- `a`;
+    Y <- `a`;
+
+    prop { Err; }
+}
+
+compile_test {
+}
+
+test {
+}

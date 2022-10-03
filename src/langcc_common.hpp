@@ -247,7 +247,6 @@ void parser_Gr_cps_add_prod(
 LRVertex_T lr_vertex_without_lookahead(LRVertex_T v);
 void pr(ostream& os, FmtFlags flags, GrammarSymConstrGen_T G_gen);
 Int lr_conflict_exemplar_length_total(LRStringExemplarBidir_T exr);
-Int lr_conflict_exemplar_length_pre(LRStringExemplarBidirBounded_T exr);
 LRStringExemplar_T lr_conflict_extract_exemplar_sym(LRSym_T sym, AttrSet_T attr,
     GrammarSymConstrGen_T G_gen);
 Vec_T<LRStringExemplarBounded_T> lr_conflict_extract_exemplars_tail(

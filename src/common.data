@@ -334,11 +334,6 @@ namespace common {
         post: Vec(LRStringExemplar);
     }
 
-    def LRStringExemplarBidirBounded {
-        pre: Vec(LRStringExemplar);
-        post: Vec(LRStringExemplarBounded);
-    }
-
     def LRConflictExemplar {
         exr: LRStringExemplarBidir;
         la: SymStr;

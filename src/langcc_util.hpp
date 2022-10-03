@@ -1070,6 +1070,54 @@ inline void pr_debug(ostream& os, FmtFlags flags, const pair<T, U>& x) {
     os << ")";
 }
 
+template<typename T, typename U, typename V>
+inline void pr(ostream& os, FmtFlags flags, const tuple<T, U, V>& x) {
+    os << "(";
+    pr(os, flags, std::get<0>(x));
+    os << ", ";
+    pr(os, flags, std::get<1>(x));
+    os << ", ";
+    pr(os, flags, std::get<2>(x));
+    os << ")";
+}
+
+template<typename T, typename U, typename V>
+inline void pr_debug(ostream& os, FmtFlags flags, const tuple<T, U, V>& x) {
+    os << "(";
+    pr_debug(os, flags, std::get<0>(x));
+    os << ", ";
+    pr_debug(os, flags, std::get<1>(x));
+    os << ", ";
+    pr_debug(os, flags, std::get<2>(x));
+    os << ")";
+}
+
+template<typename T, typename U, typename V, typename W>
+inline void pr(ostream& os, FmtFlags flags, const tuple<T, U, V, W>& x) {
+    os << "(";
+    pr(os, flags, std::get<0>(x));
+    os << ", ";
+    pr(os, flags, std::get<1>(x));
+    os << ", ";
+    pr(os, flags, std::get<2>(x));
+    os << ", ";
+    pr(os, flags, std::get<3>(x));
+    os << ")";
+}
+
+template<typename T, typename U, typename V, typename W>
+inline void pr_debug(ostream& os, FmtFlags flags, const tuple<T, U, V, W>& x) {
+    os << "(";
+    pr_debug(os, flags, std::get<0>(x));
+    os << ", ";
+    pr_debug(os, flags, std::get<1>(x));
+    os << ", ";
+    pr_debug(os, flags, std::get<2>(x));
+    os << ", ";
+    pr_debug(os, flags, std::get<3>(x));
+    os << ")";
+}
+
 template<typename T>
 inline string pr_str(const T& t) {
     ostringstream os;
@@ -2589,6 +2637,61 @@ template<typename T, typename U, typename V> inline void hash_ser(
 
 template<typename T, typename U, typename V> inline HashVal val_hash(const tuple<T, U, V>& x) {
     return val_hash_base(x);
+}
+
+template<typename T, typename U, typename V, typename W> inline void hash_ser(
+    SerBuf& buf, const tuple<T, U, V, W>& x) {
+
+    auto [t, u, v, w] = x;
+    hash_ser(buf, t);
+    hash_ser(buf, u);
+    hash_ser(buf, v);
+    hash_ser(buf, w);
+}
+
+template<typename T, typename U, typename V, typename W> inline HashVal val_hash(
+    const tuple<T, U, V, W>& x) {
+
+    return val_hash_base(x);
+}
+
+template<typename T, typename U, typename V, typename W, typename X>
+    inline void hash_ser(
+    SerBuf& buf, const tuple<T, U, V, W, X>& a) {
+
+    auto [t, u, v, w, x] = a;
+    hash_ser(buf, t);
+    hash_ser(buf, u);
+    hash_ser(buf, v);
+    hash_ser(buf, w);
+    hash_ser(buf, x);
+}
+
+template<typename T, typename U, typename V, typename W, typename X>
+    inline HashVal val_hash(
+    const tuple<T, U, V, W, X>& a) {
+
+    return val_hash_base(a);
+}
+
+template<typename T, typename U, typename V, typename W, typename X, typename Y>
+    inline void hash_ser(
+    SerBuf& buf, const tuple<T, U, V, W, X, Y>& a) {
+
+    auto [t, u, v, w, x, y] = a;
+    hash_ser(buf, t);
+    hash_ser(buf, u);
+    hash_ser(buf, v);
+    hash_ser(buf, w);
+    hash_ser(buf, x);
+    hash_ser(buf, y);
+}
+
+template<typename T, typename U, typename V, typename W, typename X, typename Y>
+    inline HashVal val_hash(
+    const tuple<T, U, V, W, X, Y>& a) {
+
+    return val_hash_base(a);
 }
 
 inline void hash_ser(SerBuf& buf, const string& s) {

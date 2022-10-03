@@ -556,7 +556,7 @@ inline void pr(ostream& os, FmtFlags flags, LRAction_T x) {
     } else if (x->is_Reduce()) {
         fmt(os, "Reduce({})", x->as_Reduce()->prod_);
     } else if (x->is_Ret()) {
-        fmt(os, "Ret");
+        fmt(os, "Ret({})", x->as_Ret()->sym_);
     } else if (x->is_Recur()) {
         fmt(os, "Recur({})", x->as_Recur()->sym_);
     } else {
@@ -751,13 +751,6 @@ inline void pr(ostream& os, FmtFlags flags, LRStringExemplarBounded_T x) {
 
 
 inline void pr(ostream& os, FmtFlags flags, LRStringExemplarBidir_T x) {
-    pr(os, flags, x->pre_);
-    os << " . ";
-    pr(os, flags, x->post_);
-}
-
-
-inline void pr(ostream& os, FmtFlags flags, LRStringExemplarBidirBounded_T x) {
     pr(os, flags, x->pre_);
     os << " . ";
     pr(os, flags, x->post_);
