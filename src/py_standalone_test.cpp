@@ -2,9 +2,9 @@
 #include "py__gen.hpp"
 
 void parse_file(lang::py::LangDesc_T L, string input_path) {
-    auto input = read_file_shared(input_path);
     {
         auto A = make_rc<Arena>();
+        auto input = read_file_shared(input_path, A.get());
         auto gen = make_rc<Gensym>();
         auto parse = L->parse_ext(input, None<string>(), gen, A.get());
         if (!parse->is_success()) {

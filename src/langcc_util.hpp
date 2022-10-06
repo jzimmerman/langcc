@@ -5,6 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <algorithm>
+#include <atomic>
 #include <cassert>
 #include <chrono>
 #include <climits>
@@ -223,7 +224,7 @@ template<typename T> struct rc_ptr {
     void* v_;
 
     // If rc_ == 0, this is an arena-allocated pointer (not ref-counted).
-    Int* rc_;
+    atomic<Int>* rc_;
 
     inline T& operator*() {
         return *reinterpret_cast<T*>(v_);
@@ -252,7 +253,7 @@ template<typename T> struct rc_ptr {
 
     static rc_ptr from_alloc(void* v);
 
-    inline static rc_ptr from_contents(void* v, Int* rc) {
+    inline static rc_ptr from_contents(void* v, atomic<Int>* rc) {
         rc_ptr ret;
         ret.v_ = v;
         ret.rc_ = rc;
@@ -318,7 +319,7 @@ struct _enable_rc_from_this {};
 
 struct enable_rc_from_this_poly: _enable_rc_from_this {
     void* _rc_contents_v_;
-    Int* _rc_contents_rc_;
+    atomic<Int>* _rc_contents_rc_;
 
     template<typename U>
     rc_ptr<U> rc_from_this_poly() {
@@ -329,7 +330,7 @@ struct enable_rc_from_this_poly: _enable_rc_from_this {
 template<typename T>
 struct enable_rc_from_this: _enable_rc_from_this {
     void* _rc_contents_v_;
-    Int* _rc_contents_rc_;
+    atomic<Int>* _rc_contents_rc_;
 
     rc_ptr<T> rc_from_this() {
         return rc_ptr<T>::from_contents(_rc_contents_v_, _rc_contents_rc_);
@@ -339,13 +340,13 @@ struct enable_rc_from_this: _enable_rc_from_this {
 template<typename T>
 rc_ptr<T> rc_from_ptr_std(T* x) {
     auto xw = reinterpret_cast<Int*>(x);
-    return rc_ptr<T>::from_contents(xw, xw - 1);
+    return rc_ptr<T>::from_contents(xw, reinterpret_cast<atomic<Int>*>(xw - 1));
 }
 
 template<typename T>
 rc_ptr<T> rc_from_ptr_std_dec(void* x) {
     auto xw = reinterpret_cast<Int*>(x);
-    auto ret = rc_ptr<T>::from_contents(xw, xw - 1);
+    auto ret = rc_ptr<T>::from_contents(xw, reinterpret_cast<atomic<Int>*>(xw - 1));
     ret.decref();
     return ret;
 }
@@ -363,7 +364,7 @@ template<
     typename std::enable_if<
         std::is_base_of<_enable_rc_from_this, T>::value>::type* = nullptr
 >
-void init_rc_contents(T* x, void* v, Int* rc) {
+void init_rc_contents(T* x, void* v, atomic<Int>* rc) {
     x->_rc_contents_v_ = v;
     x->_rc_contents_rc_ = rc;
 }
@@ -373,15 +374,17 @@ template<
     typename std::enable_if<
         !std::is_base_of<_enable_rc_from_this, T>::value>::type* = nullptr
 >
-void init_rc_contents(T* x, void* v, Int* rc) {
+void init_rc_contents(T* x, void* v, atomic<Int>* rc) {
 }
 
 template<typename T, typename ...Ts>
 rc_ptr<T> make_rc(Ts... args) {
-    auto mem = reinterpret_cast<Int*>(malloc(sizeof(Int) + sizeof(T)));
+    static_assert(sizeof(Int) == 8);
+    static_assert(sizeof(atomic<Int>) == 8);
+    auto mem = reinterpret_cast<Int*>(malloc(sizeof(atomic<Int>) + sizeof(T)));
     rc_ptr<T> ret;
-    ret.rc_ = mem;
-    *ret.rc_ = 1;
+    ret.rc_ = reinterpret_cast<atomic<Int>*>(mem);
+    new (ret.rc_) atomic<Int>(1);
     ret.v_ = mem + 1;
     new (ret.v_) T(args...);
     init_rc_contents(reinterpret_cast<T*>(ret.v_), ret.v_, ret.rc_);
@@ -401,7 +404,7 @@ template<typename T> __attribute__((always_inline))
 inline void rc_ptr<T>::incref() const {
     if (__builtin_expect(!!rc_, 0)) {
         if (__builtin_expect(!!v_, 1)) {
-            ++*rc_;
+            rc_->fetch_add(1);
         }
     }
 }
@@ -411,9 +414,10 @@ template<typename T> __attribute__((always_inline))
 inline void rc_ptr<T>::decref() {
     if (__builtin_expect(!!rc_, 0)) {
         if (__builtin_expect(!!v_, 1)) {
-            Int rc_new = --*rc_;
+            Int rc_new = rc_->fetch_sub(1) - 1;
 
             if (__builtin_expect(rc_new == 0, 0)) {
+                rc_->~atomic<Int>();
                 reinterpret_cast<T*>(v_)->~T();
                 free(rc_);  // NOTE: also frees block with v_
                 v_ = nullptr;
@@ -3618,7 +3622,7 @@ inline string read_file(string filename) {
     return ret;
 }
 
-inline Str_T read_file_shared(string filename) {
+inline Str_T read_file_shared(string filename, Arena* A = nullptr) {
     fd fin = open(filename.c_str(), O_RDONLY);
     if (fin < 0) {
         LG_ERR("Error opening for reading: {}", filename);
@@ -3626,7 +3630,7 @@ inline Str_T read_file_shared(string filename) {
     }
     Int len = lseek(fin, 0, SEEK_END);
     lseek(fin, 0, SEEK_SET);
-    auto ret = make_rc<Str>(0, len*2, _Vec_constr_internal{});
+    auto ret = make_rc<Str>(A, 0, len*2, _Vec_constr_internal{});
     Int n_read = sys_chk_nonneg(read(fin, &ret->at_unchecked(0), len), "read");
     AR_eq(n_read, len);
     close(fin);
