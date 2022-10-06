@@ -29,7 +29,7 @@
 #include <unordered_set>
 #include <vector>
 
-#ifdef __MACOS__
+#ifdef __APPLE__
 #include <signal.h>
 #endif
 
@@ -4033,7 +4033,7 @@ inline void dump_stack() {
         Dl_info info;
         dladdr(reinterpret_cast<void*>(ip), &info);
         auto offs = ip - reinterpret_cast<u64>(info.dli_fbase);
-#ifdef __MACOS__
+#ifdef __APPLE__
         offs += 0x100000000UL;
         offs -= 1;
 #endif
