@@ -2008,6 +2008,10 @@ void lang_emit_global_defs(LangCompileContext& ctx) {
                         auto v_delim1 = string_extract_lang_char_seq_single(
                             sp->delims_->operator[](k+1).to_std_string(),
                             mode->ws_sig__.as_some(), ctx);
+                        if (v_delim0 == v_delim1) {
+                            ctx.error(mode->ws_sig__.as_some(),
+                                "Opening and closing delimiters must be distinct");
+                        }
                         if (k > 0) {
                             ctx.cc_.Q_->qq_args_acc(lex_args, ",");
                         }

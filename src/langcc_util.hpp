@@ -1288,7 +1288,7 @@ template<typename ...Ts> void log_inner(Int level, const Ts&... args) {
 
 template<typename ...Ts>
 inline void AT(bool cond, const string& s, Ts... ts) {
-    if (!cond) {
+    if (__builtin_expect(!cond, 0)) {
         dump_stack();
         fmt(cerr, "Assertion failed");
         if (len(s) > 0) {
@@ -1301,7 +1301,11 @@ inline void AT(bool cond, const string& s, Ts... ts) {
 }
 
 inline void AT(bool cond) {
-    AT(cond, "");
+    if (__builtin_expect(!cond, 0)) {
+        dump_stack();
+        fmt(cerr, "Assertion failed\n");
+        assert(cond);
+    }
 }
 
 template<typename ...Ts>

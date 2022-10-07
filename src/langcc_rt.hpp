@@ -907,14 +907,18 @@ constexpr Int CMP_INCOMP = -2;
 
 inline Int ws_compare(const Vec<Ch>& a, const Vec<Ch>& b) {
     Int i = 0;
+    Int an = a.length();
+    Int bn = b.length();
     while (true) {
-        if (i >= a.length() && i >= b.length()) {
-            return CMP_EQ;
-        } else if (i >= a.length()) {
-            return CMP_LT;
-        } else if (i >= b.length()) {
+        if (__builtin_expect(i >= an, 0)) {
+            if (i >= bn) {
+                return CMP_EQ;
+            } else {
+                return CMP_LT;
+            }
+        } else if (__builtin_expect(i >= bn, 0)) {
             return CMP_GT;
-        } else if (a[i] == b[i]) {
+        } else if (a.at_unchecked(i) == b.at_unchecked(i)) {
             i += 1;
             continue;
         } else {
@@ -1114,13 +1118,13 @@ struct LexWhitespaceState {
             auto& buf_ref = ws_buf_stack_.back();
             auto cmp = ws_compare(*ws_buf_curr_, *buf_ref);
 
-            if (cmp == CMP_LT) {
+            if (__builtin_expect(cmp == CMP_EQ, 1)) {
+                break;
+            } else if (cmp == CMP_LT) {
                 ret.push(SymItem::make_lex_token(tok_id_dedent_, tok_to_sym_, pos, pos));
                 ws_buf_stack_.pop();
                 dedented = true;
                 continue;
-            } else if (cmp == CMP_EQ) {
-                break;
             } else if (cmp == CMP_GT) {
                 if (dedented) {
                     err_mismatch = true;
@@ -1169,23 +1173,20 @@ struct LexWhitespaceState {
 
     inline void delim_update(Ch ch, SymItemVec* dst) {
         for (auto p : *this->ws_sig_spec_.delims_) {
-            if (ch == p.first) {
+            if (__builtin_expect(ch == p.first, 0)) {
                 delim_stack_.push(ch);
                 return;
-            }
-        }
-        for (auto p : *this->ws_sig_spec_.delims_) {
-            if (ch == p.second && delim_stack_.length() > 0 &&
-                delim_stack_.back() == p.first) {
-                delim_stack_.pop();
-                return;
-            }
-        }
-        for (auto p : *this->ws_sig_spec_.delims_) {
-            if (ch == p.second) {
-                this->dst_gen_push_item(
-                    dst, SymItem::make_lex_token(
-                        tok_id_err_delim_mismatch_, tok_to_sym_, scan_i_, scan_i_+1));
+            } else if (__builtin_expect(ch == p.second, 0)) {
+                if (delim_stack_.length() > 0 &&
+                    delim_stack_.back() == p.first) {
+                    delim_stack_.pop();
+                    return;
+                } else {
+                    this->dst_gen_push_item(
+                        dst, SymItem::make_lex_token(
+                            tok_id_err_delim_mismatch_, tok_to_sym_, scan_i_, scan_i_+1));
+                    return;
+                }
             }
         }
     }
@@ -1206,6 +1207,9 @@ struct LexWhitespaceState {
     inline void scan_update(Int tok_hi, SymItemVec* dst) {
         AR_le(scan_i_, tok_hi);
 
+        const auto& lc_maybe = this->ws_sig_spec_.line_continuation_;
+        Ch lc = lc_maybe.is_some() ? lc_maybe.as_some() : -1;
+
         while (scan_i_ < tok_hi) {
             Ch c = input_data_[scan_i_];
 
@@ -1216,9 +1220,7 @@ struct LexWhitespaceState {
             }
 
             auto is_ws = (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\x0c');
-            auto is_lc = (
-                this->ws_sig_spec_.line_continuation_.is_some() &&
-                c == this->ws_sig_spec_.line_continuation_.as_some());
+            auto is_lc = (c == lc);
 
             if (is_ws && (c != '\n')) {
                 if (ws_buf_is_line_start_) {
