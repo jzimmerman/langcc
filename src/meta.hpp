@@ -305,6 +305,9 @@ inline Option_T<ParseExpr_Base_T> parse_expr_to_base_maybe(ParseExpr_T e) {
         auto ret = TokenBase::Special::make(TokenBaseSpecial::Newline);
         return Some(ParseExpr_Base::make(ret, Some<ParseExpr_T>(e)));
 
+    } else if (e->is_Minus()) {
+        return None<ParseExpr_Base_T>();
+
     } else {
         LG_ERR("{}", e);
         AX();
