@@ -581,6 +581,7 @@ bool lang_name_is_lower_reserved(string x) {
     res->insert("string");
     res->insert("Set");
     res->insert("Str");
+    res->insert("string");
     res->insert("struct");
     res->insert("switch");
     res->insert("template");
@@ -860,6 +861,12 @@ meta::Node::Lang_T xform_lang_normalize(
                     auto dc = decl->as_Rule();
                     if (dc->op_->is_DEF_ALIAS()) {
                         continue;
+                    }
+                    for (auto nm : *dc->name_->names_) {
+                        if (lang_name_is_lower_reserved(nm.to_std_string())) {
+                            ctx.error(dc, fmt_str("Name `{}` is a reserved keyword in some language",
+                                nm.to_std_string()));
+                        }
                     }
                     auto e_new = xform_parse_expr_normalize(
                         dc->e_, dst_props, gen, parser_aliases_by_ident, ctx)->as_ParseExpr();

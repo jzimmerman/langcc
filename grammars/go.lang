@@ -296,7 +296,7 @@ parser {
             Expr.ChannelType.Send Expr.ChannelType.Recv prefix;
         Expr.CompositeLit.Named Expr.CompositeLit.VarArray
             Expr.CompositeLit.Slice Expr.CompositeLit.Array
-            Expr.CompositeLit.Map Expr.CompositeLit.Struct postfix;
+            Expr.CompositeLit.Map_ Expr.CompositeLit.Struct postfix;
         Expr.Call.Standard Expr.Call.SliceType Expr.Call.ArrayType
             Expr.Call.MapType Expr.Index Expr.Slice postfix;
         Expr.SliceType Expr.ArrayType Expr.MapType prefix;
@@ -525,7 +525,7 @@ parser {
         val:CompositeLitVal;
     Expr.CompositeLit.Array <- `[` ind:ValI `]` elem_ty:Expr[T, gC, pr=*]
         val:CompositeLitVal;
-    Expr.CompositeLit.Map <- `map` `[` key_ty:TypeI `]`
+    Expr.CompositeLit.Map_ <- `map` `[` key_ty:TypeI `]`
         elem_ty:Expr[T, gC, pr=*]
         val:CompositeLitVal;
     Expr.CompositeLit.Struct <- `struct` _ `{` fields:#B[FieldDecl::`;`:?] `}`

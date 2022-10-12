@@ -203,7 +203,7 @@ parser {
         Expr.Call.Args Expr.Call.Comp Expr.Index
             Expr.Dot.Z Expr.Dot.NZ postfix;
         Expr.Id Expr.IdSpecial Expr.Lit.Int_ Expr.Lit.Float Expr.Lit.Imag
-            Expr.Lit.Str Expr.Lit.Bytes Expr.Paren 
+            Expr.Lit.Str_ Expr.Lit.Bytes Expr.Paren
             Expr.List Expr.ListComp Expr.SetConsComp Expr.SetCons
             Expr.DictCons Expr.DictConsComp Expr.ParenComp Expr.ParenYield
             Expr.Tuple.Empty Expr.Tuple.Single Expr.Tuple.Multi Expr.Ellipsis;
@@ -389,7 +389,7 @@ parser {
         UnaryPreOp <- Plus:`+` | Minus:`-` | Tilde:`~`;
         BinOp7 <- #Alt[Ss:`**`];
 
-    Expr.Lit.Str <- xs:#L[str_lit::+_];
+    Expr.Lit.Str_ <- xs:#L[str_lit::+_];
     Expr.Lit.Bytes <- xs:#L[bytes_lit::+_];
     Expr.Lit.Int_ <- x:int_lit;
     Expr.Lit.Float <- x:float_lit;

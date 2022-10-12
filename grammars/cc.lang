@@ -88,7 +88,7 @@ parser {
         Expr.Ellipsis postfix;
         Expr.Dot Expr.Arrow assoc_left;
         Expr.Namespace assoc_left;
-        Expr.Id Expr.Lit.Integer Expr.Lit.Str Expr.Lit.Array Expr.Paren;
+        Expr.Id Expr.Lit.Integer Expr.Lit.Str_ Expr.Lit.Array Expr.Paren;
     }
 
     attr {
@@ -220,7 +220,7 @@ parser {
     Expr.Namespace <- x:Expr `::` tilde:`~`? name:Id;
     Expr.Id <- name:id;
     Expr.Lit.Integer <- val:int_lit;
-    Expr.Lit.Str <- val:str_lit;
+    Expr.Lit.Str_ <- val:str_lit;
     Expr.Lit.Array <- `{` items:#L[Expr[pr=*]::`,`_] `}`;
 
     Type <= Expr[aT];

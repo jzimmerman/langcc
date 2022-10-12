@@ -888,12 +888,12 @@ namespace lang::cc::Node::Expr::Lit {
     using Integer_T = rc_ptr<lang::cc::Node::Expr::Lit::Integer::_T>;
 }
 
-namespace lang::cc::Node::Expr::Lit::Str {
+namespace lang::cc::Node::Expr::Lit::Str_ {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr::Lit {
-    using Str_T = rc_ptr<lang::cc::Node::Expr::Lit::Str::_T>;
+    using Str__T = rc_ptr<lang::cc::Node::Expr::Lit::Str_::_T>;
 }
 
 namespace lang::cc::Node::Expr::Lit::Array {
@@ -3449,7 +3449,7 @@ void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit_T x);
 namespace lang::cc::Node::Expr::Lit {
     enum struct _W {
         Integer,
-        Str,
+        Str_,
         Array,
     };
 }
@@ -3462,10 +3462,10 @@ namespace lang::cc::Node::Expr::Lit {
         virtual ~_T();
         _T(lang::cc::Node::Expr::Lit::_W w);
         bool is_Integer();
-        bool is_Str();
+        bool is_Str_();
         bool is_Array();
         lang::cc::Node::Expr::Lit::Integer_T as_Integer();
-        lang::cc::Node::Expr::Lit::Str_T as_Str();
+        lang::cc::Node::Expr::Lit::Str__T as_Str_();
         lang::cc::Node::Expr::Lit::Array_T as_Array();
         void hash_ser_acc_lang_cc_Node_Expr_Lit(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
@@ -3873,30 +3873,30 @@ namespace lang::cc::Node::Expr::Lit::Integer {
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Str_T x);
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Str__T x);
 
-namespace lang::cc::Node::Expr::Lit::Str {
-    lang::cc::Node::Expr::Lit::Str_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+namespace lang::cc::Node::Expr::Lit::Str_ {
+    lang::cc::Node::Expr::Lit::Str__T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
-namespace lang::cc::Node::Expr::Lit::Str {
-    lang::cc::Node::Expr::Lit::Str_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
+namespace lang::cc::Node::Expr::Lit::Str_ {
+    lang::cc::Node::Expr::Lit::Str__T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice val);
 }
 
-namespace lang::cc::Node::Expr::Lit::Str {
+namespace lang::cc::Node::Expr::Lit::Str_ {
     struct _T: lang::cc::Node::Expr::Lit::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
         StrSlice val_;
         _T();
-        lang::cc::Node::Expr::Lit::Str_T with_id(Int id);
-        lang::cc::Node::Expr::Lit::Str_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Expr::Lit::Str_T with_is_top(bool is_top);
-        lang::cc::Node::Expr::Lit::Str_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Expr::Lit::Str_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Expr::Lit::Str_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Expr::Lit::Str_T with_val(StrSlice val);
-        void hash_ser_acc_lang_cc_Node_Expr_Lit_Str(SerBuf& buf) const;
+        lang::cc::Node::Expr::Lit::Str__T with_id(Int id);
+        lang::cc::Node::Expr::Lit::Str__T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Expr::Lit::Str__T with_is_top(bool is_top);
+        lang::cc::Node::Expr::Lit::Str__T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Expr::Lit::Str__T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Expr::Lit::Str__T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Expr::Lit::Str__T with_val(StrSlice val);
+        void hash_ser_acc_lang_cc_Node_Expr_Lit_Str_(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
@@ -4709,7 +4709,7 @@ void visit_lang_cc_Node(lang::cc::Node::Expr::Id_T x, function<void(lang::cc::No
 
 void visit_lang_cc_Node(lang::cc::Node::Expr::Lit::Integer_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Expr::Lit::Str_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Expr::Lit::Str__T x, function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::Expr::Lit::Array_T x, function<void(lang::cc::Node_T)> f);
 
@@ -4949,7 +4949,7 @@ lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Id_T x, function<lang
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Lit::Integer_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Lit::Str_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Lit::Str__T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Lit::Array_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
@@ -5205,7 +5205,7 @@ lang::cc::Node::Expr::Lit_T xform_lang_cc_Node(lang::cc::Node::Expr::Lit_T x, fu
 
 lang::cc::Node::Expr::Lit::Integer_T xform_lang_cc_Node(lang::cc::Node::Expr::Lit::Integer_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Expr::Lit::Str_T xform_lang_cc_Node(lang::cc::Node::Expr::Lit::Str_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Expr::Lit::Str__T xform_lang_cc_Node(lang::cc::Node::Expr::Lit::Str__T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Expr::Lit::Array_T xform_lang_cc_Node(lang::cc::Node::Expr::Lit::Array_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
