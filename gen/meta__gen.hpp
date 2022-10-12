@@ -1005,9 +1005,127 @@ namespace lang::meta::Node {
         lang::meta::Node::AttrReq_T as_AttrReq();
         lang::meta::Node::ParseExprListType_T as_ParseExprListType();
         lang::meta::Node::ParseExprListNum_T as_ParseExprListNum();
+        void match(function<void(lang::meta::Node::Lang_T)> f_Lang, function<void(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, function<void(lang::meta::Node::TokenDecl_T)> f_TokenDecl, function<void(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, function<void(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, function<void(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, function<void(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, function<void(lang::meta::Node::PrecItem_T)> f_PrecItem, function<void(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, function<void(lang::meta::Node::TestCase_T)> f_TestCase, function<void(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, function<void(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, function<void(lang::meta::Node::Id_T)> f_Id, function<void(lang::meta::Node::Stanza_T)> f_Stanza, function<void(lang::meta::Node::LexerDecl_T)> f_LexerDecl, function<void(lang::meta::Node::LexerInstr_T)> f_LexerInstr, function<void(lang::meta::Node::ParserDecl_T)> f_ParserDecl, function<void(lang::meta::Node::ParserProp_T)> f_ParserProp, function<void(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, function<void(lang::meta::Node::AttrClause_T)> f_AttrClause, function<void(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, function<void(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, function<void(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, function<void(lang::meta::Node::ParseExpr_T)> f_ParseExpr, function<void(lang::meta::Node::AttrReq_T)> f_AttrReq, function<void(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, function<void(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::Lang_T)> f_Lang, function<RetT(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, function<RetT(lang::meta::Node::TokenDecl_T)> f_TokenDecl, function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, function<RetT(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, function<RetT(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, function<RetT(lang::meta::Node::PrecItem_T)> f_PrecItem, function<RetT(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, function<RetT(lang::meta::Node::TestCase_T)> f_TestCase, function<RetT(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, function<RetT(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, function<RetT(lang::meta::Node::Id_T)> f_Id, function<RetT(lang::meta::Node::Stanza_T)> f_Stanza, function<RetT(lang::meta::Node::LexerDecl_T)> f_LexerDecl, function<RetT(lang::meta::Node::LexerInstr_T)> f_LexerInstr, function<RetT(lang::meta::Node::ParserDecl_T)> f_ParserDecl, function<RetT(lang::meta::Node::ParserProp_T)> f_ParserProp, function<RetT(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, function<RetT(lang::meta::Node::AttrClause_T)> f_AttrClause, function<RetT(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, function<RetT(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, function<RetT(lang::meta::Node::ParseExpr_T)> f_ParseExpr, function<RetT(lang::meta::Node::AttrReq_T)> f_AttrReq, function<RetT(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, function<RetT(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum);
         void hash_ser_acc_lang_meta_Node(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::_T::match_expr(function<RetT(lang::meta::Node::Lang_T)> f_Lang, function<RetT(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, function<RetT(lang::meta::Node::TokenDecl_T)> f_TokenDecl, function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, function<RetT(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, function<RetT(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, function<RetT(lang::meta::Node::PrecItem_T)> f_PrecItem, function<RetT(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, function<RetT(lang::meta::Node::TestCase_T)> f_TestCase, function<RetT(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, function<RetT(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, function<RetT(lang::meta::Node::Id_T)> f_Id, function<RetT(lang::meta::Node::Stanza_T)> f_Stanza, function<RetT(lang::meta::Node::LexerDecl_T)> f_LexerDecl, function<RetT(lang::meta::Node::LexerInstr_T)> f_LexerInstr, function<RetT(lang::meta::Node::ParserDecl_T)> f_ParserDecl, function<RetT(lang::meta::Node::ParserProp_T)> f_ParserProp, function<RetT(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, function<RetT(lang::meta::Node::AttrClause_T)> f_AttrClause, function<RetT(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, function<RetT(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, function<RetT(lang::meta::Node::ParseExpr_T)> f_ParseExpr, function<RetT(lang::meta::Node::AttrReq_T)> f_AttrReq, function<RetT(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, function<RetT(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum) {
+    switch (this->w_) {
+        case lang::meta::Node::_W::Lang: {
+            return f_Lang(this->as_Lang());
+            break;
+        }
+        case lang::meta::Node::_W::TokenDecl__op: {
+            return f_TokenDecl__op(this->as_TokenDecl__op());
+            break;
+        }
+        case lang::meta::Node::_W::TokenDecl: {
+            return f_TokenDecl(this->as_TokenDecl());
+            break;
+        }
+        case lang::meta::Node::_W::LexerDecl__Mode__ws_sig___spec: {
+            return f_LexerDecl__Mode__ws_sig___spec(this->as_LexerDecl__Mode__ws_sig___spec());
+            break;
+        }
+        case lang::meta::Node::_W::LexerDecl__Mode__ws_sig_: {
+            return f_LexerDecl__Mode__ws_sig_(this->as_LexerDecl__Mode__ws_sig_());
+            break;
+        }
+        case lang::meta::Node::_W::LexerModeCase: {
+            return f_LexerModeCase(this->as_LexerModeCase());
+            break;
+        }
+        case lang::meta::Node::_W::ParserDecl__Rule__op: {
+            return f_ParserDecl__Rule__op(this->as_ParserDecl__Rule__op());
+            break;
+        }
+        case lang::meta::Node::_W::PrecItem: {
+            return f_PrecItem(this->as_PrecItem());
+            break;
+        }
+        case lang::meta::Node::_W::AttrMatchCase: {
+            return f_AttrMatchCase(this->as_AttrMatchCase());
+            break;
+        }
+        case lang::meta::Node::_W::TestCase: {
+            return f_TestCase(this->as_TestCase());
+            break;
+        }
+        case lang::meta::Node::_W::CompileTestCase: {
+            return f_CompileTestCase(this->as_CompileTestCase());
+            break;
+        }
+        case lang::meta::Node::_W::ParseExpr__List__end_delim: {
+            return f_ParseExpr__List__end_delim(this->as_ParseExpr__List__end_delim());
+            break;
+        }
+        case lang::meta::Node::_W::Id: {
+            return f_Id(this->as_Id());
+            break;
+        }
+        case lang::meta::Node::_W::Stanza: {
+            return f_Stanza(this->as_Stanza());
+            break;
+        }
+        case lang::meta::Node::_W::LexerDecl: {
+            return f_LexerDecl(this->as_LexerDecl());
+            break;
+        }
+        case lang::meta::Node::_W::LexerInstr: {
+            return f_LexerInstr(this->as_LexerInstr());
+            break;
+        }
+        case lang::meta::Node::_W::ParserDecl: {
+            return f_ParserDecl(this->as_ParserDecl());
+            break;
+        }
+        case lang::meta::Node::_W::ParserProp: {
+            return f_ParserProp(this->as_ParserProp());
+            break;
+        }
+        case lang::meta::Node::_W::PrecAssoc: {
+            return f_PrecAssoc(this->as_PrecAssoc());
+            break;
+        }
+        case lang::meta::Node::_W::AttrClause: {
+            return f_AttrClause(this->as_AttrClause());
+            break;
+        }
+        case lang::meta::Node::_W::AttrMatchCasePattern: {
+            return f_AttrMatchCasePattern(this->as_AttrMatchCasePattern());
+            break;
+        }
+        case lang::meta::Node::_W::AttrClauseExpr: {
+            return f_AttrClauseExpr(this->as_AttrClauseExpr());
+            break;
+        }
+        case lang::meta::Node::_W::AttrClauseExprRhsLoc: {
+            return f_AttrClauseExprRhsLoc(this->as_AttrClauseExprRhsLoc());
+            break;
+        }
+        case lang::meta::Node::_W::ParseExpr: {
+            return f_ParseExpr(this->as_ParseExpr());
+            break;
+        }
+        case lang::meta::Node::_W::AttrReq: {
+            return f_AttrReq(this->as_AttrReq());
+            break;
+        }
+        case lang::meta::Node::_W::ParseExprListType: {
+            return f_ParseExprListType(this->as_ParseExprListType());
+            break;
+        }
+        case lang::meta::Node::_W::ParseExprListNum: {
+            return f_ParseExprListNum(this->as_ParseExprListNum());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Lang_T x);
@@ -1279,9 +1397,39 @@ namespace lang::meta::Node::Stanza {
         lang::meta::Node::Stanza::Parser_T as_Parser();
         lang::meta::Node::Stanza::Test_T as_Test();
         lang::meta::Node::Stanza::CompileTest_T as_CompileTest();
+        void match(function<void(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, function<void(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, function<void(lang::meta::Node::Stanza::Parser_T)> f_Parser, function<void(lang::meta::Node::Stanza::Test_T)> f_Test, function<void(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, function<RetT(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, function<RetT(lang::meta::Node::Stanza::Parser_T)> f_Parser, function<RetT(lang::meta::Node::Stanza::Test_T)> f_Test, function<RetT(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest);
         void hash_ser_acc_lang_meta_Node_Stanza(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::Stanza::_T::match_expr(function<RetT(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, function<RetT(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, function<RetT(lang::meta::Node::Stanza::Parser_T)> f_Parser, function<RetT(lang::meta::Node::Stanza::Test_T)> f_Test, function<RetT(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest) {
+    switch (this->w_) {
+        case lang::meta::Node::Stanza::_W::Tokens: {
+            return f_Tokens(this->as_Tokens());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Lexer: {
+            return f_Lexer(this->as_Lexer());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Parser: {
+            return f_Parser(this->as_Parser());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Test: {
+            return f_Test(this->as_Test());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::CompileTest: {
+            return f_CompileTest(this->as_CompileTest());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T x);
@@ -1304,9 +1452,27 @@ namespace lang::meta::Node::LexerDecl {
         bool is_Mode();
         lang::meta::Node::LexerDecl::Main_T as_Main();
         lang::meta::Node::LexerDecl::Mode_T as_Mode();
+        void match(function<void(lang::meta::Node::LexerDecl::Main_T)> f_Main, function<void(lang::meta::Node::LexerDecl::Mode_T)> f_Mode);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::LexerDecl::Main_T)> f_Main, function<RetT(lang::meta::Node::LexerDecl::Mode_T)> f_Mode);
         void hash_ser_acc_lang_meta_Node_LexerDecl(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::LexerDecl::_T::match_expr(function<RetT(lang::meta::Node::LexerDecl::Main_T)> f_Main, function<RetT(lang::meta::Node::LexerDecl::Mode_T)> f_Mode) {
+    switch (this->w_) {
+        case lang::meta::Node::LexerDecl::_W::Main: {
+            return f_Main(this->as_Main());
+            break;
+        }
+        case lang::meta::Node::LexerDecl::_W::Mode: {
+            return f_Mode(this->as_Mode());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr_T x);
@@ -1344,9 +1510,47 @@ namespace lang::meta::Node::LexerInstr {
         lang::meta::Node::LexerInstr::PopExtract_T as_PopExtract();
         lang::meta::Node::LexerInstr::PopEmit_T as_PopEmit();
         lang::meta::Node::LexerInstr::MatchHistory_T as_MatchHistory();
+        void match(function<void(lang::meta::Node::LexerInstr::Emit_T)> f_Emit, function<void(lang::meta::Node::LexerInstr::Pass_T)> f_Pass, function<void(lang::meta::Node::LexerInstr::Push_T)> f_Push, function<void(lang::meta::Node::LexerInstr::Pop_T)> f_Pop, function<void(lang::meta::Node::LexerInstr::PopExtract_T)> f_PopExtract, function<void(lang::meta::Node::LexerInstr::PopEmit_T)> f_PopEmit, function<void(lang::meta::Node::LexerInstr::MatchHistory_T)> f_MatchHistory);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::LexerInstr::Emit_T)> f_Emit, function<RetT(lang::meta::Node::LexerInstr::Pass_T)> f_Pass, function<RetT(lang::meta::Node::LexerInstr::Push_T)> f_Push, function<RetT(lang::meta::Node::LexerInstr::Pop_T)> f_Pop, function<RetT(lang::meta::Node::LexerInstr::PopExtract_T)> f_PopExtract, function<RetT(lang::meta::Node::LexerInstr::PopEmit_T)> f_PopEmit, function<RetT(lang::meta::Node::LexerInstr::MatchHistory_T)> f_MatchHistory);
         void hash_ser_acc_lang_meta_Node_LexerInstr(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::LexerInstr::_T::match_expr(function<RetT(lang::meta::Node::LexerInstr::Emit_T)> f_Emit, function<RetT(lang::meta::Node::LexerInstr::Pass_T)> f_Pass, function<RetT(lang::meta::Node::LexerInstr::Push_T)> f_Push, function<RetT(lang::meta::Node::LexerInstr::Pop_T)> f_Pop, function<RetT(lang::meta::Node::LexerInstr::PopExtract_T)> f_PopExtract, function<RetT(lang::meta::Node::LexerInstr::PopEmit_T)> f_PopEmit, function<RetT(lang::meta::Node::LexerInstr::MatchHistory_T)> f_MatchHistory) {
+    switch (this->w_) {
+        case lang::meta::Node::LexerInstr::_W::Emit: {
+            return f_Emit(this->as_Emit());
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::Pass: {
+            return f_Pass(this->as_Pass());
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::Push: {
+            return f_Push(this->as_Push());
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::Pop: {
+            return f_Pop(this->as_Pop());
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::PopExtract: {
+            return f_PopExtract(this->as_PopExtract());
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::PopEmit: {
+            return f_PopEmit(this->as_PopEmit());
+            break;
+        }
+        case lang::meta::Node::LexerInstr::_W::MatchHistory: {
+            return f_MatchHistory(this->as_MatchHistory());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl_T x);
@@ -1378,9 +1582,39 @@ namespace lang::meta::Node::ParserDecl {
         lang::meta::Node::ParserDecl::Prec_T as_Prec();
         lang::meta::Node::ParserDecl::Attr_T as_Attr();
         lang::meta::Node::ParserDecl::Rule_T as_Rule();
+        void match(function<void(lang::meta::Node::ParserDecl::Main_T)> f_Main, function<void(lang::meta::Node::ParserDecl::Prop_T)> f_Prop, function<void(lang::meta::Node::ParserDecl::Prec_T)> f_Prec, function<void(lang::meta::Node::ParserDecl::Attr_T)> f_Attr, function<void(lang::meta::Node::ParserDecl::Rule_T)> f_Rule);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::ParserDecl::Main_T)> f_Main, function<RetT(lang::meta::Node::ParserDecl::Prop_T)> f_Prop, function<RetT(lang::meta::Node::ParserDecl::Prec_T)> f_Prec, function<RetT(lang::meta::Node::ParserDecl::Attr_T)> f_Attr, function<RetT(lang::meta::Node::ParserDecl::Rule_T)> f_Rule);
         void hash_ser_acc_lang_meta_Node_ParserDecl(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::ParserDecl::_T::match_expr(function<RetT(lang::meta::Node::ParserDecl::Main_T)> f_Main, function<RetT(lang::meta::Node::ParserDecl::Prop_T)> f_Prop, function<RetT(lang::meta::Node::ParserDecl::Prec_T)> f_Prec, function<RetT(lang::meta::Node::ParserDecl::Attr_T)> f_Attr, function<RetT(lang::meta::Node::ParserDecl::Rule_T)> f_Rule) {
+    switch (this->w_) {
+        case lang::meta::Node::ParserDecl::_W::Main: {
+            return f_Main(this->as_Main());
+            break;
+        }
+        case lang::meta::Node::ParserDecl::_W::Prop: {
+            return f_Prop(this->as_Prop());
+            break;
+        }
+        case lang::meta::Node::ParserDecl::_W::Prec: {
+            return f_Prec(this->as_Prec());
+            break;
+        }
+        case lang::meta::Node::ParserDecl::_W::Attr: {
+            return f_Attr(this->as_Attr());
+            break;
+        }
+        case lang::meta::Node::ParserDecl::_W::Rule: {
+            return f_Rule(this->as_Rule());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp_T x);
@@ -1406,9 +1640,31 @@ namespace lang::meta::Node::ParserProp {
         lang::meta::Node::ParserProp::NameStrict_T as_NameStrict();
         lang::meta::Node::ParserProp::LRSpec_T as_LRSpec();
         lang::meta::Node::ParserProp::Err__T as_Err_();
+        void match(function<void(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, function<void(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, function<void(lang::meta::Node::ParserProp::Err__T)> f_Err_);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_);
         void hash_ser_acc_lang_meta_Node_ParserProp(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_) {
+    switch (this->w_) {
+        case lang::meta::Node::ParserProp::_W::NameStrict: {
+            return f_NameStrict(this->as_NameStrict());
+            break;
+        }
+        case lang::meta::Node::ParserProp::_W::LRSpec: {
+            return f_LRSpec(this->as_LRSpec());
+            break;
+        }
+        case lang::meta::Node::ParserProp::_W::Err_: {
+            return f_Err_(this->as_Err_());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc_T x);
@@ -1437,9 +1693,35 @@ namespace lang::meta::Node::PrecAssoc {
         lang::meta::Node::PrecAssoc::Right_T as_Right();
         lang::meta::Node::PrecAssoc::Prefix_T as_Prefix();
         lang::meta::Node::PrecAssoc::Postfix_T as_Postfix();
+        void match(function<void(lang::meta::Node::PrecAssoc::Left_T)> f_Left, function<void(lang::meta::Node::PrecAssoc::Right_T)> f_Right, function<void(lang::meta::Node::PrecAssoc::Prefix_T)> f_Prefix, function<void(lang::meta::Node::PrecAssoc::Postfix_T)> f_Postfix);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::PrecAssoc::Left_T)> f_Left, function<RetT(lang::meta::Node::PrecAssoc::Right_T)> f_Right, function<RetT(lang::meta::Node::PrecAssoc::Prefix_T)> f_Prefix, function<RetT(lang::meta::Node::PrecAssoc::Postfix_T)> f_Postfix);
         void hash_ser_acc_lang_meta_Node_PrecAssoc(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::PrecAssoc::_T::match_expr(function<RetT(lang::meta::Node::PrecAssoc::Left_T)> f_Left, function<RetT(lang::meta::Node::PrecAssoc::Right_T)> f_Right, function<RetT(lang::meta::Node::PrecAssoc::Prefix_T)> f_Prefix, function<RetT(lang::meta::Node::PrecAssoc::Postfix_T)> f_Postfix) {
+    switch (this->w_) {
+        case lang::meta::Node::PrecAssoc::_W::Left: {
+            return f_Left(this->as_Left());
+            break;
+        }
+        case lang::meta::Node::PrecAssoc::_W::Right: {
+            return f_Right(this->as_Right());
+            break;
+        }
+        case lang::meta::Node::PrecAssoc::_W::Prefix: {
+            return f_Prefix(this->as_Prefix());
+            break;
+        }
+        case lang::meta::Node::PrecAssoc::_W::Postfix: {
+            return f_Postfix(this->as_Postfix());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause_T x);
@@ -1465,9 +1747,31 @@ namespace lang::meta::Node::AttrClause {
         lang::meta::Node::AttrClause::Expr_T as_Expr();
         lang::meta::Node::AttrClause::Block_T as_Block();
         lang::meta::Node::AttrClause::Match_T as_Match();
+        void match(function<void(lang::meta::Node::AttrClause::Expr_T)> f_Expr, function<void(lang::meta::Node::AttrClause::Block_T)> f_Block, function<void(lang::meta::Node::AttrClause::Match_T)> f_Match);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::AttrClause::Expr_T)> f_Expr, function<RetT(lang::meta::Node::AttrClause::Block_T)> f_Block, function<RetT(lang::meta::Node::AttrClause::Match_T)> f_Match);
         void hash_ser_acc_lang_meta_Node_AttrClause(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::AttrClause::_T::match_expr(function<RetT(lang::meta::Node::AttrClause::Expr_T)> f_Expr, function<RetT(lang::meta::Node::AttrClause::Block_T)> f_Block, function<RetT(lang::meta::Node::AttrClause::Match_T)> f_Match) {
+    switch (this->w_) {
+        case lang::meta::Node::AttrClause::_W::Expr: {
+            return f_Expr(this->as_Expr());
+            break;
+        }
+        case lang::meta::Node::AttrClause::_W::Block: {
+            return f_Block(this->as_Block());
+            break;
+        }
+        case lang::meta::Node::AttrClause::_W::Match: {
+            return f_Match(this->as_Match());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern_T x);
@@ -1490,9 +1794,27 @@ namespace lang::meta::Node::AttrMatchCasePattern {
         bool is_Wildcard();
         lang::meta::Node::AttrMatchCasePattern::Alt_T as_Alt();
         lang::meta::Node::AttrMatchCasePattern::Wildcard_T as_Wildcard();
+        void match(function<void(lang::meta::Node::AttrMatchCasePattern::Alt_T)> f_Alt, function<void(lang::meta::Node::AttrMatchCasePattern::Wildcard_T)> f_Wildcard);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::AttrMatchCasePattern::Alt_T)> f_Alt, function<RetT(lang::meta::Node::AttrMatchCasePattern::Wildcard_T)> f_Wildcard);
         void hash_ser_acc_lang_meta_Node_AttrMatchCasePattern(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::AttrMatchCasePattern::_T::match_expr(function<RetT(lang::meta::Node::AttrMatchCasePattern::Alt_T)> f_Alt, function<RetT(lang::meta::Node::AttrMatchCasePattern::Wildcard_T)> f_Wildcard) {
+    switch (this->w_) {
+        case lang::meta::Node::AttrMatchCasePattern::_W::Alt: {
+            return f_Alt(this->as_Alt());
+            break;
+        }
+        case lang::meta::Node::AttrMatchCasePattern::_W::Wildcard: {
+            return f_Wildcard(this->as_Wildcard());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr_T x);
@@ -1518,9 +1840,31 @@ namespace lang::meta::Node::AttrClauseExpr {
         lang::meta::Node::AttrClauseExpr::LhsGeq_T as_LhsGeq();
         lang::meta::Node::AttrClauseExpr::RhsGeq_T as_RhsGeq();
         lang::meta::Node::AttrClauseExpr::Implies_T as_Implies();
+        void match(function<void(lang::meta::Node::AttrClauseExpr::LhsGeq_T)> f_LhsGeq, function<void(lang::meta::Node::AttrClauseExpr::RhsGeq_T)> f_RhsGeq, function<void(lang::meta::Node::AttrClauseExpr::Implies_T)> f_Implies);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::AttrClauseExpr::LhsGeq_T)> f_LhsGeq, function<RetT(lang::meta::Node::AttrClauseExpr::RhsGeq_T)> f_RhsGeq, function<RetT(lang::meta::Node::AttrClauseExpr::Implies_T)> f_Implies);
         void hash_ser_acc_lang_meta_Node_AttrClauseExpr(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::AttrClauseExpr::_T::match_expr(function<RetT(lang::meta::Node::AttrClauseExpr::LhsGeq_T)> f_LhsGeq, function<RetT(lang::meta::Node::AttrClauseExpr::RhsGeq_T)> f_RhsGeq, function<RetT(lang::meta::Node::AttrClauseExpr::Implies_T)> f_Implies) {
+    switch (this->w_) {
+        case lang::meta::Node::AttrClauseExpr::_W::LhsGeq: {
+            return f_LhsGeq(this->as_LhsGeq());
+            break;
+        }
+        case lang::meta::Node::AttrClauseExpr::_W::RhsGeq: {
+            return f_RhsGeq(this->as_RhsGeq());
+            break;
+        }
+        case lang::meta::Node::AttrClauseExpr::_W::Implies: {
+            return f_Implies(this->as_Implies());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc_T x);
@@ -1549,9 +1893,35 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc {
         lang::meta::Node::AttrClauseExprRhsLoc::Begin_T as_Begin();
         lang::meta::Node::AttrClauseExprRhsLoc::Mid_T as_Mid();
         lang::meta::Node::AttrClauseExprRhsLoc::End_T as_End();
+        void match(function<void(lang::meta::Node::AttrClauseExprRhsLoc::All_T)> f_All, function<void(lang::meta::Node::AttrClauseExprRhsLoc::Begin_T)> f_Begin, function<void(lang::meta::Node::AttrClauseExprRhsLoc::Mid_T)> f_Mid, function<void(lang::meta::Node::AttrClauseExprRhsLoc::End_T)> f_End);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::All_T)> f_All, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::Begin_T)> f_Begin, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::Mid_T)> f_Mid, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::End_T)> f_End);
         void hash_ser_acc_lang_meta_Node_AttrClauseExprRhsLoc(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::AttrClauseExprRhsLoc::_T::match_expr(function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::All_T)> f_All, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::Begin_T)> f_Begin, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::Mid_T)> f_Mid, function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::End_T)> f_End) {
+    switch (this->w_) {
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::All: {
+            return f_All(this->as_All());
+            break;
+        }
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::Begin: {
+            return f_Begin(this->as_Begin());
+            break;
+        }
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::Mid: {
+            return f_Mid(this->as_Mid());
+            break;
+        }
+        case lang::meta::Node::AttrClauseExprRhsLoc::_W::End: {
+            return f_End(this->as_End());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr_T x);
@@ -1646,9 +2016,123 @@ namespace lang::meta::Node::ParseExpr {
         lang::meta::Node::ParseExpr::List_T as_List();
         lang::meta::Node::ParseExpr::Unfold_T as_Unfold();
         lang::meta::Node::ParseExpr::AttrReq_T as_AttrReq();
+        void match(function<void(lang::meta::Node::ParseExpr::Id_T)> f_Id, function<void(lang::meta::Node::ParseExpr::Eof_T)> f_Eof, function<void(lang::meta::Node::ParseExpr::False_T)> f_False, function<void(lang::meta::Node::ParseExpr::Eps_T)> f_Eps, function<void(lang::meta::Node::ParseExpr::Indent_T)> f_Indent, function<void(lang::meta::Node::ParseExpr::Dedent_T)> f_Dedent, function<void(lang::meta::Node::ParseExpr::Newline_T)> f_Newline, function<void(lang::meta::Node::ParseExpr::UnicodeAny_T)> f_UnicodeAny, function<void(lang::meta::Node::ParseExpr::AsciiBaseAny_T)> f_AsciiBaseAny, function<void(lang::meta::Node::ParseExpr::Alt_T)> f_Alt, function<void(lang::meta::Node::ParseExpr::AltExplicit_T)> f_AltExplicit, function<void(lang::meta::Node::ParseExpr::Minus_T)> f_Minus, function<void(lang::meta::Node::ParseExpr::Concat_T)> f_Concat, function<void(lang::meta::Node::ParseExpr::Optional_T)> f_Optional, function<void(lang::meta::Node::ParseExpr::Rep_T)> f_Rep, function<void(lang::meta::Node::ParseExpr::RepNonzero_T)> f_RepNonzero, function<void(lang::meta::Node::ParseExpr::RepCount_T)> f_RepCount, function<void(lang::meta::Node::ParseExpr::CharRange_T)> f_CharRange, function<void(lang::meta::Node::ParseExpr::StrLit_T)> f_StrLit, function<void(lang::meta::Node::ParseExpr::Underscore_T)> f_Underscore, function<void(lang::meta::Node::ParseExpr::Pass_T)> f_Pass, function<void(lang::meta::Node::ParseExpr::Paren_T)> f_Paren, function<void(lang::meta::Node::ParseExpr::Name_T)> f_Name, function<void(lang::meta::Node::ParseExpr::List_T)> f_List, function<void(lang::meta::Node::ParseExpr::Unfold_T)> f_Unfold, function<void(lang::meta::Node::ParseExpr::AttrReq_T)> f_AttrReq);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::ParseExpr::Id_T)> f_Id, function<RetT(lang::meta::Node::ParseExpr::Eof_T)> f_Eof, function<RetT(lang::meta::Node::ParseExpr::False_T)> f_False, function<RetT(lang::meta::Node::ParseExpr::Eps_T)> f_Eps, function<RetT(lang::meta::Node::ParseExpr::Indent_T)> f_Indent, function<RetT(lang::meta::Node::ParseExpr::Dedent_T)> f_Dedent, function<RetT(lang::meta::Node::ParseExpr::Newline_T)> f_Newline, function<RetT(lang::meta::Node::ParseExpr::UnicodeAny_T)> f_UnicodeAny, function<RetT(lang::meta::Node::ParseExpr::AsciiBaseAny_T)> f_AsciiBaseAny, function<RetT(lang::meta::Node::ParseExpr::Alt_T)> f_Alt, function<RetT(lang::meta::Node::ParseExpr::AltExplicit_T)> f_AltExplicit, function<RetT(lang::meta::Node::ParseExpr::Minus_T)> f_Minus, function<RetT(lang::meta::Node::ParseExpr::Concat_T)> f_Concat, function<RetT(lang::meta::Node::ParseExpr::Optional_T)> f_Optional, function<RetT(lang::meta::Node::ParseExpr::Rep_T)> f_Rep, function<RetT(lang::meta::Node::ParseExpr::RepNonzero_T)> f_RepNonzero, function<RetT(lang::meta::Node::ParseExpr::RepCount_T)> f_RepCount, function<RetT(lang::meta::Node::ParseExpr::CharRange_T)> f_CharRange, function<RetT(lang::meta::Node::ParseExpr::StrLit_T)> f_StrLit, function<RetT(lang::meta::Node::ParseExpr::Underscore_T)> f_Underscore, function<RetT(lang::meta::Node::ParseExpr::Pass_T)> f_Pass, function<RetT(lang::meta::Node::ParseExpr::Paren_T)> f_Paren, function<RetT(lang::meta::Node::ParseExpr::Name_T)> f_Name, function<RetT(lang::meta::Node::ParseExpr::List_T)> f_List, function<RetT(lang::meta::Node::ParseExpr::Unfold_T)> f_Unfold, function<RetT(lang::meta::Node::ParseExpr::AttrReq_T)> f_AttrReq);
         void hash_ser_acc_lang_meta_Node_ParseExpr(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::ParseExpr::_T::match_expr(function<RetT(lang::meta::Node::ParseExpr::Id_T)> f_Id, function<RetT(lang::meta::Node::ParseExpr::Eof_T)> f_Eof, function<RetT(lang::meta::Node::ParseExpr::False_T)> f_False, function<RetT(lang::meta::Node::ParseExpr::Eps_T)> f_Eps, function<RetT(lang::meta::Node::ParseExpr::Indent_T)> f_Indent, function<RetT(lang::meta::Node::ParseExpr::Dedent_T)> f_Dedent, function<RetT(lang::meta::Node::ParseExpr::Newline_T)> f_Newline, function<RetT(lang::meta::Node::ParseExpr::UnicodeAny_T)> f_UnicodeAny, function<RetT(lang::meta::Node::ParseExpr::AsciiBaseAny_T)> f_AsciiBaseAny, function<RetT(lang::meta::Node::ParseExpr::Alt_T)> f_Alt, function<RetT(lang::meta::Node::ParseExpr::AltExplicit_T)> f_AltExplicit, function<RetT(lang::meta::Node::ParseExpr::Minus_T)> f_Minus, function<RetT(lang::meta::Node::ParseExpr::Concat_T)> f_Concat, function<RetT(lang::meta::Node::ParseExpr::Optional_T)> f_Optional, function<RetT(lang::meta::Node::ParseExpr::Rep_T)> f_Rep, function<RetT(lang::meta::Node::ParseExpr::RepNonzero_T)> f_RepNonzero, function<RetT(lang::meta::Node::ParseExpr::RepCount_T)> f_RepCount, function<RetT(lang::meta::Node::ParseExpr::CharRange_T)> f_CharRange, function<RetT(lang::meta::Node::ParseExpr::StrLit_T)> f_StrLit, function<RetT(lang::meta::Node::ParseExpr::Underscore_T)> f_Underscore, function<RetT(lang::meta::Node::ParseExpr::Pass_T)> f_Pass, function<RetT(lang::meta::Node::ParseExpr::Paren_T)> f_Paren, function<RetT(lang::meta::Node::ParseExpr::Name_T)> f_Name, function<RetT(lang::meta::Node::ParseExpr::List_T)> f_List, function<RetT(lang::meta::Node::ParseExpr::Unfold_T)> f_Unfold, function<RetT(lang::meta::Node::ParseExpr::AttrReq_T)> f_AttrReq) {
+    switch (this->w_) {
+        case lang::meta::Node::ParseExpr::_W::Id: {
+            return f_Id(this->as_Id());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Eof: {
+            return f_Eof(this->as_Eof());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::False: {
+            return f_False(this->as_False());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Eps: {
+            return f_Eps(this->as_Eps());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Indent: {
+            return f_Indent(this->as_Indent());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Dedent: {
+            return f_Dedent(this->as_Dedent());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Newline: {
+            return f_Newline(this->as_Newline());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::UnicodeAny: {
+            return f_UnicodeAny(this->as_UnicodeAny());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::AsciiBaseAny: {
+            return f_AsciiBaseAny(this->as_AsciiBaseAny());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Alt: {
+            return f_Alt(this->as_Alt());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::AltExplicit: {
+            return f_AltExplicit(this->as_AltExplicit());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Minus: {
+            return f_Minus(this->as_Minus());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Concat: {
+            return f_Concat(this->as_Concat());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Optional: {
+            return f_Optional(this->as_Optional());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Rep: {
+            return f_Rep(this->as_Rep());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::RepNonzero: {
+            return f_RepNonzero(this->as_RepNonzero());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::RepCount: {
+            return f_RepCount(this->as_RepCount());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::CharRange: {
+            return f_CharRange(this->as_CharRange());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::StrLit: {
+            return f_StrLit(this->as_StrLit());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Underscore: {
+            return f_Underscore(this->as_Underscore());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Pass: {
+            return f_Pass(this->as_Pass());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Paren: {
+            return f_Paren(this->as_Paren());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Name: {
+            return f_Name(this->as_Name());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::List: {
+            return f_List(this->as_List());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::Unfold: {
+            return f_Unfold(this->as_Unfold());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::_W::AttrReq: {
+            return f_AttrReq(this->as_AttrReq());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq_T x);
@@ -1671,9 +2155,27 @@ namespace lang::meta::Node::AttrReq {
         bool is_PrecStar();
         lang::meta::Node::AttrReq::Base_T as_Base();
         lang::meta::Node::AttrReq::PrecStar_T as_PrecStar();
+        void match(function<void(lang::meta::Node::AttrReq::Base_T)> f_Base, function<void(lang::meta::Node::AttrReq::PrecStar_T)> f_PrecStar);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::AttrReq::Base_T)> f_Base, function<RetT(lang::meta::Node::AttrReq::PrecStar_T)> f_PrecStar);
         void hash_ser_acc_lang_meta_Node_AttrReq(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::AttrReq::_T::match_expr(function<RetT(lang::meta::Node::AttrReq::Base_T)> f_Base, function<RetT(lang::meta::Node::AttrReq::PrecStar_T)> f_PrecStar) {
+    switch (this->w_) {
+        case lang::meta::Node::AttrReq::_W::Base: {
+            return f_Base(this->as_Base());
+            break;
+        }
+        case lang::meta::Node::AttrReq::_W::PrecStar: {
+            return f_PrecStar(this->as_PrecStar());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType_T x);
@@ -1705,9 +2207,39 @@ namespace lang::meta::Node::ParseExprListType {
         lang::meta::Node::ParseExprListType::Block2_T as_Block2();
         lang::meta::Node::ParseExprListType::Top_T as_Top();
         lang::meta::Node::ParseExprListType::Top2_T as_Top2();
+        void match(function<void(lang::meta::Node::ParseExprListType::List_T)> f_List, function<void(lang::meta::Node::ParseExprListType::Block_T)> f_Block, function<void(lang::meta::Node::ParseExprListType::Block2_T)> f_Block2, function<void(lang::meta::Node::ParseExprListType::Top_T)> f_Top, function<void(lang::meta::Node::ParseExprListType::Top2_T)> f_Top2);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::ParseExprListType::List_T)> f_List, function<RetT(lang::meta::Node::ParseExprListType::Block_T)> f_Block, function<RetT(lang::meta::Node::ParseExprListType::Block2_T)> f_Block2, function<RetT(lang::meta::Node::ParseExprListType::Top_T)> f_Top, function<RetT(lang::meta::Node::ParseExprListType::Top2_T)> f_Top2);
         void hash_ser_acc_lang_meta_Node_ParseExprListType(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::ParseExprListType::_T::match_expr(function<RetT(lang::meta::Node::ParseExprListType::List_T)> f_List, function<RetT(lang::meta::Node::ParseExprListType::Block_T)> f_Block, function<RetT(lang::meta::Node::ParseExprListType::Block2_T)> f_Block2, function<RetT(lang::meta::Node::ParseExprListType::Top_T)> f_Top, function<RetT(lang::meta::Node::ParseExprListType::Top2_T)> f_Top2) {
+    switch (this->w_) {
+        case lang::meta::Node::ParseExprListType::_W::List: {
+            return f_List(this->as_List());
+            break;
+        }
+        case lang::meta::Node::ParseExprListType::_W::Block: {
+            return f_Block(this->as_Block());
+            break;
+        }
+        case lang::meta::Node::ParseExprListType::_W::Block2: {
+            return f_Block2(this->as_Block2());
+            break;
+        }
+        case lang::meta::Node::ParseExprListType::_W::Top: {
+            return f_Top(this->as_Top());
+            break;
+        }
+        case lang::meta::Node::ParseExprListType::_W::Top2: {
+            return f_Top2(this->as_Top2());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum_T x);
@@ -1733,9 +2265,31 @@ namespace lang::meta::Node::ParseExprListNum {
         lang::meta::Node::ParseExprListNum::Ge0_T as_Ge0();
         lang::meta::Node::ParseExprListNum::Ge1_T as_Ge1();
         lang::meta::Node::ParseExprListNum::Ge2_T as_Ge2();
+        void match(function<void(lang::meta::Node::ParseExprListNum::Ge0_T)> f_Ge0, function<void(lang::meta::Node::ParseExprListNum::Ge1_T)> f_Ge1, function<void(lang::meta::Node::ParseExprListNum::Ge2_T)> f_Ge2);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::ParseExprListNum::Ge0_T)> f_Ge0, function<RetT(lang::meta::Node::ParseExprListNum::Ge1_T)> f_Ge1, function<RetT(lang::meta::Node::ParseExprListNum::Ge2_T)> f_Ge2);
         void hash_ser_acc_lang_meta_Node_ParseExprListNum(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::ParseExprListNum::_T::match_expr(function<RetT(lang::meta::Node::ParseExprListNum::Ge0_T)> f_Ge0, function<RetT(lang::meta::Node::ParseExprListNum::Ge1_T)> f_Ge1, function<RetT(lang::meta::Node::ParseExprListNum::Ge2_T)> f_Ge2) {
+    switch (this->w_) {
+        case lang::meta::Node::ParseExprListNum::_W::Ge0: {
+            return f_Ge0(this->as_Ge0());
+            break;
+        }
+        case lang::meta::Node::ParseExprListNum::_W::Ge1: {
+            return f_Ge1(this->as_Ge1());
+            break;
+        }
+        case lang::meta::Node::ParseExprListNum::_W::Ge2: {
+            return f_Ge2(this->as_Ge2());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Tokens_T x);
@@ -1898,9 +2452,27 @@ namespace lang::meta::Node::TokenDecl::op {
         bool is_DEF_ALIAS();
         lang::meta::Node::TokenDecl::op::DEF_T as_DEF();
         lang::meta::Node::TokenDecl::op::DEF_ALIAS_T as_DEF_ALIAS();
+        void match(function<void(lang::meta::Node::TokenDecl::op::DEF_T)> f_DEF, function<void(lang::meta::Node::TokenDecl::op::DEF_ALIAS_T)> f_DEF_ALIAS);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::TokenDecl::op::DEF_T)> f_DEF, function<RetT(lang::meta::Node::TokenDecl::op::DEF_ALIAS_T)> f_DEF_ALIAS);
         void hash_ser_acc_lang_meta_Node_TokenDecl_op(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::TokenDecl::op::_T::match_expr(function<RetT(lang::meta::Node::TokenDecl::op::DEF_T)> f_DEF, function<RetT(lang::meta::Node::TokenDecl::op::DEF_ALIAS_T)> f_DEF_ALIAS) {
+    switch (this->w_) {
+        case lang::meta::Node::TokenDecl::op::_W::DEF: {
+            return f_DEF(this->as_DEF());
+            break;
+        }
+        case lang::meta::Node::TokenDecl::op::_W::DEF_ALIAS: {
+            return f_DEF_ALIAS(this->as_DEF_ALIAS());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Main_T x);
@@ -3905,9 +4477,27 @@ namespace lang::meta::Node::ParserDecl::Rule::op {
         bool is_DEF_ALIAS();
         lang::meta::Node::ParserDecl::Rule::op::DEF_T as_DEF();
         lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T as_DEF_ALIAS();
+        void match(function<void(lang::meta::Node::ParserDecl::Rule::op::DEF_T)> f_DEF, function<void(lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T)> f_DEF_ALIAS);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::ParserDecl::Rule::op::DEF_T)> f_DEF, function<RetT(lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T)> f_DEF_ALIAS);
         void hash_ser_acc_lang_meta_Node_ParserDecl_Rule_op(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::ParserDecl::Rule::op::_T::match_expr(function<RetT(lang::meta::Node::ParserDecl::Rule::op::DEF_T)> f_DEF, function<RetT(lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T)> f_DEF_ALIAS) {
+    switch (this->w_) {
+        case lang::meta::Node::ParserDecl::Rule::op::_W::DEF: {
+            return f_DEF(this->as_DEF());
+            break;
+        }
+        case lang::meta::Node::ParserDecl::Rule::op::_W::DEF_ALIAS: {
+            return f_DEF_ALIAS(this->as_DEF_ALIAS());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim_T x);
@@ -3933,9 +4523,31 @@ namespace lang::meta::Node::ParseExpr::List::end_delim {
         lang::meta::Node::ParseExpr::List::end_delim::NONE_T as_NONE();
         lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T as_OPTIONAL();
         lang::meta::Node::ParseExpr::List::end_delim::SOME_T as_SOME();
+        void match(function<void(lang::meta::Node::ParseExpr::List::end_delim::NONE_T)> f_NONE, function<void(lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T)> f_OPTIONAL, function<void(lang::meta::Node::ParseExpr::List::end_delim::SOME_T)> f_SOME);
+        template<typename RetT> RetT match_expr(function<RetT(lang::meta::Node::ParseExpr::List::end_delim::NONE_T)> f_NONE, function<RetT(lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T)> f_OPTIONAL, function<RetT(lang::meta::Node::ParseExpr::List::end_delim::SOME_T)> f_SOME);
         void hash_ser_acc_lang_meta_Node_ParseExpr_List_end_delim(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::meta::Node::ParseExpr::List::end_delim::_T::match_expr(function<RetT(lang::meta::Node::ParseExpr::List::end_delim::NONE_T)> f_NONE, function<RetT(lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T)> f_OPTIONAL, function<RetT(lang::meta::Node::ParseExpr::List::end_delim::SOME_T)> f_SOME) {
+    switch (this->w_) {
+        case lang::meta::Node::ParseExpr::List::end_delim::_W::NONE: {
+            return f_NONE(this->as_NONE());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::List::end_delim::_W::OPTIONAL: {
+            return f_OPTIONAL(this->as_OPTIONAL());
+            break;
+        }
+        case lang::meta::Node::ParseExpr::List::end_delim::_W::SOME: {
+            return f_SOME(this->as_SOME());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x);

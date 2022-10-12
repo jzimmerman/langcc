@@ -10,62 +10,63 @@ struct CalcError {
 };
 
 Int expr_eval(Expr_T e, const unordered_map<string, Int>& env) {
-    if (e->is_Lit()) {
-        auto val_str = e->as_Lit()->as_Int_()->val_.to_std_string();
-        return string_to_int(val_str).as_some();
-    } else if (e->is_Id()) {
-        auto name = e->as_Id()->name_.to_std_string();
-        if (env.find(name) == env.end()) {
-            throw CalcError(fmt_str("Name not bound: {}", name), e);
-        }
-        return env.at(name);
-    } else if (e->is_BinOp1()) {
-        auto cc = e->as_BinOp1();
-        auto xr = expr_eval(cc->x_, env);
-        auto yr = expr_eval(cc->y_, env);
-        if (cc->op_->is_Add()) {
-            return xr + yr;
-        } else if (cc->op_->is_Sub()) {
-            return xr - yr;
-        } else {
-            AX();
-        }
-    } else if (e->is_BinOp2()) {
-        auto cc = e->as_BinOp2();
-        auto xr = expr_eval(cc->x_, env);
-        auto yr = expr_eval(cc->y_, env);
-        if (cc->op_->is_Mul()) {
-            return xr * yr;
-        } else if (cc->op_->is_Div()) {
-            if (yr == 0) {
-                throw CalcError(fmt_str("Division by zero"), cc->op_);
+    return e->match_expr<Int>(
+        [&](Expr::Id_T cc) {
+            auto name = e->as_Id()->name_.to_std_string();
+            if (env.find(name) == env.end()) {
+                throw CalcError(fmt_str("Name not bound: {}", name), e);
             }
-            return xr / yr;
-        } else {
-            AX();
-        }
-    } else if (e->is_BinOp3()) {
-        auto cc = e->as_BinOp3();
-        auto xr = expr_eval(cc->x_, env);
-        auto yr = expr_eval(cc->y_, env);
-        if (cc->op_->is_Pow()) {
-            return static_cast<Int>(pow(xr, yr) + 0.5);
-        } else {
-            AX();
-        }
-    } else if (e->is_UnaryPre()) {
-        auto cc = e->as_UnaryPre();
-        auto xr = expr_eval(cc->x_, env);
-        if (cc->op_->is_Neg()) {
-            return - xr;
-        } else {
-            AX();
-        }
-    } else if (e->is_Paren()) {
-        return expr_eval(e->as_Paren()->x_, env);
-    } else {
-        AX();
-    }
+            return env.at(name);
+        },
+        [&](Expr::UnaryPre_T cc) {
+            auto xr = expr_eval(cc->x_, env);
+            if (cc->op_->is_Neg()) {
+                return - xr;
+            } else {
+                AX();
+            }
+        },
+        [&](Expr::BinOp1_T cc) {
+            auto xr = expr_eval(cc->x_, env);
+            auto yr = expr_eval(cc->y_, env);
+            if (cc->op_->is_Add()) {
+                return xr + yr;
+            } else if (cc->op_->is_Sub()) {
+                return xr - yr;
+            } else {
+                AX();
+            }
+        },
+        [&](Expr::BinOp2_T cc) {
+            auto xr = expr_eval(cc->x_, env);
+            auto yr = expr_eval(cc->y_, env);
+            if (cc->op_->is_Mul()) {
+                return xr * yr;
+            } else if (cc->op_->is_Div()) {
+                if (yr == 0) {
+                    throw CalcError(fmt_str("Division by zero"), cc->op_);
+                }
+                return xr / yr;
+            } else {
+                AX();
+            }
+        },
+        [&](Expr::BinOp3_T cc) {
+            auto xr = expr_eval(cc->x_, env);
+            auto yr = expr_eval(cc->y_, env);
+            if (cc->op_->is_Pow()) {
+                return static_cast<Int>(pow(xr, yr) + 0.5);
+            } else {
+                AX();
+            }
+        },
+        [&](Expr::Paren_T cc) {
+            return expr_eval(cc->x_, env);
+        },
+        [&](Expr::Lit_T cc) {
+            auto val_str = cc->as_Int_()->val_.to_std_string();
+            return string_to_int(val_str).as_some();
+        });
 }
 
 Int stmt_eval(Stmt_T stmt, unordered_map<string, Int>& env) {

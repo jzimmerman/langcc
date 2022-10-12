@@ -1421,6 +1421,146 @@ lang::cc::Node::Expr_T lang::cc::Node::_T::as_Expr() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::_T>();
 }
 
+void lang::cc::Node::_T::match(function<void(lang::cc::Node::Module_T)> f_Module, function<void(lang::cc::Node::Decl::Struct::tmpl::args::item_T)> f_Decl__Struct__tmpl__args__item, function<void(lang::cc::Node::Decl::Struct::tmpl_T)> f_Decl__Struct__tmpl, function<void(lang::cc::Node::Entry::Fun::tmpl::args::item_T)> f_Entry__Fun__tmpl__args__item, function<void(lang::cc::Node::Entry::Fun::tmpl_T)> f_Entry__Fun__tmpl, function<void(lang::cc::Node::Param::val_T)> f_Param__val, function<void(lang::cc::Node::Param_T)> f_Param, function<void(lang::cc::Node::Decl::Fun::tmpl::args::item_T)> f_Decl__Fun__tmpl__args__item, function<void(lang::cc::Node::Decl::Fun::tmpl_T)> f_Decl__Fun__tmpl, function<void(lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T)> f_Decl__UsingAlias__tmpl__args__item, function<void(lang::cc::Node::Decl::UsingAlias::tmpl_T)> f_Decl__UsingAlias__tmpl, function<void(lang::cc::Node::Block_T)> f_Block, function<void(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, function<void(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, function<void(lang::cc::Node::TypedDecl_T)> f_TypedDecl, function<void(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, function<void(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, function<void(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, function<void(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, function<void(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, function<void(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, function<void(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, function<void(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, function<void(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, function<void(lang::cc::Node::Decl_T)> f_Decl, function<void(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, function<void(lang::cc::Node::Entry_T)> f_Entry, function<void(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, function<void(lang::cc::Node::Mod_T)> f_Mod, function<void(lang::cc::Node::Stmt_T)> f_Stmt, function<void(lang::cc::Node::ExprExt_T)> f_ExprExt, function<void(lang::cc::Node::SwitchCase_T)> f_SwitchCase, function<void(lang::cc::Node::Expr_T)> f_Expr) {
+    switch (this->w_) {
+        case lang::cc::Node::_W::Module: {
+            f_Module(this->as_Module());
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Struct__tmpl__args__item: {
+            f_Decl__Struct__tmpl__args__item(this->as_Decl__Struct__tmpl__args__item());
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Struct__tmpl: {
+            f_Decl__Struct__tmpl(this->as_Decl__Struct__tmpl());
+            break;
+        }
+        case lang::cc::Node::_W::Entry__Fun__tmpl__args__item: {
+            f_Entry__Fun__tmpl__args__item(this->as_Entry__Fun__tmpl__args__item());
+            break;
+        }
+        case lang::cc::Node::_W::Entry__Fun__tmpl: {
+            f_Entry__Fun__tmpl(this->as_Entry__Fun__tmpl());
+            break;
+        }
+        case lang::cc::Node::_W::Param__val: {
+            f_Param__val(this->as_Param__val());
+            break;
+        }
+        case lang::cc::Node::_W::Param: {
+            f_Param(this->as_Param());
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Fun__tmpl__args__item: {
+            f_Decl__Fun__tmpl__args__item(this->as_Decl__Fun__tmpl__args__item());
+            break;
+        }
+        case lang::cc::Node::_W::Decl__Fun__tmpl: {
+            f_Decl__Fun__tmpl(this->as_Decl__Fun__tmpl());
+            break;
+        }
+        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__args__item: {
+            f_Decl__UsingAlias__tmpl__args__item(this->as_Decl__UsingAlias__tmpl__args__item());
+            break;
+        }
+        case lang::cc::Node::_W::Decl__UsingAlias__tmpl: {
+            f_Decl__UsingAlias__tmpl(this->as_Decl__UsingAlias__tmpl());
+            break;
+        }
+        case lang::cc::Node::_W::Block: {
+            f_Block(this->as_Block());
+            break;
+        }
+        case lang::cc::Node::_W::TypedDecl__vars__item__val: {
+            f_TypedDecl__vars__item__val(this->as_TypedDecl__vars__item__val());
+            break;
+        }
+        case lang::cc::Node::_W::TypedDecl__vars__item: {
+            f_TypedDecl__vars__item(this->as_TypedDecl__vars__item());
+            break;
+        }
+        case lang::cc::Node::_W::TypedDecl: {
+            f_TypedDecl(this->as_TypedDecl());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__UnaryPre__op: {
+            f_Expr__UnaryPre__op(this->as_Expr__UnaryPre__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__IncDecPre__op: {
+            f_Expr__IncDecPre__op(this->as_Expr__IncDecPre__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__IncDecPost__op: {
+            f_Expr__IncDecPost__op(this->as_Expr__IncDecPost__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin1__op: {
+            f_Expr__Bin1__op(this->as_Expr__Bin1__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin2__op: {
+            f_Expr__Bin2__op(this->as_Expr__Bin2__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin3__op: {
+            f_Expr__Bin3__op(this->as_Expr__Bin3__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin4__op: {
+            f_Expr__Bin4__op(this->as_Expr__Bin4__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin5__op: {
+            f_Expr__Bin5__op(this->as_Expr__Bin5__op());
+            break;
+        }
+        case lang::cc::Node::_W::Expr__Bin6__op: {
+            f_Expr__Bin6__op(this->as_Expr__Bin6__op());
+            break;
+        }
+        case lang::cc::Node::_W::Decl: {
+            f_Decl(this->as_Decl());
+            break;
+        }
+        case lang::cc::Node::_W::StructDeclDef: {
+            f_StructDeclDef(this->as_StructDeclDef());
+            break;
+        }
+        case lang::cc::Node::_W::Entry: {
+            f_Entry(this->as_Entry());
+            break;
+        }
+        case lang::cc::Node::_W::FunDeclDef: {
+            f_FunDeclDef(this->as_FunDeclDef());
+            break;
+        }
+        case lang::cc::Node::_W::Mod: {
+            f_Mod(this->as_Mod());
+            break;
+        }
+        case lang::cc::Node::_W::Stmt: {
+            f_Stmt(this->as_Stmt());
+            break;
+        }
+        case lang::cc::Node::_W::ExprExt: {
+            f_ExprExt(this->as_ExprExt());
+            break;
+        }
+        case lang::cc::Node::_W::SwitchCase: {
+            f_SwitchCase(this->as_SwitchCase());
+            break;
+        }
+        case lang::cc::Node::_W::Expr: {
+            f_Expr(this->as_Expr());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::_T::hash_ser_acc_lang_cc_Node(SerBuf& buf) const {
     hash_ser(buf, static_cast<Int>(w_));
     hash_ser(buf, is_top_);
@@ -2323,6 +2463,46 @@ lang::cc::Node::Decl::PragmaOnce_T lang::cc::Node::Decl::_T::as_PragmaOnce() {
     return this->rc_from_this_poly<lang::cc::Node::Decl::PragmaOnce::_T>();
 }
 
+void lang::cc::Node::Decl::_T::match(function<void(lang::cc::Node::Decl::Struct_T)> f_Struct, function<void(lang::cc::Node::Decl::EnumStruct_T)> f_EnumStruct, function<void(lang::cc::Node::Decl::Fun_T)> f_Fun, function<void(lang::cc::Node::Decl::Namespace_T)> f_Namespace, function<void(lang::cc::Node::Decl::UsingAlias_T)> f_UsingAlias, function<void(lang::cc::Node::Decl::UsingNamespace_T)> f_UsingNamespace, function<void(lang::cc::Node::Decl::Include_T)> f_Include, function<void(lang::cc::Node::Decl::PragmaOnce_T)> f_PragmaOnce) {
+    switch (this->w_) {
+        case lang::cc::Node::Decl::_W::Struct: {
+            f_Struct(this->as_Struct());
+            break;
+        }
+        case lang::cc::Node::Decl::_W::EnumStruct: {
+            f_EnumStruct(this->as_EnumStruct());
+            break;
+        }
+        case lang::cc::Node::Decl::_W::Fun: {
+            f_Fun(this->as_Fun());
+            break;
+        }
+        case lang::cc::Node::Decl::_W::Namespace: {
+            f_Namespace(this->as_Namespace());
+            break;
+        }
+        case lang::cc::Node::Decl::_W::UsingAlias: {
+            f_UsingAlias(this->as_UsingAlias());
+            break;
+        }
+        case lang::cc::Node::Decl::_W::UsingNamespace: {
+            f_UsingNamespace(this->as_UsingNamespace());
+            break;
+        }
+        case lang::cc::Node::Decl::_W::Include: {
+            f_Include(this->as_Include());
+            break;
+        }
+        case lang::cc::Node::Decl::_W::PragmaOnce: {
+            f_PragmaOnce(this->as_PragmaOnce());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::Decl::_T::hash_ser_acc_lang_cc_Node_Decl(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -2373,6 +2553,22 @@ lang::cc::Node::StructDeclDef::Def_T lang::cc::Node::StructDeclDef::_T::as_Def()
     return this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Def::_T>();
 }
 
+void lang::cc::Node::StructDeclDef::_T::match(function<void(lang::cc::Node::StructDeclDef::Decl_T)> f_Decl, function<void(lang::cc::Node::StructDeclDef::Def_T)> f_Def) {
+    switch (this->w_) {
+        case lang::cc::Node::StructDeclDef::_W::Decl: {
+            f_Decl(this->as_Decl());
+            break;
+        }
+        case lang::cc::Node::StructDeclDef::_W::Def: {
+            f_Def(this->as_Def());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::StructDeclDef::_T::hash_ser_acc_lang_cc_Node_StructDeclDef(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -2421,6 +2617,22 @@ lang::cc::Node::Entry::Field_T lang::cc::Node::Entry::_T::as_Field() {
 lang::cc::Node::Entry::Fun_T lang::cc::Node::Entry::_T::as_Fun() {
     AT(this->is_Fun());
     return this->rc_from_this_poly<lang::cc::Node::Entry::Fun::_T>();
+}
+
+void lang::cc::Node::Entry::_T::match(function<void(lang::cc::Node::Entry::Field_T)> f_Field, function<void(lang::cc::Node::Entry::Fun_T)> f_Fun) {
+    switch (this->w_) {
+        case lang::cc::Node::Entry::_W::Field: {
+            f_Field(this->as_Field());
+            break;
+        }
+        case lang::cc::Node::Entry::_W::Fun: {
+            f_Fun(this->as_Fun());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Entry::_T::hash_ser_acc_lang_cc_Node_Entry(SerBuf& buf) const {
@@ -2497,6 +2709,30 @@ lang::cc::Node::FunDeclDef::Del_T lang::cc::Node::FunDeclDef::_T::as_Del() {
 lang::cc::Node::FunDeclDef::Zero_T lang::cc::Node::FunDeclDef::_T::as_Zero() {
     AT(this->is_Zero());
     return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Zero::_T>();
+}
+
+void lang::cc::Node::FunDeclDef::_T::match(function<void(lang::cc::Node::FunDeclDef::Decl_T)> f_Decl, function<void(lang::cc::Node::FunDeclDef::Def_T)> f_Def, function<void(lang::cc::Node::FunDeclDef::Del_T)> f_Del, function<void(lang::cc::Node::FunDeclDef::Zero_T)> f_Zero) {
+    switch (this->w_) {
+        case lang::cc::Node::FunDeclDef::_W::Decl: {
+            f_Decl(this->as_Decl());
+            break;
+        }
+        case lang::cc::Node::FunDeclDef::_W::Def: {
+            f_Def(this->as_Def());
+            break;
+        }
+        case lang::cc::Node::FunDeclDef::_W::Del: {
+            f_Del(this->as_Del());
+            break;
+        }
+        case lang::cc::Node::FunDeclDef::_W::Zero: {
+            f_Zero(this->as_Zero());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::FunDeclDef::_T::hash_ser_acc_lang_cc_Node_FunDeclDef(SerBuf& buf) const {
@@ -2599,6 +2835,38 @@ lang::cc::Node::Mod::NoInline_T lang::cc::Node::Mod::_T::as_NoInline() {
 lang::cc::Node::Mod::AlwaysInline_T lang::cc::Node::Mod::_T::as_AlwaysInline() {
     AT(this->is_AlwaysInline());
     return this->rc_from_this_poly<lang::cc::Node::Mod::AlwaysInline::_T>();
+}
+
+void lang::cc::Node::Mod::_T::match(function<void(lang::cc::Node::Mod::Const_T)> f_Const, function<void(lang::cc::Node::Mod::Inline_T)> f_Inline, function<void(lang::cc::Node::Mod::Static_T)> f_Static, function<void(lang::cc::Node::Mod::Virtual_T)> f_Virtual, function<void(lang::cc::Node::Mod::NoInline_T)> f_NoInline, function<void(lang::cc::Node::Mod::AlwaysInline_T)> f_AlwaysInline) {
+    switch (this->w_) {
+        case lang::cc::Node::Mod::_W::Const: {
+            f_Const(this->as_Const());
+            break;
+        }
+        case lang::cc::Node::Mod::_W::Inline: {
+            f_Inline(this->as_Inline());
+            break;
+        }
+        case lang::cc::Node::Mod::_W::Static: {
+            f_Static(this->as_Static());
+            break;
+        }
+        case lang::cc::Node::Mod::_W::Virtual: {
+            f_Virtual(this->as_Virtual());
+            break;
+        }
+        case lang::cc::Node::Mod::_W::NoInline: {
+            f_NoInline(this->as_NoInline());
+            break;
+        }
+        case lang::cc::Node::Mod::_W::AlwaysInline: {
+            f_AlwaysInline(this->as_AlwaysInline());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Mod::_T::hash_ser_acc_lang_cc_Node_Mod(SerBuf& buf) const {
@@ -2755,6 +3023,54 @@ lang::cc::Node::Stmt::Return_T lang::cc::Node::Stmt::_T::as_Return() {
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Return::_T>();
 }
 
+void lang::cc::Node::Stmt::_T::match(function<void(lang::cc::Node::Stmt::Decl_T)> f_Decl, function<void(lang::cc::Node::Stmt::Expr_T)> f_Expr, function<void(lang::cc::Node::Stmt::Block_T)> f_Block, function<void(lang::cc::Node::Stmt::If_T)> f_If, function<void(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, function<void(lang::cc::Node::Stmt::For_T)> f_For, function<void(lang::cc::Node::Stmt::Switch_T)> f_Switch, function<void(lang::cc::Node::Stmt::Break_T)> f_Break, function<void(lang::cc::Node::Stmt::Continue_T)> f_Continue, function<void(lang::cc::Node::Stmt::Return_T)> f_Return) {
+    switch (this->w_) {
+        case lang::cc::Node::Stmt::_W::Decl: {
+            f_Decl(this->as_Decl());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Expr: {
+            f_Expr(this->as_Expr());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Block: {
+            f_Block(this->as_Block());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::If: {
+            f_If(this->as_If());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::IfElse: {
+            f_IfElse(this->as_IfElse());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::For: {
+            f_For(this->as_For());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Switch: {
+            f_Switch(this->as_Switch());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Break: {
+            f_Break(this->as_Break());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Continue: {
+            f_Continue(this->as_Continue());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::Return: {
+            f_Return(this->as_Return());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::Stmt::_T::hash_ser_acc_lang_cc_Node_Stmt(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -2805,6 +3121,22 @@ lang::cc::Node::ExprExt::Decl_T lang::cc::Node::ExprExt::_T::as_Decl() {
     return this->rc_from_this_poly<lang::cc::Node::ExprExt::Decl::_T>();
 }
 
+void lang::cc::Node::ExprExt::_T::match(function<void(lang::cc::Node::ExprExt::Expr_T)> f_Expr, function<void(lang::cc::Node::ExprExt::Decl_T)> f_Decl) {
+    switch (this->w_) {
+        case lang::cc::Node::ExprExt::_W::Expr: {
+            f_Expr(this->as_Expr());
+            break;
+        }
+        case lang::cc::Node::ExprExt::_W::Decl: {
+            f_Decl(this->as_Decl());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::ExprExt::_T::hash_ser_acc_lang_cc_Node_ExprExt(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -2853,6 +3185,22 @@ lang::cc::Node::SwitchCase::Case_T lang::cc::Node::SwitchCase::_T::as_Case() {
 lang::cc::Node::SwitchCase::Default_T lang::cc::Node::SwitchCase::_T::as_Default() {
     AT(this->is_Default());
     return this->rc_from_this_poly<lang::cc::Node::SwitchCase::Default::_T>();
+}
+
+void lang::cc::Node::SwitchCase::_T::match(function<void(lang::cc::Node::SwitchCase::Case_T)> f_Case, function<void(lang::cc::Node::SwitchCase::Default_T)> f_Default) {
+    switch (this->w_) {
+        case lang::cc::Node::SwitchCase::_W::Case: {
+            f_Case(this->as_Case());
+            break;
+        }
+        case lang::cc::Node::SwitchCase::_W::Default: {
+            f_Default(this->as_Default());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::SwitchCase::_T::hash_ser_acc_lang_cc_Node_SwitchCase(SerBuf& buf) const {
@@ -3228,6 +3576,122 @@ lang::cc::Node::Expr::Id_T lang::cc::Node::Expr::_T::as_Id() {
 lang::cc::Node::Expr::Lit_T lang::cc::Node::Expr::_T::as_Lit() {
     AT(this->is_Lit());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::_T>();
+}
+
+void lang::cc::Node::Expr::_T::match(function<void(lang::cc::Node::Expr::Paren_T)> f_Paren, function<void(lang::cc::Node::Expr::Call_T)> f_Call, function<void(lang::cc::Node::Expr::Index_T)> f_Index, function<void(lang::cc::Node::Expr::IndexEmpty_T)> f_IndexEmpty, function<void(lang::cc::Node::Expr::Dot_T)> f_Dot, function<void(lang::cc::Node::Expr::Arrow_T)> f_Arrow, function<void(lang::cc::Node::Expr::Ref__T)> f_Ref_, function<void(lang::cc::Node::Expr::AddrOf_T)> f_AddrOf, function<void(lang::cc::Node::Expr::Deref_T)> f_Deref, function<void(lang::cc::Node::Expr::UnaryPre_T)> f_UnaryPre, function<void(lang::cc::Node::Expr::IncDecPre_T)> f_IncDecPre, function<void(lang::cc::Node::Expr::IncDecPost_T)> f_IncDecPost, function<void(lang::cc::Node::Expr::Assign_T)> f_Assign, function<void(lang::cc::Node::Expr::Bin1_T)> f_Bin1, function<void(lang::cc::Node::Expr::Bin2_T)> f_Bin2, function<void(lang::cc::Node::Expr::Bin3_T)> f_Bin3, function<void(lang::cc::Node::Expr::Bin4_T)> f_Bin4, function<void(lang::cc::Node::Expr::Bin5_T)> f_Bin5, function<void(lang::cc::Node::Expr::Bin6_T)> f_Bin6, function<void(lang::cc::Node::Expr::Template_T)> f_Template, function<void(lang::cc::Node::Expr::New_T)> f_New, function<void(lang::cc::Node::Expr::Delete_T)> f_Delete, function<void(lang::cc::Node::Expr::Ellipsis_T)> f_Ellipsis, function<void(lang::cc::Node::Expr::Tilde_T)> f_Tilde, function<void(lang::cc::Node::Expr::Namespace_T)> f_Namespace, function<void(lang::cc::Node::Expr::Id_T)> f_Id, function<void(lang::cc::Node::Expr::Lit_T)> f_Lit) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::_W::Paren: {
+            f_Paren(this->as_Paren());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Call: {
+            f_Call(this->as_Call());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Index: {
+            f_Index(this->as_Index());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::IndexEmpty: {
+            f_IndexEmpty(this->as_IndexEmpty());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Dot: {
+            f_Dot(this->as_Dot());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Arrow: {
+            f_Arrow(this->as_Arrow());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Ref_: {
+            f_Ref_(this->as_Ref_());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::AddrOf: {
+            f_AddrOf(this->as_AddrOf());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Deref: {
+            f_Deref(this->as_Deref());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::UnaryPre: {
+            f_UnaryPre(this->as_UnaryPre());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::IncDecPre: {
+            f_IncDecPre(this->as_IncDecPre());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::IncDecPost: {
+            f_IncDecPost(this->as_IncDecPost());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Assign: {
+            f_Assign(this->as_Assign());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin1: {
+            f_Bin1(this->as_Bin1());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin2: {
+            f_Bin2(this->as_Bin2());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin3: {
+            f_Bin3(this->as_Bin3());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin4: {
+            f_Bin4(this->as_Bin4());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin5: {
+            f_Bin5(this->as_Bin5());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Bin6: {
+            f_Bin6(this->as_Bin6());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Template: {
+            f_Template(this->as_Template());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::New: {
+            f_New(this->as_New());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Delete: {
+            f_Delete(this->as_Delete());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Ellipsis: {
+            f_Ellipsis(this->as_Ellipsis());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Tilde: {
+            f_Tilde(this->as_Tilde());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Namespace: {
+            f_Namespace(this->as_Namespace());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Id: {
+            f_Id(this->as_Id());
+            break;
+        }
+        case lang::cc::Node::Expr::_W::Lit: {
+            f_Lit(this->as_Lit());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Expr::_T::hash_ser_acc_lang_cc_Node_Expr(SerBuf& buf) const {
@@ -14462,6 +14926,26 @@ lang::cc::Node::Expr::Lit::Array_T lang::cc::Node::Expr::Lit::_T::as_Array() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Array::_T>();
 }
 
+void lang::cc::Node::Expr::Lit::_T::match(function<void(lang::cc::Node::Expr::Lit::Integer_T)> f_Integer, function<void(lang::cc::Node::Expr::Lit::Str__T)> f_Str_, function<void(lang::cc::Node::Expr::Lit::Array_T)> f_Array) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::Lit::_W::Integer: {
+            f_Integer(this->as_Integer());
+            break;
+        }
+        case lang::cc::Node::Expr::Lit::_W::Str_: {
+            f_Str_(this->as_Str_());
+            break;
+        }
+        case lang::cc::Node::Expr::Lit::_W::Array: {
+            f_Array(this->as_Array());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::Expr::Lit::_T::hash_ser_acc_lang_cc_Node_Expr_Lit(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node_Expr(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -15329,6 +15813,22 @@ lang::cc::Node::Expr::UnaryPre::op::NEG_T lang::cc::Node::Expr::UnaryPre::op::_T
     return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NEG::_T>();
 }
 
+void lang::cc::Node::Expr::UnaryPre::op::_T::match(function<void(lang::cc::Node::Expr::UnaryPre::op::NOT_T)> f_NOT, function<void(lang::cc::Node::Expr::UnaryPre::op::NEG_T)> f_NEG) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::UnaryPre::op::_W::NOT: {
+            f_NOT(this->as_NOT());
+            break;
+        }
+        case lang::cc::Node::Expr::UnaryPre::op::_W::NEG: {
+            f_NEG(this->as_NEG());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::Expr::UnaryPre::op::_T::hash_ser_acc_lang_cc_Node_Expr_UnaryPre_op(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -15377,6 +15877,22 @@ lang::cc::Node::Expr::IncDecPre::op::INC_T lang::cc::Node::Expr::IncDecPre::op::
 lang::cc::Node::Expr::IncDecPre::op::DEC_T lang::cc::Node::Expr::IncDecPre::op::_T::as_DEC() {
     AT(this->is_DEC());
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::DEC::_T>();
+}
+
+void lang::cc::Node::Expr::IncDecPre::op::_T::match(function<void(lang::cc::Node::Expr::IncDecPre::op::INC_T)> f_INC, function<void(lang::cc::Node::Expr::IncDecPre::op::DEC_T)> f_DEC) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::IncDecPre::op::_W::INC: {
+            f_INC(this->as_INC());
+            break;
+        }
+        case lang::cc::Node::Expr::IncDecPre::op::_W::DEC: {
+            f_DEC(this->as_DEC());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Expr::IncDecPre::op::_T::hash_ser_acc_lang_cc_Node_Expr_IncDecPre_op(SerBuf& buf) const {
@@ -15429,6 +15945,22 @@ lang::cc::Node::Expr::IncDecPost::op::DEC_T lang::cc::Node::Expr::IncDecPost::op
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::DEC::_T>();
 }
 
+void lang::cc::Node::Expr::IncDecPost::op::_T::match(function<void(lang::cc::Node::Expr::IncDecPost::op::INC_T)> f_INC, function<void(lang::cc::Node::Expr::IncDecPost::op::DEC_T)> f_DEC) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::IncDecPost::op::_W::INC: {
+            f_INC(this->as_INC());
+            break;
+        }
+        case lang::cc::Node::Expr::IncDecPost::op::_W::DEC: {
+            f_DEC(this->as_DEC());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::Expr::IncDecPost::op::_T::hash_ser_acc_lang_cc_Node_Expr_IncDecPost_op(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -15466,6 +15998,18 @@ lang::cc::Node::Expr::Bin1::op::LOR_T lang::cc::Node::Expr::Bin1::op::_T::as_LOR
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::LOR::_T>();
 }
 
+void lang::cc::Node::Expr::Bin1::op::_T::match(function<void(lang::cc::Node::Expr::Bin1::op::LOR_T)> f_LOR) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::Bin1::op::_W::LOR: {
+            f_LOR(this->as_LOR());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::Expr::Bin1::op::_T::hash_ser_acc_lang_cc_Node_Expr_Bin1_op(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -15501,6 +16045,18 @@ bool lang::cc::Node::Expr::Bin2::op::_T::is_LAND() {
 lang::cc::Node::Expr::Bin2::op::LAND_T lang::cc::Node::Expr::Bin2::op::_T::as_LAND() {
     AT(this->is_LAND());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::LAND::_T>();
+}
+
+void lang::cc::Node::Expr::Bin2::op::_T::match(function<void(lang::cc::Node::Expr::Bin2::op::LAND_T)> f_LAND) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::Bin2::op::_W::LAND: {
+            f_LAND(this->as_LAND());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Expr::Bin2::op::_T::hash_ser_acc_lang_cc_Node_Expr_Bin2_op(SerBuf& buf) const {
@@ -15605,6 +16161,38 @@ lang::cc::Node::Expr::Bin3::op::GT_T lang::cc::Node::Expr::Bin3::op::_T::as_GT()
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GT::_T>();
 }
 
+void lang::cc::Node::Expr::Bin3::op::_T::match(function<void(lang::cc::Node::Expr::Bin3::op::EQ_T)> f_EQ, function<void(lang::cc::Node::Expr::Bin3::op::NE_T)> f_NE, function<void(lang::cc::Node::Expr::Bin3::op::LE_T)> f_LE, function<void(lang::cc::Node::Expr::Bin3::op::GE_T)> f_GE, function<void(lang::cc::Node::Expr::Bin3::op::LT_T)> f_LT, function<void(lang::cc::Node::Expr::Bin3::op::GT_T)> f_GT) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::Bin3::op::_W::EQ: {
+            f_EQ(this->as_EQ());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin3::op::_W::NE: {
+            f_NE(this->as_NE());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin3::op::_W::LE: {
+            f_LE(this->as_LE());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin3::op::_W::GE: {
+            f_GE(this->as_GE());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin3::op::_W::LT: {
+            f_LT(this->as_LT());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin3::op::_W::GT: {
+            f_GT(this->as_GT());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::cc::Node::Expr::Bin3::op::_T::hash_ser_acc_lang_cc_Node_Expr_Bin3_op(SerBuf& buf) const {
     this->hash_ser_acc_lang_cc_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -15640,6 +16228,18 @@ bool lang::cc::Node::Expr::Bin4::op::_T::is_SHL() {
 lang::cc::Node::Expr::Bin4::op::SHL_T lang::cc::Node::Expr::Bin4::op::_T::as_SHL() {
     AT(this->is_SHL());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::SHL::_T>();
+}
+
+void lang::cc::Node::Expr::Bin4::op::_T::match(function<void(lang::cc::Node::Expr::Bin4::op::SHL_T)> f_SHL) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::Bin4::op::_W::SHL: {
+            f_SHL(this->as_SHL());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Expr::Bin4::op::_T::hash_ser_acc_lang_cc_Node_Expr_Bin4_op(SerBuf& buf) const {
@@ -15690,6 +16290,22 @@ lang::cc::Node::Expr::Bin5::op::PLUS_T lang::cc::Node::Expr::Bin5::op::_T::as_PL
 lang::cc::Node::Expr::Bin5::op::MINUS_T lang::cc::Node::Expr::Bin5::op::_T::as_MINUS() {
     AT(this->is_MINUS());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::MINUS::_T>();
+}
+
+void lang::cc::Node::Expr::Bin5::op::_T::match(function<void(lang::cc::Node::Expr::Bin5::op::PLUS_T)> f_PLUS, function<void(lang::cc::Node::Expr::Bin5::op::MINUS_T)> f_MINUS) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::Bin5::op::_W::PLUS: {
+            f_PLUS(this->as_PLUS());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin5::op::_W::MINUS: {
+            f_MINUS(this->as_MINUS());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Expr::Bin5::op::_T::hash_ser_acc_lang_cc_Node_Expr_Bin5_op(SerBuf& buf) const {
@@ -15753,6 +16369,26 @@ lang::cc::Node::Expr::Bin6::op::DIVIDE_T lang::cc::Node::Expr::Bin6::op::_T::as_
 lang::cc::Node::Expr::Bin6::op::MODULO_T lang::cc::Node::Expr::Bin6::op::_T::as_MODULO() {
     AT(this->is_MODULO());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::MODULO::_T>();
+}
+
+void lang::cc::Node::Expr::Bin6::op::_T::match(function<void(lang::cc::Node::Expr::Bin6::op::TIMES_T)> f_TIMES, function<void(lang::cc::Node::Expr::Bin6::op::DIVIDE_T)> f_DIVIDE, function<void(lang::cc::Node::Expr::Bin6::op::MODULO_T)> f_MODULO) {
+    switch (this->w_) {
+        case lang::cc::Node::Expr::Bin6::op::_W::TIMES: {
+            f_TIMES(this->as_TIMES());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin6::op::_W::DIVIDE: {
+            f_DIVIDE(this->as_DIVIDE());
+            break;
+        }
+        case lang::cc::Node::Expr::Bin6::op::_W::MODULO: {
+            f_MODULO(this->as_MODULO());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::cc::Node::Expr::Bin6::op::_T::hash_ser_acc_lang_cc_Node_Expr_Bin6_op(SerBuf& buf) const {

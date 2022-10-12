@@ -303,6 +303,18 @@ GenName lower_name(LowerTy lt, const GenName& name, Option_T<GenName> name_aux) 
         auto ret = make_rc<Vec<IdBase>>();
         ret->push(fmt_str("is_{}", name_aux.as_some()->only()));
         return ret;
+    } else if (lt == LowerTy::MATCH_EXPR_BASE) {
+        auto ret = make_rc<Vec<IdBase>>();
+        ret->push("match_expr");
+        return ret;
+    } else if (lt == LowerTy::MATCH_EXPR_FULL) {
+        return name_ns_cons(name->with_append_rc("_T"), "match_expr");
+    } else if (lt == LowerTy::MATCH_BASE) {
+        auto ret = make_rc<Vec<IdBase>>();
+        ret->push("match");
+        return ret;
+    } else if (lt == LowerTy::MATCH_FULL) {
+        return name_ns_cons(name->with_append_rc("_T"), "match");
     } else if (lt == LowerTy::SUM_AS_FULL) {
         return name_ns_cons(
             name->with_append_rc("_T"), fmt_str("as_{}", name_aux.as_some()->only()));
@@ -1133,6 +1145,47 @@ DataDefsResult compile_data_defs(
             }
         }
 
+        // match()
+        auto id_sum_match_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
+        GenName cpp_sum_match_name_full = lower_name(LowerTy::MATCH_FULL, name_full);
+        auto cpp_sum_match_body = make_rc<Vec<cc::Node_T>>();
+        auto cpp_sum_match_params = make_rc<Vec<cc::Node_T>>();
+        auto cpp_sum_match_params_fs = make_rc<Vec<cc::Node_T>>();
+        if (is_sum) {
+            for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
+                auto cpp_sub_name_full_ptr = lower_name_cpp(
+                    LowerTy::STRUCT_RC_ALIAS, sub_name_full, ctx);
+                auto param_f = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+                    cpp_sum_match_params, id_sum_match_fun_ns,
+                    ctx.cc_.qq_expr("function<void(",
+                        cpp_sub_name_full_ptr, ")>"),
+                    fmt_str("f_{}", sum_case));
+                cpp_sum_match_params_fs->push(param_f);
+            }
+        }
+
+        // match_expr()
+        auto id_sum_match_expr_fun_ns = name_lit(
+            {ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
+        auto id_sum_match_expr_fun_type_param = ctx.cc_.gen_id_fresh(
+            id_sum_match_expr_fun_ns, "RetT");
+        GenName cpp_sum_match_expr_name_full = lower_name(LowerTy::MATCH_EXPR_FULL, name_full);
+        auto cpp_sum_match_expr_body = make_rc<Vec<cc::Node_T>>();
+        auto cpp_sum_match_expr_params = make_rc<Vec<cc::Node_T>>();
+        auto cpp_sum_match_expr_params_fs = make_rc<Vec<cc::Node_T>>();
+        if (is_sum) {
+            for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
+                auto cpp_sub_name_full_ptr = lower_name_cpp(
+                    LowerTy::STRUCT_RC_ALIAS, sub_name_full, ctx);
+                auto param_f = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+                    cpp_sum_match_expr_params, id_sum_match_expr_fun_ns,
+                    ctx.cc_.qq_expr("function<", id_sum_match_expr_fun_type_param, "(",
+                        cpp_sub_name_full_ptr, ")>"),
+                    fmt_str("f_{}", sum_case));
+                cpp_sum_match_expr_params_fs->push(param_f);
+            }
+        }
+
         // pr_debug()
         auto id_pr_debug_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
         auto id_pr_debug_name_full = name_lit({"pr_debug",});
@@ -1294,7 +1347,7 @@ DataDefsResult compile_data_defs(
             cpp_fields->push_back(
                 ctx.cc_.Q_->qq_ext(Some<string>("Entry"), cpp_which_enum, "w_", ";"));
 
-            // is_X
+            // is_X()
             for (const auto& [sum_case, _] : *ctx.sum_cases_->operator[](name_full)) {
                 cpp_sum_is_body[sum_case]->push_back(
                     ctx.cc_.gen_cpp_ret(
@@ -1302,7 +1355,7 @@ DataDefsResult compile_data_defs(
                         cpp_which_enum, "::", sum_case)));
             }
 
-            // as_X
+            // as_X()
             for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
                 auto cpp_sub_name_full = lower_name_cpp(LowerTy::STRUCT, sub_name_full, ctx);
                 auto cpp_sum_is_method_name = lower_name_cpp(
@@ -1312,6 +1365,54 @@ DataDefsResult compile_data_defs(
                         "());"));
                 cpp_sum_as_body[sum_case]->push_back(
                     ctx.cc_.qq_stmt("return this->rc_from_this_poly<", cpp_sub_name_full, ">();"));
+            }
+
+            // match()
+            {
+                auto cpp_switch_cases = make_rc<Vec<cc::Node_T>>();
+                Int i = 0;
+                for (const auto& [sum_case, _] : *ctx.sum_cases_->operator[](name_full)) {
+                    cpp_switch_cases->push_back(
+                        ctx.cc_.qq("SwitchCase", "case",
+                            lower_name_cpp(LowerTy::WHICH_ENUM, name_full, ctx),
+                            "::", sum_case, ": {",
+                            cpp_sum_match_params_fs->operator[](i),
+                            "(this->",
+                                lower_name_cpp(
+                                    LowerTy::SUM_AS_BASE,
+                                    name_full, ctx, Some(name_lit({sum_case,}))),
+                            "());",
+                            "break; }")->as_SwitchCase());
+                    ++i;
+                }
+                cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { AX(); }"));
+                cpp_sum_match_body->push_back(
+                    ctx.cc_.qq("Stmt", "switch (",
+                        "this->w_", ") {", *cpp_switch_cases, "}"));
+            }
+
+            // match_expr()
+            {
+                auto cpp_switch_cases = make_rc<Vec<cc::Node_T>>();
+                Int i = 0;
+                for (const auto& [sum_case, _] : *ctx.sum_cases_->operator[](name_full)) {
+                    cpp_switch_cases->push_back(
+                        ctx.cc_.qq("SwitchCase", "case",
+                            lower_name_cpp(LowerTy::WHICH_ENUM, name_full, ctx),
+                            "::", sum_case, ": {",
+                            "return", cpp_sum_match_expr_params_fs->operator[](i),
+                            "(this->",
+                                lower_name_cpp(
+                                    LowerTy::SUM_AS_BASE,
+                                    name_full, ctx, Some(name_lit({sum_case,}))),
+                            "());",
+                            "break; }")->as_SwitchCase());
+                    ++i;
+                }
+                cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { AX(); }"));
+                cpp_sum_match_expr_body->push_back(
+                    ctx.cc_.qq("Stmt", "switch (",
+                    "this->w_", ") {", *cpp_switch_cases, "}"));
             }
 
             // virtual dtor
@@ -1426,6 +1527,7 @@ DataDefsResult compile_data_defs(
         cpp_fields->push_back(
             ctx.cc_.gen_cpp_fun_proto_entry(
                 NodeV_empty(),
+                NodeV_empty(),
                 None<cc::Node_T>(),
                 ctx.cc_.gen_cpp_id_with_template_args_acc(
                     lower_name_cpp(LowerTy::CTOR_BASE, name_full, ctx),
@@ -1468,6 +1570,7 @@ DataDefsResult compile_data_defs(
                 cpp_fields->push_back(
                     ctx.cc_.gen_cpp_fun_proto_entry(
                         NodeV_empty(),
+                        NodeV_empty(),
                         Some(
                             ctx.cc_.gen_cpp_id_with_template_args_acc(
                                 lower_name_cpp(LowerTy::STRUCT_RC_ALIAS, name_full, ctx),
@@ -1484,6 +1587,7 @@ DataDefsResult compile_data_defs(
                 cpp_fields->push_back(
                     ctx.cc_.gen_cpp_fun_proto_entry(
                         NodeV_empty(),
+                        NodeV_empty(),
                         Some(ctx.cc_.gen_cpp_id_base("bool")),
                         lower_name_cpp(LowerTy::SUM_IS_BASE, name_full, ctx,
                             Some(name_lit({sum_case,}))),
@@ -1497,11 +1601,30 @@ DataDefsResult compile_data_defs(
                 cpp_fields->push_back(
                     ctx.cc_.gen_cpp_fun_proto_entry(
                         NodeV_empty(),
+                        NodeV_empty(),
                         Some<cc::Node_T>(cpp_sub_name_full_ptr),
                         lower_name_cpp(LowerTy::SUM_AS_BASE, name_full, ctx,
                             Some(name_lit({sum_case,}))),
                         cpp_sum_as_params[sum_case]));
             }
+
+            // match()
+            cpp_fields->push_back(
+                ctx.cc_.gen_cpp_fun_proto_entry(
+                    NodeV_empty(),
+                    NodeV_empty(),
+                    Some<cc::Node_T>(ctx.cc_.qq_expr("void")),
+                    lower_name_cpp(LowerTy::MATCH_BASE, name_full, ctx),
+                    cpp_sum_match_params));
+
+            // match_expr()
+            cpp_fields->push_back(
+                ctx.cc_.gen_cpp_fun_proto_entry(
+                    NodeV_singleton(ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param)),
+                    NodeV_empty(),
+                    Some<cc::Node_T>(ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param)),
+                    lower_name_cpp(LowerTy::MATCH_EXPR_BASE, name_full, ctx),
+                    cpp_sum_match_expr_params));
         }
 
         if (is_sum) {
@@ -1652,6 +1775,34 @@ DataDefsResult compile_data_defs(
                         NodeV_empty(),
                         cpp_sum_as_body[sum_case])->as_Decl());
             }
+
+            // match()
+            ctx.cc_.push_def(cpp_template_params,
+                ctx.cc_.gen_cpp_fun_body(
+                    cpp_template_params,
+                    inline_maybe_mods(header_mode, ctx),
+                    Some<cc::Node_T>(ctx.cc_.qq_expr("void")),
+                    lower_name_cpp(LowerTy::MATCH_FULL, name_full, ctx),
+                    cpp_sum_match_params,
+                    NodeV_empty(),
+                    cpp_sum_match_body)->as_Decl());
+
+            // match_expr()
+            auto cpp_template_params_match_expr_ext = make_rc<Vec<cc::Node_T>>();
+            cpp_template_params_match_expr_ext->push(
+                ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param));
+            for (auto param : *cpp_template_params) {
+                cpp_template_params_match_expr_ext->push(param);
+            }
+            ctx.cc_.push_def(cpp_template_params_match_expr_ext,
+                ctx.cc_.gen_cpp_fun_body(
+                    cpp_template_params_match_expr_ext,
+                    inline_maybe_mods(header_mode, ctx),
+                    Some<cc::Node_T>(ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param)),
+                    lower_name_cpp(LowerTy::MATCH_EXPR_FULL, name_full, ctx),
+                    cpp_sum_match_expr_params,
+                    NodeV_empty(),
+                    cpp_sum_match_expr_body)->as_Decl());
         }
 
         if (!has_mod_mut(p.second)) {

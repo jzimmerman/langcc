@@ -633,6 +633,46 @@ lang::data::Node::Expr_T lang::data::Node::_T::as_Expr() {
     return this->rc_from_this_poly<lang::data::Node::Expr::_T>();
 }
 
+void lang::data::Node::_T::match(function<void(lang::data::Node::Module_T)> f_Module, function<void(lang::data::Node::Param_T)> f_Param, function<void(lang::data::Node::SumId_T)> f_SumId, function<void(lang::data::Node::Id_T)> f_Id, function<void(lang::data::Node::Decl_T)> f_Decl, function<void(lang::data::Node::Mod_T)> f_Mod, function<void(lang::data::Node::Entry_T)> f_Entry, function<void(lang::data::Node::Expr_T)> f_Expr) {
+    switch (this->w_) {
+        case lang::data::Node::_W::Module: {
+            f_Module(this->as_Module());
+            break;
+        }
+        case lang::data::Node::_W::Param: {
+            f_Param(this->as_Param());
+            break;
+        }
+        case lang::data::Node::_W::SumId: {
+            f_SumId(this->as_SumId());
+            break;
+        }
+        case lang::data::Node::_W::Id: {
+            f_Id(this->as_Id());
+            break;
+        }
+        case lang::data::Node::_W::Decl: {
+            f_Decl(this->as_Decl());
+            break;
+        }
+        case lang::data::Node::_W::Mod: {
+            f_Mod(this->as_Mod());
+            break;
+        }
+        case lang::data::Node::_W::Entry: {
+            f_Entry(this->as_Entry());
+            break;
+        }
+        case lang::data::Node::_W::Expr: {
+            f_Expr(this->as_Expr());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::data::Node::_T::hash_ser_acc_lang_data_Node(SerBuf& buf) const {
     hash_ser(buf, static_cast<Int>(w_));
     hash_ser(buf, is_top_);
@@ -1367,6 +1407,30 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::_T::as_Enum() {
     return this->rc_from_this_poly<lang::data::Node::Decl::Enum::_T>();
 }
 
+void lang::data::Node::Decl::_T::match(function<void(lang::data::Node::Decl::Include_T)> f_Include, function<void(lang::data::Node::Decl::Namespace_T)> f_Namespace, function<void(lang::data::Node::Decl::Data_T)> f_Data, function<void(lang::data::Node::Decl::Enum_T)> f_Enum) {
+    switch (this->w_) {
+        case lang::data::Node::Decl::_W::Include: {
+            f_Include(this->as_Include());
+            break;
+        }
+        case lang::data::Node::Decl::_W::Namespace: {
+            f_Namespace(this->as_Namespace());
+            break;
+        }
+        case lang::data::Node::Decl::_W::Data: {
+            f_Data(this->as_Data());
+            break;
+        }
+        case lang::data::Node::Decl::_W::Enum: {
+            f_Enum(this->as_Enum());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::data::Node::Decl::_T::hash_ser_acc_lang_data_Node_Decl(SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -1430,6 +1494,26 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::_T::as_Visit() {
     return this->rc_from_this_poly<lang::data::Node::Mod::Visit::_T>();
 }
 
+void lang::data::Node::Mod::_T::match(function<void(lang::data::Node::Mod::Mut_T)> f_Mut, function<void(lang::data::Node::Mod::Xform_T)> f_Xform, function<void(lang::data::Node::Mod::Visit_T)> f_Visit) {
+    switch (this->w_) {
+        case lang::data::Node::Mod::_W::Mut: {
+            f_Mut(this->as_Mut());
+            break;
+        }
+        case lang::data::Node::Mod::_W::Xform: {
+            f_Xform(this->as_Xform());
+            break;
+        }
+        case lang::data::Node::Mod::_W::Visit: {
+            f_Visit(this->as_Visit());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
 void lang::data::Node::Mod::_T::hash_ser_acc_lang_data_Node_Mod(SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
     hash_ser(buf, static_cast<Int>(w_));
@@ -1478,6 +1562,22 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::_T::as_Field() {
 lang::data::Node::Entry::Method_T lang::data::Node::Entry::_T::as_Method() {
     AT(this->is_Method());
     return this->rc_from_this_poly<lang::data::Node::Entry::Method::_T>();
+}
+
+void lang::data::Node::Entry::_T::match(function<void(lang::data::Node::Entry::Field_T)> f_Field, function<void(lang::data::Node::Entry::Method_T)> f_Method) {
+    switch (this->w_) {
+        case lang::data::Node::Entry::_W::Field: {
+            f_Field(this->as_Field());
+            break;
+        }
+        case lang::data::Node::Entry::_W::Method: {
+            f_Method(this->as_Method());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::data::Node::Entry::_T::hash_ser_acc_lang_data_Node_Entry(SerBuf& buf) const {
@@ -1541,6 +1641,26 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::_T::as_App() {
 lang::data::Node::Expr::Type__T lang::data::Node::Expr::_T::as_Type_() {
     AT(this->is_Type_());
     return this->rc_from_this_poly<lang::data::Node::Expr::Type_::_T>();
+}
+
+void lang::data::Node::Expr::_T::match(function<void(lang::data::Node::Expr::Id_T)> f_Id, function<void(lang::data::Node::Expr::App_T)> f_App, function<void(lang::data::Node::Expr::Type__T)> f_Type_) {
+    switch (this->w_) {
+        case lang::data::Node::Expr::_W::Id: {
+            f_Id(this->as_Id());
+            break;
+        }
+        case lang::data::Node::Expr::_W::App: {
+            f_App(this->as_App());
+            break;
+        }
+        case lang::data::Node::Expr::_W::Type_: {
+            f_Type_(this->as_Type_());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void lang::data::Node::Expr::_T::hash_ser_acc_lang_data_Node_Expr(SerBuf& buf) const {

@@ -244,9 +244,51 @@ namespace lang::data::Node {
         lang::data::Node::Mod_T as_Mod();
         lang::data::Node::Entry_T as_Entry();
         lang::data::Node::Expr_T as_Expr();
+        void match(function<void(lang::data::Node::Module_T)> f_Module, function<void(lang::data::Node::Param_T)> f_Param, function<void(lang::data::Node::SumId_T)> f_SumId, function<void(lang::data::Node::Id_T)> f_Id, function<void(lang::data::Node::Decl_T)> f_Decl, function<void(lang::data::Node::Mod_T)> f_Mod, function<void(lang::data::Node::Entry_T)> f_Entry, function<void(lang::data::Node::Expr_T)> f_Expr);
+        template<typename RetT> RetT match_expr(function<RetT(lang::data::Node::Module_T)> f_Module, function<RetT(lang::data::Node::Param_T)> f_Param, function<RetT(lang::data::Node::SumId_T)> f_SumId, function<RetT(lang::data::Node::Id_T)> f_Id, function<RetT(lang::data::Node::Decl_T)> f_Decl, function<RetT(lang::data::Node::Mod_T)> f_Mod, function<RetT(lang::data::Node::Entry_T)> f_Entry, function<RetT(lang::data::Node::Expr_T)> f_Expr);
         void hash_ser_acc_lang_data_Node(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::data::Node::_T::match_expr(function<RetT(lang::data::Node::Module_T)> f_Module, function<RetT(lang::data::Node::Param_T)> f_Param, function<RetT(lang::data::Node::SumId_T)> f_SumId, function<RetT(lang::data::Node::Id_T)> f_Id, function<RetT(lang::data::Node::Decl_T)> f_Decl, function<RetT(lang::data::Node::Mod_T)> f_Mod, function<RetT(lang::data::Node::Entry_T)> f_Entry, function<RetT(lang::data::Node::Expr_T)> f_Expr) {
+    switch (this->w_) {
+        case lang::data::Node::_W::Module: {
+            return f_Module(this->as_Module());
+            break;
+        }
+        case lang::data::Node::_W::Param: {
+            return f_Param(this->as_Param());
+            break;
+        }
+        case lang::data::Node::_W::SumId: {
+            return f_SumId(this->as_SumId());
+            break;
+        }
+        case lang::data::Node::_W::Id: {
+            return f_Id(this->as_Id());
+            break;
+        }
+        case lang::data::Node::_W::Decl: {
+            return f_Decl(this->as_Decl());
+            break;
+        }
+        case lang::data::Node::_W::Mod: {
+            return f_Mod(this->as_Mod());
+            break;
+        }
+        case lang::data::Node::_W::Entry: {
+            return f_Entry(this->as_Entry());
+            break;
+        }
+        case lang::data::Node::_W::Expr: {
+            return f_Expr(this->as_Expr());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Module_T x);
@@ -389,9 +431,35 @@ namespace lang::data::Node::Decl {
         lang::data::Node::Decl::Namespace_T as_Namespace();
         lang::data::Node::Decl::Data_T as_Data();
         lang::data::Node::Decl::Enum_T as_Enum();
+        void match(function<void(lang::data::Node::Decl::Include_T)> f_Include, function<void(lang::data::Node::Decl::Namespace_T)> f_Namespace, function<void(lang::data::Node::Decl::Data_T)> f_Data, function<void(lang::data::Node::Decl::Enum_T)> f_Enum);
+        template<typename RetT> RetT match_expr(function<RetT(lang::data::Node::Decl::Include_T)> f_Include, function<RetT(lang::data::Node::Decl::Namespace_T)> f_Namespace, function<RetT(lang::data::Node::Decl::Data_T)> f_Data, function<RetT(lang::data::Node::Decl::Enum_T)> f_Enum);
         void hash_ser_acc_lang_data_Node_Decl(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::data::Node::Decl::_T::match_expr(function<RetT(lang::data::Node::Decl::Include_T)> f_Include, function<RetT(lang::data::Node::Decl::Namespace_T)> f_Namespace, function<RetT(lang::data::Node::Decl::Data_T)> f_Data, function<RetT(lang::data::Node::Decl::Enum_T)> f_Enum) {
+    switch (this->w_) {
+        case lang::data::Node::Decl::_W::Include: {
+            return f_Include(this->as_Include());
+            break;
+        }
+        case lang::data::Node::Decl::_W::Namespace: {
+            return f_Namespace(this->as_Namespace());
+            break;
+        }
+        case lang::data::Node::Decl::_W::Data: {
+            return f_Data(this->as_Data());
+            break;
+        }
+        case lang::data::Node::Decl::_W::Enum: {
+            return f_Enum(this->as_Enum());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod_T x);
@@ -417,9 +485,31 @@ namespace lang::data::Node::Mod {
         lang::data::Node::Mod::Mut_T as_Mut();
         lang::data::Node::Mod::Xform_T as_Xform();
         lang::data::Node::Mod::Visit_T as_Visit();
+        void match(function<void(lang::data::Node::Mod::Mut_T)> f_Mut, function<void(lang::data::Node::Mod::Xform_T)> f_Xform, function<void(lang::data::Node::Mod::Visit_T)> f_Visit);
+        template<typename RetT> RetT match_expr(function<RetT(lang::data::Node::Mod::Mut_T)> f_Mut, function<RetT(lang::data::Node::Mod::Xform_T)> f_Xform, function<RetT(lang::data::Node::Mod::Visit_T)> f_Visit);
         void hash_ser_acc_lang_data_Node_Mod(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::data::Node::Mod::_T::match_expr(function<RetT(lang::data::Node::Mod::Mut_T)> f_Mut, function<RetT(lang::data::Node::Mod::Xform_T)> f_Xform, function<RetT(lang::data::Node::Mod::Visit_T)> f_Visit) {
+    switch (this->w_) {
+        case lang::data::Node::Mod::_W::Mut: {
+            return f_Mut(this->as_Mut());
+            break;
+        }
+        case lang::data::Node::Mod::_W::Xform: {
+            return f_Xform(this->as_Xform());
+            break;
+        }
+        case lang::data::Node::Mod::_W::Visit: {
+            return f_Visit(this->as_Visit());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x);
@@ -442,9 +532,27 @@ namespace lang::data::Node::Entry {
         bool is_Method();
         lang::data::Node::Entry::Field_T as_Field();
         lang::data::Node::Entry::Method_T as_Method();
+        void match(function<void(lang::data::Node::Entry::Field_T)> f_Field, function<void(lang::data::Node::Entry::Method_T)> f_Method);
+        template<typename RetT> RetT match_expr(function<RetT(lang::data::Node::Entry::Field_T)> f_Field, function<RetT(lang::data::Node::Entry::Method_T)> f_Method);
         void hash_ser_acc_lang_data_Node_Entry(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::data::Node::Entry::_T::match_expr(function<RetT(lang::data::Node::Entry::Field_T)> f_Field, function<RetT(lang::data::Node::Entry::Method_T)> f_Method) {
+    switch (this->w_) {
+        case lang::data::Node::Entry::_W::Field: {
+            return f_Field(this->as_Field());
+            break;
+        }
+        case lang::data::Node::Entry::_W::Method: {
+            return f_Method(this->as_Method());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr_T x);
@@ -470,9 +578,31 @@ namespace lang::data::Node::Expr {
         lang::data::Node::Expr::Id_T as_Id();
         lang::data::Node::Expr::App_T as_App();
         lang::data::Node::Expr::Type__T as_Type_();
+        void match(function<void(lang::data::Node::Expr::Id_T)> f_Id, function<void(lang::data::Node::Expr::App_T)> f_App, function<void(lang::data::Node::Expr::Type__T)> f_Type_);
+        template<typename RetT> RetT match_expr(function<RetT(lang::data::Node::Expr::Id_T)> f_Id, function<RetT(lang::data::Node::Expr::App_T)> f_App, function<RetT(lang::data::Node::Expr::Type__T)> f_Type_);
         void hash_ser_acc_lang_data_Node_Expr(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
+}
+
+template<typename RetT> RetT lang::data::Node::Expr::_T::match_expr(function<RetT(lang::data::Node::Expr::Id_T)> f_Id, function<RetT(lang::data::Node::Expr::App_T)> f_App, function<RetT(lang::data::Node::Expr::Type__T)> f_Type_) {
+    switch (this->w_) {
+        case lang::data::Node::Expr::_W::Id: {
+            return f_Id(this->as_Id());
+            break;
+        }
+        case lang::data::Node::Expr::_W::App: {
+            return f_App(this->as_App());
+            break;
+        }
+        case lang::data::Node::Expr::_W::Type_: {
+            return f_Type_(this->as_Type_());
+            break;
+        }
+        default: {
+            AX();
+        }
+    }
 }
 
 void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x);
