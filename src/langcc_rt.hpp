@@ -1787,6 +1787,13 @@ inline ParseOutput_T<LANG_META_ARGS>
     st_inline.unw_gen_ = gen.get();
     st_inline.unw_arena_ = A;
 
+    if (desc_raw->start_marker_by_name_.find(st_sym_target) ==
+        desc_raw->start_marker_by_name_.end()) {
+
+        return parse_error_output_here<LANG_META_ARGS>(
+            fmt_str("Not a top-level parseable symbol: {}", st_sym_target), st_i, lex_out);
+    }
+
     auto sym_curr = parser_proc_sym_at(
         st_i, desc_raw, lex_out_items_cached, n_lex_out_items_cached,
         st_sym_target);
