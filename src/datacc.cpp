@@ -81,6 +81,51 @@ cc::Node_T lower_name_cpp(LowerTy lt, const GenName& name, DataCompileContext& c
     Option_T<GenName> name_aux = None<GenName>(),
     Option_T<Vec_T<cc::Node_T>> cpp_template_params = None<Vec_T<cc::Node_T>>());
 
+
+
+
+
+inline Vec_T<cc::Node_T>
+cpp_tabulate_template_params(GenName curr, DataCompileContext& ctx) {
+    auto ret = make_rc<Vec<cc::Node_T>>();
+    auto dt = ctx.data_leaves_->operator[](curr);
+    auto anc = ctx.dt_ancestors(curr);
+    AR_ge(anc->length(), 1);
+
+    auto param_names = make_rc<Set<string>>();
+
+    for (auto [q, _] : *anc) {
+        auto q_dt = ctx.data_leaves_->operator[](q);
+        if (q_dt->params_.is_some()) {
+            if (ctx.sum_cases_rev_->contains_key(q)) {
+                LG_ERR("Type {} (a sum case) cannot have type parameters", q);
+                AX();
+            }
+
+            for (auto param : *q_dt->params_.as_some()) {
+                if (param_names->contains(param->name_.to_std_string())) {
+                    LG_ERR("Type parameter {} is shadowed", param->name_.to_std_string());
+                    AX();
+                }
+                ret->push_back(ctx.cc_.qq_expr(param->name_.to_std_string()));
+            }
+        }
+    }
+    return ret;
+}
+
+
+
+inline cc::Node_T cpp_get_templated_name(GenName curr, LowerTy ty, DataCompileContext& ctx) {
+    auto cpp_template_params = cpp_tabulate_template_params(curr, ctx);
+    auto cpp_struct_decl_name = lower_name_cpp(ty, curr, ctx);
+    auto cpp_struct_decl_name_tmpl = ctx.cc_.gen_cpp_id_with_template_args_acc(
+        cpp_struct_decl_name, cpp_template_params);
+    return cpp_struct_decl_name_tmpl;
+}
+
+
+
 inline Vec_T<cc::Node_T> DataCompileContext::cpp_tabulate_template_params(
     lang::data::Node::Decl::Data_T ty) {
 
@@ -802,9 +847,10 @@ void data_gen_xform_fn(
             id_xform_name_full,
             cpp_xform_params)->as_Decl());
 
-    ctx.cc_.push_def(cpp_template_params,
+    ctx.cc_.push_def(cpp_template_params->length() > 0,
         ctx.cc_.gen_cpp_fun_body(
             cpp_template_params,
+            NodeV_empty(),
             inline_maybe_mods(header_mode, ctx),
             ret_ty,
             cpp_xform_name_full,
@@ -868,9 +914,10 @@ void data_gen_xform_id_fn(
             id_xform_name_full,
             cpp_xform_params)->as_Decl());
 
-    ctx.cc_.push_def(cpp_template_params,
+    ctx.cc_.push_def(cpp_template_params->length() > 0,
         ctx.cc_.gen_cpp_fun_body(
             cpp_template_params,
+            NodeV_empty(),
             inline_maybe_mods(header_mode, ctx),
             Some<cc::Node_T>(ret_ty),
             cpp_xform_name_full,
@@ -949,6 +996,7 @@ DataDefsResult compile_data_defs(
         ctx.cc_.dst_defs_->push_back(
             ctx.cc_.gen_cpp_fun_body(
                 NodeV_empty(),
+                NodeV_empty(),
                 inline_maybe_mods(header_mode, ctx),
                 Some(ctx.cc_.gen_cpp_id_base("void")),
                 cpp_hash_ser_name_full,
@@ -992,6 +1040,7 @@ DataDefsResult compile_data_defs(
         ctx.cc_.dst_defs_->push_back(
             ctx.cc_.gen_cpp_fun_body(
                 NodeV_empty(),
+                NodeV_empty(),
                 inline_maybe_mods(header_mode, ctx),
                 Some(ctx.cc_.gen_cpp_id_base("void")),
                 cpp_pr_debug_name_full,
@@ -1006,7 +1055,7 @@ DataDefsResult compile_data_defs(
         auto struct_decl_name = lower_name(LowerTy::STRUCT, name_full);
         auto cpp_struct_decl_name = lower_name_cpp(LowerTy::STRUCT, name_full, ctx);
 
-        auto cpp_template_params = ctx.cpp_tabulate_template_params(p.second);
+        auto cpp_template_params = cpp_tabulate_template_params(name_full, ctx);
 
         auto cpp_struct_decl_name_tmpl = ctx.cc_.gen_cpp_id_with_template_args_acc(
             cpp_struct_decl_name, cpp_template_params);
@@ -1042,7 +1091,7 @@ DataDefsResult compile_data_defs(
         auto cpp_struct_decl_name = lower_name_cpp(LowerTy::STRUCT, name_full, ctx);
         auto cpp_struct_decl_ptr_name = lower_name_cpp(LowerTy::STRUCT_RC_ALIAS, name_full, ctx);
 
-        auto cpp_template_params = ctx.cpp_tabulate_template_params(p.second);
+        auto cpp_template_params = cpp_tabulate_template_params(name_full, ctx);
 
         auto cpp_struct_decl_name_tmpl = ctx.cc_.gen_cpp_id_with_template_args_acc(
             cpp_struct_decl_name, cpp_template_params);
@@ -1074,8 +1123,9 @@ DataDefsResult compile_data_defs(
             auto [parent_name_full, sum_case_which] = ctx.sum_cases_rev_->operator[](name_full);
             auto cpp_parent_which_enum = lower_name_cpp(
                 LowerTy::WHICH_ENUM, parent_name_full, ctx);
-            auto cpp_parent_struct = lower_name_cpp(LowerTy::STRUCT, parent_name_full, ctx);
-            cpp_ctor_init_exprs->push_back(ctx.cc_.qq("Expr", cpp_parent_struct,
+            auto cpp_struct_decl_name_tmpl_parent = cpp_get_templated_name(
+                parent_name_full, LowerTy::STRUCT, ctx);
+            cpp_ctor_init_exprs->push_back(ctx.cc_.qq("Expr", cpp_struct_decl_name_tmpl_parent,
                 "(", cpp_parent_which_enum, "::", sum_case_which, ")"));
         }
 
@@ -1153,12 +1203,12 @@ DataDefsResult compile_data_defs(
         auto cpp_sum_match_params_fs = make_rc<Vec<cc::Node_T>>();
         if (is_sum) {
             for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
-                auto cpp_sub_name_full_ptr = lower_name_cpp(
-                    LowerTy::STRUCT_RC_ALIAS, sub_name_full, ctx);
+                auto cpp_struct_decl_name_tmpl_sub = cpp_get_templated_name(
+                    sub_name_full, LowerTy::STRUCT_RC_ALIAS, ctx);
                 auto param_f = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
                     cpp_sum_match_params, id_sum_match_fun_ns,
                     ctx.cc_.qq_expr("function<void(",
-                        cpp_sub_name_full_ptr, ")>"),
+                        cpp_struct_decl_name_tmpl_sub, ")>"),
                     fmt_str("f_{}", sum_case));
                 cpp_sum_match_params_fs->push(param_f);
             }
@@ -1175,12 +1225,12 @@ DataDefsResult compile_data_defs(
         auto cpp_sum_match_expr_params_fs = make_rc<Vec<cc::Node_T>>();
         if (is_sum) {
             for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
-                auto cpp_sub_name_full_ptr = lower_name_cpp(
-                    LowerTy::STRUCT_RC_ALIAS, sub_name_full, ctx);
+                auto cpp_struct_decl_name_tmpl_sub = cpp_get_templated_name(
+                    sub_name_full, LowerTy::STRUCT_RC_ALIAS, ctx);
                 auto param_f = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
                     cpp_sum_match_expr_params, id_sum_match_expr_fun_ns,
                     ctx.cc_.qq_expr("function<", id_sum_match_expr_fun_type_param, "(",
-                        cpp_sub_name_full_ptr, ")>"),
+                        cpp_struct_decl_name_tmpl_sub, ")>"),
                     fmt_str("f_{}", sum_case));
                 cpp_sum_match_expr_params_fs->push(param_f);
             }
@@ -1258,16 +1308,6 @@ DataDefsResult compile_data_defs(
                 Some(ctx.cc_.gen_cpp_id_base("void")),
                 id_pr_debug_name_full,
                 cpp_pr_debug_params)->as_Decl());
-
-        ctx.cc_.push_def(cpp_template_params,
-            ctx.cc_.gen_cpp_fun_body(
-                cpp_template_params,
-                inline_maybe_mods(header_mode, ctx),
-                Some(ctx.cc_.gen_cpp_id_base("void")),
-                cpp_pr_debug_name_full,
-                cpp_pr_debug_params,
-                NodeV_empty(),
-                cpp_pr_debug_body)->as_Decl());
 
         auto methods = dt_extract_def_methods(name_full, ctx);
 
@@ -1357,14 +1397,16 @@ DataDefsResult compile_data_defs(
 
             // as_X()
             for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
-                auto cpp_sub_name_full = lower_name_cpp(LowerTy::STRUCT, sub_name_full, ctx);
+                auto cpp_struct_decl_name_tmpl_sub = cpp_get_templated_name(
+                    sub_name_full, LowerTy::STRUCT, ctx);
                 auto cpp_sum_is_method_name = lower_name_cpp(
                     LowerTy::SUM_IS_BASE, name_full, ctx, Some(name_lit({sum_case,})));
                 cpp_sum_as_body[sum_case]->push_back(
                     ctx.cc_.Q_->qq_ext(Some<string>("Stmt"), "AT(this->", cpp_sum_is_method_name,
                         "());"));
                 cpp_sum_as_body[sum_case]->push_back(
-                    ctx.cc_.qq_stmt("return this->rc_from_this_poly<", cpp_sub_name_full, ">();"));
+                    ctx.cc_.qq_stmt(
+                        "return this->rc_from_this_poly<", cpp_struct_decl_name_tmpl_sub, ">();"));
             }
 
             // match()
@@ -1513,7 +1555,8 @@ DataDefsResult compile_data_defs(
             if (!has_mod_mut(p.second) && !q.second->no_hash__) {
                 // hash_ser_acc_E()
                 cpp_hash_ser_acc_inst_body->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Stmt"),
-                    "hash_ser(", cpp_hash_ser_acc_param_buf_var, ", ", cpp_field_name, ");"));
+                    "hash_ser(", cpp_hash_ser_acc_param_buf_var, ", this->", cpp_field_name,
+                    ");"));
             }
         }
 
@@ -1596,13 +1639,13 @@ DataDefsResult compile_data_defs(
 
             // as_X()
             for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
-                auto cpp_sub_name_full_ptr = lower_name_cpp(
-                    LowerTy::STRUCT_RC_ALIAS, sub_name_full, ctx);
+                auto cpp_struct_decl_name_tmpl_sub = cpp_get_templated_name(
+                    sub_name_full, LowerTy::STRUCT_RC_ALIAS, ctx);
                 cpp_fields->push_back(
                     ctx.cc_.gen_cpp_fun_proto_entry(
                         NodeV_empty(),
                         NodeV_empty(),
-                        Some<cc::Node_T>(cpp_sub_name_full_ptr),
+                        Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
                         lower_name_cpp(LowerTy::SUM_AS_BASE, name_full, ctx,
                             Some(name_lit({sum_case,}))),
                         cpp_sum_as_params[sum_case]));
@@ -1625,14 +1668,6 @@ DataDefsResult compile_data_defs(
                     Some<cc::Node_T>(ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param)),
                     lower_name_cpp(LowerTy::MATCH_EXPR_BASE, name_full, ctx),
                     cpp_sum_match_expr_params));
-        }
-
-        if (is_sum) {
-            // virtual dtor
-            ctx.cc_.dst_defs_->push_back(ctx.cc_.qq("Decl",
-                (header_mode == HeaderMode::Y ? "inline" : ""),
-                lower_name_cpp(LowerTy::STRUCT, name_full, ctx),
-                "::~_T() {}")->as_Decl());
         }
 
         if (!has_mod_mut(p.second)) {
@@ -1658,8 +1693,9 @@ DataDefsResult compile_data_defs(
         auto cpp_base_classes = make_rc<Vec<cc::Node_T>>();
         if (ctx.sum_cases_rev_->contains_key(name_full)) {
             auto [parent_name_full, _] = ctx.sum_cases_rev_->operator[](name_full);
-            auto cpp_parent = lower_name_cpp(LowerTy::STRUCT, parent_name_full, ctx);
-            cpp_base_classes->push_back(cpp_parent);
+            auto cpp_struct_decl_name_tmpl_parent = cpp_get_templated_name(
+                parent_name_full, LowerTy::STRUCT, ctx);
+            cpp_base_classes->push_back(cpp_struct_decl_name_tmpl_parent);
         }
         if (!ctx.sum_cases_rev_->contains_key(name_full)) {
             cpp_base_classes->push_back(ctx.cc_.gen_cpp_id_base("hash_obj"));
@@ -1671,9 +1707,10 @@ DataDefsResult compile_data_defs(
                 struct_decl_name, cpp_fields, cpp_base_classes, cpp_template_params)->as_Decl());
 
         // constructor
-        ctx.cc_.push_def(cpp_template_params,
+        ctx.cc_.push_def(cpp_template_params->length() > 0,
             ctx.cc_.gen_cpp_fun_body(
                 cpp_template_params,
+                NodeV_empty(),
                 inline_maybe_mods(header_mode, ctx),
                 None<cc::Node_T>(),
                 cpp_name_with_append(ctx.cc_,
@@ -1686,6 +1723,31 @@ DataDefsResult compile_data_defs(
                 cpp_ctor_init_exprs,
                 cpp_ctor_body)->as_Decl());
 
+        // pr_debug()
+        ctx.cc_.push_def(cpp_template_params->length() > 0,
+            ctx.cc_.gen_cpp_fun_body(
+                cpp_template_params,
+                NodeV_empty(),
+                inline_maybe_mods(header_mode, ctx),
+                Some(ctx.cc_.gen_cpp_id_base("void")),
+                cpp_pr_debug_name_full,
+                cpp_pr_debug_params,
+                NodeV_empty(),
+                cpp_pr_debug_body)->as_Decl());
+
+        if (is_sum) {
+            // virtual dtor
+            auto lex_args = ctx.cc_.Q_->make_lex_builder();
+            ctx.cc_.gen_cpp_template_params_acc(lex_args, cpp_template_params);
+            ctx.cc_.Q_->qq_args_acc(lex_args, (header_mode == HeaderMode::Y ? "inline" : ""));
+            ctx.cc_.Q_->qq_args_acc(
+                lex_args, cpp_get_templated_name(name_full, LowerTy::STRUCT, ctx));
+            ctx.cc_.Q_->qq_args_acc(lex_args, "::~_T");
+            ctx.cc_.Q_->qq_args_acc(lex_args, "() {}");
+            ctx.cc_.push_def(cpp_template_params->length() > 0,
+                ctx.cc_.Q_->qq_inner(Some<string>("Decl"), lex_args)->as_Decl());
+        }
+
         if (!is_sum) {
             auto mods = make_rc<Vec<cc::Node_T>>();
             if (header_mode == HeaderMode::Y) {
@@ -1694,9 +1756,10 @@ DataDefsResult compile_data_defs(
             }
 
             // make()
-            ctx.cc_.push_def(cpp_template_params,
+            ctx.cc_.push_def(cpp_template_params->length() > 0,
                 ctx.cc_.gen_cpp_fun_body(
                     cpp_template_params,
+                    NodeV_empty(),
                     mods,
                     Some(
                         ctx.cc_.gen_cpp_id_with_template_args_acc(
@@ -1708,9 +1771,10 @@ DataDefsResult compile_data_defs(
                     cpp_make_body)->as_Decl());
 
             // make_ext()
-            ctx.cc_.push_def(cpp_template_params,
+            ctx.cc_.push_def(cpp_template_params->length() > 0,
                 ctx.cc_.gen_cpp_fun_body(
                     cpp_template_params,
+                    NodeV_empty(),
                     mods,
                     Some(
                         ctx.cc_.gen_cpp_id_with_template_args_acc(
@@ -1724,9 +1788,10 @@ DataDefsResult compile_data_defs(
             // with_X()
             for (auto data_field : *fields_full) {
                 auto data_field_name = data_field.first;
-                ctx.cc_.push_def(cpp_template_params,
+                ctx.cc_.push_def(cpp_template_params->length() > 0,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
+                        NodeV_empty(),
                         inline_maybe_mods(header_mode, ctx),
                         Some(
                             ctx.cc_.gen_cpp_id_with_template_args_acc(
@@ -1748,13 +1813,15 @@ DataDefsResult compile_data_defs(
         if (is_sum) {
             // is_X()
             for (const auto& [sum_case, _] : *ctx.sum_cases_->operator[](name_full)) {
-                ctx.cc_.push_def(cpp_template_params,
+                ctx.cc_.push_def(cpp_template_params->length() > 0,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
+                        NodeV_empty(),
                         inline_maybe_mods(header_mode, ctx),
                         Some(ctx.cc_.gen_cpp_id_base("bool")),
                         lower_name_cpp(
-                            LowerTy::SUM_IS_FULL, name_full, ctx, Some(name_lit({sum_case,}))),
+                            LowerTy::SUM_IS_FULL, name_full, ctx, Some(name_lit({sum_case,})),
+                            Some<Vec_T<cc::Node_T>>(cpp_template_params)),
                         cpp_sum_is_params[sum_case],
                         NodeV_empty(),
                         cpp_sum_is_body[sum_case])->as_Decl());
@@ -1762,44 +1829,47 @@ DataDefsResult compile_data_defs(
 
             // as_X()
             for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
-                auto cpp_sub_name_full_ptr = lower_name_cpp(
+                auto cpp_template_params_sub = cpp_tabulate_template_params(sub_name_full, ctx);
+                auto cpp_struct_decl_name_sub = lower_name_cpp(
                     LowerTy::STRUCT_RC_ALIAS, sub_name_full, ctx);
-                ctx.cc_.push_def(cpp_template_params,
+                auto cpp_struct_decl_name_tmpl_sub = ctx.cc_.gen_cpp_id_with_template_args_acc(
+                    cpp_struct_decl_name_sub, cpp_template_params_sub);
+                ctx.cc_.push_def(cpp_template_params->length() > 0,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
+                        NodeV_empty(),
                         inline_maybe_mods(header_mode, ctx),
-                        Some<cc::Node_T>(cpp_sub_name_full_ptr),
+                        Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
                         lower_name_cpp(LowerTy::SUM_AS_FULL, name_full, ctx,
-                            Some(name_lit({sum_case,}))),
+                            Some(name_lit({sum_case,})),
+                            Some<Vec_T<cc::Node_T>>(cpp_template_params)),
                         cpp_sum_as_params[sum_case],
                         NodeV_empty(),
                         cpp_sum_as_body[sum_case])->as_Decl());
             }
 
             // match()
-            ctx.cc_.push_def(cpp_template_params,
+            ctx.cc_.push_def(cpp_template_params->length() > 0,
                 ctx.cc_.gen_cpp_fun_body(
                     cpp_template_params,
+                    NodeV_empty(),
                     inline_maybe_mods(header_mode, ctx),
                     Some<cc::Node_T>(ctx.cc_.qq_expr("void")),
-                    lower_name_cpp(LowerTy::MATCH_FULL, name_full, ctx),
+                    lower_name_cpp(LowerTy::MATCH_FULL, name_full, ctx,
+                        None<GenName>(), Some<Vec_T<cc::Node_T>>(cpp_template_params)),
                     cpp_sum_match_params,
                     NodeV_empty(),
                     cpp_sum_match_body)->as_Decl());
 
             // match_expr()
-            auto cpp_template_params_match_expr_ext = make_rc<Vec<cc::Node_T>>();
-            cpp_template_params_match_expr_ext->push(
-                ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param));
-            for (auto param : *cpp_template_params) {
-                cpp_template_params_match_expr_ext->push(param);
-            }
-            ctx.cc_.push_def(cpp_template_params_match_expr_ext,
+            ctx.cc_.push_def(true,
                 ctx.cc_.gen_cpp_fun_body(
-                    cpp_template_params_match_expr_ext,
+                    cpp_template_params,
+                    NodeV_singleton(ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param)),
                     inline_maybe_mods(header_mode, ctx),
                     Some<cc::Node_T>(ctx.cc_.qq_expr(id_sum_match_expr_fun_type_param)),
-                    lower_name_cpp(LowerTy::MATCH_EXPR_FULL, name_full, ctx),
+                    lower_name_cpp(LowerTy::MATCH_EXPR_FULL, name_full, ctx,
+                        None<GenName>(), Some<Vec_T<cc::Node_T>>(cpp_template_params)),
                     cpp_sum_match_expr_params,
                     NodeV_empty(),
                     cpp_sum_match_expr_body)->as_Decl());
@@ -1807,9 +1877,10 @@ DataDefsResult compile_data_defs(
 
         if (!has_mod_mut(p.second)) {
             // hash_ser_acc_E()
-            ctx.cc_.push_def(cpp_template_params,
+            ctx.cc_.push_def(cpp_template_params->length() > 0,
                 ctx.cc_.gen_cpp_fun_body(
                     cpp_template_params,
+                    NodeV_empty(),
                     inline_maybe_mods(header_mode, ctx),
                     Some<cc::Node_T>(name_to_cpp_direct(name_lit({"void"}), ctx.cc_)),
                     lower_name_cpp(LowerTy::HASH_SER_ACC_INST_FULL, name_full, ctx,
@@ -1821,9 +1892,10 @@ DataDefsResult compile_data_defs(
 
             // hash_ser_acc()
             if (!is_sum) {
-                ctx.cc_.push_def(cpp_template_params,
+                ctx.cc_.push_def(cpp_template_params->length() > 0,
                     ctx.cc_.gen_cpp_fun_body(
                         cpp_template_params,
+                        NodeV_empty(),
                         inline_maybe_mods(header_mode, ctx),
                         Some<cc::Node_T>(name_to_cpp_direct(name_lit({"void"}), ctx.cc_)),
                         lower_name_cpp(LowerTy::HASH_SER_ACC_FULL, name_full, ctx,

@@ -40,20 +40,20 @@ namespace lang::cc::Node {
     using Module_T = rc_ptr<lang::cc::Node::Module::_T>;
 }
 
-namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
+namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl::Struct::tmpl::args {
-    using item_T = rc_ptr<lang::cc::Node::Decl::Struct::tmpl::args::item::_T>;
+namespace lang::cc::Node::Decl::Struct::tmpl::item::args {
+    using item_T = rc_ptr<lang::cc::Node::Decl::Struct::tmpl::item::args::item::_T>;
+}
+
+namespace lang::cc::Node::Decl::Struct::tmpl::item {
+    struct _T;
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl {
-    struct _T;
-}
-
-namespace lang::cc::Node::Decl::Struct {
-    using tmpl_T = rc_ptr<lang::cc::Node::Decl::Struct::tmpl::_T>;
+    using item_T = rc_ptr<lang::cc::Node::Decl::Struct::tmpl::item::_T>;
 }
 
 namespace lang::cc::Node::Decl::Struct {
@@ -88,20 +88,20 @@ namespace lang::cc::Node::Entry {
     using Field_T = rc_ptr<lang::cc::Node::Entry::Field::_T>;
 }
 
-namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
+namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Entry::Fun::tmpl::args {
-    using item_T = rc_ptr<lang::cc::Node::Entry::Fun::tmpl::args::item::_T>;
+namespace lang::cc::Node::Entry::Fun::tmpl::item::args {
+    using item_T = rc_ptr<lang::cc::Node::Entry::Fun::tmpl::item::args::item::_T>;
+}
+
+namespace lang::cc::Node::Entry::Fun::tmpl::item {
+    struct _T;
 }
 
 namespace lang::cc::Node::Entry::Fun::tmpl {
-    struct _T;
-}
-
-namespace lang::cc::Node::Entry::Fun {
-    using tmpl_T = rc_ptr<lang::cc::Node::Entry::Fun::tmpl::_T>;
+    using item_T = rc_ptr<lang::cc::Node::Entry::Fun::tmpl::item::_T>;
 }
 
 namespace lang::cc::Node::Entry::Fun {
@@ -168,20 +168,20 @@ namespace lang::cc::Node::Decl {
     using EnumStruct_T = rc_ptr<lang::cc::Node::Decl::EnumStruct::_T>;
 }
 
-namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
+namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl::Fun::tmpl::args {
-    using item_T = rc_ptr<lang::cc::Node::Decl::Fun::tmpl::args::item::_T>;
+namespace lang::cc::Node::Decl::Fun::tmpl::item::args {
+    using item_T = rc_ptr<lang::cc::Node::Decl::Fun::tmpl::item::args::item::_T>;
+}
+
+namespace lang::cc::Node::Decl::Fun::tmpl::item {
+    struct _T;
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl {
-    struct _T;
-}
-
-namespace lang::cc::Node::Decl::Fun {
-    using tmpl_T = rc_ptr<lang::cc::Node::Decl::Fun::tmpl::_T>;
+    using item_T = rc_ptr<lang::cc::Node::Decl::Fun::tmpl::item::_T>;
 }
 
 namespace lang::cc::Node::Decl::Fun {
@@ -248,20 +248,20 @@ namespace lang::cc::Node::Decl {
     using Namespace_T = rc_ptr<lang::cc::Node::Decl::Namespace::_T>;
 }
 
-namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl::UsingAlias::tmpl::args {
-    using item_T = rc_ptr<lang::cc::Node::Decl::UsingAlias::tmpl::args::item::_T>;
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args {
+    using item_T = rc_ptr<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item::_T>;
+}
+
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item {
+    struct _T;
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl {
-    struct _T;
-}
-
-namespace lang::cc::Node::Decl::UsingAlias {
-    using tmpl_T = rc_ptr<lang::cc::Node::Decl::UsingAlias::tmpl::_T>;
+    using item_T = rc_ptr<lang::cc::Node::Decl::UsingAlias::tmpl::item::_T>;
 }
 
 namespace lang::cc::Node::Decl::UsingAlias {
@@ -997,16 +997,16 @@ void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node_T x);
 namespace lang::cc::Node {
     enum struct _W {
         Module,
-        Decl__Struct__tmpl__args__item,
-        Decl__Struct__tmpl,
-        Entry__Fun__tmpl__args__item,
-        Entry__Fun__tmpl,
+        Decl__Struct__tmpl__item__args__item,
+        Decl__Struct__tmpl__item,
+        Entry__Fun__tmpl__item__args__item,
+        Entry__Fun__tmpl__item,
         Param__val,
         Param,
-        Decl__Fun__tmpl__args__item,
-        Decl__Fun__tmpl,
-        Decl__UsingAlias__tmpl__args__item,
-        Decl__UsingAlias__tmpl,
+        Decl__Fun__tmpl__item__args__item,
+        Decl__Fun__tmpl__item,
+        Decl__UsingAlias__tmpl__item__args__item,
+        Decl__UsingAlias__tmpl__item,
         Block,
         TypedDecl__vars__item__val,
         TypedDecl__vars__item,
@@ -1046,16 +1046,16 @@ namespace lang::cc::Node {
         lang_rt::ParserLookahead first_k_;
         _T(lang::cc::Node::_W w);
         bool is_Module();
-        bool is_Decl__Struct__tmpl__args__item();
-        bool is_Decl__Struct__tmpl();
-        bool is_Entry__Fun__tmpl__args__item();
-        bool is_Entry__Fun__tmpl();
+        bool is_Decl__Struct__tmpl__item__args__item();
+        bool is_Decl__Struct__tmpl__item();
+        bool is_Entry__Fun__tmpl__item__args__item();
+        bool is_Entry__Fun__tmpl__item();
         bool is_Param__val();
         bool is_Param();
-        bool is_Decl__Fun__tmpl__args__item();
-        bool is_Decl__Fun__tmpl();
-        bool is_Decl__UsingAlias__tmpl__args__item();
-        bool is_Decl__UsingAlias__tmpl();
+        bool is_Decl__Fun__tmpl__item__args__item();
+        bool is_Decl__Fun__tmpl__item();
+        bool is_Decl__UsingAlias__tmpl__item__args__item();
+        bool is_Decl__UsingAlias__tmpl__item();
         bool is_Block();
         bool is_TypedDecl__vars__item__val();
         bool is_TypedDecl__vars__item();
@@ -1079,16 +1079,16 @@ namespace lang::cc::Node {
         bool is_SwitchCase();
         bool is_Expr();
         lang::cc::Node::Module_T as_Module();
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T as_Decl__Struct__tmpl__args__item();
-        lang::cc::Node::Decl::Struct::tmpl_T as_Decl__Struct__tmpl();
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T as_Entry__Fun__tmpl__args__item();
-        lang::cc::Node::Entry::Fun::tmpl_T as_Entry__Fun__tmpl();
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T as_Decl__Struct__tmpl__item__args__item();
+        lang::cc::Node::Decl::Struct::tmpl::item_T as_Decl__Struct__tmpl__item();
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T as_Entry__Fun__tmpl__item__args__item();
+        lang::cc::Node::Entry::Fun::tmpl::item_T as_Entry__Fun__tmpl__item();
         lang::cc::Node::Param::val_T as_Param__val();
         lang::cc::Node::Param_T as_Param();
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T as_Decl__Fun__tmpl__args__item();
-        lang::cc::Node::Decl::Fun::tmpl_T as_Decl__Fun__tmpl();
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T as_Decl__UsingAlias__tmpl__args__item();
-        lang::cc::Node::Decl::UsingAlias::tmpl_T as_Decl__UsingAlias__tmpl();
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T as_Decl__Fun__tmpl__item__args__item();
+        lang::cc::Node::Decl::Fun::tmpl::item_T as_Decl__Fun__tmpl__item();
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T as_Decl__UsingAlias__tmpl__item__args__item();
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T as_Decl__UsingAlias__tmpl__item();
         lang::cc::Node::Block_T as_Block();
         lang::cc::Node::TypedDecl::vars::item::val_T as_TypedDecl__vars__item__val();
         lang::cc::Node::TypedDecl::vars::item_T as_TypedDecl__vars__item();
@@ -1111,33 +1111,33 @@ namespace lang::cc::Node {
         lang::cc::Node::ExprExt_T as_ExprExt();
         lang::cc::Node::SwitchCase_T as_SwitchCase();
         lang::cc::Node::Expr_T as_Expr();
-        void match(function<void(lang::cc::Node::Module_T)> f_Module, function<void(lang::cc::Node::Decl::Struct::tmpl::args::item_T)> f_Decl__Struct__tmpl__args__item, function<void(lang::cc::Node::Decl::Struct::tmpl_T)> f_Decl__Struct__tmpl, function<void(lang::cc::Node::Entry::Fun::tmpl::args::item_T)> f_Entry__Fun__tmpl__args__item, function<void(lang::cc::Node::Entry::Fun::tmpl_T)> f_Entry__Fun__tmpl, function<void(lang::cc::Node::Param::val_T)> f_Param__val, function<void(lang::cc::Node::Param_T)> f_Param, function<void(lang::cc::Node::Decl::Fun::tmpl::args::item_T)> f_Decl__Fun__tmpl__args__item, function<void(lang::cc::Node::Decl::Fun::tmpl_T)> f_Decl__Fun__tmpl, function<void(lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T)> f_Decl__UsingAlias__tmpl__args__item, function<void(lang::cc::Node::Decl::UsingAlias::tmpl_T)> f_Decl__UsingAlias__tmpl, function<void(lang::cc::Node::Block_T)> f_Block, function<void(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, function<void(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, function<void(lang::cc::Node::TypedDecl_T)> f_TypedDecl, function<void(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, function<void(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, function<void(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, function<void(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, function<void(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, function<void(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, function<void(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, function<void(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, function<void(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, function<void(lang::cc::Node::Decl_T)> f_Decl, function<void(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, function<void(lang::cc::Node::Entry_T)> f_Entry, function<void(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, function<void(lang::cc::Node::Mod_T)> f_Mod, function<void(lang::cc::Node::Stmt_T)> f_Stmt, function<void(lang::cc::Node::ExprExt_T)> f_ExprExt, function<void(lang::cc::Node::SwitchCase_T)> f_SwitchCase, function<void(lang::cc::Node::Expr_T)> f_Expr);
-        template<typename RetT> RetT match_expr(function<RetT(lang::cc::Node::Module_T)> f_Module, function<RetT(lang::cc::Node::Decl::Struct::tmpl::args::item_T)> f_Decl__Struct__tmpl__args__item, function<RetT(lang::cc::Node::Decl::Struct::tmpl_T)> f_Decl__Struct__tmpl, function<RetT(lang::cc::Node::Entry::Fun::tmpl::args::item_T)> f_Entry__Fun__tmpl__args__item, function<RetT(lang::cc::Node::Entry::Fun::tmpl_T)> f_Entry__Fun__tmpl, function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, function<RetT(lang::cc::Node::Param_T)> f_Param, function<RetT(lang::cc::Node::Decl::Fun::tmpl::args::item_T)> f_Decl__Fun__tmpl__args__item, function<RetT(lang::cc::Node::Decl::Fun::tmpl_T)> f_Decl__Fun__tmpl, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T)> f_Decl__UsingAlias__tmpl__args__item, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl_T)> f_Decl__UsingAlias__tmpl, function<RetT(lang::cc::Node::Block_T)> f_Block, function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, function<RetT(lang::cc::Node::Decl_T)> f_Decl, function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, function<RetT(lang::cc::Node::Entry_T)> f_Entry, function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, function<RetT(lang::cc::Node::Mod_T)> f_Mod, function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, function<RetT(lang::cc::Node::Expr_T)> f_Expr);
+        void match(function<void(lang::cc::Node::Module_T)> f_Module, function<void(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, function<void(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, function<void(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, function<void(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, function<void(lang::cc::Node::Param::val_T)> f_Param__val, function<void(lang::cc::Node::Param_T)> f_Param, function<void(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, function<void(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, function<void(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, function<void(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, function<void(lang::cc::Node::Block_T)> f_Block, function<void(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, function<void(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, function<void(lang::cc::Node::TypedDecl_T)> f_TypedDecl, function<void(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, function<void(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, function<void(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, function<void(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, function<void(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, function<void(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, function<void(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, function<void(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, function<void(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, function<void(lang::cc::Node::Decl_T)> f_Decl, function<void(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, function<void(lang::cc::Node::Entry_T)> f_Entry, function<void(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, function<void(lang::cc::Node::Mod_T)> f_Mod, function<void(lang::cc::Node::Stmt_T)> f_Stmt, function<void(lang::cc::Node::ExprExt_T)> f_ExprExt, function<void(lang::cc::Node::SwitchCase_T)> f_SwitchCase, function<void(lang::cc::Node::Expr_T)> f_Expr);
+        template<typename RetT> RetT match_expr(function<RetT(lang::cc::Node::Module_T)> f_Module, function<RetT(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, function<RetT(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, function<RetT(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, function<RetT(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, function<RetT(lang::cc::Node::Param_T)> f_Param, function<RetT(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, function<RetT(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, function<RetT(lang::cc::Node::Block_T)> f_Block, function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, function<RetT(lang::cc::Node::Decl_T)> f_Decl, function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, function<RetT(lang::cc::Node::Entry_T)> f_Entry, function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, function<RetT(lang::cc::Node::Mod_T)> f_Mod, function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, function<RetT(lang::cc::Node::Expr_T)> f_Expr);
         void hash_ser_acc_lang_cc_Node(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::cc::Node::_T::match_expr(function<RetT(lang::cc::Node::Module_T)> f_Module, function<RetT(lang::cc::Node::Decl::Struct::tmpl::args::item_T)> f_Decl__Struct__tmpl__args__item, function<RetT(lang::cc::Node::Decl::Struct::tmpl_T)> f_Decl__Struct__tmpl, function<RetT(lang::cc::Node::Entry::Fun::tmpl::args::item_T)> f_Entry__Fun__tmpl__args__item, function<RetT(lang::cc::Node::Entry::Fun::tmpl_T)> f_Entry__Fun__tmpl, function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, function<RetT(lang::cc::Node::Param_T)> f_Param, function<RetT(lang::cc::Node::Decl::Fun::tmpl::args::item_T)> f_Decl__Fun__tmpl__args__item, function<RetT(lang::cc::Node::Decl::Fun::tmpl_T)> f_Decl__Fun__tmpl, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T)> f_Decl__UsingAlias__tmpl__args__item, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl_T)> f_Decl__UsingAlias__tmpl, function<RetT(lang::cc::Node::Block_T)> f_Block, function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, function<RetT(lang::cc::Node::Decl_T)> f_Decl, function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, function<RetT(lang::cc::Node::Entry_T)> f_Entry, function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, function<RetT(lang::cc::Node::Mod_T)> f_Mod, function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, function<RetT(lang::cc::Node::Expr_T)> f_Expr) {
+template<typename RetT> RetT lang::cc::Node::_T::match_expr(function<RetT(lang::cc::Node::Module_T)> f_Module, function<RetT(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, function<RetT(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, function<RetT(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, function<RetT(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, function<RetT(lang::cc::Node::Param_T)> f_Param, function<RetT(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, function<RetT(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, function<RetT(lang::cc::Node::Block_T)> f_Block, function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, function<RetT(lang::cc::Node::Decl_T)> f_Decl, function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, function<RetT(lang::cc::Node::Entry_T)> f_Entry, function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, function<RetT(lang::cc::Node::Mod_T)> f_Mod, function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, function<RetT(lang::cc::Node::Expr_T)> f_Expr) {
     switch (this->w_) {
         case lang::cc::Node::_W::Module: {
             return f_Module(this->as_Module());
             break;
         }
-        case lang::cc::Node::_W::Decl__Struct__tmpl__args__item: {
-            return f_Decl__Struct__tmpl__args__item(this->as_Decl__Struct__tmpl__args__item());
+        case lang::cc::Node::_W::Decl__Struct__tmpl__item__args__item: {
+            return f_Decl__Struct__tmpl__item__args__item(this->as_Decl__Struct__tmpl__item__args__item());
             break;
         }
-        case lang::cc::Node::_W::Decl__Struct__tmpl: {
-            return f_Decl__Struct__tmpl(this->as_Decl__Struct__tmpl());
+        case lang::cc::Node::_W::Decl__Struct__tmpl__item: {
+            return f_Decl__Struct__tmpl__item(this->as_Decl__Struct__tmpl__item());
             break;
         }
-        case lang::cc::Node::_W::Entry__Fun__tmpl__args__item: {
-            return f_Entry__Fun__tmpl__args__item(this->as_Entry__Fun__tmpl__args__item());
+        case lang::cc::Node::_W::Entry__Fun__tmpl__item__args__item: {
+            return f_Entry__Fun__tmpl__item__args__item(this->as_Entry__Fun__tmpl__item__args__item());
             break;
         }
-        case lang::cc::Node::_W::Entry__Fun__tmpl: {
-            return f_Entry__Fun__tmpl(this->as_Entry__Fun__tmpl());
+        case lang::cc::Node::_W::Entry__Fun__tmpl__item: {
+            return f_Entry__Fun__tmpl__item(this->as_Entry__Fun__tmpl__item());
             break;
         }
         case lang::cc::Node::_W::Param__val: {
@@ -1148,20 +1148,20 @@ template<typename RetT> RetT lang::cc::Node::_T::match_expr(function<RetT(lang::
             return f_Param(this->as_Param());
             break;
         }
-        case lang::cc::Node::_W::Decl__Fun__tmpl__args__item: {
-            return f_Decl__Fun__tmpl__args__item(this->as_Decl__Fun__tmpl__args__item());
+        case lang::cc::Node::_W::Decl__Fun__tmpl__item__args__item: {
+            return f_Decl__Fun__tmpl__item__args__item(this->as_Decl__Fun__tmpl__item__args__item());
             break;
         }
-        case lang::cc::Node::_W::Decl__Fun__tmpl: {
-            return f_Decl__Fun__tmpl(this->as_Decl__Fun__tmpl());
+        case lang::cc::Node::_W::Decl__Fun__tmpl__item: {
+            return f_Decl__Fun__tmpl__item(this->as_Decl__Fun__tmpl__item());
             break;
         }
-        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__args__item: {
-            return f_Decl__UsingAlias__tmpl__args__item(this->as_Decl__UsingAlias__tmpl__args__item());
+        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__item__args__item: {
+            return f_Decl__UsingAlias__tmpl__item__args__item(this->as_Decl__UsingAlias__tmpl__item__args__item());
             break;
         }
-        case lang::cc::Node::_W::Decl__UsingAlias__tmpl: {
-            return f_Decl__UsingAlias__tmpl(this->as_Decl__UsingAlias__tmpl());
+        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__item: {
+            return f_Decl__UsingAlias__tmpl__item(this->as_Decl__UsingAlias__tmpl__item());
             break;
         }
         case lang::cc::Node::_W::Block: {
@@ -2085,18 +2085,18 @@ template<typename RetT> RetT lang::cc::Node::Expr::_T::match_expr(function<RetT(
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct_T x);
 
 namespace lang::cc::Node::Decl::Struct {
-    lang::cc::Node::Decl::Struct_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
+    lang::cc::Node::Decl::Struct_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::item_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Struct {
-    lang::cc::Node::Decl::Struct_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
+    lang::cc::Node::Decl::Struct_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::item_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::StructDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Struct {
     struct _T: lang::cc::Node::Decl::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
-        Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl_;
+        Vec_T<lang::cc::Node::Decl::Struct::tmpl::item_T> tmpl_;
         lang::cc::Node::Expr_T name_;
         lang::cc::Node::StructDeclDef_T body_;
         _T();
@@ -2106,7 +2106,7 @@ namespace lang::cc::Node::Decl::Struct {
         lang::cc::Node::Decl::Struct_T with_sym(lang_rt::ParserSymId sym);
         lang::cc::Node::Decl::Struct_T with_attr(lang_rt::ParserAttrMask attr);
         lang::cc::Node::Decl::Struct_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::Struct_T with_tmpl(Option_T<lang::cc::Node::Decl::Struct::tmpl_T> tmpl);
+        lang::cc::Node::Decl::Struct_T with_tmpl(Vec_T<lang::cc::Node::Decl::Struct::tmpl::item_T> tmpl);
         lang::cc::Node::Decl::Struct_T with_name(lang::cc::Node::Expr_T name);
         lang::cc::Node::Decl::Struct_T with_body(lang::cc::Node::StructDeclDef_T body);
         void hash_ser_acc_lang_cc_Node_Decl_Struct(SerBuf& buf) const;
@@ -2203,18 +2203,18 @@ namespace lang::cc::Node::Entry::Field {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun_T x);
 
 namespace lang::cc::Node::Entry::Fun {
-    lang::cc::Node::Entry::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Entry::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::item_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Entry::Fun {
-    lang::cc::Node::Entry::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Entry::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::item_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Entry::Fun {
     struct _T: lang::cc::Node::Entry::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
-        Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl_;
+        Vec_T<lang::cc::Node::Entry::Fun::tmpl::item_T> tmpl_;
         Vec_T<lang::cc::Node::Mod_T> mods_;
         Option_T<lang::cc::Node::Expr_T> ret_type_;
         lang::cc::Node::Expr_T name_;
@@ -2228,7 +2228,7 @@ namespace lang::cc::Node::Entry::Fun {
         lang::cc::Node::Entry::Fun_T with_sym(lang_rt::ParserSymId sym);
         lang::cc::Node::Entry::Fun_T with_attr(lang_rt::ParserAttrMask attr);
         lang::cc::Node::Entry::Fun_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Entry::Fun_T with_tmpl(Option_T<lang::cc::Node::Entry::Fun::tmpl_T> tmpl);
+        lang::cc::Node::Entry::Fun_T with_tmpl(Vec_T<lang::cc::Node::Entry::Fun::tmpl::item_T> tmpl);
         lang::cc::Node::Entry::Fun_T with_mods(Vec_T<lang::cc::Node::Mod_T> mods);
         lang::cc::Node::Entry::Fun_T with_ret_type(Option_T<lang::cc::Node::Expr_T> ret_type);
         lang::cc::Node::Entry::Fun_T with_name(lang::cc::Node::Expr_T name);
@@ -2411,18 +2411,18 @@ namespace lang::cc::Node::Decl::EnumStruct {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun_T x);
 
 namespace lang::cc::Node::Decl::Fun {
-    lang::cc::Node::Decl::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Decl::Fun_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::item_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Fun {
-    lang::cc::Node::Decl::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
+    lang::cc::Node::Decl::Fun_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::item_T> tmpl, Vec_T<lang::cc::Node::Mod_T> mods, Option_T<lang::cc::Node::Expr_T> ret_type, lang::cc::Node::Expr_T name, Vec_T<lang::cc::Node::Param_T> params, Vec_T<lang::cc::Node::Mod_T> mods_post, lang::cc::Node::FunDeclDef_T body);
 }
 
 namespace lang::cc::Node::Decl::Fun {
     struct _T: lang::cc::Node::Decl::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
-        Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl_;
+        Vec_T<lang::cc::Node::Decl::Fun::tmpl::item_T> tmpl_;
         Vec_T<lang::cc::Node::Mod_T> mods_;
         Option_T<lang::cc::Node::Expr_T> ret_type_;
         lang::cc::Node::Expr_T name_;
@@ -2436,7 +2436,7 @@ namespace lang::cc::Node::Decl::Fun {
         lang::cc::Node::Decl::Fun_T with_sym(lang_rt::ParserSymId sym);
         lang::cc::Node::Decl::Fun_T with_attr(lang_rt::ParserAttrMask attr);
         lang::cc::Node::Decl::Fun_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::Fun_T with_tmpl(Option_T<lang::cc::Node::Decl::Fun::tmpl_T> tmpl);
+        lang::cc::Node::Decl::Fun_T with_tmpl(Vec_T<lang::cc::Node::Decl::Fun::tmpl::item_T> tmpl);
         lang::cc::Node::Decl::Fun_T with_mods(Vec_T<lang::cc::Node::Mod_T> mods);
         lang::cc::Node::Decl::Fun_T with_ret_type(Option_T<lang::cc::Node::Expr_T> ret_type);
         lang::cc::Node::Decl::Fun_T with_name(lang::cc::Node::Expr_T name);
@@ -2637,18 +2637,18 @@ namespace lang::cc::Node::Decl::Namespace {
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias_T x);
 
 namespace lang::cc::Node::Decl::UsingAlias {
-    lang::cc::Node::Decl::UsingAlias_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
+    lang::cc::Node::Decl::UsingAlias_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias {
-    lang::cc::Node::Decl::UsingAlias_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
+    lang::cc::Node::Decl::UsingAlias_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item_T> tmpl, lang::cc::Node::Expr_T name, lang::cc::Node::Expr_T val);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias {
     struct _T: lang::cc::Node::Decl::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
-        Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl_;
+        Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item_T> tmpl_;
         lang::cc::Node::Expr_T name_;
         lang::cc::Node::Expr_T val_;
         _T();
@@ -2658,7 +2658,7 @@ namespace lang::cc::Node::Decl::UsingAlias {
         lang::cc::Node::Decl::UsingAlias_T with_sym(lang_rt::ParserSymId sym);
         lang::cc::Node::Decl::UsingAlias_T with_attr(lang_rt::ParserAttrMask attr);
         lang::cc::Node::Decl::UsingAlias_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::UsingAlias_T with_tmpl(Option_T<lang::cc::Node::Decl::UsingAlias::tmpl_T> tmpl);
+        lang::cc::Node::Decl::UsingAlias_T with_tmpl(Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item_T> tmpl);
         lang::cc::Node::Decl::UsingAlias_T with_name(lang::cc::Node::Expr_T name);
         lang::cc::Node::Decl::UsingAlias_T with_val(lang::cc::Node::Expr_T val);
         void hash_ser_acc_lang_cc_Node_Decl_UsingAlias(SerBuf& buf) const;
@@ -3978,118 +3978,6 @@ template<typename RetT> RetT lang::cc::Node::Expr::Lit::_T::match_expr(function<
     }
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl_T x);
-
-namespace lang::cc::Node::Decl::Struct::tmpl {
-    lang::cc::Node::Decl::Struct::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Decl::Struct::tmpl {
-    lang::cc::Node::Decl::Struct::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Decl::Struct::tmpl {
-    struct _T: lang::cc::Node::_T {
-        void write(Ref<ostream> os, FmtFlags flags);
-        void write(Ref<lang_rt::PrBufStream_T> pb);
-        Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args_;
-        _T();
-        lang::cc::Node::Decl::Struct::tmpl_T with_id(Int id);
-        lang::cc::Node::Decl::Struct::tmpl_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Decl::Struct::tmpl_T with_is_top(bool is_top);
-        lang::cc::Node::Decl::Struct::tmpl_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Decl::Struct::tmpl_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Decl::Struct::tmpl_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::Struct::tmpl_T with_args(Vec_T<lang::cc::Node::Decl::Struct::tmpl::args::item_T> args);
-        void hash_ser_acc_lang_cc_Node_Decl_Struct_tmpl(SerBuf& buf) const;
-        virtual void hash_ser_acc(SerBuf& buf) const;
-    };
-}
-
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl_T x);
-
-namespace lang::cc::Node::Entry::Fun::tmpl {
-    lang::cc::Node::Entry::Fun::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Entry::Fun::tmpl {
-    lang::cc::Node::Entry::Fun::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Entry::Fun::tmpl {
-    struct _T: lang::cc::Node::_T {
-        void write(Ref<ostream> os, FmtFlags flags);
-        void write(Ref<lang_rt::PrBufStream_T> pb);
-        Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args_;
-        _T();
-        lang::cc::Node::Entry::Fun::tmpl_T with_id(Int id);
-        lang::cc::Node::Entry::Fun::tmpl_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Entry::Fun::tmpl_T with_is_top(bool is_top);
-        lang::cc::Node::Entry::Fun::tmpl_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Entry::Fun::tmpl_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Entry::Fun::tmpl_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Entry::Fun::tmpl_T with_args(Vec_T<lang::cc::Node::Entry::Fun::tmpl::args::item_T> args);
-        void hash_ser_acc_lang_cc_Node_Entry_Fun_tmpl(SerBuf& buf) const;
-        virtual void hash_ser_acc(SerBuf& buf) const;
-    };
-}
-
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl_T x);
-
-namespace lang::cc::Node::Decl::Fun::tmpl {
-    lang::cc::Node::Decl::Fun::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Decl::Fun::tmpl {
-    lang::cc::Node::Decl::Fun::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Decl::Fun::tmpl {
-    struct _T: lang::cc::Node::_T {
-        void write(Ref<ostream> os, FmtFlags flags);
-        void write(Ref<lang_rt::PrBufStream_T> pb);
-        Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args_;
-        _T();
-        lang::cc::Node::Decl::Fun::tmpl_T with_id(Int id);
-        lang::cc::Node::Decl::Fun::tmpl_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Decl::Fun::tmpl_T with_is_top(bool is_top);
-        lang::cc::Node::Decl::Fun::tmpl_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Decl::Fun::tmpl_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Decl::Fun::tmpl_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::Fun::tmpl_T with_args(Vec_T<lang::cc::Node::Decl::Fun::tmpl::args::item_T> args);
-        void hash_ser_acc_lang_cc_Node_Decl_Fun_tmpl(SerBuf& buf) const;
-        virtual void hash_ser_acc(SerBuf& buf) const;
-    };
-}
-
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl_T x);
-
-namespace lang::cc::Node::Decl::UsingAlias::tmpl {
-    lang::cc::Node::Decl::UsingAlias::tmpl_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Decl::UsingAlias::tmpl {
-    lang::cc::Node::Decl::UsingAlias::tmpl_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args);
-}
-
-namespace lang::cc::Node::Decl::UsingAlias::tmpl {
-    struct _T: lang::cc::Node::_T {
-        void write(Ref<ostream> os, FmtFlags flags);
-        void write(Ref<lang_rt::PrBufStream_T> pb);
-        Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args_;
-        _T();
-        lang::cc::Node::Decl::UsingAlias::tmpl_T with_id(Int id);
-        lang::cc::Node::Decl::UsingAlias::tmpl_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Decl::UsingAlias::tmpl_T with_is_top(bool is_top);
-        lang::cc::Node::Decl::UsingAlias::tmpl_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Decl::UsingAlias::tmpl_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Decl::UsingAlias::tmpl_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::UsingAlias::tmpl_T with_args(Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T> args);
-        void hash_ser_acc_lang_cc_Node_Decl_UsingAlias_tmpl(SerBuf& buf) const;
-        virtual void hash_ser_acc(SerBuf& buf) const;
-    };
-}
-
 void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl::vars::item_T x);
 
 namespace lang::cc::Node::TypedDecl::vars::item {
@@ -4601,6 +4489,118 @@ namespace lang::cc::Node::Expr::Lit::Array {
         lang::cc::Node::Expr::Lit::Array_T with_first_k(lang_rt::ParserLookahead first_k);
         lang::cc::Node::Expr::Lit::Array_T with_items(Vec_T<lang::cc::Node::Expr_T> items);
         void hash_ser_acc_lang_cc_Node_Expr_Lit_Array(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::item_T x);
+
+namespace lang::cc::Node::Decl::Struct::tmpl::item {
+    lang::cc::Node::Decl::Struct::tmpl::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Decl::Struct::tmpl::item {
+    lang::cc::Node::Decl::Struct::tmpl::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Struct::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Decl::Struct::tmpl::item {
+    struct _T: lang::cc::Node::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        Vec_T<lang::cc::Node::Decl::Struct::tmpl::item::args::item_T> args_;
+        _T();
+        lang::cc::Node::Decl::Struct::tmpl::item_T with_id(Int id);
+        lang::cc::Node::Decl::Struct::tmpl::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Decl::Struct::tmpl::item_T with_is_top(bool is_top);
+        lang::cc::Node::Decl::Struct::tmpl::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Decl::Struct::tmpl::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Decl::Struct::tmpl::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Decl::Struct::tmpl::item_T with_args(Vec_T<lang::cc::Node::Decl::Struct::tmpl::item::args::item_T> args);
+        void hash_ser_acc_lang_cc_Node_Decl_Struct_tmpl_item(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::item_T x);
+
+namespace lang::cc::Node::Entry::Fun::tmpl::item {
+    lang::cc::Node::Entry::Fun::tmpl::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Entry::Fun::tmpl::item {
+    lang::cc::Node::Entry::Fun::tmpl::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Entry::Fun::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Entry::Fun::tmpl::item {
+    struct _T: lang::cc::Node::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        Vec_T<lang::cc::Node::Entry::Fun::tmpl::item::args::item_T> args_;
+        _T();
+        lang::cc::Node::Entry::Fun::tmpl::item_T with_id(Int id);
+        lang::cc::Node::Entry::Fun::tmpl::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Entry::Fun::tmpl::item_T with_is_top(bool is_top);
+        lang::cc::Node::Entry::Fun::tmpl::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Entry::Fun::tmpl::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Entry::Fun::tmpl::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Entry::Fun::tmpl::item_T with_args(Vec_T<lang::cc::Node::Entry::Fun::tmpl::item::args::item_T> args);
+        void hash_ser_acc_lang_cc_Node_Entry_Fun_tmpl_item(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::item_T x);
+
+namespace lang::cc::Node::Decl::Fun::tmpl::item {
+    lang::cc::Node::Decl::Fun::tmpl::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Decl::Fun::tmpl::item {
+    lang::cc::Node::Decl::Fun::tmpl::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::Fun::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Decl::Fun::tmpl::item {
+    struct _T: lang::cc::Node::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        Vec_T<lang::cc::Node::Decl::Fun::tmpl::item::args::item_T> args_;
+        _T();
+        lang::cc::Node::Decl::Fun::tmpl::item_T with_id(Int id);
+        lang::cc::Node::Decl::Fun::tmpl::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Decl::Fun::tmpl::item_T with_is_top(bool is_top);
+        lang::cc::Node::Decl::Fun::tmpl::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Decl::Fun::tmpl::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Decl::Fun::tmpl::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Decl::Fun::tmpl::item_T with_args(Vec_T<lang::cc::Node::Decl::Fun::tmpl::item::args::item_T> args);
+        void hash_ser_acc_lang_cc_Node_Decl_Fun_tmpl_item(SerBuf& buf) const;
+        virtual void hash_ser_acc(SerBuf& buf) const;
+    };
+}
+
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::item_T x);
+
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item {
+    lang::cc::Node::Decl::UsingAlias::tmpl::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item {
+    lang::cc::Node::Decl::UsingAlias::tmpl::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T> args);
+}
+
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item {
+    struct _T: lang::cc::Node::_T {
+        void write(Ref<ostream> os, FmtFlags flags);
+        void write(Ref<lang_rt::PrBufStream_T> pb);
+        Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T> args_;
+        _T();
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T with_id(Int id);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T with_is_top(bool is_top);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item_T with_args(Vec_T<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T> args);
+        void hash_ser_acc_lang_cc_Node_Decl_UsingAlias_tmpl_item(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
@@ -5153,122 +5153,122 @@ namespace lang::cc::Node::Expr::Bin6::op::MODULO {
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::args::item_T x);
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::item::args::item_T x);
 
-namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
-    lang::cc::Node::Decl::Struct::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
+    lang::cc::Node::Decl::Struct::tmpl::item::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
-    lang::cc::Node::Decl::Struct::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
+    lang::cc::Node::Decl::Struct::tmpl::item::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Decl::Struct::tmpl::args::item {
+namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
     struct _T: lang::cc::Node::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_id(Int id);
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_is_top(bool is_top);
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_dots(bool dots);
-        lang::cc::Node::Decl::Struct::tmpl::args::item_T with_name(lang::cc::Node::Expr_T name);
-        void hash_ser_acc_lang_cc_Node_Decl_Struct_tmpl_args_item(SerBuf& buf) const;
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_id(Int id);
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_is_top(bool is_top);
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_dots(bool dots);
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T with_name(lang::cc::Node::Expr_T name);
+        void hash_ser_acc_lang_cc_Node_Decl_Struct_tmpl_item_args_item(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::args::item_T x);
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::item::args::item_T x);
 
-namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
-    lang::cc::Node::Entry::Fun::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
+    lang::cc::Node::Entry::Fun::tmpl::item::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
-    lang::cc::Node::Entry::Fun::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
+    lang::cc::Node::Entry::Fun::tmpl::item::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Entry::Fun::tmpl::args::item {
+namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
     struct _T: lang::cc::Node::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_id(Int id);
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_is_top(bool is_top);
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_dots(bool dots);
-        lang::cc::Node::Entry::Fun::tmpl::args::item_T with_name(lang::cc::Node::Expr_T name);
-        void hash_ser_acc_lang_cc_Node_Entry_Fun_tmpl_args_item(SerBuf& buf) const;
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_id(Int id);
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_is_top(bool is_top);
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_dots(bool dots);
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T with_name(lang::cc::Node::Expr_T name);
+        void hash_ser_acc_lang_cc_Node_Entry_Fun_tmpl_item_args_item(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::args::item_T x);
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::item::args::item_T x);
 
-namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
-    lang::cc::Node::Decl::Fun::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
+    lang::cc::Node::Decl::Fun::tmpl::item::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
-    lang::cc::Node::Decl::Fun::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
+    lang::cc::Node::Decl::Fun::tmpl::item::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Decl::Fun::tmpl::args::item {
+namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
     struct _T: lang::cc::Node::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_id(Int id);
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_is_top(bool is_top);
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_dots(bool dots);
-        lang::cc::Node::Decl::Fun::tmpl::args::item_T with_name(lang::cc::Node::Expr_T name);
-        void hash_ser_acc_lang_cc_Node_Decl_Fun_tmpl_args_item(SerBuf& buf) const;
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_id(Int id);
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_is_top(bool is_top);
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_dots(bool dots);
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T with_name(lang::cc::Node::Expr_T name);
+        void hash_ser_acc_lang_cc_Node_Decl_Fun_tmpl_item_args_item(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T x);
+void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T x);
 
-namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
-    lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item {
+    lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
-    lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item {
+    lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool dots, lang::cc::Node::Expr_T name);
 }
 
-namespace lang::cc::Node::Decl::UsingAlias::tmpl::args::item {
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item {
     struct _T: lang::cc::Node::_T {
         void write(Ref<ostream> os, FmtFlags flags);
         void write(Ref<lang_rt::PrBufStream_T> pb);
         bool dots_;
         lang::cc::Node::Expr_T name_;
         _T();
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_id(Int id);
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_bounds(lang_rt::TokenBounds bounds);
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_is_top(bool is_top);
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_sym(lang_rt::ParserSymId sym);
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_attr(lang_rt::ParserAttrMask attr);
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_dots(bool dots);
-        lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T with_name(lang::cc::Node::Expr_T name);
-        void hash_ser_acc_lang_cc_Node_Decl_UsingAlias_tmpl_args_item(SerBuf& buf) const;
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_id(Int id);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_bounds(lang_rt::TokenBounds bounds);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_is_top(bool is_top);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_sym(lang_rt::ParserSymId sym);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_attr(lang_rt::ParserAttrMask attr);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_first_k(lang_rt::ParserLookahead first_k);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_dots(bool dots);
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T with_name(lang::cc::Node::Expr_T name);
+        void hash_ser_acc_lang_cc_Node_Decl_UsingAlias_tmpl_item_args_item(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
@@ -5393,17 +5393,17 @@ void visit_lang_cc_Node(lang::cc::Node::Expr::Lit_T x, function<void(lang::cc::N
 
 void visit_lang_cc_Node(lang::cc::Node::Expr_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::args::item_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::item_T x, function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::StructDeclDef::Decl_T x, function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::Entry::Field_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::args::item_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::item_T x, function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::Mod::Const_T x, function<void(lang::cc::Node_T)> f);
 
@@ -5487,17 +5487,17 @@ void visit_lang_cc_Node(lang::cc::Node::Decl::Struct_T x, function<void(lang::cc
 
 void visit_lang_cc_Node(lang::cc::Node::Decl::EnumStruct_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::args::item_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::item_T x, function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::Decl::Fun_T x, function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::Decl::Namespace_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T x, function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl_T x, function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::item_T x, function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::Decl::UsingAlias_T x, function<void(lang::cc::Node_T)> f);
 
@@ -5633,17 +5633,17 @@ lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Lit_T x, function<lan
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::StructDeclDef::Decl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Entry::Field_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Mod::Const_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
@@ -5727,17 +5727,17 @@ lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Struct_T x, function<
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::EnumStruct_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Fun_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::Namespace_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Decl::UsingAlias_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
@@ -5761,9 +5761,9 @@ lang::cc::Node::Decl_T xform_lang_cc_Node(lang::cc::Node::Decl_T x, function<lan
 
 lang::cc::Node::Decl::Struct_T xform_lang_cc_Node(lang::cc::Node::Decl::Struct_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Decl::Struct::tmpl_T xform_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Decl::Struct::tmpl::item_T xform_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Decl::Struct::tmpl::args::item_T xform_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Decl::Struct::tmpl::item::args::item_T xform_lang_cc_Node(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Expr_T xform_lang_cc_Node(lang::cc::Node::Expr_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
@@ -5897,9 +5897,9 @@ lang::cc::Node::Entry::Field_T xform_lang_cc_Node(lang::cc::Node::Entry::Field_T
 
 lang::cc::Node::Entry::Fun_T xform_lang_cc_Node(lang::cc::Node::Entry::Fun_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Entry::Fun::tmpl_T xform_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Entry::Fun::tmpl::item_T xform_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Entry::Fun::tmpl::args::item_T xform_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Entry::Fun::tmpl::item::args::item_T xform_lang_cc_Node(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Mod_T xform_lang_cc_Node(lang::cc::Node::Mod_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
@@ -5975,17 +5975,17 @@ lang::cc::Node::Decl::EnumStruct_T xform_lang_cc_Node(lang::cc::Node::Decl::Enum
 
 lang::cc::Node::Decl::Fun_T xform_lang_cc_Node(lang::cc::Node::Decl::Fun_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Decl::Fun::tmpl_T xform_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Decl::Fun::tmpl::item_T xform_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Decl::Fun::tmpl::args::item_T xform_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Decl::Fun::tmpl::item::args::item_T xform_lang_cc_Node(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Decl::Namespace_T xform_lang_cc_Node(lang::cc::Node::Decl::Namespace_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Decl::UsingAlias_T xform_lang_cc_Node(lang::cc::Node::Decl::UsingAlias_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Decl::UsingAlias::tmpl_T xform_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Decl::UsingAlias::tmpl::item_T xform_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T xform_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T xform_lang_cc_Node(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Decl::UsingNamespace_T xform_lang_cc_Node(lang::cc::Node::Decl::UsingNamespace_T x, function<lang::cc::Node_T(lang::cc::Node_T)> f);
 

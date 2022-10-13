@@ -110,7 +110,7 @@ struct CppGenContext {
     inline cc::Node_T gen_cpp_fun_proto_entry(
         NodeV cpp_template_params, NodeV mods, NodeRM ret, NodeR fun_name, NodeV params);
     inline cc::Node_T gen_cpp_fun_call(NodeR f, NodeV args);
-    inline cc::Node_T gen_cpp_fun_body(NodeV cpp_template_params,
+    inline cc::Node_T gen_cpp_fun_body(NodeV cpp_template_params, NodeV cpp_template_params2,
         NodeV mods, NodeRM ret, NodeR fun_name, NodeV params, NodeV init_exprs, NodeV body,
         bool const_post = false);
 
@@ -153,8 +153,8 @@ struct CppGenContext {
         return ret;
     }
 
-    inline void push_def(NodeV cpp_template_params, cc::Node::Decl_T def) {
-        if (cpp_template_params->length() > 0) {
+    inline void push_def(bool has_tmpl, cc::Node::Decl_T def) {
+        if (has_tmpl) {
             dst_decls_->push_back(def);
         } else {
             dst_defs_->push_back(def);
@@ -412,12 +412,14 @@ inline cc::Node_T CppGenContext::gen_cpp_id_with_template_args_acc(
 
 
 inline cc::Node_T CppGenContext::gen_cpp_fun_body(
-    NodeV cpp_template_params, NodeV mods, NodeRM ret, NodeR fun_name, NodeV params,
+    NodeV cpp_template_params, NodeV cpp_template_params2,
+    NodeV mods, NodeRM ret, NodeR fun_name, NodeV params,
     NodeV init_exprs, NodeV body, bool const_post) {
 
     auto lex_args = Q_->make_lex_builder();
 
     this->gen_cpp_template_params_acc(lex_args, cpp_template_params);
+    this->gen_cpp_template_params_acc(lex_args, cpp_template_params2);
 
     this->gen_cpp_fun_proto_acc(lex_args, mods, ret, fun_name, params);
     if (init_exprs->length() > 0) {

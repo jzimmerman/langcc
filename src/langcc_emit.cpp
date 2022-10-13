@@ -2176,7 +2176,7 @@ void lang_emit_test_defs(LangCompileContext& ctx) {
     main_decls->push_back(ctx.cc_.qq("Stmt", "return !ok;"));
 
     ctx.cc_test_.push_def(
-        NodeV_empty(),
+        false,
         ctx.cc_test_.qq("Decl", "int main() {", *main_decls, "}")->as_Decl()
     );
 }
@@ -2204,7 +2204,7 @@ void lang_emit_debug_defs(LangCompileContext& ctx) {
     ));
 
     ctx.cc_debug_.push_def(
-        NodeV_empty(),
+        false,
         ctx.cc_debug_.qq("Decl", "int main() {", *debug_decls, "}")->as_Decl()
     );
 }

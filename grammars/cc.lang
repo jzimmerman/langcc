@@ -116,7 +116,7 @@ parser {
 
     Module <- decls:#T2[Decl::eps];
 
-    Decl.Struct <- tmpl:(TemplateDecl _)? `struct` _ name:Id body:StructDeclDef;
+    Decl.Struct <- tmpl:(TemplateDecl _)* `struct` _ name:Id body:StructDeclDef;
 
             StructDeclDef.Decl <- `;`;
             StructDeclDef.Def <- base:(`:`_ #L[Type::+`,`_])? _ `{` entries:#B[Entry::eps] `}` `;`;
@@ -124,7 +124,7 @@ parser {
         Entry.Field <- type_:Type _ name:Id `;`;
         Entry.Fun <- FunProto body:FunDeclDef;
 
-            FunProto <= tmpl:(TemplateDecl _)? mods:#L[Mod::_::]
+            FunProto <= tmpl:(TemplateDecl _)* mods:#L[Mod::_::]
                 ret_type:(Type _)? name:Type `(` params:ParamList `)` mods_post:#L[_ Mod::eps];
 
                 ParamList <= #L[~Param::`,`_:?];
@@ -152,7 +152,7 @@ parser {
 
     Decl.Namespace <- `namespace` _ name:Type _ `{` body:#B2[Decl::eps] `}`;
 
-    Decl.UsingAlias <- tmpl:(TemplateDecl _)? `using` _ name:Id _ `=` _ val:Expr `;`;
+    Decl.UsingAlias <- tmpl:(TemplateDecl _)* `using` _ name:Id _ `=` _ val:Expr `;`;
     Decl.UsingNamespace <- `using` _ `namespace` _ name:Type;
 
     Decl.Include <- x:include;
