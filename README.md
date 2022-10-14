@@ -5,7 +5,7 @@
 - ``langcc`` generates efficient, linear-time parsers for a much more general class of grammars
   than lex+yacc. Specifically, ``langcc`` implements novel extensions of canonical
   LR parsing (described in the
-  [companion technical report](https://arxiv.org/pdf/2209.08383.pdf)
+  [companion technical report](https://arxiv.org/pdf/2209.08383.pdf))
   which we believe encompass virtually all languages that are "easy to parse" for humans.
 - Unlike lex+yacc, ``langcc`` is general enough for real industrial languages
   ([Python 3.9.12](https://github.com/jzimmerman/langcc/blob/main/grammars/py.lang),
