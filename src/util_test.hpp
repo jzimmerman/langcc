@@ -1,6 +1,8 @@
 
 #include "langcc_util.hpp"
 
+namespace langcc {
+
 TEST(str_split1) {
     string input = "ABC\nDEF\n\nG\n";
     vector<string> output_exp = {
@@ -93,4 +95,6 @@ TEST(utf8_encode1) {
     auto r = utf8_decode(s);
     AT(r.is_some());
     AR_eq(r.as_some(), v);
+}
+
 }

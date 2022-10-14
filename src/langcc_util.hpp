@@ -3,7 +3,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Common includes
 ////////////////////////////////////////////////////////////////////////////////
-
 #include <algorithm>
 #include <atomic>
 #include <cassert>
@@ -18,6 +17,7 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <queue>
 #include <set>
@@ -34,8 +34,6 @@
 #include <signal.h>
 #endif
 
-using namespace std;
-
 #define UNW_LOCAL_ONLY
 
 #include <sys/types.h>
@@ -44,6 +42,10 @@ using namespace std;
 #include <fcntl.h>
 #include <libunwind.h>
 #include <dlfcn.h>
+
+namespace langcc {
+
+using namespace std;
 
 inline void dump_stack();
 
@@ -292,9 +294,6 @@ template<typename T> struct rc_ptr {
 
 #define STRINGIFY(x) STRINGIFY_INNER(x)
 #define STRINGIFY_INNER(x) #x
-
-#define RC_STRUCT(x) struct x; \
-    using x##_T = rc_ptr<x>;
 
 template<typename T> T take_ptr(T* x) {
     T ret = *x;
@@ -1938,7 +1937,8 @@ inline string string_from_byte_vec(Vec_T<u8> x) {
 // Pool-based allocation
 ////////////////////////////////////////////////////////////////////////////////
 
-RC_STRUCT(Arena);
+struct Arena;
+using Arena_T = rc_ptr<Arena>;
 
 template<typename T>
 rc_ptr<T> rc_from_ptr_arena(void* x) {
@@ -2090,7 +2090,7 @@ inline void free_ext(void* x, Arena* A) {
 // External code: picosha2
 //
 // The following delimited block is external code from the picosha2 project,
-// distributed under the MIT license.
+// distributed under the MIT license, with minor modifications.
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -2116,21 +2116,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef PICOSHA2_H
-#define PICOSHA2_H
 // picosha2:20140213
 
-#ifndef PICOSHA2_BUFFER_SIZE_FOR_INPUT_ITERATOR
-#define PICOSHA2_BUFFER_SIZE_FOR_INPUT_ITERATOR \
-    1048576  //=1024*1024: default is 1MB memory
-#endif
+constexpr int PICOSHA2_BUFFER_SIZE_FOR_INPUT_ITERATOR = 1048576;
 
-#include <algorithm>
-#include <cassert>
-#include <iterator>
-#include <sstream>
-#include <vector>
-#include <fstream>
 namespace picosha2 {
 typedef unsigned long word_t;
 typedef unsigned char byte_t;
@@ -2469,7 +2458,6 @@ template<typename OutIter>void hash256(std::ifstream& f, OutIter first, OutIter 
 
 }
 }// namespace picosha2
-#endif  // PICOSHA2_H
 
 
 
@@ -2504,13 +2492,17 @@ struct HashVal {
     }
 };
 
+}
+
 namespace std {
-    template<> struct hash<HashVal> {
-        inline std::size_t operator()(const HashVal& x) const {
+    template<> struct hash<langcc::HashVal> {
+        inline std::size_t operator()(const langcc::HashVal& x) const {
             return *reinterpret_cast<const size_t*>(&x.v_);
         }
     };
 }
+
+namespace langcc {
 
 struct hash_obj {
     Option_T<HashVal> _hash_val_cached_;
@@ -3391,7 +3383,8 @@ inline Int align_to(Int x, Int a) {
     return div_ceil(x, a) * a;
 }
 
-RC_STRUCT(Gensym);
+struct Gensym;
+using Gensym_T = rc_ptr<Gensym>;
 
 struct Gensym {
     Int next_;
@@ -3838,7 +3831,8 @@ inline bool run_unit_tests() {
 
     while (test_dispatch_i < ts.size() || get_unit_tests_running().size() > 0) {
         if (test_dispatch_i < ts.size()) {
-            while (get_unit_tests_running().size() < unit_tests_max_concurrent) {
+            while (test_dispatch_i < ts.size() &&
+                   get_unit_tests_running().size() < unit_tests_max_concurrent) {
                 dispatch_unit_test(ts[test_dispatch_i]);
                 ++test_dispatch_i;
                 usleep(1000);
@@ -4122,4 +4116,6 @@ inline void dump_stack() {
     }
 
     cerr << ret << flush;
+}
+
 }

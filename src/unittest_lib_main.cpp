@@ -3,6 +3,8 @@
 
 #include "util_test.hpp"
 
+using namespace langcc;
+
 int main() {
     global_init();
     set_log_level(1);

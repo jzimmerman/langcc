@@ -1,8 +1,12 @@
 
 #include "go__gen.hpp"
 
-void pr(ostream& os, FmtFlags flags, lang::go::Node_T x) {
-    x->write(os, flags);
+using namespace langcc;
+
+namespace langcc {
+    void pr(ostream& os, FmtFlags flags, lang::go::Node_T x) {
+        x->write(os, flags);
+    }
 }
 
 lang::go::Node_T parse_string(lang::go::QuoteEnv_T Q, string input, string input_path) {

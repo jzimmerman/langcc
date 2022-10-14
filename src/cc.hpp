@@ -4,13 +4,14 @@
 
 #include "cc__gen.hpp"
 
+namespace langcc {
+
+using namespace lang;
+
 enum struct HeaderMode {
     N,
     Y,
 };
-
-using namespace lang;
-using namespace lang_rt;
 
 
 inline void pr(ostream& os, FmtFlags flags, lang::cc::Node_T x) {
@@ -499,10 +500,12 @@ inline cc::Node_T CppGenContext::gen_cpp_decl_ns_wrap(GenName decl_ns, const cc:
 
 
 inline cc::Node_T CppGenContext::gen_cpp_rc_ptr(const cc::Node_T& val) {
-    return Q_->qq_ext(Some<string>("Expr"), "rc_ptr<", val, ">");
+    return Q_->qq_ext(Some<string>("Expr"), "langcc::rc_ptr<", val, ">");
 }
 
 
 inline cc::Node_T CppGenContext::gen_cpp_id_base(const IdBase& id_base) {
     return Q_->qq_ext(Some<string>("Expr"), id_base);    
+}
+
 }

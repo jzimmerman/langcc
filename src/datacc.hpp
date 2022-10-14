@@ -5,8 +5,9 @@
 
 #include "cc.hpp"
 
+namespace langcc {
+
 using namespace lang;
-using namespace lang_rt;
 
 
 enum struct LowerTy {
@@ -48,3 +49,5 @@ struct DataDefsResult {
 
 DataDefsResult compile_data_defs(
     lang::data::Node_T src, Option_T<string> header_name, HeaderMode header_mode);
+
+}

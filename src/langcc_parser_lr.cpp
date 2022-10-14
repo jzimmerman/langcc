@@ -1,6 +1,7 @@
 
 #include "langcc_common.hpp"
 
+namespace langcc {
 
 AttrSet_T prod_lhs_attr_init(Prod_T prod, LangCompileContext& ctx) {
     auto m = make_rc<Map<AttrKey_T, AttrVal_T>>();
@@ -785,7 +786,7 @@ LR_NFA_T parser_lr_construct_nfa(
     Int k,
     GrammarProdConstrs_T G_constrs) {
 
-    auto N = NFA::empty<LR_NFA_Args>();
+    auto N = NFA::empty<LRVertex_T, LRLabel_T, LRLookAction_T>();
 
     LRVertex_T v0 = LRVertex::RecStart::make(
         attr_bound_set_empty(), lookahead_sentinel(k), Sym::Start::make());
@@ -1892,4 +1893,6 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
     ctx.parser_dfa_final_ = D;
 
     return lr_conflicts;
+}
+
 }

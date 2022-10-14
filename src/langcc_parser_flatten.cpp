@@ -1,7 +1,9 @@
 
 #include "langcc_common.hpp"
 
-namespace common::NameMaybeBase {
+namespace langcc {
+
+namespace NameMaybeBase {
     inline IdentBase_T force(NameMaybeBase_T nm, LangCompileContext& ctx) {
         if (nm->is_Name()) {
             return nm->as_Name()->id_;
@@ -15,7 +17,7 @@ namespace common::NameMaybeBase {
 }
 
 
-namespace common::NameMaybe {
+namespace NameMaybe {
     inline NameMaybe_T from_ident(Ident_T id) {
         auto items = make_rc<Vec<NameMaybeBase_T>>();
         for (auto id_i : *id->xs_) {
@@ -1166,4 +1168,6 @@ void parser_flatten_grammar_rules(LangCompileContext& ctx) {
             ctx.parser_attr_domains_->insert(sym, make_rc<Map<AttrKey_T, AttrType_T>>());
         }
     }
+}
+
 }

@@ -7,9 +7,9 @@
 
 #include "meta__gen.hpp"
 
-using namespace common;
+namespace langcc {
+
 using namespace lang;
-using namespace lang_rt;
 
 
 inline void pr(ostream& os, FmtFlags flags, lang::meta::Node_T x) {
@@ -17,7 +17,7 @@ inline void pr(ostream& os, FmtFlags flags, lang::meta::Node_T x) {
 }
 
 
-namespace common::Ident {
+namespace Ident {
     inline bool is_base(Ident_T x) {
         return x->xs_->length() == 1;
     }
@@ -101,23 +101,23 @@ namespace common::Ident {
 }
 
 
-inline common::Ident_T ident_with_prepend(common::Ident_T id, common::IdentBase_T x) {
-    auto ret_items = make_rc<Vec<common::IdentBase_T>>();
+inline Ident_T ident_with_prepend(Ident_T id, IdentBase_T x) {
+    auto ret_items = make_rc<Vec<IdentBase_T>>();
     ret_items->push_back(x);
     for (auto y : *id->xs_) {
         ret_items->push_back(y);
     }
-    return common::Ident::make(ret_items);
+    return Ident::make(ret_items);
 }
 
 
-inline common::Ident_T ident_with_append(common::Ident_T id, common::IdentBase_T x) {
-    auto ret_items = make_rc<Vec<common::IdentBase_T>>();
+inline Ident_T ident_with_append(Ident_T id, IdentBase_T x) {
+    auto ret_items = make_rc<Vec<IdentBase_T>>();
     for (auto y : *id->xs_) {
         ret_items->push_back(y);
     }
     ret_items->push_back(x);
-    return common::Ident::make(ret_items);
+    return Ident::make(ret_items);
 }
 
 
@@ -993,7 +993,7 @@ using GrammarSymConstrGen_T = Map_T<Sym_T, Map_T<AttrSet_T, StringSet_T<SymStr_T
 using GrammarProdConstrGen_T = Map_T<DottedProd_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>;
 
 
-inline string data_gen_id_base_to_string(common::IdentBase_T x) {
+inline string data_gen_id_base_to_string(IdentBase_T x) {
     if (x->is_User()) {
         return x->as_User()->name_;
     } else if (x->is_ItemInner()) {
@@ -1013,7 +1013,7 @@ inline data::Node_T data_gen_id_string_to_node(DataGenContext data, string name)
 }
 
 
-inline data::Node_T data_gen_id_to_node(DataGenContext data, common::Ident_T id) {
+inline data::Node_T data_gen_id_to_node(DataGenContext data, Ident_T id) {
     auto ret_items = make_rc<Vec<string>>();
     bool fresh = true;
     for (auto x : *id->xs_) {
@@ -1027,7 +1027,7 @@ inline data::Node_T data_gen_id_to_node(DataGenContext data, common::Ident_T id)
 }
 
 
-inline data::Node_T data_gen_sum_id_to_node(DataGenContext data, common::Ident_T id) {
+inline data::Node_T data_gen_sum_id_to_node(DataGenContext data, Ident_T id) {
     auto ret_items = make_rc<Vec<string>>();
     bool fresh = true;
     for (auto x : *id->xs_) {
@@ -1043,4 +1043,6 @@ inline data::Node_T data_gen_sum_id_to_node(DataGenContext data, common::Ident_T
 
 inline LangCompileResult::Error_T lang_compile_error(LangCompileResult::Error_T err) {
     return err;
+}
+
 }

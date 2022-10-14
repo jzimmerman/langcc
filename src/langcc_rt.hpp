@@ -2,7 +2,7 @@
 
 #include "langcc_util.hpp"
 
-namespace lang_rt {
+namespace langcc {
 
 constexpr bool EXPENSIVE_ASSERT = false;
 
@@ -10,15 +10,26 @@ constexpr bool EXPENSIVE_ASSERT = false;
 // Forward declarations
 ////////////////////////////////////////////////////////////////////////////////
 
-RC_STRUCT(LexerModeDesc);
-RC_STRUCT(ParserDesc);
+struct LexerModeDesc;
+using LexerModeDesc_T = rc_ptr<LexerModeDesc>;
 
-RC_STRUCT(LexError);
-RC_STRUCT(LexInput);
-RC_STRUCT(LexOutput);
-RC_STRUCT(CommentMap);
+struct ParserDesc;
+using ParserDesc_T = rc_ptr<ParserDesc>;
 
-RC_STRUCT(ParseError);
+struct LexError;
+using LexError_T = rc_ptr<LexError>;
+
+struct LexInput;
+using LexInput_T = rc_ptr<LexInput>;
+
+struct LexOutput;
+using LexOutput_T = rc_ptr<LexOutput>;
+
+struct CommentMap;
+using CommentMap_T = rc_ptr<CommentMap>;
+
+struct ParseError;
+using ParseError_T = rc_ptr<ParseError>;
 
 struct LexerState;
 struct LexWhitespaceState;
@@ -46,11 +57,11 @@ struct NodeAllocDecrefInterface {
     virtual inline ~NodeAllocDecrefInterface() {}
 };
 
-#define PARSER_ATTR_MASK_MAX 16
-#define PARSER_ATTR_MASK_SENTINEL 255
+constexpr Int PARSER_ATTR_MASK_MAX = 16;
+constexpr u8 PARSER_ATTR_MASK_SENTINEL = 255;
 
-#define PARSER_LOOKAHEAD_LEN_MAX 8
-#define PARSER_LOOKAHEAD_SENTINEL -1
+constexpr Int PARSER_LOOKAHEAD_LEN_MAX = 8;
+constexpr i16 PARSER_LOOKAHEAD_SENTINEL = -1;
 
 using TermTokToSymFn = ParserSymId(*)(TokenId);
 
@@ -153,12 +164,12 @@ inline void pr(ostream& os, FmtFlags flags, SymItem item) {
         item.res_.bounds_.hi_, item.first_k_);
 }
 
-using LexerStepFn = lang_rt::DFAVertexId (*)(lang_rt::DFAVertexId, lang_rt::DFALabelId);
-using LexerAccFn = lang_rt::DFAActionWithToken (*)(lang_rt::DFAVertexId);
+using LexerStepFn = langcc::DFAVertexId (*)(langcc::DFAVertexId, langcc::DFALabelId);
+using LexerAccFn = langcc::DFAActionWithToken (*)(langcc::DFAVertexId);
 using LexerStepExecFn = IntPair (*)(
-    Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst,
-    Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc,
-    lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
+    Ptr<langcc::LexerState> st, Ptr<langcc::SymItemVec> emit_dst,
+    Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc,
+    langcc::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi);
 
 using ParserProcStatePtr = ParserProcState*;
 using ParserProcXformDyn = SymItem(*)(Int, ParserProcStatePtr);
@@ -166,11 +177,6 @@ using ParserProcXform = SymItem(*)(ParserProcStatePtr);
 using ParserProcXforms = Vec_T<ParserProcXform>;
 using ParserProcAcc = IntPair(*)(ParserVertexId, ParserLookahead);
 using ParserProcStep = ParserVertexId(*)(ParserVertexId, ParserSymId, ParserAttrMask);
-
-#define LANG_META_PARAMS \
-    typename Node, ParserProcAcc FAcc, ParserProcStep FStep
-
-#define LANG_META_ARGS Node, FAcc, FStep
 
 struct LexOutput: enable_rc_from_this<LexOutput> {
     bool quoted_;
@@ -207,11 +213,12 @@ struct LexOutput: enable_rc_from_this<LexOutput> {
     inline void push_item(SymItem item);
 };
 
-template<LANG_META_PARAMS> struct ParseOutput;
-template<LANG_META_PARAMS> using ParseOutput_T = rc_ptr<ParseOutput<LANG_META_ARGS>>;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> struct ParseOutput;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> using ParseOutput_T =
+    rc_ptr<ParseOutput<Node, FAcc, FStep>>;
 
-template<LANG_META_PARAMS>
-struct ParseOutput : enable_rc_from_this<ParseOutput<LANG_META_ARGS>> {
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+struct ParseOutput : enable_rc_from_this<ParseOutput<Node, FAcc, FStep>> {
     Option_T<rc_ptr<Node>> res_;
     LexOutput_T lex_;
     ParserSymId sym_final_ = NO_SYM;
@@ -223,17 +230,17 @@ struct ParseOutput : enable_rc_from_this<ParseOutput<LANG_META_ARGS>> {
         return err_.is_none();
     }
 
-    static ParseOutput_T<LANG_META_ARGS> make_success(
+    static ParseOutput_T<Node, FAcc, FStep> make_success(
         LexOutput_T lex, ParserSymId final_sym, ParserAttrMask final_attr,
         rc_ptr<Node> res, Int num_steps);
 
-    static inline ParseOutput_T<LANG_META_ARGS> make_error(
+    static inline ParseOutput_T<Node, FAcc, FStep> make_error(
         LexOutput_T lex, ParseError_T err);
 };
 
 inline __attribute__((noinline)) Ch lex_decode_utf8(const char* x, Int& i, Int n);
 
-template<LANG_META_PARAMS>
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 struct NodeAllocDecrefObj: NodeAllocDecrefInterface {
     Node* x_;
 
@@ -252,11 +259,11 @@ struct NodeAllocDecrefObj: NodeAllocDecrefInterface {
 // Language description data
 ////////////////////////////////////////////////////////////////////////////////
 
-template<LANG_META_PARAMS> struct LangDesc;
-template<LANG_META_PARAMS> using LangDesc_T = rc_ptr<LangDesc<LANG_META_ARGS>>;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> struct LangDesc;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> using LangDesc_T = rc_ptr<LangDesc<Node, FAcc, FStep>>;
 
-template<LANG_META_PARAMS> struct QuoteEnv;
-template<LANG_META_PARAMS> using QuoteEnv_T = rc_ptr<QuoteEnv<LANG_META_ARGS>>;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> struct QuoteEnv;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> using QuoteEnv_T = rc_ptr<QuoteEnv<Node, FAcc, FStep>>;
 
 
 struct ParserDesc {
@@ -276,8 +283,8 @@ struct ParserDesc {
 };
 
 
-template<LANG_META_PARAMS>
-struct LangDesc : enable_rc_from_this<LangDesc<LANG_META_ARGS>> {
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+struct LangDesc : enable_rc_from_this<LangDesc<Node, FAcc, FStep>> {
     Vec_T<LexerModeDesc_T> lexer_mode_descs_;
     rc_ptr<DFALabelIdVec> label_ids_ascii_;
     rc_ptr<DFALabelIdMap> label_ids_unicode_;
@@ -288,10 +295,10 @@ struct LangDesc : enable_rc_from_this<LangDesc<LANG_META_ARGS>> {
     LexOutput_T lex(const Str_T& input, Arena* A);
 
     template<bool LR_K1, bool NO_QUOTE>
-    ParseOutput_T<LANG_META_ARGS> parse_from_lex_specialized(
+    ParseOutput_T<Node, FAcc, FStep> parse_from_lex_specialized(
         LexOutput_T lex_out, Option_T<string> sym_target, Gensym_T gen, Arena* A);
 
-    inline ParseOutput_T<LANG_META_ARGS> parse_from_lex(
+    inline ParseOutput_T<Node, FAcc, FStep> parse_from_lex(
         LexOutput_T lex_out, Option_T<string> sym_target, Gensym_T gen, Arena* A) {
 
         if (parser_desc_->lr_k_ == 1 && !lex_out->allows_quoted_symbols()) {
@@ -301,7 +308,7 @@ struct LangDesc : enable_rc_from_this<LangDesc<LANG_META_ARGS>> {
         }
     }
 
-    inline ParseOutput_T<LANG_META_ARGS> parse_ext(
+    inline ParseOutput_T<Node, FAcc, FStep> parse_ext(
         const Str_T& input, Option_T<string> sym_target, Gensym_T gen, Arena* A) {
 
         auto lex_out = this->lex(input, A);
@@ -309,7 +316,7 @@ struct LangDesc : enable_rc_from_this<LangDesc<LANG_META_ARGS>> {
         return parse_out;
     }
 
-    inline ParseOutput_T<LANG_META_ARGS> parse(const Str_T& input, Gensym_T gen) {
+    inline ParseOutput_T<Node, FAcc, FStep> parse(const Str_T& input, Gensym_T gen) {
         return this->parse_ext(input, None<string>(), gen, nullptr);
     }
 
@@ -322,14 +329,14 @@ struct LangDesc : enable_rc_from_this<LangDesc<LANG_META_ARGS>> {
     inline bool test_example(
         Option_T<string> sym_target, const char* input, Int error_pos_maybe, bool test_write);
 
-    inline QuoteEnv_T<LANG_META_ARGS> quote_env(const string& sym_id, const string& ns_tok);
-    inline QuoteEnv_T<LANG_META_ARGS> quote_env();
+    inline QuoteEnv_T<Node, FAcc, FStep> quote_env(const string& sym_id, const string& ns_tok);
+    inline QuoteEnv_T<Node, FAcc, FStep> quote_env();
 };
 
 
-template<LANG_META_PARAMS>
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 struct QuoteEnv {
-    LangDesc_T<LANG_META_ARGS> L_;
+    LangDesc_T<Node, FAcc, FStep> L_;
     Gensym_T gen_;
 
     inline rc_ptr<Node> qq_inner(Option_T<string> sym_target, LexOutput_T& lex) {
@@ -387,7 +394,7 @@ struct QuoteEnv {
         AT(arg->sym_ != NO_SYM);
         arg.incref();
         lex->nodes_alloc_.as_some()->push(
-            make_rc<NodeAllocDecrefObj<LANG_META_ARGS>>(arg.get()));
+            make_rc<NodeAllocDecrefObj<Node, FAcc, FStep>>(arg.get()));
         SymItem item;
         item.res_.v_ = arg.get();
         item.id_ = arg->sym_;
@@ -450,20 +457,20 @@ struct QuoteEnv {
 };
 
 
-template<LANG_META_PARAMS>
-inline QuoteEnv_T<LANG_META_ARGS> LangDesc<LANG_META_ARGS>::quote_env(
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+inline QuoteEnv_T<Node, FAcc, FStep> LangDesc<Node, FAcc, FStep>::quote_env(
     const string& id_sym, const string& ns_tok) {
 
-    auto ret = make_rc<QuoteEnv<LANG_META_ARGS>>();
+    auto ret = make_rc<QuoteEnv<Node, FAcc, FStep>>();
     ret->L_ = this->rc_from_this();
     ret->gen_ = make_rc<Gensym>();
     return ret;
 }
 
 
-template<LANG_META_PARAMS>
-inline QuoteEnv_T<LANG_META_ARGS> LangDesc<LANG_META_ARGS>::quote_env() {
-    auto ret = make_rc<QuoteEnv<LANG_META_ARGS>>();
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+inline QuoteEnv_T<Node, FAcc, FStep> LangDesc<Node, FAcc, FStep>::quote_env() {
+    auto ret = make_rc<QuoteEnv<Node, FAcc, FStep>>();
     ret->L_ = this->rc_from_this();
     ret->gen_ = make_rc<Gensym>();
     return ret;
@@ -941,8 +948,11 @@ namespace DFATable {
     static constexpr Int NEW_MODE_POP_EXTRACT = -4;
 };
 
-RC_STRUCT(LexerModeDesc); 
-RC_STRUCT(LexerState);
+struct LexerModeDesc;
+using LexerModeDesc_T = rc_ptr<LexerModeDesc>;
+
+struct LexerState;
+using LexerState_T = rc_ptr<LexerState>;
 
 using LexerStateRef = LexerState_T&;
 
@@ -1337,14 +1347,14 @@ inline __attribute__((always_inline)) void lexer_state_eof_fail(Int& in_i, Lexer
 }
 
 inline __attribute__((always_inline)) Int lexer_proc_mode_loop(LexerModeDesc* mode,
-    Ptr<lang_rt::LexerState> st, lang_rt::SymItemVec* emit_dst, Int mode_start_pos,
+    Ptr<langcc::LexerState> st, langcc::SymItemVec* emit_dst, Int mode_start_pos,
     Int mode_buf_pos) {
 
     return mode->proc_mode_loop_opt_fn_(mode, st, emit_dst, mode_start_pos, mode_buf_pos);
 }
 
-template<LANG_META_PARAMS>
-inline LexOutput_T LangDesc<LANG_META_ARGS>::lex(const Str_T& input, Arena* A) {
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T& input, Arena* A) {
     AT(input->length() < 0x7fffffff);
 
     auto in = LexInput::make_from_str(input);
@@ -1499,14 +1509,14 @@ struct ParseError: enable_rc_from_this<ParseError> {
     }
 };
 
-inline void pr(ostream& os, FmtFlags flags, lang_rt::ParseError_T err) {
+inline void pr(ostream& os, FmtFlags flags, langcc::ParseError_T err) {
     if (err->lex_err_.is_some()) {
         pr(os, flags, err->lex_err_.as_some());
         return;
     }
     auto err_str = err->desc_ + "\n" +
         err->lex_.as_some()->location_fmt_str(
-            lang_rt::TokenBounds(err->tok_i_.as_some(), err->tok_i_.as_some()+1));
+            langcc::TokenBounds(err->tok_i_.as_some(), err->tok_i_.as_some()+1));
     os << err_str;
 }
 
@@ -1577,8 +1587,8 @@ inline ParserAttrMask attr_mask_trivial() {
     return ret;
 }
 
-template<LANG_META_PARAMS> struct ParseOutput;
-template<LANG_META_PARAMS> using ParseOutput_T = rc_ptr<ParseOutput<LANG_META_ARGS>>;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> struct ParseOutput;
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> using ParseOutput_T = rc_ptr<ParseOutput<Node, FAcc, FStep>>;
 
 inline void pr(ostream& os, FmtFlags flags, ParserAttrMask attr) {
     fmt(os, "{{");
@@ -1658,12 +1668,12 @@ inline string parser_format_sym(ParserDesc* desc_raw, ParserSymId sym, ParserAtt
     return ret;
 }
 
-template<LANG_META_PARAMS>
-inline ParseOutput_T<LANG_META_ARGS> ParseOutput<LANG_META_ARGS>::make_success(
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+inline ParseOutput_T<Node, FAcc, FStep> ParseOutput<Node, FAcc, FStep>::make_success(
     LexOutput_T lex, ParserSymId sym_final, ParserAttrMask attr_final,
     rc_ptr<Node> res, Int num_steps) {
 
-    auto ret = make_rc<ParseOutput<LANG_META_ARGS>>();
+    auto ret = make_rc<ParseOutput<Node, FAcc, FStep>>();
     ret->lex_ = lex;
     ret->sym_final_ = sym_final;
     ret->attr_final_ = attr_final;
@@ -1673,11 +1683,11 @@ inline ParseOutput_T<LANG_META_ARGS> ParseOutput<LANG_META_ARGS>::make_success(
     return ret;
 }
 
-template<LANG_META_PARAMS>
-inline ParseOutput_T<LANG_META_ARGS> ParseOutput<LANG_META_ARGS>::make_error(
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+inline ParseOutput_T<Node, FAcc, FStep> ParseOutput<Node, FAcc, FStep>::make_error(
     LexOutput_T lex, ParseError_T err) {
 
-    auto ret = make_rc<ParseOutput<LANG_META_ARGS>>();
+    auto ret = make_rc<ParseOutput<Node, FAcc, FStep>>();
     ret->lex_ = lex;
     ret->res_ = None<rc_ptr<Node>>();
     ret->err_ = Some<ParseError_T>(err);
@@ -1685,8 +1695,8 @@ inline ParseOutput_T<LANG_META_ARGS> ParseOutput<LANG_META_ARGS>::make_error(
     return ret;
 }
 
-template<LANG_META_PARAMS>
-__attribute__((always_inline)) inline ParseOutput_T<LANG_META_ARGS>
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+__attribute__((always_inline)) inline ParseOutput_T<Node, FAcc, FStep>
     parse_error_output_here(string desc, Int st_i, LexOutput_T lex_) {
 
     auto in_i = st_i;
@@ -1695,7 +1705,7 @@ __attribute__((always_inline)) inline ParseOutput_T<LANG_META_ARGS>
         in_i = 0;
     }
     auto err = ParseError::make(lex_, in_i, desc);
-    return ParseOutput<LANG_META_ARGS>::make_error(lex_, err);
+    return ParseOutput<Node, FAcc, FStep>::make_error(lex_, err);
 }
 
 template<typename T>
@@ -1715,13 +1725,13 @@ inline __attribute__((always_inline)) void parse_rt_check_realloc(
     }
 }
 
-template<LANG_META_PARAMS> template<bool LR_K1, bool NO_QUOTE>
-inline ParseOutput_T<LANG_META_ARGS>
-    LangDesc<LANG_META_ARGS>::parse_from_lex_specialized(
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep> template<bool LR_K1, bool NO_QUOTE>
+inline ParseOutput_T<Node, FAcc, FStep>
+    LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
     LexOutput_T lex_out, Option_T<string> sym_target, Gensym_T gen, Arena* A) {
 
     if (lex_out->err_.is_some()) {
-        return ParseOutput<LANG_META_ARGS>::make_error(
+        return ParseOutput<Node, FAcc, FStep>::make_error(
             lex_out, ParseError::make_from_lex_error(lex_out->err_.as_some()));
     }
 
@@ -1790,7 +1800,7 @@ inline ParseOutput_T<LANG_META_ARGS>
     if (desc_raw->start_marker_by_name_.find(st_sym_target) ==
         desc_raw->start_marker_by_name_.end()) {
 
-        return parse_error_output_here<LANG_META_ARGS>(
+        return parse_error_output_here<Node, FAcc, FStep>(
             fmt_str("Not a top-level parseable symbol: {}", st_sym_target), st_i, lex_out);
     }
 
@@ -1854,7 +1864,7 @@ inline ParseOutput_T<LANG_META_ARGS>
             if (__builtin_expect(do_shift, 1)) {
                 if (__builtin_expect(st_i == n_lex_out_items_cached, 0)) {
                     st_inline.destroy_arrays();
-                    return parse_error_output_here<LANG_META_ARGS>(
+                    return parse_error_output_here<Node, FAcc, FStep>(
                         fmt_str("Unexpected end-of-file"), st_i, lex_out);
                 }
 
@@ -1867,7 +1877,7 @@ inline ParseOutput_T<LANG_META_ARGS>
 
                 if (next == NO_VERTEX) {
                     st_inline.destroy_arrays();
-                    return parse_error_output_here<LANG_META_ARGS>(
+                    return parse_error_output_here<Node, FAcc, FStep>(
                         fmt_str("Unexpected token: {}",
                             parser_format_sym(
                                 desc_raw, sym_curr.id_, sym_curr.attr_)), st_i, lex_out);
@@ -1922,7 +1932,7 @@ inline ParseOutput_T<LANG_META_ARGS>
                 if (__builtin_expect(next == NO_VERTEX, 0)) {
                     st_inline.destroy_arrays();
 
-                    return parse_error_output_here<LANG_META_ARGS>(
+                    return parse_error_output_here<Node, FAcc, FStep>(
                         fmt_str("Unexpected symbol: {}",
                             parser_format_sym(desc_raw, buf_item.id_, buf_item.attr_)),
                             st_i, lex_out);
@@ -1988,14 +1998,14 @@ inline ParseOutput_T<LANG_META_ARGS>
 
                         st_inline.destroy_arrays();
 
-                        return ParseOutput<LANG_META_ARGS>::make_success(
+                        return ParseOutput<Node, FAcc, FStep>::make_success(
                             lex_out, ret_res_node->sym_, ret_res_node->attr_,
                             ret_res_node, st_num_steps);
 
                     } else {
                         st_inline.destroy_arrays();
 
-                        return parse_error_output_here<LANG_META_ARGS>(
+                        return parse_error_output_here<Node, FAcc, FStep>(
                             "Expected end-of-file", st_i, lex_out);
                     }
                 }
@@ -2011,7 +2021,7 @@ inline ParseOutput_T<LANG_META_ARGS>
                 ++st_num_steps;
                 if (next == NO_VERTEX) {
                     st_inline.destroy_arrays();
-                    return parse_error_output_here<LANG_META_ARGS>(
+                    return parse_error_output_here<Node, FAcc, FStep>(
                         fmt_str("Unexpected symbol: {}", buf_item), st_i, lex_out);
                 }
 
@@ -2034,7 +2044,7 @@ inline ParseOutput_T<LANG_META_ARGS>
 
                 if (v == desc_raw->start_vertex_) {
                     st_inline.destroy_arrays();
-                    return parse_error_output_here<LANG_META_ARGS>(
+                    return parse_error_output_here<Node, FAcc, FStep>(
                         fmt_str("No action for state (empty language?)"), st_i, lex_out);
                 } else {
                     AX();
@@ -2055,9 +2065,9 @@ inline ParseOutput_T<LANG_META_ARGS>
 // Pretty-printer
 ////////////////////////////////////////////////////////////////////////////////
 
-}  // namespace lang_rt
+}  // namespace langcc
 
-// namespace lang_rt {
+// namespace langcc {
 //     def PrBufStreamItem {}
 //         def PrBufStreamItem.String { x: Str; }
 //         def PrBufStreamItem.Newline {}
@@ -2075,57 +2085,59 @@ inline ParseOutput_T<LANG_META_ARGS>
 //     }
 // }
 
-namespace lang_rt::PrBufStreamItem {
+namespace langcc::PrBufStreamItem {
     struct _T;
 }
 
-namespace lang_rt {
-    using PrBufStreamItem_T = rc_ptr<lang_rt::PrBufStreamItem::_T>;
+namespace langcc {
+    using PrBufStreamItem_T = rc_ptr<langcc::PrBufStreamItem::_T>;
 }
 
-namespace lang_rt::PrBufStreamItem::String {
+namespace langcc::PrBufStreamItem::String {
     struct _T;
 }
 
-namespace lang_rt::PrBufStreamItem {
-    using String_T = rc_ptr<lang_rt::PrBufStreamItem::String::_T>;
+namespace langcc::PrBufStreamItem {
+    using String_T = rc_ptr<langcc::PrBufStreamItem::String::_T>;
 }
 
-namespace lang_rt::PrBufStreamItem::Newline {
+namespace langcc::PrBufStreamItem::Newline {
     struct _T;
 }
 
-namespace lang_rt::PrBufStreamItem {
-    using Newline_T = rc_ptr<lang_rt::PrBufStreamItem::Newline::_T>;
+namespace langcc::PrBufStreamItem {
+    using Newline_T = rc_ptr<langcc::PrBufStreamItem::Newline::_T>;
 }
 
-namespace lang_rt::PrBufStreamItem::Indent {
+namespace langcc::PrBufStreamItem::Indent {
     struct _T;
 }
 
-namespace lang_rt::PrBufStreamItem {
-    using Indent_T = rc_ptr<lang_rt::PrBufStreamItem::Indent::_T>;
+namespace langcc::PrBufStreamItem {
+    using Indent_T = rc_ptr<langcc::PrBufStreamItem::Indent::_T>;
 }
 
-namespace lang_rt::PrBufStreamItem::Dedent {
+namespace langcc::PrBufStreamItem::Dedent {
     struct _T;
 }
 
-namespace lang_rt::PrBufStreamItem {
-    using Dedent_T = rc_ptr<lang_rt::PrBufStreamItem::Dedent::_T>;
+namespace langcc::PrBufStreamItem {
+    using Dedent_T = rc_ptr<langcc::PrBufStreamItem::Dedent::_T>;
 }
 
-namespace lang_rt::PrBufStream {
+namespace langcc::PrBufStream {
     struct _T;
 }
 
-namespace lang_rt {
-    using PrBufStream_T = rc_ptr<lang_rt::PrBufStream::_T>;
+namespace langcc {
+    using PrBufStream_T = rc_ptr<langcc::PrBufStream::_T>;
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem_T x);
+namespace langcc {
+    void pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem_T x);
+}
 
-namespace lang_rt::PrBufStreamItem {
+namespace langcc::PrBufStreamItem {
     enum struct _W {
         String,
         Newline,
@@ -2134,35 +2146,37 @@ namespace lang_rt::PrBufStreamItem {
     };
 }
 
-namespace lang_rt::PrBufStreamItem {
+namespace langcc::PrBufStreamItem {
     struct _T: hash_obj, enable_rc_from_this_poly {
-        lang_rt::PrBufStreamItem::_W w_;
+        langcc::PrBufStreamItem::_W w_;
         virtual ~_T();
-        _T(lang_rt::PrBufStreamItem::_W w);
+        _T(langcc::PrBufStreamItem::_W w);
         bool is_String();
         bool is_Newline();
         bool is_Indent();
         bool is_Dedent();
-        lang_rt::PrBufStreamItem::String_T as_String();
-        lang_rt::PrBufStreamItem::Newline_T as_Newline();
-        lang_rt::PrBufStreamItem::Indent_T as_Indent();
-        lang_rt::PrBufStreamItem::Dedent_T as_Dedent();
-        void hash_ser_acc_lang_rt_PrBufStreamItem(SerBuf& buf) const;
+        langcc::PrBufStreamItem::String_T as_String();
+        langcc::PrBufStreamItem::Newline_T as_Newline();
+        langcc::PrBufStreamItem::Indent_T as_Indent();
+        langcc::PrBufStreamItem::Dedent_T as_Dedent();
+        void hash_ser_acc_langcc_PrBufStreamItem(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const = 0;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStream_T x);
-
-namespace lang_rt::PrBufStream {
-    __attribute__((always_inline)) lang_rt::PrBufStream_T make(Vec_T<lang_rt::PrBufStreamItem_T> items);
+namespace langcc {
+    void pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStream_T x);
 }
 
-namespace lang_rt::PrBufStream {
-    __attribute__((always_inline)) lang_rt::PrBufStream_T make_ext(ArenaPtr arena, Vec_T<lang_rt::PrBufStreamItem_T> items);
+namespace langcc::PrBufStream {
+    __attribute__((always_inline)) langcc::PrBufStream_T make(Vec_T<langcc::PrBufStreamItem_T> items);
 }
 
-namespace lang_rt::PrBufStream {
+namespace langcc::PrBufStream {
+    __attribute__((always_inline)) langcc::PrBufStream_T make_ext(ArenaPtr arena, Vec_T<langcc::PrBufStreamItem_T> items);
+}
+
+namespace langcc::PrBufStream {
     struct _T: hash_obj, enable_rc_from_this_poly {
         void distill(Ref<ostream> os, FmtFlags flags);
         void push_string(string x);
@@ -2170,103 +2184,111 @@ namespace lang_rt::PrBufStream {
         void push_newlines(Int n);
         void push_indent();
         void push_dedent();
-        Vec_T<lang_rt::PrBufStreamItem_T> items_;
+        Vec_T<langcc::PrBufStreamItem_T> items_;
         _T();
-        lang_rt::PrBufStream_T with_items(Vec_T<lang_rt::PrBufStreamItem_T> items);
-        void hash_ser_acc_lang_rt_PrBufStream(SerBuf& buf) const;
+        langcc::PrBufStream_T with_items(Vec_T<langcc::PrBufStreamItem_T> items);
+        void hash_ser_acc_langcc_PrBufStream(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::String_T x);
-
-namespace lang_rt::PrBufStreamItem::String {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T make(string x);
+namespace langcc {
+    void pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::String_T x);
 }
 
-namespace lang_rt::PrBufStreamItem::String {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::String_T make_ext(ArenaPtr arena, string x);
+namespace langcc::PrBufStreamItem::String {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::String_T make(string x);
 }
 
-namespace lang_rt::PrBufStreamItem::String {
-    struct _T: lang_rt::PrBufStreamItem::_T {
+namespace langcc::PrBufStreamItem::String {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::String_T make_ext(ArenaPtr arena, string x);
+}
+
+namespace langcc::PrBufStreamItem::String {
+    struct _T: langcc::PrBufStreamItem::_T {
         string x_;
         _T();
-        lang_rt::PrBufStreamItem::String_T with_x(string x);
-        void hash_ser_acc_lang_rt_PrBufStreamItem_String(SerBuf& buf) const;
+        langcc::PrBufStreamItem::String_T with_x(string x);
+        void hash_ser_acc_langcc_PrBufStreamItem_String(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Newline_T x);
-
-namespace lang_rt::PrBufStreamItem::Newline {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T make();
+namespace langcc {
+    void pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::Newline_T x);
 }
 
-namespace lang_rt::PrBufStreamItem::Newline {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Newline_T make_ext(ArenaPtr arena);
+namespace langcc::PrBufStreamItem::Newline {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::Newline_T make();
 }
 
-namespace lang_rt::PrBufStreamItem::Newline {
-    struct _T: lang_rt::PrBufStreamItem::_T {
+namespace langcc::PrBufStreamItem::Newline {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::Newline_T make_ext(ArenaPtr arena);
+}
+
+namespace langcc::PrBufStreamItem::Newline {
+    struct _T: langcc::PrBufStreamItem::_T {
         _T();
-        void hash_ser_acc_lang_rt_PrBufStreamItem_Newline(SerBuf& buf) const;
+        void hash_ser_acc_langcc_PrBufStreamItem_Newline(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Indent_T x);
-
-namespace lang_rt::PrBufStreamItem::Indent {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T make();
+namespace langcc {
+    void pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::Indent_T x);
 }
 
-namespace lang_rt::PrBufStreamItem::Indent {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Indent_T make_ext(ArenaPtr arena);
+namespace langcc::PrBufStreamItem::Indent {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::Indent_T make();
 }
 
-namespace lang_rt::PrBufStreamItem::Indent {
-    struct _T: lang_rt::PrBufStreamItem::_T {
+namespace langcc::PrBufStreamItem::Indent {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::Indent_T make_ext(ArenaPtr arena);
+}
+
+namespace langcc::PrBufStreamItem::Indent {
+    struct _T: langcc::PrBufStreamItem::_T {
         _T();
-        void hash_ser_acc_lang_rt_PrBufStreamItem_Indent(SerBuf& buf) const;
+        void hash_ser_acc_langcc_PrBufStreamItem_Indent(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Dedent_T x);
-
-namespace lang_rt::PrBufStreamItem::Dedent {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T make();
+namespace langcc {
+    void pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::Dedent_T x);
 }
 
-namespace lang_rt::PrBufStreamItem::Dedent {
-    __attribute__((always_inline)) lang_rt::PrBufStreamItem::Dedent_T make_ext(ArenaPtr arena);
+namespace langcc::PrBufStreamItem::Dedent {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::Dedent_T make();
 }
 
-namespace lang_rt::PrBufStreamItem::Dedent {
-    struct _T: lang_rt::PrBufStreamItem::_T {
+namespace langcc::PrBufStreamItem::Dedent {
+    __attribute__((always_inline)) langcc::PrBufStreamItem::Dedent_T make_ext(ArenaPtr arena);
+}
+
+namespace langcc::PrBufStreamItem::Dedent {
+    struct _T: langcc::PrBufStreamItem::_T {
         _T();
-        void hash_ser_acc_lang_rt_PrBufStreamItem_Dedent(SerBuf& buf) const;
+        void hash_ser_acc_langcc_PrBufStreamItem_Dedent(SerBuf& buf) const;
         virtual void hash_ser_acc(SerBuf& buf) const;
     };
 }
 
-inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem_T x) {
+inline void langcc::pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem_T x) {
     switch (x->w_) {
-        case lang_rt::PrBufStreamItem::_W::String: {
+        case langcc::PrBufStreamItem::_W::String: {
             pr_debug(os, flags, x->as_String());
             break;
         }
-        case lang_rt::PrBufStreamItem::_W::Newline: {
+        case langcc::PrBufStreamItem::_W::Newline: {
             pr_debug(os, flags, x->as_Newline());
             break;
         }
-        case lang_rt::PrBufStreamItem::_W::Indent: {
+        case langcc::PrBufStreamItem::_W::Indent: {
             pr_debug(os, flags, x->as_Indent());
             break;
         }
-        case lang_rt::PrBufStreamItem::_W::Dedent: {
+        case langcc::PrBufStreamItem::_W::Dedent: {
             pr_debug(os, flags, x->as_Dedent());
             break;
         }
@@ -2276,94 +2298,94 @@ inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem_T x) 
     }
 }
 
-inline lang_rt::PrBufStreamItem::_T::~_T() {
+inline langcc::PrBufStreamItem::_T::~_T() {
 }
 
-inline lang_rt::PrBufStreamItem::_T::_T(lang_rt::PrBufStreamItem::_W w) {
+inline langcc::PrBufStreamItem::_T::_T(langcc::PrBufStreamItem::_W w) {
     w_ = w;
 }
 
-inline bool lang_rt::PrBufStreamItem::_T::is_String() {
-    return w_ == lang_rt::PrBufStreamItem::_W::String;
+inline bool langcc::PrBufStreamItem::_T::is_String() {
+    return w_ == langcc::PrBufStreamItem::_W::String;
 }
 
-inline bool lang_rt::PrBufStreamItem::_T::is_Newline() {
-    return w_ == lang_rt::PrBufStreamItem::_W::Newline;
+inline bool langcc::PrBufStreamItem::_T::is_Newline() {
+    return w_ == langcc::PrBufStreamItem::_W::Newline;
 }
 
-inline bool lang_rt::PrBufStreamItem::_T::is_Indent() {
-    return w_ == lang_rt::PrBufStreamItem::_W::Indent;
+inline bool langcc::PrBufStreamItem::_T::is_Indent() {
+    return w_ == langcc::PrBufStreamItem::_W::Indent;
 }
 
-inline bool lang_rt::PrBufStreamItem::_T::is_Dedent() {
-    return w_ == lang_rt::PrBufStreamItem::_W::Dedent;
+inline bool langcc::PrBufStreamItem::_T::is_Dedent() {
+    return w_ == langcc::PrBufStreamItem::_W::Dedent;
 }
 
-inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::_T::as_String() {
+inline langcc::PrBufStreamItem::String_T langcc::PrBufStreamItem::_T::as_String() {
     AT(this->is_String());
-    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::String::_T>();
+    return this->rc_from_this_poly<langcc::PrBufStreamItem::String::_T>();
 }
 
-inline lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::_T::as_Newline() {
+inline langcc::PrBufStreamItem::Newline_T langcc::PrBufStreamItem::_T::as_Newline() {
     AT(this->is_Newline());
-    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::Newline::_T>();
+    return this->rc_from_this_poly<langcc::PrBufStreamItem::Newline::_T>();
 }
 
-inline lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::_T::as_Indent() {
+inline langcc::PrBufStreamItem::Indent_T langcc::PrBufStreamItem::_T::as_Indent() {
     AT(this->is_Indent());
-    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::Indent::_T>();
+    return this->rc_from_this_poly<langcc::PrBufStreamItem::Indent::_T>();
 }
 
-inline lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::_T::as_Dedent() {
+inline langcc::PrBufStreamItem::Dedent_T langcc::PrBufStreamItem::_T::as_Dedent() {
     AT(this->is_Dedent());
-    return this->rc_from_this_poly<lang_rt::PrBufStreamItem::Dedent::_T>();
+    return this->rc_from_this_poly<langcc::PrBufStreamItem::Dedent::_T>();
 }
 
-inline void lang_rt::PrBufStreamItem::_T::hash_ser_acc_lang_rt_PrBufStreamItem(SerBuf& buf) const {
+inline void langcc::PrBufStreamItem::_T::hash_ser_acc_langcc_PrBufStreamItem(SerBuf& buf) const {
     hash_ser(buf, static_cast<Int>(w_));
 }
 
-inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStream_T x) {
-    os << "lang_rt::PrBufStream {";
+inline void langcc::pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStream_T x) {
+    os << "langcc::PrBufStream {";
     flags.sub_lo().advance_lines(1, os);
     os << "items: ";
-    pr_debug(os, flags.sub_lo(), x->items_);
+    langcc::pr_debug(os, flags.sub_lo(), x->items_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-inline lang_rt::PrBufStream::_T::_T() {
+inline langcc::PrBufStream::_T::_T() {
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStream_T lang_rt::PrBufStream::make(Vec_T<lang_rt::PrBufStreamItem_T> items) {
-    auto ret = make_rc<lang_rt::PrBufStream::_T>();
+__attribute__((always_inline)) inline langcc::PrBufStream_T langcc::PrBufStream::make(Vec_T<langcc::PrBufStreamItem_T> items) {
+    auto ret = make_rc<langcc::PrBufStream::_T>();
     ret->items_ = items;
     return ret;
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStream_T lang_rt::PrBufStream::make_ext(ArenaPtr arena, Vec_T<lang_rt::PrBufStreamItem_T> items) {
-    auto ret1 = make_rc_ext<lang_rt::PrBufStream::_T>(arena);
+__attribute__((always_inline)) inline langcc::PrBufStream_T langcc::PrBufStream::make_ext(ArenaPtr arena, Vec_T<langcc::PrBufStreamItem_T> items) {
+    auto ret1 = make_rc_ext<langcc::PrBufStream::_T>(arena);
     ret1->items_ = items;
     return ret1;
 }
 
-inline lang_rt::PrBufStream_T lang_rt::PrBufStream::_T::with_items(Vec_T<lang_rt::PrBufStreamItem_T> items) {
-    auto ret = make_rc<lang_rt::PrBufStream::_T>();
+inline langcc::PrBufStream_T langcc::PrBufStream::_T::with_items(Vec_T<langcc::PrBufStreamItem_T> items) {
+    auto ret = make_rc<langcc::PrBufStream::_T>();
     ret->items_ = items;
     return ret;
 }
 
-inline void lang_rt::PrBufStream::_T::hash_ser_acc_lang_rt_PrBufStream(SerBuf& buf) const {
+inline void langcc::PrBufStream::_T::hash_ser_acc_langcc_PrBufStream(SerBuf& buf) const {
     hash_ser(buf, items_);
 }
 
-inline void lang_rt::PrBufStream::_T::hash_ser_acc(SerBuf& buf) const {
-    this->lang_rt::PrBufStream::_T::hash_ser_acc_lang_rt_PrBufStream(buf);
+inline void langcc::PrBufStream::_T::hash_ser_acc(SerBuf& buf) const {
+    this->langcc::PrBufStream::_T::hash_ser_acc_langcc_PrBufStream(buf);
 }
 
-inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::String_T x) {
-    os << "lang_rt::PrBufStreamItem::String {";
+inline void langcc::pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::String_T x) {
+    os << "langcc::PrBufStreamItem::String {";
     flags.sub_lo().advance_lines(1, os);
     os << "x: ";
     pr_debug(os, flags.sub_lo(), x->x_);
@@ -2372,137 +2394,137 @@ inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Stri
     os << "}";
 }
 
-inline lang_rt::PrBufStreamItem::String::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::String) {
+inline langcc::PrBufStreamItem::String::_T::_T() : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::String) {
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make(string x) {
-    auto ret = make_rc<lang_rt::PrBufStreamItem::String::_T>();
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::String_T langcc::PrBufStreamItem::String::make(std::string x) {
+    auto ret = make_rc<langcc::PrBufStreamItem::String::_T>();
     ret->x_ = x;
     return ret;
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::make_ext(ArenaPtr arena, string x) {
-    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::String::_T>(arena);
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::String_T langcc::PrBufStreamItem::String::make_ext(langcc::ArenaPtr arena, std::string x) {
+    auto ret1 = make_rc_ext<langcc::PrBufStreamItem::String::_T>(arena);
     ret1->x_ = x;
     return ret1;
 }
 
-inline lang_rt::PrBufStreamItem::String_T lang_rt::PrBufStreamItem::String::_T::with_x(string x) {
-    auto ret = make_rc<lang_rt::PrBufStreamItem::String::_T>();
+inline langcc::PrBufStreamItem::String_T langcc::PrBufStreamItem::String::_T::with_x(std::string x) {
+    auto ret = make_rc<langcc::PrBufStreamItem::String::_T>();
     ret->x_ = x;
     return ret;
 }
 
-inline void lang_rt::PrBufStreamItem::String::_T::hash_ser_acc_lang_rt_PrBufStreamItem_String(SerBuf& buf) const {
-    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+inline void langcc::PrBufStreamItem::String::_T::hash_ser_acc_langcc_PrBufStreamItem_String(langcc::SerBuf& buf) const {
+    this->hash_ser_acc_langcc_PrBufStreamItem(buf);
     hash_ser(buf, x_);
 }
 
-inline void lang_rt::PrBufStreamItem::String::_T::hash_ser_acc(SerBuf& buf) const {
-    this->lang_rt::PrBufStreamItem::String::_T::hash_ser_acc_lang_rt_PrBufStreamItem_String(buf);
+inline void langcc::PrBufStreamItem::String::_T::hash_ser_acc(langcc::SerBuf& buf) const {
+    this->langcc::PrBufStreamItem::String::_T::hash_ser_acc_langcc_PrBufStreamItem_String(buf);
 }
 
-inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Newline_T x) {
-    os << "lang_rt::PrBufStreamItem::Newline {";
+inline void langcc::pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::Newline_T x) {
+    os << "langcc::PrBufStreamItem::Newline {";
     os << "}";
 }
 
-inline lang_rt::PrBufStreamItem::Newline::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Newline) {
+inline langcc::PrBufStreamItem::Newline::_T::_T() : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::Newline) {
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make() {
-    auto ret = make_rc<lang_rt::PrBufStreamItem::Newline::_T>();
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::Newline_T langcc::PrBufStreamItem::Newline::make() {
+    auto ret = make_rc<langcc::PrBufStreamItem::Newline::_T>();
     return ret;
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Newline_T lang_rt::PrBufStreamItem::Newline::make_ext(ArenaPtr arena) {
-    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Newline::_T>(arena);
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::Newline_T langcc::PrBufStreamItem::Newline::make_ext(langcc::ArenaPtr arena) {
+    auto ret1 = make_rc_ext<langcc::PrBufStreamItem::Newline::_T>(arena);
     return ret1;
 }
 
-inline void lang_rt::PrBufStreamItem::Newline::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Newline(SerBuf& buf) const {
-    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+inline void langcc::PrBufStreamItem::Newline::_T::hash_ser_acc_langcc_PrBufStreamItem_Newline(langcc::SerBuf& buf) const {
+    this->hash_ser_acc_langcc_PrBufStreamItem(buf);
 }
 
-inline void lang_rt::PrBufStreamItem::Newline::_T::hash_ser_acc(SerBuf& buf) const {
-    this->lang_rt::PrBufStreamItem::Newline::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Newline(buf);
+inline void langcc::PrBufStreamItem::Newline::_T::hash_ser_acc(langcc::SerBuf& buf) const {
+    this->langcc::PrBufStreamItem::Newline::_T::hash_ser_acc_langcc_PrBufStreamItem_Newline(buf);
 }
 
-inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Indent_T x) {
-    os << "lang_rt::PrBufStreamItem::Indent {";
+inline void langcc::pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::Indent_T x) {
+    os << "langcc::PrBufStreamItem::Indent {";
     os << "}";
 }
 
-inline lang_rt::PrBufStreamItem::Indent::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Indent) {
+inline langcc::PrBufStreamItem::Indent::_T::_T() : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::Indent) {
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make() {
-    auto ret = make_rc<lang_rt::PrBufStreamItem::Indent::_T>();
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::Indent_T langcc::PrBufStreamItem::Indent::make() {
+    auto ret = make_rc<langcc::PrBufStreamItem::Indent::_T>();
     return ret;
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Indent_T lang_rt::PrBufStreamItem::Indent::make_ext(ArenaPtr arena) {
-    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Indent::_T>(arena);
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::Indent_T langcc::PrBufStreamItem::Indent::make_ext(langcc::ArenaPtr arena) {
+    auto ret1 = make_rc_ext<langcc::PrBufStreamItem::Indent::_T>(arena);
     return ret1;
 }
 
-inline void lang_rt::PrBufStreamItem::Indent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Indent(SerBuf& buf) const {
-    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+inline void langcc::PrBufStreamItem::Indent::_T::hash_ser_acc_langcc_PrBufStreamItem_Indent(langcc::SerBuf& buf) const {
+    this->hash_ser_acc_langcc_PrBufStreamItem(buf);
 }
 
-inline void lang_rt::PrBufStreamItem::Indent::_T::hash_ser_acc(SerBuf& buf) const {
-    this->lang_rt::PrBufStreamItem::Indent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Indent(buf);
+inline void langcc::PrBufStreamItem::Indent::_T::hash_ser_acc(SerBuf& buf) const {
+    this->langcc::PrBufStreamItem::Indent::_T::hash_ser_acc_langcc_PrBufStreamItem_Indent(buf);
 }
 
-inline void pr_debug(ostream& os, FmtFlags flags, lang_rt::PrBufStreamItem::Dedent_T x) {
-    os << "lang_rt::PrBufStreamItem::Dedent {";
+inline void langcc::pr_debug(std::ostream& os, langcc::FmtFlags flags, langcc::PrBufStreamItem::Dedent_T x) {
+    os << "langcc::PrBufStreamItem::Dedent {";
     os << "}";
 }
 
-inline lang_rt::PrBufStreamItem::Dedent::_T::_T() : lang_rt::PrBufStreamItem::_T(lang_rt::PrBufStreamItem::_W::Dedent) {
+inline langcc::PrBufStreamItem::Dedent::_T::_T() : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::Dedent) {
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make() {
-    auto ret = make_rc<lang_rt::PrBufStreamItem::Dedent::_T>();
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::Dedent_T langcc::PrBufStreamItem::Dedent::make() {
+    auto ret = make_rc<langcc::PrBufStreamItem::Dedent::_T>();
     return ret;
 }
 
-__attribute__((always_inline)) inline lang_rt::PrBufStreamItem::Dedent_T lang_rt::PrBufStreamItem::Dedent::make_ext(ArenaPtr arena) {
-    auto ret1 = make_rc_ext<lang_rt::PrBufStreamItem::Dedent::_T>(arena);
+__attribute__((always_inline)) inline langcc::PrBufStreamItem::Dedent_T langcc::PrBufStreamItem::Dedent::make_ext(langcc::ArenaPtr arena) {
+    auto ret1 = make_rc_ext<langcc::PrBufStreamItem::Dedent::_T>(arena);
     return ret1;
 }
 
-inline void lang_rt::PrBufStreamItem::Dedent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Dedent(SerBuf& buf) const {
-    this->hash_ser_acc_lang_rt_PrBufStreamItem(buf);
+inline void langcc::PrBufStreamItem::Dedent::_T::hash_ser_acc_langcc_PrBufStreamItem_Dedent(langcc::SerBuf& buf) const {
+    this->hash_ser_acc_langcc_PrBufStreamItem(buf);
 }
 
-inline void lang_rt::PrBufStreamItem::Dedent::_T::hash_ser_acc(SerBuf& buf) const {
-    this->lang_rt::PrBufStreamItem::Dedent::_T::hash_ser_acc_lang_rt_PrBufStreamItem_Dedent(buf);
+inline void langcc::PrBufStreamItem::Dedent::_T::hash_ser_acc(SerBuf& buf) const {
+    this->langcc::PrBufStreamItem::Dedent::_T::hash_ser_acc_langcc_PrBufStreamItem_Dedent(buf);
 }
 
-inline void lang_rt::PrBufStream::_T::push_string(string x) {
+inline void langcc::PrBufStream::_T::push_string(std::string x) {
     items_->push(PrBufStreamItem::String::make(x));
 }
 
-inline void lang_rt::PrBufStream::_T::push_newline() {
+inline void langcc::PrBufStream::_T::push_newline() {
     items_->push(PrBufStreamItem::Newline::make());
 }
 
-inline void lang_rt::PrBufStream::_T::push_newlines(Int n) {
+inline void langcc::PrBufStream::_T::push_newlines(langcc::Int n) {
     for (Int k = 0; k < n; k++) {
         this->push_newline();
     }
 }
 
-inline void lang_rt::PrBufStream::_T::push_indent() {
+inline void langcc::PrBufStream::_T::push_indent() {
     items_->push(PrBufStreamItem::Indent::make());
 }
 
-inline void lang_rt::PrBufStream::_T::push_dedent() {
+inline void langcc::PrBufStream::_T::push_dedent() {
     items_->push(PrBufStreamItem::Dedent::make());
 }
 
-inline void lang_rt::PrBufStream::_T::distill(ostream& os, FmtFlags flags) {
+inline void langcc::PrBufStream::_T::distill(std::ostream& os, langcc::FmtFlags flags) {
     Int i = 0;
     while (i < items_->length()) {
         auto item = items_->operator[](i);
@@ -2555,7 +2577,7 @@ inline void lang_rt::PrBufStream::_T::distill(ostream& os, FmtFlags flags) {
     }
 }
 
-namespace lang_rt {
+namespace langcc {
 
 
 
@@ -2713,8 +2735,8 @@ __attribute__((always_inline)) inline const i16* table_u16_array_as_i16_array(co
 // Test/debug drivers
 ////////////////////////////////////////////////////////////////////////////////
 
-template<LANG_META_PARAMS>
-void LangDesc<LANG_META_ARGS>::debug_example(string sym_target, string input) {
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+void LangDesc<Node, FAcc, FStep>::debug_example(string sym_target, string input) {
     auto gen = make_rc<Gensym>();
     auto input_s = vec_from_std_string(input);
     auto parse = this->parse_ext(
@@ -2732,8 +2754,8 @@ void LangDesc<LANG_META_ARGS>::debug_example(string sym_target, string input) {
     }
 }
 
-template<LANG_META_PARAMS>
-bool LangDesc<LANG_META_ARGS>::test_example(
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+bool LangDesc<Node, FAcc, FStep>::test_example(
     Option_T<string> sym_target, const Str_T& input, Arena* A, Int error_pos_maybe,
     bool test_write) {
 
@@ -2785,8 +2807,8 @@ bool LangDesc<LANG_META_ARGS>::test_example(
     return true;
 }
 
-template<LANG_META_PARAMS>
-bool LangDesc<LANG_META_ARGS>::test_example(
+template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
+bool LangDesc<Node, FAcc, FStep>::test_example(
     Option_T<string> sym_target, const char* input, Int error_pos_maybe, bool test_write) {
 
     auto A = make_rc<Arena>();

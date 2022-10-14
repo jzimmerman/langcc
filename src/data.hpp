@@ -4,8 +4,9 @@
 
 #include "data__gen.hpp"
 
+namespace langcc {
+
 using namespace lang;
-using namespace lang_rt;
 
 inline void pr(ostream& os, FmtFlags flags, lang::data::Node_T x) {
     x->write(os, flags);
@@ -30,3 +31,5 @@ struct DataGenContext {
         return Q_->qq(args...);
     }
 };
+
+}

@@ -3,6 +3,8 @@
 #include "data.hpp"
 #include "cc.hpp"
 
+namespace langcc {
+
 struct DataCompileContext {
     CppGenContext cc_;
 
@@ -418,20 +420,20 @@ Map<GenName, GenName>& builtins_cpp() {
     }
     ret.insert(name_lit({"bool"}), name_lit({"bool"}));
     ret.insert(name_lit({"void"}), name_lit({"void"}));
-    ret.insert(name_lit({"Int"}), name_lit({"Int"}));
-    ret.insert(name_lit({"u32"}), name_lit({"u32"}));
+    ret.insert(name_lit({"Int"}), name_lit({"langcc", "Int"}));
+    ret.insert(name_lit({"u32"}), name_lit({"langcc", "u32"}));
     ret.insert(name_lit({"IntPair"}), name_lit({"IntPair"}));
-    ret.insert(name_lit({"Str"}), name_lit({"string"}));
-    ret.insert(name_lit({"StrSlice"}), name_lit({"StrSlice"}));
-    ret.insert(name_lit({"Char"}), name_lit({"Ch"}));
-    ret.insert(name_lit({"Unit"}), name_lit({"Unit"}));
-    ret.insert(name_lit({"Ptr"}), name_lit({"Ptr"}));
-    ret.insert(name_lit({"Ref"}), name_lit({"Ref"}));
-    ret.insert(name_lit({"Vec"}), name_lit({"Vec_T"}));
-    ret.insert(name_lit({"Set"}), name_lit({"Set_T"}));
-    ret.insert(name_lit({"Map"}), name_lit({"Map_T"}));
-    ret.insert(name_lit({"VecUniq"}), name_lit({"VecUniq_T"}));
-    ret.insert(name_lit({"Option"}), name_lit({"Option_T"}));
+    ret.insert(name_lit({"Str"}), name_lit({"std", "string"}));
+    ret.insert(name_lit({"StrSlice"}), name_lit({"langcc", "StrSlice"}));
+    ret.insert(name_lit({"Char"}), name_lit({"langcc", "Ch"}));
+    ret.insert(name_lit({"Unit"}), name_lit({"langcc", "Unit"}));
+    ret.insert(name_lit({"Ptr"}), name_lit({"langcc", "Ptr"}));
+    ret.insert(name_lit({"Ref"}), name_lit({"langcc", "Ref"}));
+    ret.insert(name_lit({"Vec"}), name_lit({"langcc", "Vec_T"}));
+    ret.insert(name_lit({"Set"}), name_lit({"langcc", "Set_T"}));
+    ret.insert(name_lit({"Map"}), name_lit({"langcc", "Map_T"}));
+    ret.insert(name_lit({"VecUniq"}), name_lit({"langcc", "VecUniq_T"}));
+    ret.insert(name_lit({"Option"}), name_lit({"langcc", "Option_T"}));
     _init = true;
     return ret;
 }
@@ -639,10 +641,10 @@ Option_T<cc::Node_T> lower_xform_field_entry(
             auto ret = None<cc::Node_T>();
             if (xform_ty == XformTy::Xform) {
                 ret = Some<cc::Node_T>(ctx.cc_.gen_cpp_decl_var_init(
-                    dst, gen_ns, "auto", "ret", "make_rc<Vec<", arg_ty, ">>()"));
+                    dst, gen_ns, "auto", "ret", "langcc::make_rc<langcc::Vec<", arg_ty, ">>()"));
             }
 
-            auto loop_ind = ctx.cc_.gen_cpp_decl_var_init(dst, gen_ns, "Int", "i", "0");
+            auto loop_ind = ctx.cc_.gen_cpp_decl_var_init(dst, gen_ns, "langcc::Int", "i", "0");
             auto loop_body = make_rc<Vec<cc::Node_T>>();
             auto ret_i = lower_xform_field_entry(xform_ty, star, curr, vis, loop_body,
                 ctx.cc_.qq("Expr", src, "->at_unchecked(", loop_ind, ")"), src_f, arg,
@@ -670,7 +672,7 @@ Option_T<cc::Node_T> lower_xform_field_entry(
             auto ret = None<cc::Node_T>();
             if (xform_ty == XformTy::Xform) {
                 ret = Some<cc::Node_T>(ctx.cc_.gen_cpp_decl_var_init(
-                    dst, gen_ns, "auto", "ret", "None<", arg_ty, ">()"));
+                    dst, gen_ns, "auto", "ret", "langcc::None<", arg_ty, ">()"));
             }
 
             auto if_body = make_rc<Vec<cc::Node_T>>();
@@ -681,7 +683,7 @@ Option_T<cc::Node_T> lower_xform_field_entry(
 
             if (xform_ty == XformTy::Xform) {
                 if_body->push_back(
-                    ctx.cc_.qq("Stmt", ret.as_some(), "= Some<", arg_ty, ">(",
+                    ctx.cc_.qq("Stmt", ret.as_some(), "= langcc::Some<", arg_ty, ">(",
                     ret_i.as_some(), ");"));
             }
 
@@ -741,11 +743,12 @@ void data_gen_xform_fn(
     auto cpp_xform_param_x_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
         cpp_xform_params, id_xform_fun_ns, cpp_struct_decl_ptr_name_curr, "x");
 
-    auto cpp_xform_param_f_ty = ctx.cc_.qq("Expr", "function<", cpp_struct_decl_ptr_name_star, "(",
+    auto cpp_xform_param_f_ty = ctx.cc_.qq("Expr", "std::function<",
+        cpp_struct_decl_ptr_name_star, "(",
         cpp_struct_decl_ptr_name_star, ")>");
     if (xform_ty == XformTy::Visit) {
         cpp_xform_param_f_ty = ctx.cc_.qq_expr(
-            "function<void(", cpp_struct_decl_ptr_name_star, ")>");
+            "std::function<void(", cpp_struct_decl_ptr_name_star, ")>");
     }
     auto cpp_xform_param_f_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
         cpp_xform_params, id_xform_fun_ns, cpp_xform_param_f_ty, "f");
@@ -783,7 +786,7 @@ void data_gen_xform_fn(
                 ctx.cc_.qq("SwitchCase", "case", lower_name_cpp(LowerTy::WHICH_ENUM, curr, ctx),
                     "::", sum_case, ": {", *switch_case_body, "break; }")->as_SwitchCase());
         }
-        cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { AX(); }"));
+        cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { langcc::AX(); }"));
         cpp_xform_body->push_back(
             ctx.cc_.qq("Stmt", "switch (", cpp_xform_param_x_var, "->w_", ") {",
                 *cpp_switch_cases, "}"));
@@ -887,7 +890,7 @@ void data_gen_xform_id_fn(
     auto cpp_xform_body = make_rc<Vec<cc::Node_T>>();
     auto cpp_xform_param_x_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
         cpp_xform_params, id_xform_fun_ns, cpp_struct_decl_ptr_name_curr, "x");
-    auto cpp_xform_param_f_ty = ctx.cc_.qq("Expr", "function<", cpp_struct_decl_ptr_name_star, "(",
+    auto cpp_xform_param_f_ty = ctx.cc_.qq("Expr", "std::function<", cpp_struct_decl_ptr_name_star, "(",
         cpp_struct_decl_ptr_name_star, ")>");
     auto cpp_xform_param_f_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
         cpp_xform_params, id_xform_fun_ns, cpp_xform_param_f_ty, "f");
@@ -967,14 +970,14 @@ DataDefsResult compile_data_defs(
 
         // hash_ser()
         auto id_hash_ser_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
-        auto id_hash_ser_name_full = name_lit({"hash_ser",});
+        auto id_hash_ser_name_full = name_lit({"langcc", "hash_ser",});
         auto cpp_hash_ser_name_full = name_to_cpp_direct(id_hash_ser_name_full, ctx.cc_);
         auto cpp_hash_ser_params = make_rc<Vec<cc::Node_T>>();
         auto cpp_hash_ser_body = make_rc<Vec<cc::Node_T>>();
         auto id_hash_ser_param_buf = ctx.cc_.gen_id_fresh(id_hash_ser_fun_ns, "buf");
         auto cpp_hash_ser_param_buf_var = ctx.cc_.gen_cpp_id_base(id_hash_ser_param_buf);
         auto cpp_hash_ser_param_buf = ctx.cc_.Q_->qq_ext(
-            Some<string>("Param"), "SerBuf&", cpp_hash_ser_param_buf_var);
+            Some<string>("Param"), "langcc::SerBuf&", cpp_hash_ser_param_buf_var);
         cpp_hash_ser_params->push_back(cpp_hash_ser_param_buf);
         auto id_hash_ser_param_x = ctx.cc_.gen_id_fresh(id_hash_ser_fun_ns, "x");
         auto cpp_hash_ser_param_x_var = ctx.cc_.gen_cpp_id_base(id_hash_ser_param_x);
@@ -982,8 +985,9 @@ DataDefsResult compile_data_defs(
             name_to_cpp_direct(name_full, ctx.cc_), cpp_hash_ser_param_x_var);
         cpp_hash_ser_params->push_back(cpp_hash_ser_param_x);
         cpp_hash_ser_body->push_back(
-            ctx.cc_.Q_->qq_ext(Some<string>("Stmt"), "hash_ser(", cpp_hash_ser_param_buf_var, ",",
-                "static_cast<Int>(", cpp_hash_ser_param_x_var, "));"));
+            ctx.cc_.Q_->qq_ext(Some<string>("Stmt"), "langcc::hash_ser(",
+                cpp_hash_ser_param_buf_var, ",",
+                "static_cast<langcc::Int>(", cpp_hash_ser_param_x_var, "));"));
 
         ctx.cc_.dst_decls_->push_back(
             ctx.cc_.gen_cpp_fun_proto_decl(
@@ -1006,14 +1010,16 @@ DataDefsResult compile_data_defs(
 
         // pr_debug()
         auto id_pr_debug_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
-        auto id_pr_debug_name_full = name_lit({"pr_debug",});
+        auto id_pr_debug_name_full = name_lit({"langcc", "pr_debug",});
         auto cpp_pr_debug_name_full = name_to_cpp_direct(id_pr_debug_name_full, ctx.cc_);
         auto cpp_pr_debug_params = make_rc<Vec<cc::Node_T>>();
         auto cpp_pr_debug_body = make_rc<Vec<cc::Node_T>>();
-        auto cpp_pr_debug_param_os_var = ctx.cc_.gen_cpp_param_acc<string>(
-            cpp_pr_debug_params, id_pr_debug_fun_ns, "ostream&", "os");
-        auto cpp_pr_debug_param_flags_var = ctx.cc_.gen_cpp_param_acc<string>(
-            cpp_pr_debug_params, id_pr_debug_fun_ns, "FmtFlags", "flags");
+        auto cpp_pr_debug_param_os_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+            cpp_pr_debug_params, id_pr_debug_fun_ns,
+            ctx.cc_.qq_expr("std::ostream&"), "os");
+        auto cpp_pr_debug_param_flags_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+            cpp_pr_debug_params, id_pr_debug_fun_ns,
+            ctx.cc_.qq_expr("langcc::FmtFlags"), "flags");
         auto cpp_pr_debug_param_x_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
             cpp_pr_debug_params, id_pr_debug_fun_ns, name_to_cpp_direct(name_full, ctx.cc_), "x");
         auto cpp_switch_cases = make_rc<Vec<cc::Node_T>>();
@@ -1024,7 +1030,7 @@ DataDefsResult compile_data_defs(
                     "os << ", fmt_str("\"{}\"", data_case.to_std_string()), ";",
                     "break; }")->as_SwitchCase());
         }
-        cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { AX(); }"));
+        cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { langcc::AX(); }"));
         cpp_pr_debug_body->push_back(
             ctx.cc_.qq("Stmt", "switch (", cpp_pr_debug_param_x_var, ") {",
                 *cpp_switch_cases, "}"));
@@ -1134,19 +1140,20 @@ DataDefsResult compile_data_defs(
         auto cpp_make_params = make_rc<Vec<cc::Node_T>>();
         auto cpp_make_body = make_rc<Vec<cc::Node_T>>();
         auto cpp_make_ret = ctx.cc_.gen_cpp_decl_var_init(
-            cpp_make_body, cpp_make_name_full, "auto", "ret", "make_rc<",
+            cpp_make_body, cpp_make_name_full, "auto", "ret", "langcc::make_rc<",
             cpp_struct_decl_name_tmpl, ">()");
 
         // make_ext()
         auto id_make_ext_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
         auto cpp_make_ext_name_full = lower_name(LowerTy::MAKE_EXT_FULL, name_full);
         auto cpp_make_ext_params = make_rc<Vec<cc::Node_T>>();
-        auto cpp_make_ext_param_arena_var = ctx.cc_.gen_cpp_param_acc<string>(
-            cpp_make_ext_params, id_make_ext_fun_ns, "ArenaPtr", "arena");
+        auto cpp_make_ext_param_arena_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
+            cpp_make_ext_params, id_make_ext_fun_ns,
+            ctx.cc_.qq_expr("langcc::ArenaPtr"), "arena");
         auto cpp_make_ext_body = make_rc<Vec<cc::Node_T>>();
         auto cpp_make_ext_ret = ctx.cc_.gen_cpp_decl_var_init(
             cpp_make_ext_body, cpp_make_name_full,
-            "auto", "ret", "make_rc_ext<", cpp_struct_decl_name_tmpl, ">(",
+            "auto", "ret", "langcc::make_rc_ext<", cpp_struct_decl_name_tmpl, ">(",
             cpp_make_ext_param_arena_var, ")");
 
         // with_X()
@@ -1166,7 +1173,7 @@ DataDefsResult compile_data_defs(
                 ctx.cc_.gen_cpp_decl_var_init(
                     cpp_with_body[field_name],
                     cpp_with_name_full[field_name],
-                    "auto", "ret", "make_rc<", cpp_struct_decl_name_tmpl, ">()"));
+                    "auto", "ret", "langcc::make_rc<", cpp_struct_decl_name_tmpl, ">()"));
         }
 
         // is_X()
@@ -1207,7 +1214,7 @@ DataDefsResult compile_data_defs(
                     sub_name_full, LowerTy::STRUCT_RC_ALIAS, ctx);
                 auto param_f = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
                     cpp_sum_match_params, id_sum_match_fun_ns,
-                    ctx.cc_.qq_expr("function<void(",
+                    ctx.cc_.qq_expr("std::function<void(",
                         cpp_struct_decl_name_tmpl_sub, ")>"),
                     fmt_str("f_{}", sum_case));
                 cpp_sum_match_params_fs->push(param_f);
@@ -1229,7 +1236,7 @@ DataDefsResult compile_data_defs(
                     sub_name_full, LowerTy::STRUCT_RC_ALIAS, ctx);
                 auto param_f = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
                     cpp_sum_match_expr_params, id_sum_match_expr_fun_ns,
-                    ctx.cc_.qq_expr("function<", id_sum_match_expr_fun_type_param, "(",
+                    ctx.cc_.qq_expr("std::function<", id_sum_match_expr_fun_type_param, "(",
                         cpp_struct_decl_name_tmpl_sub, ")>"),
                     fmt_str("f_{}", sum_case));
                 cpp_sum_match_expr_params_fs->push(param_f);
@@ -1238,7 +1245,7 @@ DataDefsResult compile_data_defs(
 
         // pr_debug()
         auto id_pr_debug_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
-        auto id_pr_debug_name_full = name_lit({"pr_debug",});
+        auto id_pr_debug_name_full = name_lit({"langcc", "pr_debug",});
         auto cpp_pr_debug_name_full = name_to_cpp_direct(id_pr_debug_name_full, ctx.cc_);
         auto cpp_pr_debug_params = make_rc<Vec<cc::Node_T>>();
         auto cpp_pr_debug_body = make_rc<Vec<cc::Node_T>>();
@@ -1259,14 +1266,15 @@ DataDefsResult compile_data_defs(
                     ctx.cc_.qq("SwitchCase", "case",
                         lower_name_cpp(LowerTy::WHICH_ENUM, name_full, ctx),
                         "::", sum_case, ": {",
-                        "pr_debug(", cpp_pr_debug_param_os_var, ",", cpp_pr_debug_param_flags_var,
+                        "langcc::pr_debug(", cpp_pr_debug_param_os_var, ",",
+                        cpp_pr_debug_param_flags_var,
                         ",", cpp_pr_debug_param_x_var, "->",
                         lower_name_cpp(
                             LowerTy::SUM_AS_BASE, name_full, ctx, Some(name_lit({sum_case,}))),
                         "());",
                         "break; }")->as_SwitchCase());
             }
-            cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { AX(); }"));
+            cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { langcc::AX(); }"));
             cpp_pr_debug_body->push_back(
                 ctx.cc_.qq("Stmt", "switch (", cpp_pr_debug_param_x_var, "->w_", ") {",
                     *cpp_switch_cases, "}"));
@@ -1288,7 +1296,7 @@ DataDefsResult compile_data_defs(
                         ctx.cc_.qq("Stmt", cpp_pr_debug_param_os_var, "<<",
                             fmt_str("\"{}: \"", field_name), ";"));
                     cpp_pr_debug_body->push_back(
-                        ctx.cc_.qq("Stmt", "pr_debug(", cpp_pr_debug_param_os_var,
+                        ctx.cc_.qq("Stmt", "langcc::pr_debug(", cpp_pr_debug_param_os_var,
                             ",", flags_sub, ",",
                             cpp_pr_debug_param_x_var, "->",
                             fmt_str("{}_", field_name), ");"));
@@ -1355,7 +1363,7 @@ DataDefsResult compile_data_defs(
         auto cpp_hash_ser_acc_params = make_rc<Vec<cc::Node_T>>();
         auto cpp_hash_ser_acc_param_buf_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
             cpp_hash_ser_acc_params, id_hash_ser_acc_fun_ns,
-            ctx.cc_.Q_->qq("Expr", "SerBuf&"), "buf");
+            ctx.cc_.Q_->qq("Expr", "langcc::SerBuf&"), "buf");
 
         auto id_hash_ser_acc_inst_fun_ns = name_lit(
             {ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
@@ -1371,7 +1379,7 @@ DataDefsResult compile_data_defs(
         auto cpp_hash_ser_acc_inst_params = make_rc<Vec<cc::Node_T>>();
         auto cpp_hash_ser_acc_inst_param_buf_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(
             cpp_hash_ser_acc_inst_params, id_hash_ser_acc_inst_fun_ns,
-            ctx.cc_.Q_->qq("Expr", "SerBuf&"), "buf");
+            ctx.cc_.Q_->qq("Expr", "langcc::SerBuf&"), "buf");
 
         if (is_sum) {
             // _W
@@ -1402,7 +1410,8 @@ DataDefsResult compile_data_defs(
                 auto cpp_sum_is_method_name = lower_name_cpp(
                     LowerTy::SUM_IS_BASE, name_full, ctx, Some(name_lit({sum_case,})));
                 cpp_sum_as_body[sum_case]->push_back(
-                    ctx.cc_.Q_->qq_ext(Some<string>("Stmt"), "AT(this->", cpp_sum_is_method_name,
+                    ctx.cc_.Q_->qq_ext(Some<string>("Stmt"),
+                        "langcc::AT(this->", cpp_sum_is_method_name,
                         "());"));
                 cpp_sum_as_body[sum_case]->push_back(
                     ctx.cc_.qq_stmt(
@@ -1427,7 +1436,7 @@ DataDefsResult compile_data_defs(
                             "break; }")->as_SwitchCase());
                     ++i;
                 }
-                cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { AX(); }"));
+                cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { langcc::AX(); }"));
                 cpp_sum_match_body->push_back(
                     ctx.cc_.qq("Stmt", "switch (",
                         "this->w_", ") {", *cpp_switch_cases, "}"));
@@ -1451,7 +1460,7 @@ DataDefsResult compile_data_defs(
                             "break; }")->as_SwitchCase());
                     ++i;
                 }
-                cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { AX(); }"));
+                cpp_switch_cases->push_back(ctx.cc_.qq("SwitchCase", "default: { langcc::AX(); }"));
                 cpp_sum_match_expr_body->push_back(
                     ctx.cc_.qq("Stmt", "switch (",
                     "this->w_", ") {", *cpp_switch_cases, "}"));
@@ -1477,7 +1486,7 @@ DataDefsResult compile_data_defs(
                 cpp_hash_ser_acc_inst_body->push_back(
                     ctx.cc_.Q_->qq_ext(Some<string>("Stmt"),
                         "hash_ser(", cpp_hash_ser_acc_inst_param_buf_var,
-                        ", static_cast<Int>(w_));"));
+                        ", static_cast<langcc::Int>(w_));"));
             }
 
             // hash_ser_acc()
@@ -1675,16 +1684,16 @@ DataDefsResult compile_data_defs(
             cpp_fields->push_back(
                 ctx.cc_.qq("Entry", "void",
                     lower_name_cpp(LowerTy::HASH_SER_ACC_INST_BASE, name_full, ctx),
-                    "(SerBuf& ", cpp_hash_ser_acc_inst_param_buf_var, ") const;"));
+                    "(langcc::SerBuf& ", cpp_hash_ser_acc_inst_param_buf_var, ") const;"));
 
             // hash_ser_acc()
             if (!is_sum) {
                 cpp_fields->push_back(
-                    ctx.cc_.qq("Entry", "virtual void hash_ser_acc(SerBuf& ",
+                    ctx.cc_.qq("Entry", "virtual void hash_ser_acc(langcc::SerBuf& ",
                         cpp_hash_ser_acc_param_buf_var, ") const;"));
             } else {
                 cpp_fields->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Entry"),
-                    "virtual void hash_ser_acc(SerBuf& ",
+                    "virtual void hash_ser_acc(langcc::SerBuf& ",
                     cpp_hash_ser_acc_param_buf_var, ") const = 0;"));
             }
         }
@@ -1698,8 +1707,8 @@ DataDefsResult compile_data_defs(
             cpp_base_classes->push_back(cpp_struct_decl_name_tmpl_parent);
         }
         if (!ctx.sum_cases_rev_->contains_key(name_full)) {
-            cpp_base_classes->push_back(ctx.cc_.gen_cpp_id_base("hash_obj"));
-            cpp_base_classes->push_back(ctx.cc_.gen_cpp_id_base("enable_rc_from_this_poly"));
+            cpp_base_classes->push_back(ctx.cc_.qq_expr("langcc::hash_obj"));
+            cpp_base_classes->push_back(ctx.cc_.qq_expr("langcc::enable_rc_from_this_poly"));
         }
 
         ctx.cc_.dst_decls_->push_back(
@@ -1934,4 +1943,6 @@ DataDefsResult compile_data_defs(
     ret.hpp_decls = hpp_mod;
     ret.cpp_decls = cpp_mod;
     return ret;
+}
+
 }

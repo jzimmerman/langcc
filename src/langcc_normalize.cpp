@@ -1,6 +1,8 @@
 
 #include "langcc_common.hpp"
 
+namespace langcc {
+
 void parser_Gr_flat_tabulate_defined_nonterm(LangCompileContext& ctx, IdentBase_T ident) {
     if (ctx.Nm_->contains_key(ident)) {
         return;
@@ -886,4 +888,6 @@ meta::Node::Lang_T xform_lang_normalize(
 
     return meta::Node::Lang::make(
         gen->gen(), L->bounds_, L->is_top_, L->sym_, L->attr_, L->first_k_, stanzas_new);
+}
+
 }

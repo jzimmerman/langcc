@@ -7,7 +7,7 @@
 
 #include "cc.hpp"
 
-using namespace common;
+namespace langcc {
 
 LangCompileResult_T compile_lang(
     lang::meta::Node_T src, Int k, Gensym_T gen_meta, string src_base_name, string dst_path,
@@ -21,3 +21,5 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path, RunTests
 
 bool test_lang(string test_name);
 void test_lang_toplevel(string test_name);
+
+}

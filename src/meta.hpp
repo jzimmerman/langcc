@@ -6,8 +6,9 @@
 
 #include "common.hpp"
 
+namespace langcc {
+
 using namespace lang;
-using namespace lang_rt;
 
 using meta::Node::ParseExpr_T;
 using meta::Node::ParserDecl::Rule_T;
@@ -116,12 +117,12 @@ inline Int lang_get_k_default(meta::Node::Lang_T L) {
 }
 
 
-inline common::Ident_T parse_expr_id_to_ident(meta::Node::Id_T id) {
-    auto ret_names = make_rc<Vec<common::IdentBase_T>>();
+inline Ident_T parse_expr_id_to_ident(meta::Node::Id_T id) {
+    auto ret_names = make_rc<Vec<IdentBase_T>>();
     for (const auto& name : *id->names_) {
-        ret_names->push_back(common::IdentBase::User::make(name.to_std_string()));
+        ret_names->push_back(IdentBase::User::make(name.to_std_string()));
     }
-    return common::Ident::make(ret_names);
+    return Ident::make(ret_names);
 }
 
 
@@ -568,3 +569,5 @@ namespace ParseExprProps {
 
 using ParseExprProps_T = rc_ptr<ParseExprProps::_T>;
 using ParseExprPropsMap_T = Map_T<Int, ParseExprProps_T>;  // By gen_id
+
+}

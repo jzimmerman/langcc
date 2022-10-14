@@ -6,8 +6,7 @@
 
 #include "meta.hpp"
 
-using namespace common;
-
+namespace langcc {
 
 inline void pr(ostream& os, FmtFlags flags, const Grammar_T& G) {
     fmt(os, "===== Grammar =====\n\n");
@@ -61,7 +60,7 @@ inline void pr(ostream& os, FmtFlags flags, const Grammar_T& G) {
 }
 
 
-namespace common::Grammar {
+namespace Grammar {
     inline Grammar_T empty() {
         auto ret = make_rc<Grammar::_T>();
         ret->term_ = make_rc<VecUniq<Sym_T>>();
@@ -150,4 +149,6 @@ namespace common::Grammar {
         }
         return make_pair(prod, is_new);
     }
+}
+
 }

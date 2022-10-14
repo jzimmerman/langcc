@@ -1,6 +1,8 @@
 
 #include "langcc_common.hpp"
 
+namespace langcc {
+
 ProdConstrRhsLoc parser_prod_constr_loc_from_attr_clause_expr(
     LangCompileContext& ctx, lang::meta::Node::AttrClauseExprRhsLoc_T loc) {
 
@@ -728,10 +730,10 @@ void parser_attr_propagate_flattened(LangCompileContext& ctx) {
                 if (props->attr_req_.is_some()) {
                     for (auto ar : *props->attr_req_.as_some()) {
                         if (ar->is_Base()) {
-                            auto k_names = make_rc<Vec<common::IdentBase_T>>();
+                            auto k_names = make_rc<Vec<IdentBase_T>>();
                             k_names->push_back(
                                 IdentBase::User::make(ar->as_Base()->k_.to_std_string()));
-                            auto k_id = common::Ident::make(k_names);
+                            auto k_id = Ident::make(k_names);
                             auto k = AttrKey::Id::make(None<ProdConstrRhsLoc>(), k_id);
                             dst->insert(ProdConstrFlat::RhsGeq::make(
                                 i, k, AttrVal::Bool::make(AttrType::Bool::make(), true)));
@@ -912,4 +914,6 @@ void parser_prod_constr_cps_refine_domains(LangCompileContext& ctx) {
             break;
         }
     }
+}
+
 }

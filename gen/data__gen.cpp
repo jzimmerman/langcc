@@ -1,8 +1,8 @@
 #include "data__gen.hpp"
 
 namespace lang::data::lexer {
-    rc_ptr<lang_rt::DFALabelIdVec> label_ids_ascii() {
-        auto ret = Vec<lang_rt::DFALabelId>::repeat(lang_rt::DFATable::NO_LABEL, 128);
+    langcc::rc_ptr<langcc::DFALabelIdVec> label_ids_ascii() {
+        auto ret = langcc::Vec<langcc::DFALabelId>::repeat(langcc::DFATable::NO_LABEL, 128);
         ret->at_unchecked(0) = 1;
         ret->at_unchecked(1) = 1;
         ret->at_unchecked(2) = 1;
@@ -136,307 +136,307 @@ namespace lang::data::lexer {
 }
 
 namespace lang::data::lexer {
-    rc_ptr<lang_rt::DFALabelIdMap> label_ids_unicode() {
-        auto ret = make_rc<lang_rt::DFALabelIdMap>();
-        ret->insert(make_pair(128, 56));
-        ret->insert(make_pair(1114112, 57));
+    langcc::rc_ptr<langcc::DFALabelIdMap> label_ids_unicode() {
+        auto ret = langcc::make_rc<langcc::DFALabelIdMap>();
+        ret->insert(std::make_pair(128, 56));
+        ret->insert(std::make_pair(1114112, 57));
         return ret;
     }
 }
 
 namespace lang::data::lexer::body {
-    lang_rt::DFAVertexId step(lang_rt::DFAVertexId v, lang_rt::DFALabelId lbl) {
-        static const u16_array tt = {0x0004, 0xffff, 0x0002, 0xffff, 0x0001, 0xffff, 0x0018, 0x0016, 0xffff, 0x000a, 0x000b, 0xffff, 0x000c, 0xffff, 0x0005, 0x0003, 0xffff, 0x0006, 0x0007, 0x000e, 0xffff, 0x0019, 0x0012, 0x0019, 0xffff, 0x000d, 0x001a, 0xffff, 0x0019, 0x0019, 0x0019, 0x000f, 0x0010, 0x0019, 0x0019, 0x0019, 0x0017, 0x0019, 0x0019, 0x0013, 0x0011, 0x0019, 0x0019, 0x0019, 0x0019, 0x0019, 0x0019, 0x0019, 0x0015, 0x0019, 0x0014, 0x0019, 0x0019, 0x0008, 0xffff, 0x0009, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001b, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001c, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001d, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0021, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0022, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0023, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0024, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x0026, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0025, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0027, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0028, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0029, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002b, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002d, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0030, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0031, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0032, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0033, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0034, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0036, 0x0035, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0037, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0038, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002b, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0039, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x003a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003b, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x003c, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003d, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0040, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0041, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x0042, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0043, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0044, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0045, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0046, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0047, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0048, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0049, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x004a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x004b, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x004c, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x004d, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x004e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x004f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0050, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0051, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0052, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0053, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0054, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0055, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x0056, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0057, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x0058, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x0059, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x005a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff};
-        return static_cast<i16>(tt[v * 57 + lbl]);
+    langcc::DFAVertexId step(langcc::DFAVertexId v, langcc::DFALabelId lbl) {
+        static const langcc::u16_array tt = {0x0004, 0xffff, 0x0002, 0xffff, 0x0001, 0xffff, 0x0018, 0x0016, 0xffff, 0x000a, 0x000b, 0xffff, 0x000c, 0xffff, 0x0005, 0x0003, 0xffff, 0x0006, 0x0007, 0x000e, 0xffff, 0x0019, 0x0012, 0x0019, 0xffff, 0x000d, 0x001a, 0xffff, 0x0019, 0x0019, 0x0019, 0x000f, 0x0010, 0x0019, 0x0019, 0x0019, 0x0017, 0x0019, 0x0019, 0x0013, 0x0011, 0x0019, 0x0019, 0x0019, 0x0019, 0x0019, 0x0019, 0x0019, 0x0015, 0x0019, 0x0014, 0x0019, 0x0019, 0x0008, 0xffff, 0x0009, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001b, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001c, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001d, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0021, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0022, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0023, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0024, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x0026, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0025, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0027, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0028, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0029, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002b, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002d, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x002f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0030, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0031, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0032, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0033, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0034, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0036, 0x0035, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0037, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0038, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002b, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0x002c, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0039, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x003a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003b, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x003c, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003d, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x003f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0040, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0041, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x0042, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0043, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0044, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0045, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0046, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0047, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0048, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0049, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x004a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x004b, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x004c, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x004d, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x004e, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x004f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0050, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0051, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0052, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x0053, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0054, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x0055, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x0056, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0057, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x0058, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x0059, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x005a, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0x0020, 0xffff, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0x001f, 0xffff, 0xffff, 0xffff, 0xffff};
+        return static_cast<langcc::i16>(tt[v * 57 + lbl]);
     }
 }
 
 namespace lang::data::lexer::body {
-    __attribute__((always_inline)) lang_rt::DFAActionWithToken acc(lang_rt::DFAVertexId v) {
+    __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
         switch (v) {
             case 0: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 1: {
-                return make_pair(1, lang_rt::NO_TOKEN);
+                return std::make_pair(1, langcc::NO_TOKEN);
             }
             case 2: {
-                return make_pair(1, lang_rt::NO_TOKEN);
+                return std::make_pair(1, langcc::NO_TOKEN);
             }
             case 3: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 4: {
-                return make_pair(3, lang_rt::NO_TOKEN);
+                return std::make_pair(3, langcc::NO_TOKEN);
             }
             case 5: {
-                return make_pair(0, 1);
+                return std::make_pair(0, 1);
             }
             case 6: {
-                return make_pair(0, 2);
+                return std::make_pair(0, 2);
             }
             case 7: {
-                return make_pair(0, 3);
+                return std::make_pair(0, 3);
             }
             case 8: {
-                return make_pair(0, 5);
+                return std::make_pair(0, 5);
             }
             case 9: {
-                return make_pair(0, 6);
+                return std::make_pair(0, 6);
             }
             case 10: {
-                return make_pair(0, 7);
+                return std::make_pair(0, 7);
             }
             case 11: {
-                return make_pair(0, 8);
+                return std::make_pair(0, 8);
             }
             case 12: {
-                return make_pair(0, 9);
+                return std::make_pair(0, 9);
             }
             case 13: {
-                return make_pair(0, 10);
+                return std::make_pair(0, 10);
             }
             case 14: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 15: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 16: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 17: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 18: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 19: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 20: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 21: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 22: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 23: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 24: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 25: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 26: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 27: {
-                return make_pair(2, lang_rt::NO_TOKEN);
+                return std::make_pair(2, langcc::NO_TOKEN);
             }
             case 28: {
-                return make_pair(0, 4);
+                return std::make_pair(0, 4);
             }
             case 29: {
-                return make_pair(0, 11);
+                return std::make_pair(0, 11);
             }
             case 30: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 31: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 32: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 33: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 34: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 35: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 36: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 37: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 38: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 39: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 40: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 41: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 42: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 43: {
-                return make_pair(0, 24);
+                return std::make_pair(0, 24);
             }
             case 44: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 45: {
-                return make_pair(0, 12);
+                return std::make_pair(0, 12);
             }
             case 46: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 47: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 48: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 49: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 50: {
-                return make_pair(0, 16);
+                return std::make_pair(0, 16);
             }
             case 51: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 52: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 53: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 54: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 55: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 56: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 57: {
-                return make_pair(0, 13);
+                return std::make_pair(0, 13);
             }
             case 58: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 59: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 60: {
-                return make_pair(0, 15);
+                return std::make_pair(0, 15);
             }
             case 61: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 62: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 63: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 64: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 65: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 66: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 67: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 68: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 69: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 70: {
-                return make_pair(0, 17);
+                return std::make_pair(0, 17);
             }
             case 71: {
-                return make_pair(0, 18);
+                return std::make_pair(0, 18);
             }
             case 72: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 73: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 74: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 75: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 76: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 77: {
-                return make_pair(0, 21);
+                return std::make_pair(0, 21);
             }
             case 78: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 79: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 80: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 81: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 82: {
-                return make_pair(0, 20);
+                return std::make_pair(0, 20);
             }
             case 83: {
-                return make_pair(0, 22);
+                return std::make_pair(0, 22);
             }
             case 84: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 85: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 86: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 87: {
-                return make_pair(0, 19);
+                return std::make_pair(0, 19);
             }
             case 88: {
-                return make_pair(0, 0);
+                return std::make_pair(0, 0);
             }
             case 89: {
-                return make_pair(0, 14);
+                return std::make_pair(0, 14);
             }
             case 90: {
-                return make_pair(0, 23);
+                return std::make_pair(0, 23);
             }
             default: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
         }
     }
 }
 
 namespace lang::data::lexer::body {
-    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
-        auto ret = make_pair(-1, -1);
+    __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
+        auto ret = std::make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
             case 0: {
@@ -449,17 +449,17 @@ namespace lang::data::lexer::body {
                 break;
             }
             case 2: {
-                ret = make_pair(1, in_i);
+                ret = std::make_pair(1, in_i);
                 mode_switch = true;
                 break;
             }
             case 3: {
-                ret = make_pair(lang_rt::DFATable::NEW_MODE_POP, -1);
+                ret = std::make_pair(langcc::DFATable::NEW_MODE_POP, -1);
                 mode_switch = true;
                 break;
             }
             default: {
-                AX();
+                langcc::AX();
             }
         }
         return ret;
@@ -467,38 +467,38 @@ namespace lang::data::lexer::body {
 }
 
 namespace lang::data::lexer::comment_single {
-    lang_rt::DFAVertexId step(lang_rt::DFAVertexId v, lang_rt::DFALabelId lbl) {
-        static const u16_array tt = {0xffff, 0x0002, 0x0001, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff};
-        return static_cast<i16>(tt[v * 57 + lbl]);
+    langcc::DFAVertexId step(langcc::DFAVertexId v, langcc::DFALabelId lbl) {
+        static const langcc::u16_array tt = {0xffff, 0x0002, 0x0001, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff};
+        return static_cast<langcc::i16>(tt[v * 57 + lbl]);
     }
 }
 
 namespace lang::data::lexer::comment_single {
-    __attribute__((always_inline)) lang_rt::DFAActionWithToken acc(lang_rt::DFAVertexId v) {
+    __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
         switch (v) {
             case 0: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
             case 1: {
-                return make_pair(0, lang_rt::NO_TOKEN);
+                return std::make_pair(0, langcc::NO_TOKEN);
             }
             case 2: {
-                return make_pair(1, lang_rt::NO_TOKEN);
+                return std::make_pair(1, langcc::NO_TOKEN);
             }
             default: {
-                return make_pair(lang_rt::DFATable::NO_ACTION, lang_rt::NO_TOKEN);
+                return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
             }
         }
     }
 }
 
 namespace lang::data::lexer::comment_single {
-    __attribute__((always_inline)) IntPair step_exec(Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Ptr<lang_rt::LexWhitespaceState> ws_state, lang_rt::DFAActionId acc, lang_rt::TokenId tok, Int& in_i, Int& tok_lo, Int& tok_hi) {
-        auto ret = make_pair(-1, -1);
+    __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
+        auto ret = std::make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
             case 0: {
-                ret = make_pair(lang_rt::DFATable::NEW_MODE_POP_EXTRACT, -1);
+                ret = std::make_pair(langcc::DFATable::NEW_MODE_POP_EXTRACT, -1);
                 mode_switch = true;
                 break;
             }
@@ -507,7 +507,7 @@ namespace lang::data::lexer::comment_single {
                 break;
             }
             default: {
-                AX();
+                langcc::AX();
             }
         }
         return ret;
@@ -518,42 +518,42 @@ lang::data::Node::_T::_T(lang::data::Node::_W w) {
     w_ = w;
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node_T x) {
     switch (x->w_) {
         case lang::data::Node::_W::Module: {
-            pr_debug(os, flags, x->as_Module());
+            langcc::pr_debug(os, flags, x->as_Module());
             break;
         }
         case lang::data::Node::_W::Param: {
-            pr_debug(os, flags, x->as_Param());
+            langcc::pr_debug(os, flags, x->as_Param());
             break;
         }
         case lang::data::Node::_W::SumId: {
-            pr_debug(os, flags, x->as_SumId());
+            langcc::pr_debug(os, flags, x->as_SumId());
             break;
         }
         case lang::data::Node::_W::Id: {
-            pr_debug(os, flags, x->as_Id());
+            langcc::pr_debug(os, flags, x->as_Id());
             break;
         }
         case lang::data::Node::_W::Decl: {
-            pr_debug(os, flags, x->as_Decl());
+            langcc::pr_debug(os, flags, x->as_Decl());
             break;
         }
         case lang::data::Node::_W::Mod: {
-            pr_debug(os, flags, x->as_Mod());
+            langcc::pr_debug(os, flags, x->as_Mod());
             break;
         }
         case lang::data::Node::_W::Entry: {
-            pr_debug(os, flags, x->as_Entry());
+            langcc::pr_debug(os, flags, x->as_Entry());
             break;
         }
         case lang::data::Node::_W::Expr: {
-            pr_debug(os, flags, x->as_Expr());
+            langcc::pr_debug(os, flags, x->as_Expr());
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
@@ -594,46 +594,46 @@ bool lang::data::Node::_T::is_Expr() {
 }
 
 lang::data::Node::Module_T lang::data::Node::_T::as_Module() {
-    AT(this->is_Module());
+    langcc::AT(this->is_Module());
     return this->rc_from_this_poly<lang::data::Node::Module::_T>();
 }
 
 lang::data::Node::Param_T lang::data::Node::_T::as_Param() {
-    AT(this->is_Param());
+    langcc::AT(this->is_Param());
     return this->rc_from_this_poly<lang::data::Node::Param::_T>();
 }
 
 lang::data::Node::SumId_T lang::data::Node::_T::as_SumId() {
-    AT(this->is_SumId());
+    langcc::AT(this->is_SumId());
     return this->rc_from_this_poly<lang::data::Node::SumId::_T>();
 }
 
 lang::data::Node::Id_T lang::data::Node::_T::as_Id() {
-    AT(this->is_Id());
+    langcc::AT(this->is_Id());
     return this->rc_from_this_poly<lang::data::Node::Id::_T>();
 }
 
 lang::data::Node::Decl_T lang::data::Node::_T::as_Decl() {
-    AT(this->is_Decl());
+    langcc::AT(this->is_Decl());
     return this->rc_from_this_poly<lang::data::Node::Decl::_T>();
 }
 
 lang::data::Node::Mod_T lang::data::Node::_T::as_Mod() {
-    AT(this->is_Mod());
+    langcc::AT(this->is_Mod());
     return this->rc_from_this_poly<lang::data::Node::Mod::_T>();
 }
 
 lang::data::Node::Entry_T lang::data::Node::_T::as_Entry() {
-    AT(this->is_Entry());
+    langcc::AT(this->is_Entry());
     return this->rc_from_this_poly<lang::data::Node::Entry::_T>();
 }
 
 lang::data::Node::Expr_T lang::data::Node::_T::as_Expr() {
-    AT(this->is_Expr());
+    langcc::AT(this->is_Expr());
     return this->rc_from_this_poly<lang::data::Node::Expr::_T>();
 }
 
-void lang::data::Node::_T::match(function<void(lang::data::Node::Module_T)> f_Module, function<void(lang::data::Node::Param_T)> f_Param, function<void(lang::data::Node::SumId_T)> f_SumId, function<void(lang::data::Node::Id_T)> f_Id, function<void(lang::data::Node::Decl_T)> f_Decl, function<void(lang::data::Node::Mod_T)> f_Mod, function<void(lang::data::Node::Entry_T)> f_Entry, function<void(lang::data::Node::Expr_T)> f_Expr) {
+void lang::data::Node::_T::match(std::function<void(lang::data::Node::Module_T)> f_Module, std::function<void(lang::data::Node::Param_T)> f_Param, std::function<void(lang::data::Node::SumId_T)> f_SumId, std::function<void(lang::data::Node::Id_T)> f_Id, std::function<void(lang::data::Node::Decl_T)> f_Decl, std::function<void(lang::data::Node::Mod_T)> f_Mod, std::function<void(lang::data::Node::Entry_T)> f_Entry, std::function<void(lang::data::Node::Expr_T)> f_Expr) {
     switch (this->w_) {
         case lang::data::Node::_W::Module: {
             f_Module(this->as_Module());
@@ -668,13 +668,13 @@ void lang::data::Node::_T::match(function<void(lang::data::Node::Module_T)> f_Mo
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::_T::hash_ser_acc_lang_data_Node(SerBuf& buf) const {
-    hash_ser(buf, static_cast<Int>(w_));
+void lang::data::Node::_T::hash_ser_acc_lang_data_Node(langcc::SerBuf& buf) const {
+    hash_ser(buf, static_cast<langcc::Int>(w_));
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
     hash_ser(buf, this->attr_);
@@ -684,42 +684,42 @@ void lang::data::Node::_T::hash_ser_acc_lang_data_Node(SerBuf& buf) const {
 lang::data::Node::Module::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::Module) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Module_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Module_T x) {
     os << "lang::data::Node::Module {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "decls: ";
-    pr_debug(os, flags.sub_lo(), x->decls_);
+    langcc::pr_debug(os, flags.sub_lo(), x->decls_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::data::Node::Decl_T> decls) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+lang::data::Node::Module_T lang::data::Node::Module::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::data::Node::Decl_T> decls) {
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -730,8 +730,8 @@ lang::data::Node::Module_T lang::data::Node::Module::make(Int id, lang_rt::Token
     return ret;
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<lang::data::Node::Decl_T> decls) {
-    auto ret1 = make_rc_ext<lang::data::Node::Module::_T>(arena);
+lang::data::Node::Module_T lang::data::Node::Module::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::data::Node::Decl_T> decls) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Module::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -742,8 +742,8 @@ lang::data::Node::Module_T lang::data::Node::Module::make_ext(ArenaPtr arena, In
     return ret1;
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+lang::data::Node::Module_T lang::data::Node::Module::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -754,8 +754,8 @@ lang::data::Node::Module_T lang::data::Node::Module::_T::with_id(Int id) {
     return ret;
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+lang::data::Node::Module_T lang::data::Node::Module::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -767,7 +767,7 @@ lang::data::Node::Module_T lang::data::Node::Module::_T::with_bounds(lang_rt::To
 }
 
 lang::data::Node::Module_T lang::data::Node::Module::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -778,8 +778,8 @@ lang::data::Node::Module_T lang::data::Node::Module::_T::with_is_top(bool is_top
     return ret;
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+lang::data::Node::Module_T lang::data::Node::Module::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -790,8 +790,8 @@ lang::data::Node::Module_T lang::data::Node::Module::_T::with_sym(lang_rt::Parse
     return ret;
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+lang::data::Node::Module_T lang::data::Node::Module::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -802,8 +802,8 @@ lang::data::Node::Module_T lang::data::Node::Module::_T::with_attr(lang_rt::Pars
     return ret;
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+lang::data::Node::Module_T lang::data::Node::Module::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -814,8 +814,8 @@ lang::data::Node::Module_T lang::data::Node::Module::_T::with_first_k(lang_rt::P
     return ret;
 }
 
-lang::data::Node::Module_T lang::data::Node::Module::_T::with_decls(Vec_T<lang::data::Node::Decl_T> decls) {
-    auto ret = make_rc<lang::data::Node::Module::_T>();
+lang::data::Node::Module_T lang::data::Node::Module::_T::with_decls(langcc::Vec_T<lang::data::Node::Decl_T> decls) {
+    auto ret = langcc::make_rc<lang::data::Node::Module::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -826,7 +826,7 @@ lang::data::Node::Module_T lang::data::Node::Module::_T::with_decls(Vec_T<lang::
     return ret;
 }
 
-void lang::data::Node::Module::_T::hash_ser_acc_lang_data_Node_Module(SerBuf& buf) const {
+void lang::data::Node::Module::_T::hash_ser_acc_lang_data_Node_Module(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -835,53 +835,53 @@ void lang::data::Node::Module::_T::hash_ser_acc_lang_data_Node_Module(SerBuf& bu
     hash_ser(buf, this->decls_);
 }
 
-void lang::data::Node::Module::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Module::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Module::_T::hash_ser_acc_lang_data_Node_Module(buf);
 }
 
 lang::data::Node::Param::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::Param) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Param_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Param_T x) {
     os << "lang::data::Node::Param {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "name: ";
-    pr_debug(os, flags.sub_lo(), x->name_);
+    langcc::pr_debug(os, flags.sub_lo(), x->name_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "type_: ";
-    pr_debug(os, flags.sub_lo(), x->type__);
+    langcc::pr_debug(os, flags.sub_lo(), x->type__);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, lang::data::Node::Expr_T type_) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+lang::data::Node::Param_T lang::data::Node::Param::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, lang::data::Node::Expr_T type_) {
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -893,8 +893,8 @@ lang::data::Node::Param_T lang::data::Node::Param::make(Int id, lang_rt::TokenBo
     return ret;
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, lang::data::Node::Expr_T type_) {
-    auto ret1 = make_rc_ext<lang::data::Node::Param::_T>(arena);
+lang::data::Node::Param_T lang::data::Node::Param::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, lang::data::Node::Expr_T type_) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Param::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -906,8 +906,8 @@ lang::data::Node::Param_T lang::data::Node::Param::make_ext(ArenaPtr arena, Int 
     return ret1;
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+lang::data::Node::Param_T lang::data::Node::Param::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -919,8 +919,8 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_id(Int id) {
     return ret;
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+lang::data::Node::Param_T lang::data::Node::Param::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -933,7 +933,7 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_bounds(lang_rt::Toke
 }
 
 lang::data::Node::Param_T lang::data::Node::Param::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -945,8 +945,8 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_is_top(bool is_top) 
     return ret;
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+lang::data::Node::Param_T lang::data::Node::Param::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -958,8 +958,8 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_sym(lang_rt::ParserS
     return ret;
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+lang::data::Node::Param_T lang::data::Node::Param::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -971,8 +971,8 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_attr(lang_rt::Parser
     return ret;
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+lang::data::Node::Param_T lang::data::Node::Param::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -984,8 +984,8 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_first_k(lang_rt::Par
     return ret;
 }
 
-lang::data::Node::Param_T lang::data::Node::Param::_T::with_name(StrSlice name) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+lang::data::Node::Param_T lang::data::Node::Param::_T::with_name(langcc::StrSlice name) {
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -998,7 +998,7 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_name(StrSlice name) 
 }
 
 lang::data::Node::Param_T lang::data::Node::Param::_T::with_type_(lang::data::Node::Expr_T type_) {
-    auto ret = make_rc<lang::data::Node::Param::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Param::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1010,7 +1010,7 @@ lang::data::Node::Param_T lang::data::Node::Param::_T::with_type_(lang::data::No
     return ret;
 }
 
-void lang::data::Node::Param::_T::hash_ser_acc_lang_data_Node_Param(SerBuf& buf) const {
+void lang::data::Node::Param::_T::hash_ser_acc_lang_data_Node_Param(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -1020,49 +1020,49 @@ void lang::data::Node::Param::_T::hash_ser_acc_lang_data_Node_Param(SerBuf& buf)
     hash_ser(buf, this->type__);
 }
 
-void lang::data::Node::Param::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Param::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Param::_T::hash_ser_acc_lang_data_Node_Param(buf);
 }
 
 lang::data::Node::SumId::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::SumId) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x) {
     os << "lang::data::Node::SumId {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "items: ";
-    pr_debug(os, flags.sub_lo(), x->items_);
+    langcc::pr_debug(os, flags.sub_lo(), x->items_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+lang::data::Node::SumId_T lang::data::Node::SumId::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items) {
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -1073,8 +1073,8 @@ lang::data::Node::SumId_T lang::data::Node::SumId::make(Int id, lang_rt::TokenBo
     return ret;
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items) {
-    auto ret1 = make_rc_ext<lang::data::Node::SumId::_T>(arena);
+lang::data::Node::SumId_T lang::data::Node::SumId::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::SumId::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -1085,8 +1085,8 @@ lang::data::Node::SumId_T lang::data::Node::SumId::make_ext(ArenaPtr arena, Int 
     return ret1;
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1097,8 +1097,8 @@ lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_id(Int id) {
     return ret;
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -1110,7 +1110,7 @@ lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_bounds(lang_rt::Toke
 }
 
 lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -1121,8 +1121,8 @@ lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_is_top(bool is_top) 
     return ret;
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1133,8 +1133,8 @@ lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_sym(lang_rt::ParserS
     return ret;
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1145,8 +1145,8 @@ lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_attr(lang_rt::Parser
     return ret;
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1157,8 +1157,8 @@ lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_first_k(lang_rt::Par
     return ret;
 }
 
-lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_items(Vec_T<StrSlice> items) {
-    auto ret = make_rc<lang::data::Node::SumId::_T>();
+lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_items(langcc::Vec_T<langcc::StrSlice> items) {
+    auto ret = langcc::make_rc<lang::data::Node::SumId::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1169,7 +1169,7 @@ lang::data::Node::SumId_T lang::data::Node::SumId::_T::with_items(Vec_T<StrSlice
     return ret;
 }
 
-void lang::data::Node::SumId::_T::hash_ser_acc_lang_data_Node_SumId(SerBuf& buf) const {
+void lang::data::Node::SumId::_T::hash_ser_acc_lang_data_Node_SumId(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -1178,49 +1178,49 @@ void lang::data::Node::SumId::_T::hash_ser_acc_lang_data_Node_SumId(SerBuf& buf)
     hash_ser(buf, this->items_);
 }
 
-void lang::data::Node::SumId::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::SumId::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::SumId::_T::hash_ser_acc_lang_data_Node_SumId(buf);
 }
 
 lang::data::Node::Id::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::Id) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Id_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Id_T x) {
     os << "lang::data::Node::Id {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "items: ";
-    pr_debug(os, flags.sub_lo(), x->items_);
+    langcc::pr_debug(os, flags.sub_lo(), x->items_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+lang::data::Node::Id_T lang::data::Node::Id::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items) {
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -1231,8 +1231,8 @@ lang::data::Node::Id_T lang::data::Node::Id::make(Int id, lang_rt::TokenBounds b
     return ret;
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, Vec_T<StrSlice> items) {
-    auto ret1 = make_rc_ext<lang::data::Node::Id::_T>(arena);
+lang::data::Node::Id_T lang::data::Node::Id::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Id::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -1243,8 +1243,8 @@ lang::data::Node::Id_T lang::data::Node::Id::make_ext(ArenaPtr arena, Int id, la
     return ret1;
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+lang::data::Node::Id_T lang::data::Node::Id::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1255,8 +1255,8 @@ lang::data::Node::Id_T lang::data::Node::Id::_T::with_id(Int id) {
     return ret;
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+lang::data::Node::Id_T lang::data::Node::Id::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -1268,7 +1268,7 @@ lang::data::Node::Id_T lang::data::Node::Id::_T::with_bounds(lang_rt::TokenBound
 }
 
 lang::data::Node::Id_T lang::data::Node::Id::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -1279,8 +1279,8 @@ lang::data::Node::Id_T lang::data::Node::Id::_T::with_is_top(bool is_top) {
     return ret;
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+lang::data::Node::Id_T lang::data::Node::Id::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1291,8 +1291,8 @@ lang::data::Node::Id_T lang::data::Node::Id::_T::with_sym(lang_rt::ParserSymId s
     return ret;
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+lang::data::Node::Id_T lang::data::Node::Id::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1303,8 +1303,8 @@ lang::data::Node::Id_T lang::data::Node::Id::_T::with_attr(lang_rt::ParserAttrMa
     return ret;
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+lang::data::Node::Id_T lang::data::Node::Id::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1315,8 +1315,8 @@ lang::data::Node::Id_T lang::data::Node::Id::_T::with_first_k(lang_rt::ParserLoo
     return ret;
 }
 
-lang::data::Node::Id_T lang::data::Node::Id::_T::with_items(Vec_T<StrSlice> items) {
-    auto ret = make_rc<lang::data::Node::Id::_T>();
+lang::data::Node::Id_T lang::data::Node::Id::_T::with_items(langcc::Vec_T<langcc::StrSlice> items) {
+    auto ret = langcc::make_rc<lang::data::Node::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1327,7 +1327,7 @@ lang::data::Node::Id_T lang::data::Node::Id::_T::with_items(Vec_T<StrSlice> item
     return ret;
 }
 
-void lang::data::Node::Id::_T::hash_ser_acc_lang_data_Node_Id(SerBuf& buf) const {
+void lang::data::Node::Id::_T::hash_ser_acc_lang_data_Node_Id(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -1336,7 +1336,7 @@ void lang::data::Node::Id::_T::hash_ser_acc_lang_data_Node_Id(SerBuf& buf) const
     hash_ser(buf, this->items_);
 }
 
-void lang::data::Node::Id::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Id::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Id::_T::hash_ser_acc_lang_data_Node_Id(buf);
 }
 
@@ -1344,26 +1344,26 @@ lang::data::Node::Decl::_T::_T(lang::data::Node::Decl::_W w) : lang::data::Node:
     w_ = w;
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl_T x) {
     switch (x->w_) {
         case lang::data::Node::Decl::_W::Include: {
-            pr_debug(os, flags, x->as_Include());
+            langcc::pr_debug(os, flags, x->as_Include());
             break;
         }
         case lang::data::Node::Decl::_W::Namespace: {
-            pr_debug(os, flags, x->as_Namespace());
+            langcc::pr_debug(os, flags, x->as_Namespace());
             break;
         }
         case lang::data::Node::Decl::_W::Data: {
-            pr_debug(os, flags, x->as_Data());
+            langcc::pr_debug(os, flags, x->as_Data());
             break;
         }
         case lang::data::Node::Decl::_W::Enum: {
-            pr_debug(os, flags, x->as_Enum());
+            langcc::pr_debug(os, flags, x->as_Enum());
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
@@ -1388,26 +1388,26 @@ bool lang::data::Node::Decl::_T::is_Enum() {
 }
 
 lang::data::Node::Decl::Include_T lang::data::Node::Decl::_T::as_Include() {
-    AT(this->is_Include());
+    langcc::AT(this->is_Include());
     return this->rc_from_this_poly<lang::data::Node::Decl::Include::_T>();
 }
 
 lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::_T::as_Namespace() {
-    AT(this->is_Namespace());
+    langcc::AT(this->is_Namespace());
     return this->rc_from_this_poly<lang::data::Node::Decl::Namespace::_T>();
 }
 
 lang::data::Node::Decl::Data_T lang::data::Node::Decl::_T::as_Data() {
-    AT(this->is_Data());
+    langcc::AT(this->is_Data());
     return this->rc_from_this_poly<lang::data::Node::Decl::Data::_T>();
 }
 
 lang::data::Node::Decl::Enum_T lang::data::Node::Decl::_T::as_Enum() {
-    AT(this->is_Enum());
+    langcc::AT(this->is_Enum());
     return this->rc_from_this_poly<lang::data::Node::Decl::Enum::_T>();
 }
 
-void lang::data::Node::Decl::_T::match(function<void(lang::data::Node::Decl::Include_T)> f_Include, function<void(lang::data::Node::Decl::Namespace_T)> f_Namespace, function<void(lang::data::Node::Decl::Data_T)> f_Data, function<void(lang::data::Node::Decl::Enum_T)> f_Enum) {
+void lang::data::Node::Decl::_T::match(std::function<void(lang::data::Node::Decl::Include_T)> f_Include, std::function<void(lang::data::Node::Decl::Namespace_T)> f_Namespace, std::function<void(lang::data::Node::Decl::Data_T)> f_Data, std::function<void(lang::data::Node::Decl::Enum_T)> f_Enum) {
     switch (this->w_) {
         case lang::data::Node::Decl::_W::Include: {
             f_Include(this->as_Include());
@@ -1426,14 +1426,14 @@ void lang::data::Node::Decl::_T::match(function<void(lang::data::Node::Decl::Inc
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Decl::_T::hash_ser_acc_lang_data_Node_Decl(SerBuf& buf) const {
+void lang::data::Node::Decl::_T::hash_ser_acc_lang_data_Node_Decl(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
-    hash_ser(buf, static_cast<Int>(w_));
+    hash_ser(buf, static_cast<langcc::Int>(w_));
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
     hash_ser(buf, this->attr_);
@@ -1444,22 +1444,22 @@ lang::data::Node::Mod::_T::_T(lang::data::Node::Mod::_W w) : lang::data::Node::_
     w_ = w;
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod_T x) {
     switch (x->w_) {
         case lang::data::Node::Mod::_W::Mut: {
-            pr_debug(os, flags, x->as_Mut());
+            langcc::pr_debug(os, flags, x->as_Mut());
             break;
         }
         case lang::data::Node::Mod::_W::Xform: {
-            pr_debug(os, flags, x->as_Xform());
+            langcc::pr_debug(os, flags, x->as_Xform());
             break;
         }
         case lang::data::Node::Mod::_W::Visit: {
-            pr_debug(os, flags, x->as_Visit());
+            langcc::pr_debug(os, flags, x->as_Visit());
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
@@ -1480,21 +1480,21 @@ bool lang::data::Node::Mod::_T::is_Visit() {
 }
 
 lang::data::Node::Mod::Mut_T lang::data::Node::Mod::_T::as_Mut() {
-    AT(this->is_Mut());
+    langcc::AT(this->is_Mut());
     return this->rc_from_this_poly<lang::data::Node::Mod::Mut::_T>();
 }
 
 lang::data::Node::Mod::Xform_T lang::data::Node::Mod::_T::as_Xform() {
-    AT(this->is_Xform());
+    langcc::AT(this->is_Xform());
     return this->rc_from_this_poly<lang::data::Node::Mod::Xform::_T>();
 }
 
 lang::data::Node::Mod::Visit_T lang::data::Node::Mod::_T::as_Visit() {
-    AT(this->is_Visit());
+    langcc::AT(this->is_Visit());
     return this->rc_from_this_poly<lang::data::Node::Mod::Visit::_T>();
 }
 
-void lang::data::Node::Mod::_T::match(function<void(lang::data::Node::Mod::Mut_T)> f_Mut, function<void(lang::data::Node::Mod::Xform_T)> f_Xform, function<void(lang::data::Node::Mod::Visit_T)> f_Visit) {
+void lang::data::Node::Mod::_T::match(std::function<void(lang::data::Node::Mod::Mut_T)> f_Mut, std::function<void(lang::data::Node::Mod::Xform_T)> f_Xform, std::function<void(lang::data::Node::Mod::Visit_T)> f_Visit) {
     switch (this->w_) {
         case lang::data::Node::Mod::_W::Mut: {
             f_Mut(this->as_Mut());
@@ -1509,14 +1509,14 @@ void lang::data::Node::Mod::_T::match(function<void(lang::data::Node::Mod::Mut_T
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Mod::_T::hash_ser_acc_lang_data_Node_Mod(SerBuf& buf) const {
+void lang::data::Node::Mod::_T::hash_ser_acc_lang_data_Node_Mod(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
-    hash_ser(buf, static_cast<Int>(w_));
+    hash_ser(buf, static_cast<langcc::Int>(w_));
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
     hash_ser(buf, this->attr_);
@@ -1527,18 +1527,18 @@ lang::data::Node::Entry::_T::_T(lang::data::Node::Entry::_W w) : lang::data::Nod
     w_ = w;
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x) {
     switch (x->w_) {
         case lang::data::Node::Entry::_W::Field: {
-            pr_debug(os, flags, x->as_Field());
+            langcc::pr_debug(os, flags, x->as_Field());
             break;
         }
         case lang::data::Node::Entry::_W::Method: {
-            pr_debug(os, flags, x->as_Method());
+            langcc::pr_debug(os, flags, x->as_Method());
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
@@ -1555,16 +1555,16 @@ bool lang::data::Node::Entry::_T::is_Method() {
 }
 
 lang::data::Node::Entry::Field_T lang::data::Node::Entry::_T::as_Field() {
-    AT(this->is_Field());
+    langcc::AT(this->is_Field());
     return this->rc_from_this_poly<lang::data::Node::Entry::Field::_T>();
 }
 
 lang::data::Node::Entry::Method_T lang::data::Node::Entry::_T::as_Method() {
-    AT(this->is_Method());
+    langcc::AT(this->is_Method());
     return this->rc_from_this_poly<lang::data::Node::Entry::Method::_T>();
 }
 
-void lang::data::Node::Entry::_T::match(function<void(lang::data::Node::Entry::Field_T)> f_Field, function<void(lang::data::Node::Entry::Method_T)> f_Method) {
+void lang::data::Node::Entry::_T::match(std::function<void(lang::data::Node::Entry::Field_T)> f_Field, std::function<void(lang::data::Node::Entry::Method_T)> f_Method) {
     switch (this->w_) {
         case lang::data::Node::Entry::_W::Field: {
             f_Field(this->as_Field());
@@ -1575,14 +1575,14 @@ void lang::data::Node::Entry::_T::match(function<void(lang::data::Node::Entry::F
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Entry::_T::hash_ser_acc_lang_data_Node_Entry(SerBuf& buf) const {
+void lang::data::Node::Entry::_T::hash_ser_acc_lang_data_Node_Entry(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
-    hash_ser(buf, static_cast<Int>(w_));
+    hash_ser(buf, static_cast<langcc::Int>(w_));
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
     hash_ser(buf, this->attr_);
@@ -1593,22 +1593,22 @@ lang::data::Node::Expr::_T::_T(lang::data::Node::Expr::_W w) : lang::data::Node:
     w_ = w;
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr_T x) {
     switch (x->w_) {
         case lang::data::Node::Expr::_W::Id: {
-            pr_debug(os, flags, x->as_Id());
+            langcc::pr_debug(os, flags, x->as_Id());
             break;
         }
         case lang::data::Node::Expr::_W::App: {
-            pr_debug(os, flags, x->as_App());
+            langcc::pr_debug(os, flags, x->as_App());
             break;
         }
         case lang::data::Node::Expr::_W::Type_: {
-            pr_debug(os, flags, x->as_Type_());
+            langcc::pr_debug(os, flags, x->as_Type_());
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
@@ -1629,21 +1629,21 @@ bool lang::data::Node::Expr::_T::is_Type_() {
 }
 
 lang::data::Node::Expr::Id_T lang::data::Node::Expr::_T::as_Id() {
-    AT(this->is_Id());
+    langcc::AT(this->is_Id());
     return this->rc_from_this_poly<lang::data::Node::Expr::Id::_T>();
 }
 
 lang::data::Node::Expr::App_T lang::data::Node::Expr::_T::as_App() {
-    AT(this->is_App());
+    langcc::AT(this->is_App());
     return this->rc_from_this_poly<lang::data::Node::Expr::App::_T>();
 }
 
 lang::data::Node::Expr::Type__T lang::data::Node::Expr::_T::as_Type_() {
-    AT(this->is_Type_());
+    langcc::AT(this->is_Type_());
     return this->rc_from_this_poly<lang::data::Node::Expr::Type_::_T>();
 }
 
-void lang::data::Node::Expr::_T::match(function<void(lang::data::Node::Expr::Id_T)> f_Id, function<void(lang::data::Node::Expr::App_T)> f_App, function<void(lang::data::Node::Expr::Type__T)> f_Type_) {
+void lang::data::Node::Expr::_T::match(std::function<void(lang::data::Node::Expr::Id_T)> f_Id, std::function<void(lang::data::Node::Expr::App_T)> f_App, std::function<void(lang::data::Node::Expr::Type__T)> f_Type_) {
     switch (this->w_) {
         case lang::data::Node::Expr::_W::Id: {
             f_Id(this->as_Id());
@@ -1658,14 +1658,14 @@ void lang::data::Node::Expr::_T::match(function<void(lang::data::Node::Expr::Id_
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Expr::_T::hash_ser_acc_lang_data_Node_Expr(SerBuf& buf) const {
+void lang::data::Node::Expr::_T::hash_ser_acc_lang_data_Node_Expr(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node(buf);
-    hash_ser(buf, static_cast<Int>(w_));
+    hash_ser(buf, static_cast<langcc::Int>(w_));
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
     hash_ser(buf, this->attr_);
@@ -1675,42 +1675,42 @@ void lang::data::Node::Expr::_T::hash_ser_acc_lang_data_Node_Expr(SerBuf& buf) c
 lang::data::Node::Decl::Include::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Include) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x) {
     os << "lang::data::Node::Decl::Include {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "path: ";
-    pr_debug(os, flags.sub_lo(), x->path_);
+    langcc::pr_debug(os, flags.sub_lo(), x->path_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice path) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -1721,8 +1721,8 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::make(Int id, 
     return ret;
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice path) {
-    auto ret1 = make_rc_ext<lang::data::Node::Decl::Include::_T>(arena);
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice path) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Decl::Include::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -1733,8 +1733,8 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::make_ext(Aren
     return ret1;
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1745,8 +1745,8 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_id(I
     return ret;
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -1758,7 +1758,7 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_boun
 }
 
 lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -1769,8 +1769,8 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_is_t
     return ret;
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1781,8 +1781,8 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_sym(
     return ret;
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1793,8 +1793,8 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_attr
     return ret;
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1805,8 +1805,8 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_firs
     return ret;
 }
 
-lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_path(StrSlice path) {
-    auto ret = make_rc<lang::data::Node::Decl::Include::_T>();
+lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_path(langcc::StrSlice path) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Include::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1817,7 +1817,7 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::Include::_T::with_path
     return ret;
 }
 
-void lang::data::Node::Decl::Include::_T::hash_ser_acc_lang_data_Node_Decl_Include(SerBuf& buf) const {
+void lang::data::Node::Decl::Include::_T::hash_ser_acc_lang_data_Node_Decl_Include(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Decl(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -1826,53 +1826,53 @@ void lang::data::Node::Decl::Include::_T::hash_ser_acc_lang_data_Node_Decl_Inclu
     hash_ser(buf, this->path_);
 }
 
-void lang::data::Node::Decl::Include::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Decl::Include::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Decl::Include::_T::hash_ser_acc_lang_data_Node_Decl_Include(buf);
 }
 
 lang::data::Node::Decl::Namespace::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Namespace) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Namespace_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Namespace_T x) {
     os << "lang::data::Node::Decl::Namespace {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "name: ";
-    pr_debug(os, flags.sub_lo(), x->name_);
+    langcc::pr_debug(os, flags.sub_lo(), x->name_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "body: ";
-    pr_debug(os, flags.sub_lo(), x->body_);
+    langcc::pr_debug(os, flags.sub_lo(), x->body_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<lang::data::Node::Decl_T> body) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::Id_T name, langcc::Vec_T<lang::data::Node::Decl_T> body) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -1884,8 +1884,8 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::make(Int 
     return ret;
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<lang::data::Node::Decl_T> body) {
-    auto ret1 = make_rc_ext<lang::data::Node::Decl::Namespace::_T>(arena);
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::Id_T name, langcc::Vec_T<lang::data::Node::Decl_T> body) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Decl::Namespace::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -1897,8 +1897,8 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::make_ext(
     return ret1;
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1910,8 +1910,8 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
     return ret;
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -1924,7 +1924,7 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
 }
 
 lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -1936,8 +1936,8 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
     return ret;
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1949,8 +1949,8 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
     return ret;
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1962,8 +1962,8 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
     return ret;
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1976,7 +1976,7 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
 }
 
 lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_name(lang::data::Node::Id_T name) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -1988,8 +1988,8 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
     return ret;
 }
 
-lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_body(Vec_T<lang::data::Node::Decl_T> body) {
-    auto ret = make_rc<lang::data::Node::Decl::Namespace::_T>();
+lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_body(langcc::Vec_T<lang::data::Node::Decl_T> body) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Namespace::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2001,7 +2001,7 @@ lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::Namespace::_T::with_
     return ret;
 }
 
-void lang::data::Node::Decl::Namespace::_T::hash_ser_acc_lang_data_Node_Decl_Namespace(SerBuf& buf) const {
+void lang::data::Node::Decl::Namespace::_T::hash_ser_acc_lang_data_Node_Decl_Namespace(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Decl(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -2011,65 +2011,65 @@ void lang::data::Node::Decl::Namespace::_T::hash_ser_acc_lang_data_Node_Decl_Nam
     hash_ser(buf, this->body_);
 }
 
-void lang::data::Node::Decl::Namespace::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Decl::Namespace::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Decl::Namespace::_T::hash_ser_acc_lang_data_Node_Decl_Namespace(buf);
 }
 
 lang::data::Node::Decl::Data::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Data) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x) {
     os << "lang::data::Node::Decl::Data {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "name: ";
-    pr_debug(os, flags.sub_lo(), x->name_);
+    langcc::pr_debug(os, flags.sub_lo(), x->name_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "base: ";
-    pr_debug(os, flags.sub_lo(), x->base_);
+    langcc::pr_debug(os, flags.sub_lo(), x->base_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "params: ";
-    pr_debug(os, flags.sub_lo(), x->params_);
+    langcc::pr_debug(os, flags.sub_lo(), x->params_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "mods: ";
-    pr_debug(os, flags.sub_lo(), x->mods_);
+    langcc::pr_debug(os, flags.sub_lo(), x->mods_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "entries: ";
-    pr_debug(os, flags.sub_lo(), x->entries_);
+    langcc::pr_debug(os, flags.sub_lo(), x->entries_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::SumId_T name, langcc::Option_T<lang::data::Node::SumId_T> base, langcc::Option_T<langcc::Vec_T<lang::data::Node::Param_T>> params, langcc::Vec_T<lang::data::Node::Mod_T> mods, langcc::Vec_T<lang::data::Node::Entry_T> entries) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -2084,8 +2084,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::make(Int id, lang_r
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::SumId_T name, Option_T<lang::data::Node::SumId_T> base, Option_T<Vec_T<lang::data::Node::Param_T>> params, Vec_T<lang::data::Node::Mod_T> mods, Vec_T<lang::data::Node::Entry_T> entries) {
-    auto ret1 = make_rc_ext<lang::data::Node::Decl::Data::_T>(arena);
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::SumId_T name, langcc::Option_T<lang::data::Node::SumId_T> base, langcc::Option_T<langcc::Vec_T<lang::data::Node::Param_T>> params, langcc::Vec_T<lang::data::Node::Mod_T> mods, langcc::Vec_T<lang::data::Node::Entry_T> entries) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Decl::Data::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -2100,8 +2100,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::make_ext(ArenaPtr a
     return ret1;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2116,8 +2116,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_id(Int id)
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -2133,7 +2133,7 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_bounds(lan
 }
 
 lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -2148,8 +2148,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_is_top(boo
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2164,8 +2164,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_sym(lang_r
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2180,8 +2180,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_attr(lang_
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2197,7 +2197,7 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_first_k(la
 }
 
 lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_name(lang::data::Node::SumId_T name) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2212,8 +2212,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_name(lang:
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_base(Option_T<lang::data::Node::SumId_T> base) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_base(langcc::Option_T<lang::data::Node::SumId_T> base) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2228,8 +2228,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_base(Optio
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_params(Option_T<Vec_T<lang::data::Node::Param_T>> params) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_params(langcc::Option_T<langcc::Vec_T<lang::data::Node::Param_T>> params) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2244,8 +2244,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_params(Opt
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_mods(Vec_T<lang::data::Node::Mod_T> mods) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_mods(langcc::Vec_T<lang::data::Node::Mod_T> mods) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2260,8 +2260,8 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_mods(Vec_T
     return ret;
 }
 
-lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_entries(Vec_T<lang::data::Node::Entry_T> entries) {
-    auto ret = make_rc<lang::data::Node::Decl::Data::_T>();
+lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_entries(langcc::Vec_T<lang::data::Node::Entry_T> entries) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Data::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2276,7 +2276,7 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::Data::_T::with_entries(Ve
     return ret;
 }
 
-void lang::data::Node::Decl::Data::_T::hash_ser_acc_lang_data_Node_Decl_Data(SerBuf& buf) const {
+void lang::data::Node::Decl::Data::_T::hash_ser_acc_lang_data_Node_Decl_Data(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Decl(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -2289,53 +2289,53 @@ void lang::data::Node::Decl::Data::_T::hash_ser_acc_lang_data_Node_Decl_Data(Ser
     hash_ser(buf, this->entries_);
 }
 
-void lang::data::Node::Decl::Data::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Decl::Data::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Decl::Data::_T::hash_ser_acc_lang_data_Node_Decl_Data(buf);
 }
 
 lang::data::Node::Decl::Enum::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Enum) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Enum_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Enum_T x) {
     os << "lang::data::Node::Decl::Enum {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "name: ";
-    pr_debug(os, flags.sub_lo(), x->name_);
+    langcc::pr_debug(os, flags.sub_lo(), x->name_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "cases: ";
-    pr_debug(os, flags.sub_lo(), x->cases_);
+    langcc::pr_debug(os, flags.sub_lo(), x->cases_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<StrSlice> cases) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::Id_T name, langcc::Vec_T<langcc::StrSlice> cases) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -2347,8 +2347,8 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::make(Int id, lang_r
     return ret;
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Id_T name, Vec_T<StrSlice> cases) {
-    auto ret1 = make_rc_ext<lang::data::Node::Decl::Enum::_T>(arena);
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::Id_T name, langcc::Vec_T<langcc::StrSlice> cases) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Decl::Enum::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -2360,8 +2360,8 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::make_ext(ArenaPtr a
     return ret1;
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2373,8 +2373,8 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_id(Int id)
     return ret;
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -2387,7 +2387,7 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_bounds(lan
 }
 
 lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -2399,8 +2399,8 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_is_top(boo
     return ret;
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2412,8 +2412,8 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_sym(lang_r
     return ret;
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2425,8 +2425,8 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_attr(lang_
     return ret;
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2439,7 +2439,7 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_first_k(la
 }
 
 lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_name(lang::data::Node::Id_T name) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2451,8 +2451,8 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_name(lang:
     return ret;
 }
 
-lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_cases(Vec_T<StrSlice> cases) {
-    auto ret = make_rc<lang::data::Node::Decl::Enum::_T>();
+lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_cases(langcc::Vec_T<langcc::StrSlice> cases) {
+    auto ret = langcc::make_rc<lang::data::Node::Decl::Enum::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2464,7 +2464,7 @@ lang::data::Node::Decl::Enum_T lang::data::Node::Decl::Enum::_T::with_cases(Vec_
     return ret;
 }
 
-void lang::data::Node::Decl::Enum::_T::hash_ser_acc_lang_data_Node_Decl_Enum(SerBuf& buf) const {
+void lang::data::Node::Decl::Enum::_T::hash_ser_acc_lang_data_Node_Decl_Enum(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Decl(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -2474,45 +2474,45 @@ void lang::data::Node::Decl::Enum::_T::hash_ser_acc_lang_data_Node_Decl_Enum(Ser
     hash_ser(buf, this->cases_);
 }
 
-void lang::data::Node::Decl::Enum::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Decl::Enum::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Decl::Enum::_T::hash_ser_acc_lang_data_Node_Decl_Enum(buf);
 }
 
 lang::data::Node::Mod::Mut::_T::_T() : lang::data::Node::Mod::_T(lang::data::Node::Mod::_W::Mut) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Mut_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Mut_T x) {
     os << "lang::data::Node::Mod::Mut {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Mod::Mut::_T>();
+lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Mut::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -2522,8 +2522,8 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::make(Int id, lang_rt::T
     return ret;
 }
 
-lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret1 = make_rc_ext<lang::data::Node::Mod::Mut::_T>(arena);
+lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Mod::Mut::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -2533,8 +2533,8 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::make_ext(ArenaPtr arena
     return ret1;
 }
 
-lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Mod::Mut::_T>();
+lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Mut::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2544,8 +2544,8 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_id(Int id) {
     return ret;
 }
 
-lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Mod::Mut::_T>();
+lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Mut::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -2556,7 +2556,7 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_bounds(lang_rt
 }
 
 lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Mod::Mut::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Mut::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -2566,8 +2566,8 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_is_top(bool is
     return ret;
 }
 
-lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Mod::Mut::_T>();
+lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Mut::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2577,8 +2577,8 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_sym(lang_rt::P
     return ret;
 }
 
-lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Mod::Mut::_T>();
+lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Mut::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2588,8 +2588,8 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_attr(lang_rt::
     return ret;
 }
 
-lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Mod::Mut::_T>();
+lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Mut::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2599,7 +2599,7 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::Mut::_T::with_first_k(lang_r
     return ret;
 }
 
-void lang::data::Node::Mod::Mut::_T::hash_ser_acc_lang_data_Node_Mod_Mut(SerBuf& buf) const {
+void lang::data::Node::Mod::Mut::_T::hash_ser_acc_lang_data_Node_Mod_Mut(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Mod(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -2607,45 +2607,45 @@ void lang::data::Node::Mod::Mut::_T::hash_ser_acc_lang_data_Node_Mod_Mut(SerBuf&
     hash_ser(buf, this->first_k_);
 }
 
-void lang::data::Node::Mod::Mut::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Mod::Mut::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Mod::Mut::_T::hash_ser_acc_lang_data_Node_Mod_Mut(buf);
 }
 
 lang::data::Node::Mod::Xform::_T::_T() : lang::data::Node::Mod::_T(lang::data::Node::Mod::_W::Xform) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Xform_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Xform_T x) {
     os << "lang::data::Node::Mod::Xform {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Mod::Xform::_T>();
+lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Xform::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -2655,8 +2655,8 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::make(Int id, lang_r
     return ret;
 }
 
-lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret1 = make_rc_ext<lang::data::Node::Mod::Xform::_T>(arena);
+lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Mod::Xform::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -2666,8 +2666,8 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::make_ext(ArenaPtr a
     return ret1;
 }
 
-lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Mod::Xform::_T>();
+lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Xform::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2677,8 +2677,8 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_id(Int id)
     return ret;
 }
 
-lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Mod::Xform::_T>();
+lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Xform::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -2689,7 +2689,7 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_bounds(lan
 }
 
 lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Mod::Xform::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Xform::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -2699,8 +2699,8 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_is_top(boo
     return ret;
 }
 
-lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Mod::Xform::_T>();
+lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Xform::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2710,8 +2710,8 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_sym(lang_r
     return ret;
 }
 
-lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Mod::Xform::_T>();
+lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Xform::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2721,8 +2721,8 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_attr(lang_
     return ret;
 }
 
-lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Mod::Xform::_T>();
+lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Xform::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2732,7 +2732,7 @@ lang::data::Node::Mod::Xform_T lang::data::Node::Mod::Xform::_T::with_first_k(la
     return ret;
 }
 
-void lang::data::Node::Mod::Xform::_T::hash_ser_acc_lang_data_Node_Mod_Xform(SerBuf& buf) const {
+void lang::data::Node::Mod::Xform::_T::hash_ser_acc_lang_data_Node_Mod_Xform(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Mod(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -2740,45 +2740,45 @@ void lang::data::Node::Mod::Xform::_T::hash_ser_acc_lang_data_Node_Mod_Xform(Ser
     hash_ser(buf, this->first_k_);
 }
 
-void lang::data::Node::Mod::Xform::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Mod::Xform::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Mod::Xform::_T::hash_ser_acc_lang_data_Node_Mod_Xform(buf);
 }
 
 lang::data::Node::Mod::Visit::_T::_T() : lang::data::Node::Mod::_T(lang::data::Node::Mod::_W::Visit) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Visit_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Visit_T x) {
     os << "lang::data::Node::Mod::Visit {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Mod::Visit::_T>();
+lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Visit::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -2788,8 +2788,8 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::make(Int id, lang_r
     return ret;
 }
 
-lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret1 = make_rc_ext<lang::data::Node::Mod::Visit::_T>(arena);
+lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Mod::Visit::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -2799,8 +2799,8 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::make_ext(ArenaPtr a
     return ret1;
 }
 
-lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Mod::Visit::_T>();
+lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Visit::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2810,8 +2810,8 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_id(Int id)
     return ret;
 }
 
-lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Mod::Visit::_T>();
+lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Visit::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -2822,7 +2822,7 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_bounds(lan
 }
 
 lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Mod::Visit::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Visit::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -2832,8 +2832,8 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_is_top(boo
     return ret;
 }
 
-lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Mod::Visit::_T>();
+lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Visit::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2843,8 +2843,8 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_sym(lang_r
     return ret;
 }
 
-lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Mod::Visit::_T>();
+lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Visit::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2854,8 +2854,8 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_attr(lang_
     return ret;
 }
 
-lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Mod::Visit::_T>();
+lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Mod::Visit::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2865,7 +2865,7 @@ lang::data::Node::Mod::Visit_T lang::data::Node::Mod::Visit::_T::with_first_k(la
     return ret;
 }
 
-void lang::data::Node::Mod::Visit::_T::hash_ser_acc_lang_data_Node_Mod_Visit(SerBuf& buf) const {
+void lang::data::Node::Mod::Visit::_T::hash_ser_acc_lang_data_Node_Mod_Visit(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Mod(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -2873,57 +2873,57 @@ void lang::data::Node::Mod::Visit::_T::hash_ser_acc_lang_data_Node_Mod_Visit(Ser
     hash_ser(buf, this->first_k_);
 }
 
-void lang::data::Node::Mod::Visit::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Mod::Visit::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Mod::Visit::_T::hash_ser_acc_lang_data_Node_Mod_Visit(buf);
 }
 
 lang::data::Node::Entry::Field::_T::_T() : lang::data::Node::Entry::_T(lang::data::Node::Entry::_W::Field) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x) {
     os << "lang::data::Node::Entry::Field {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "name: ";
-    pr_debug(os, flags.sub_lo(), x->name_);
+    langcc::pr_debug(os, flags.sub_lo(), x->name_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "no_hash_: ";
-    pr_debug(os, flags.sub_lo(), x->no_hash__);
+    langcc::pr_debug(os, flags.sub_lo(), x->no_hash__);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "type_: ";
-    pr_debug(os, flags.sub_lo(), x->type__);
+    langcc::pr_debug(os, flags.sub_lo(), x->type__);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -2936,8 +2936,8 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::make(Int id, la
     return ret;
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_) {
-    auto ret1 = make_rc_ext<lang::data::Node::Entry::Field::_T>(arena);
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Entry::Field::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -2950,8 +2950,8 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::make_ext(ArenaP
     return ret1;
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -2964,8 +2964,8 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_id(Int
     return ret;
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -2979,7 +2979,7 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_bounds
 }
 
 lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -2992,8 +2992,8 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_is_top
     return ret;
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3006,8 +3006,8 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_sym(la
     return ret;
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3020,8 +3020,8 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_attr(l
     return ret;
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3034,8 +3034,8 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_first_
     return ret;
 }
 
-lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_name(StrSlice name) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_name(langcc::StrSlice name) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3049,7 +3049,7 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_name(S
 }
 
 lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_no_hash_(bool no_hash_) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3063,7 +3063,7 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_no_has
 }
 
 lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_type_(lang::data::Node::Expr_T type_) {
-    auto ret = make_rc<lang::data::Node::Entry::Field::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Field::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3076,7 +3076,7 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::Field::_T::with_type_(
     return ret;
 }
 
-void lang::data::Node::Entry::Field::_T::hash_ser_acc_lang_data_Node_Entry_Field(SerBuf& buf) const {
+void lang::data::Node::Entry::Field::_T::hash_ser_acc_lang_data_Node_Entry_Field(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Entry(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -3087,65 +3087,65 @@ void lang::data::Node::Entry::Field::_T::hash_ser_acc_lang_data_Node_Entry_Field
     hash_ser(buf, this->type__);
 }
 
-void lang::data::Node::Entry::Field::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Entry::Field::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Entry::Field::_T::hash_ser_acc_lang_data_Node_Entry_Field(buf);
 }
 
 lang::data::Node::Entry::Method::_T::_T() : lang::data::Node::Entry::_T(lang::data::Node::Entry::_W::Method) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x) {
     os << "lang::data::Node::Entry::Method {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "virtual_: ";
-    pr_debug(os, flags.sub_lo(), x->virtual__);
+    langcc::pr_debug(os, flags.sub_lo(), x->virtual__);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "interface_: ";
-    pr_debug(os, flags.sub_lo(), x->interface__);
+    langcc::pr_debug(os, flags.sub_lo(), x->interface__);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "name: ";
-    pr_debug(os, flags.sub_lo(), x->name_);
+    langcc::pr_debug(os, flags.sub_lo(), x->name_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "params: ";
-    pr_debug(os, flags.sub_lo(), x->params_);
+    langcc::pr_debug(os, flags.sub_lo(), x->params_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "ret_type: ";
-    pr_debug(os, flags.sub_lo(), x->ret_type_);
+    langcc::pr_debug(os, flags.sub_lo(), x->ret_type_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool virtual_, bool interface_, langcc::StrSlice name, langcc::Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -3160,8 +3160,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::make(Int id, 
     return ret;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool virtual_, bool interface_, StrSlice name, Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type) {
-    auto ret1 = make_rc_ext<lang::data::Node::Entry::Method::_T>(arena);
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool virtual_, bool interface_, langcc::StrSlice name, langcc::Vec_T<lang::data::Node::Param_T> params, lang::data::Node::Expr_T ret_type) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Entry::Method::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -3176,8 +3176,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::make_ext(Aren
     return ret1;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3192,8 +3192,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_id(I
     return ret;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -3209,7 +3209,7 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_boun
 }
 
 lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -3224,8 +3224,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_is_t
     return ret;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3240,8 +3240,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_sym(
     return ret;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3256,8 +3256,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_attr
     return ret;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3273,7 +3273,7 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_firs
 }
 
 lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_virtual_(bool virtual_) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3289,7 +3289,7 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_virt
 }
 
 lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_interface_(bool interface_) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3304,8 +3304,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_inte
     return ret;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_name(StrSlice name) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_name(langcc::StrSlice name) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3320,8 +3320,8 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_name
     return ret;
 }
 
-lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_params(Vec_T<lang::data::Node::Param_T> params) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_params(langcc::Vec_T<lang::data::Node::Param_T> params) {
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3337,7 +3337,7 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_para
 }
 
 lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_ret_type(lang::data::Node::Expr_T ret_type) {
-    auto ret = make_rc<lang::data::Node::Entry::Method::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Entry::Method::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3352,7 +3352,7 @@ lang::data::Node::Entry::Method_T lang::data::Node::Entry::Method::_T::with_ret_
     return ret;
 }
 
-void lang::data::Node::Entry::Method::_T::hash_ser_acc_lang_data_Node_Entry_Method(SerBuf& buf) const {
+void lang::data::Node::Entry::Method::_T::hash_ser_acc_lang_data_Node_Entry_Method(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Entry(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -3365,53 +3365,53 @@ void lang::data::Node::Entry::Method::_T::hash_ser_acc_lang_data_Node_Entry_Meth
     hash_ser(buf, this->ret_type_);
 }
 
-void lang::data::Node::Entry::Method::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Entry::Method::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Entry::Method::_T::hash_ser_acc_lang_data_Node_Entry_Method(buf);
 }
 
 lang::data::Node::Expr::Id::_T::_T() : lang::data::Node::Expr::_T(lang::data::Node::Expr::_W::Id) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Id_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Id_T x) {
     os << "lang::data::Node::Expr::Id {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "ext: ";
-    pr_debug(os, flags.sub_lo(), x->ext_);
+    langcc::pr_debug(os, flags.sub_lo(), x->ext_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "x: ";
-    pr_debug(os, flags.sub_lo(), x->x_);
+    langcc::pr_debug(os, flags.sub_lo(), x->x_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -3423,8 +3423,8 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::make(Int id, lang_rt::T
     return ret;
 }
 
-lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x) {
-    auto ret1 = make_rc_ext<lang::data::Node::Expr::Id::_T>(arena);
+lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool ext, lang::data::Node::Id_T x) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Expr::Id::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -3436,8 +3436,8 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::make_ext(ArenaPtr arena
     return ret1;
 }
 
-lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3449,8 +3449,8 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_id(Int id) {
     return ret;
 }
 
-lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -3463,7 +3463,7 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_bounds(lang_rt
 }
 
 lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -3475,8 +3475,8 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_is_top(bool is
     return ret;
 }
 
-lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3488,8 +3488,8 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_sym(lang_rt::P
     return ret;
 }
 
-lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3501,8 +3501,8 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_attr(lang_rt::
     return ret;
 }
 
-lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3515,7 +3515,7 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_first_k(lang_r
 }
 
 lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_ext(bool ext) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3528,7 +3528,7 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_ext(bool ext) 
 }
 
 lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_x(lang::data::Node::Id_T x) {
-    auto ret = make_rc<lang::data::Node::Expr::Id::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Id::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3540,7 +3540,7 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::Id::_T::with_x(lang::data::
     return ret;
 }
 
-void lang::data::Node::Expr::Id::_T::hash_ser_acc_lang_data_Node_Expr_Id(SerBuf& buf) const {
+void lang::data::Node::Expr::Id::_T::hash_ser_acc_lang_data_Node_Expr_Id(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Expr(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -3550,53 +3550,53 @@ void lang::data::Node::Expr::Id::_T::hash_ser_acc_lang_data_Node_Expr_Id(SerBuf&
     hash_ser(buf, this->x_);
 }
 
-void lang::data::Node::Expr::Id::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Expr::Id::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Expr::Id::_T::hash_ser_acc_lang_data_Node_Expr_Id(buf);
 }
 
 lang::data::Node::Expr::App::_T::_T() : lang::data::Node::Expr::_T(lang::data::Node::Expr::_W::App) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::App_T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::App_T x) {
     os << "lang::data::Node::Expr::App {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "f: ";
-    pr_debug(os, flags.sub_lo(), x->f_);
+    langcc::pr_debug(os, flags.sub_lo(), x->f_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "args: ";
-    pr_debug(os, flags.sub_lo(), x->args_);
+    langcc::pr_debug(os, flags.sub_lo(), x->args_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Expr_T f, Vec_T<lang::data::Node::Expr_T> args) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::Expr_T f, langcc::Vec_T<lang::data::Node::Expr_T> args) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -3608,8 +3608,8 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::make(Int id, lang_rt:
     return ret;
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k, lang::data::Node::Expr_T f, Vec_T<lang::data::Node::Expr_T> args) {
-    auto ret1 = make_rc_ext<lang::data::Node::Expr::App::_T>(arena);
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::data::Node::Expr_T f, langcc::Vec_T<lang::data::Node::Expr_T> args) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Expr::App::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -3621,8 +3621,8 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::make_ext(ArenaPtr are
     return ret1;
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3634,8 +3634,8 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_id(Int id) {
     return ret;
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -3648,7 +3648,7 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_bounds(lang_
 }
 
 lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -3660,8 +3660,8 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_is_top(bool 
     return ret;
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3673,8 +3673,8 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_sym(lang_rt:
     return ret;
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3686,8 +3686,8 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_attr(lang_rt
     return ret;
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3700,7 +3700,7 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_first_k(lang
 }
 
 lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_f(lang::data::Node::Expr_T f) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3712,8 +3712,8 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_f(lang::data
     return ret;
 }
 
-lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_args(Vec_T<lang::data::Node::Expr_T> args) {
-    auto ret = make_rc<lang::data::Node::Expr::App::_T>();
+lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_args(langcc::Vec_T<lang::data::Node::Expr_T> args) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::App::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3725,7 +3725,7 @@ lang::data::Node::Expr::App_T lang::data::Node::Expr::App::_T::with_args(Vec_T<l
     return ret;
 }
 
-void lang::data::Node::Expr::App::_T::hash_ser_acc_lang_data_Node_Expr_App(SerBuf& buf) const {
+void lang::data::Node::Expr::App::_T::hash_ser_acc_lang_data_Node_Expr_App(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Expr(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -3735,45 +3735,45 @@ void lang::data::Node::Expr::App::_T::hash_ser_acc_lang_data_Node_Expr_App(SerBu
     hash_ser(buf, this->args_);
 }
 
-void lang::data::Node::Expr::App::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Expr::App::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Expr::App::_T::hash_ser_acc_lang_data_Node_Expr_App(buf);
 }
 
 lang::data::Node::Expr::Type_::_T::_T() : lang::data::Node::Expr::_T(lang::data::Node::Expr::_W::Type_) {
 }
 
-void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Type__T x) {
+void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Type__T x) {
     os << "lang::data::Node::Expr::Type_ {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
-    pr_debug(os, flags.sub_lo(), x->id_);
+    langcc::pr_debug(os, flags.sub_lo(), x->id_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "bounds: ";
-    pr_debug(os, flags.sub_lo(), x->bounds_);
+    langcc::pr_debug(os, flags.sub_lo(), x->bounds_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "is_top: ";
-    pr_debug(os, flags.sub_lo(), x->is_top_);
+    langcc::pr_debug(os, flags.sub_lo(), x->is_top_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "sym: ";
-    pr_debug(os, flags.sub_lo(), x->sym_);
+    langcc::pr_debug(os, flags.sub_lo(), x->sym_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "attr: ";
-    pr_debug(os, flags.sub_lo(), x->attr_);
+    langcc::pr_debug(os, flags.sub_lo(), x->attr_);
     os << ",";
     flags.sub_lo().advance_lines(1, os);
     os << "first_k: ";
-    pr_debug(os, flags.sub_lo(), x->first_k_);
+    langcc::pr_debug(os, flags.sub_lo(), x->first_k_);
     os << ",";
     flags.advance_lines(1, os);
     os << "}";
 }
 
-lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::make(Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Expr::Type_::_T>();
+lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Type_::_T>();
     ret->id_ = id;
     ret->bounds_ = bounds;
     ret->is_top_ = is_top;
@@ -3783,8 +3783,8 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::make(Int id, lang
     return ret;
 }
 
-lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::make_ext(ArenaPtr arena, Int id, lang_rt::TokenBounds bounds, bool is_top, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr, lang_rt::ParserLookahead first_k) {
-    auto ret1 = make_rc_ext<lang::data::Node::Expr::Type_::_T>(arena);
+lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k) {
+    auto ret1 = langcc::make_rc_ext<lang::data::Node::Expr::Type_::_T>(arena);
     ret1->id_ = id;
     ret1->bounds_ = bounds;
     ret1->is_top_ = is_top;
@@ -3794,8 +3794,8 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::make_ext(ArenaPtr
     return ret1;
 }
 
-lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_id(Int id) {
-    auto ret = make_rc<lang::data::Node::Expr::Type_::_T>();
+lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_id(langcc::Int id) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Type_::_T>();
     ret->id_ = id;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3805,8 +3805,8 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_id(Int i
     return ret;
 }
 
-lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_bounds(lang_rt::TokenBounds bounds) {
-    auto ret = make_rc<lang::data::Node::Expr::Type_::_T>();
+lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_bounds(langcc::TokenBounds bounds) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Type_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = bounds;
     ret->is_top_ = this->is_top_;
@@ -3817,7 +3817,7 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_bounds(l
 }
 
 lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_is_top(bool is_top) {
-    auto ret = make_rc<lang::data::Node::Expr::Type_::_T>();
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Type_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = is_top;
@@ -3827,8 +3827,8 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_is_top(b
     return ret;
 }
 
-lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_sym(lang_rt::ParserSymId sym) {
-    auto ret = make_rc<lang::data::Node::Expr::Type_::_T>();
+lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_sym(langcc::ParserSymId sym) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Type_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3838,8 +3838,8 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_sym(lang
     return ret;
 }
 
-lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_attr(lang_rt::ParserAttrMask attr) {
-    auto ret = make_rc<lang::data::Node::Expr::Type_::_T>();
+lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_attr(langcc::ParserAttrMask attr) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Type_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3849,8 +3849,8 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_attr(lan
     return ret;
 }
 
-lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_first_k(lang_rt::ParserLookahead first_k) {
-    auto ret = make_rc<lang::data::Node::Expr::Type_::_T>();
+lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_first_k(langcc::ParserLookahead first_k) {
+    auto ret = langcc::make_rc<lang::data::Node::Expr::Type_::_T>();
     ret->id_ = this->id_;
     ret->bounds_ = this->bounds_;
     ret->is_top_ = this->is_top_;
@@ -3860,7 +3860,7 @@ lang::data::Node::Expr::Type__T lang::data::Node::Expr::Type_::_T::with_first_k(
     return ret;
 }
 
-void lang::data::Node::Expr::Type_::_T::hash_ser_acc_lang_data_Node_Expr_Type_(SerBuf& buf) const {
+void lang::data::Node::Expr::Type_::_T::hash_ser_acc_lang_data_Node_Expr_Type_(langcc::SerBuf& buf) const {
     this->hash_ser_acc_lang_data_Node_Expr(buf);
     hash_ser(buf, this->is_top_);
     hash_ser(buf, this->sym_);
@@ -3868,56 +3868,56 @@ void lang::data::Node::Expr::Type_::_T::hash_ser_acc_lang_data_Node_Expr_Type_(S
     hash_ser(buf, this->first_k_);
 }
 
-void lang::data::Node::Expr::Type_::_T::hash_ser_acc(SerBuf& buf) const {
+void lang::data::Node::Expr::Type_::_T::hash_ser_acc(langcc::SerBuf& buf) const {
     this->lang::data::Node::Expr::Type_::_T::hash_ser_acc_lang_data_Node_Expr_Type_(buf);
 }
 
-void visit_lang_data_Node(lang::data::Node::Decl::Include_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Decl::Include_T x, std::function<void(lang::data::Node_T)> f) {
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Id_T x, function<void(lang::data::Node_T)> f) {
-    Int i = 0;
+void visit_lang_data_Node(lang::data::Node::Id_T x, std::function<void(lang::data::Node_T)> f) {
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->items_->length(); i++) {
     }
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Decl::Namespace_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Decl::Namespace_T x, std::function<void(lang::data::Node_T)> f) {
     visit_lang_data_Node(x->name_, f);
-    Int i = 0;
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->body_->length(); i++) {
         visit_lang_data_Node(x->body_->at_unchecked(i), f);
     }
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::SumId_T x, function<void(lang::data::Node_T)> f) {
-    Int i = 0;
+void visit_lang_data_Node(lang::data::Node::SumId_T x, std::function<void(lang::data::Node_T)> f) {
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->items_->length(); i++) {
     }
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Expr::Id_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Expr::Id_T x, std::function<void(lang::data::Node_T)> f) {
     visit_lang_data_Node(x->x_, f);
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Expr::App_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Expr::App_T x, std::function<void(lang::data::Node_T)> f) {
     visit_lang_data_Node(x->f_, f);
-    Int i = 0;
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->args_->length(); i++) {
         visit_lang_data_Node(x->args_->at_unchecked(i), f);
     }
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Expr::Type__T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Expr::Type__T x, std::function<void(lang::data::Node_T)> f) {
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Expr_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Expr_T x, std::function<void(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Expr::_W::Id: {
             visit_lang_data_Node(x->as_Id(), f);
@@ -3932,29 +3932,29 @@ void visit_lang_data_Node(lang::data::Node::Expr_T x, function<void(lang::data::
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void visit_lang_data_Node(lang::data::Node::Param_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Param_T x, std::function<void(lang::data::Node_T)> f) {
     visit_lang_data_Node(x->type__, f);
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Mod::Mut_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Mod::Mut_T x, std::function<void(lang::data::Node_T)> f) {
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Mod::Xform_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Mod::Xform_T x, std::function<void(lang::data::Node_T)> f) {
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Mod::Visit_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Mod::Visit_T x, std::function<void(lang::data::Node_T)> f) {
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Mod_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Mod_T x, std::function<void(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Mod::_W::Mut: {
             visit_lang_data_Node(x->as_Mut(), f);
@@ -3969,18 +3969,18 @@ void visit_lang_data_Node(lang::data::Node::Mod_T x, function<void(lang::data::N
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void visit_lang_data_Node(lang::data::Node::Entry::Field_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Entry::Field_T x, std::function<void(lang::data::Node_T)> f) {
     visit_lang_data_Node(x->type__, f);
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Entry::Method_T x, function<void(lang::data::Node_T)> f) {
-    Int i = 0;
+void visit_lang_data_Node(lang::data::Node::Entry::Method_T x, std::function<void(lang::data::Node_T)> f) {
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->params_->length(); i++) {
         visit_lang_data_Node(x->params_->at_unchecked(i), f);
     }
@@ -3988,7 +3988,7 @@ void visit_lang_data_Node(lang::data::Node::Entry::Method_T x, function<void(lan
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Entry_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Entry_T x, std::function<void(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Entry::_W::Field: {
             visit_lang_data_Node(x->as_Field(), f);
@@ -3999,42 +3999,42 @@ void visit_lang_data_Node(lang::data::Node::Entry_T x, function<void(lang::data:
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void visit_lang_data_Node(lang::data::Node::Decl::Data_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Decl::Data_T x, std::function<void(lang::data::Node_T)> f) {
     visit_lang_data_Node(x->name_, f);
     if (x->base_.is_some()) {
         visit_lang_data_Node(x->base_.as_some(), f);
     }
     if (x->params_.is_some()) {
-        Int i = 0;
+        langcc::Int i = 0;
         for (i = 0; i _LT_ x->params_.as_some()->length(); i++) {
             visit_lang_data_Node(x->params_.as_some()->at_unchecked(i), f);
         }
     }
-    Int i1 = 0;
+    langcc::Int i1 = 0;
     for (i1 = 0; i1 _LT_ x->mods_->length(); i1++) {
         visit_lang_data_Node(x->mods_->at_unchecked(i1), f);
     }
-    Int i2 = 0;
+    langcc::Int i2 = 0;
     for (i2 = 0; i2 _LT_ x->entries_->length(); i2++) {
         visit_lang_data_Node(x->entries_->at_unchecked(i2), f);
     }
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Decl::Enum_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Decl::Enum_T x, std::function<void(lang::data::Node_T)> f) {
     visit_lang_data_Node(x->name_, f);
-    Int i = 0;
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->cases_->length(); i++) {
     }
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node::Decl_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node::Decl_T x, std::function<void(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Decl::_W::Include: {
             visit_lang_data_Node(x->as_Include(), f);
@@ -4053,20 +4053,20 @@ void visit_lang_data_Node(lang::data::Node::Decl_T x, function<void(lang::data::
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void visit_lang_data_Node(lang::data::Node::Module_T x, function<void(lang::data::Node_T)> f) {
-    Int i = 0;
+void visit_lang_data_Node(lang::data::Node::Module_T x, std::function<void(lang::data::Node_T)> f) {
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->decls_->length(); i++) {
         visit_lang_data_Node(x->decls_->at_unchecked(i), f);
     }
     f(x);
 }
 
-void visit_lang_data_Node(lang::data::Node_T x, function<void(lang::data::Node_T)> f) {
+void visit_lang_data_Node(lang::data::Node_T x, std::function<void(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::_W::Module: {
             visit_lang_data_Node(x->as_Module(), f);
@@ -4101,19 +4101,19 @@ void visit_lang_data_Node(lang::data::Node_T x, function<void(lang::data::Node_T
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Include_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Include_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Decl::Include_T z = lang::data::Node::Decl::Include::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_, x->path_);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Id_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
-    auto ret = make_rc<Vec<StrSlice>>();
-    Int i = 0;
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Id_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
+    auto ret = langcc::make_rc<langcc::Vec<langcc::StrSlice>>();
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->items_->length(); i++) {
         ret->push_back(x->items_->at_unchecked(i));
     }
@@ -4121,10 +4121,10 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Id_T x, function<lang
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Namespace_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Namespace_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Id_T y = xform_lang_data_Node(x->name_, f);
-    auto ret = make_rc<Vec<lang::data::Node::Decl_T>>();
-    Int i = 0;
+    auto ret = langcc::make_rc<langcc::Vec<lang::data::Node::Decl_T>>();
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->body_->length(); i++) {
         lang::data::Node::Decl_T y1 = xform_lang_data_Node(x->body_->at_unchecked(i), f);
         ret->push_back(y1);
@@ -4133,9 +4133,9 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Namespace_T x, 
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::SumId_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
-    auto ret = make_rc<Vec<StrSlice>>();
-    Int i = 0;
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::SumId_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
+    auto ret = langcc::make_rc<langcc::Vec<langcc::StrSlice>>();
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->items_->length(); i++) {
         ret->push_back(x->items_->at_unchecked(i));
     }
@@ -4143,16 +4143,16 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::SumId_T x, function<l
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::Id_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::Id_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Id_T y = xform_lang_data_Node(x->x_, f);
     lang::data::Node::Expr::Id_T z = lang::data::Node::Expr::Id::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_, x->ext_, y);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::App_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::App_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Expr_T y = xform_lang_data_Node(x->f_, f);
-    auto ret = make_rc<Vec<lang::data::Node::Expr_T>>();
-    Int i = 0;
+    auto ret = langcc::make_rc<langcc::Vec<lang::data::Node::Expr_T>>();
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->args_->length(); i++) {
         lang::data::Node::Expr_T y1 = xform_lang_data_Node(x->args_->at_unchecked(i), f);
         ret->push_back(y1);
@@ -4161,12 +4161,12 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::App_T x, functi
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::Type__T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::Type__T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Expr::Type__T z = lang::data::Node::Expr::Type_::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Expr::_W::Id: {
             auto ret = xformT_lang_data_Node(x->as_Id(), f);
@@ -4184,33 +4184,33 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr_T x, function<la
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Param_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Param_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Expr_T y = xform_lang_data_Node(x->type__, f);
     lang::data::Node::Param_T z = lang::data::Node::Param::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_, x->name_, y);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod::Mut_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod::Mut_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Mod::Mut_T z = lang::data::Node::Mod::Mut::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod::Xform_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod::Xform_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Mod::Xform_T z = lang::data::Node::Mod::Xform::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod::Visit_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod::Visit_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Mod::Visit_T z = lang::data::Node::Mod::Visit::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Mod::_W::Mut: {
             auto ret = xformT_lang_data_Node(x->as_Mut(), f);
@@ -4228,20 +4228,20 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Mod_T x, function<lan
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry::Field_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry::Field_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Expr_T y = xform_lang_data_Node(x->type__, f);
     lang::data::Node::Entry::Field_T z = lang::data::Node::Entry::Field::make(x->id_, x->bounds_, x->is_top_, x->sym_, x->attr_, x->first_k_, x->name_, x->no_hash__, y);
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry::Method_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
-    auto ret = make_rc<Vec<lang::data::Node::Param_T>>();
-    Int i = 0;
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry::Method_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
+    auto ret = langcc::make_rc<langcc::Vec<lang::data::Node::Param_T>>();
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->params_->length(); i++) {
         lang::data::Node::Param_T y = xform_lang_data_Node(x->params_->at_unchecked(i), f);
         ret->push_back(y);
@@ -4251,7 +4251,7 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry::Method_T x, fu
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Entry::_W::Field: {
             auto ret = xformT_lang_data_Node(x->as_Field(), f);
@@ -4264,36 +4264,36 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Entry_T x, function<l
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Data_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Data_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::SumId_T y = xform_lang_data_Node(x->name_, f);
-    auto ret = None<lang::data::Node::SumId_T>();
+    auto ret = langcc::None<lang::data::Node::SumId_T>();
     if (x->base_.is_some()) {
         lang::data::Node::SumId_T y1 = xform_lang_data_Node(x->base_.as_some(), f);
-        ret = Some<lang::data::Node::SumId_T>(y1);
+        ret = langcc::Some<lang::data::Node::SumId_T>(y1);
     }
-    auto ret1 = None<Vec_T<lang::data::Node::Param_T>>();
+    auto ret1 = langcc::None<langcc::Vec_T<lang::data::Node::Param_T>>();
     if (x->params_.is_some()) {
-        auto ret2 = make_rc<Vec<lang::data::Node::Param_T>>();
-        Int i = 0;
+        auto ret2 = langcc::make_rc<langcc::Vec<lang::data::Node::Param_T>>();
+        langcc::Int i = 0;
         for (i = 0; i _LT_ x->params_.as_some()->length(); i++) {
             lang::data::Node::Param_T y2 = xform_lang_data_Node(x->params_.as_some()->at_unchecked(i), f);
             ret2->push_back(y2);
         }
-        ret1 = Some<Vec_T<lang::data::Node::Param_T>>(ret2);
+        ret1 = langcc::Some<langcc::Vec_T<lang::data::Node::Param_T>>(ret2);
     }
-    auto ret3 = make_rc<Vec<lang::data::Node::Mod_T>>();
-    Int i1 = 0;
+    auto ret3 = langcc::make_rc<langcc::Vec<lang::data::Node::Mod_T>>();
+    langcc::Int i1 = 0;
     for (i1 = 0; i1 _LT_ x->mods_->length(); i1++) {
         lang::data::Node::Mod_T y3 = xform_lang_data_Node(x->mods_->at_unchecked(i1), f);
         ret3->push_back(y3);
     }
-    auto ret4 = make_rc<Vec<lang::data::Node::Entry_T>>();
-    Int i2 = 0;
+    auto ret4 = langcc::make_rc<langcc::Vec<lang::data::Node::Entry_T>>();
+    langcc::Int i2 = 0;
     for (i2 = 0; i2 _LT_ x->entries_->length(); i2++) {
         lang::data::Node::Entry_T y4 = xform_lang_data_Node(x->entries_->at_unchecked(i2), f);
         ret4->push_back(y4);
@@ -4302,10 +4302,10 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Data_T x, funct
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Enum_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Enum_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node::Id_T y = xform_lang_data_Node(x->name_, f);
-    auto ret = make_rc<Vec<StrSlice>>();
-    Int i = 0;
+    auto ret = langcc::make_rc<langcc::Vec<langcc::StrSlice>>();
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->cases_->length(); i++) {
         ret->push_back(x->cases_->at_unchecked(i));
     }
@@ -4313,7 +4313,7 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl::Enum_T x, funct
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::Decl::_W::Include: {
             auto ret = xformT_lang_data_Node(x->as_Include(), f);
@@ -4336,14 +4336,14 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Decl_T x, function<la
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Module_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
-    auto ret = make_rc<Vec<lang::data::Node::Decl_T>>();
-    Int i = 0;
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Module_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
+    auto ret = langcc::make_rc<langcc::Vec<lang::data::Node::Decl_T>>();
+    langcc::Int i = 0;
     for (i = 0; i _LT_ x->decls_->length(); i++) {
         lang::data::Node::Decl_T y = xform_lang_data_Node(x->decls_->at_unchecked(i), f);
         ret->push_back(y);
@@ -4352,7 +4352,7 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Module_T x, function<
     return f(z);
 }
 
-lang::data::Node_T xformT_lang_data_Node(lang::data::Node_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     switch (x->w_) {
         case lang::data::Node::_W::Module: {
             auto ret = xformT_lang_data_Node(x->as_Module(), f);
@@ -4395,120 +4395,120 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node_T x, function<lang::da
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-lang::data::Node_T xform_lang_data_Node(lang::data::Node_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node_T xform_lang_data_Node(lang::data::Node_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret;
 }
 
-lang::data::Node::Module_T xform_lang_data_Node(lang::data::Node::Module_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Module_T xform_lang_data_Node(lang::data::Node::Module_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Module();
 }
 
-lang::data::Node::Decl_T xform_lang_data_Node(lang::data::Node::Decl_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Decl_T xform_lang_data_Node(lang::data::Node::Decl_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Decl();
 }
 
-lang::data::Node::Decl::Include_T xform_lang_data_Node(lang::data::Node::Decl::Include_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Decl::Include_T xform_lang_data_Node(lang::data::Node::Decl::Include_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Decl()->as_Include();
 }
 
-lang::data::Node::Decl::Namespace_T xform_lang_data_Node(lang::data::Node::Decl::Namespace_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Decl::Namespace_T xform_lang_data_Node(lang::data::Node::Decl::Namespace_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Decl()->as_Namespace();
 }
 
-lang::data::Node::Id_T xform_lang_data_Node(lang::data::Node::Id_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Id_T xform_lang_data_Node(lang::data::Node::Id_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Id();
 }
 
-lang::data::Node::Decl::Data_T xform_lang_data_Node(lang::data::Node::Decl::Data_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Decl::Data_T xform_lang_data_Node(lang::data::Node::Decl::Data_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Decl()->as_Data();
 }
 
-lang::data::Node::SumId_T xform_lang_data_Node(lang::data::Node::SumId_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::SumId_T xform_lang_data_Node(lang::data::Node::SumId_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_SumId();
 }
 
-lang::data::Node::Param_T xform_lang_data_Node(lang::data::Node::Param_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Param_T xform_lang_data_Node(lang::data::Node::Param_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Param();
 }
 
-lang::data::Node::Expr_T xform_lang_data_Node(lang::data::Node::Expr_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Expr_T xform_lang_data_Node(lang::data::Node::Expr_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Expr();
 }
 
-lang::data::Node::Expr::Id_T xform_lang_data_Node(lang::data::Node::Expr::Id_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Expr::Id_T xform_lang_data_Node(lang::data::Node::Expr::Id_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Expr()->as_Id();
 }
 
-lang::data::Node::Expr::App_T xform_lang_data_Node(lang::data::Node::Expr::App_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Expr::App_T xform_lang_data_Node(lang::data::Node::Expr::App_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Expr()->as_App();
 }
 
-lang::data::Node::Expr::Type__T xform_lang_data_Node(lang::data::Node::Expr::Type__T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Expr::Type__T xform_lang_data_Node(lang::data::Node::Expr::Type__T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Expr()->as_Type_();
 }
 
-lang::data::Node::Mod_T xform_lang_data_Node(lang::data::Node::Mod_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Mod_T xform_lang_data_Node(lang::data::Node::Mod_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Mod();
 }
 
-lang::data::Node::Mod::Mut_T xform_lang_data_Node(lang::data::Node::Mod::Mut_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Mod::Mut_T xform_lang_data_Node(lang::data::Node::Mod::Mut_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Mod()->as_Mut();
 }
 
-lang::data::Node::Mod::Xform_T xform_lang_data_Node(lang::data::Node::Mod::Xform_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Mod::Xform_T xform_lang_data_Node(lang::data::Node::Mod::Xform_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Mod()->as_Xform();
 }
 
-lang::data::Node::Mod::Visit_T xform_lang_data_Node(lang::data::Node::Mod::Visit_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Mod::Visit_T xform_lang_data_Node(lang::data::Node::Mod::Visit_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Mod()->as_Visit();
 }
 
-lang::data::Node::Entry_T xform_lang_data_Node(lang::data::Node::Entry_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Entry_T xform_lang_data_Node(lang::data::Node::Entry_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Entry();
 }
 
-lang::data::Node::Entry::Field_T xform_lang_data_Node(lang::data::Node::Entry::Field_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Entry::Field_T xform_lang_data_Node(lang::data::Node::Entry::Field_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Entry()->as_Field();
 }
 
-lang::data::Node::Entry::Method_T xform_lang_data_Node(lang::data::Node::Entry::Method_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Entry::Method_T xform_lang_data_Node(lang::data::Node::Entry::Method_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Entry()->as_Method();
 }
 
-lang::data::Node::Decl::Enum_T xform_lang_data_Node(lang::data::Node::Decl::Enum_T x, function<lang::data::Node_T(lang::data::Node_T)> f) {
+lang::data::Node::Decl::Enum_T xform_lang_data_Node(lang::data::Node::Decl::Enum_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f) {
     lang::data::Node_T ret = xformT_lang_data_Node(x, f);
     return ret->as_Decl()->as_Enum();
 }
 
-void lang::data::Node::Module::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Module::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Module::_T>();
     {
-        Int i;
+        langcc::Int i;
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
@@ -4527,26 +4527,26 @@ void lang::data::Node::Module::_T::write(lang_rt::PrBufStream_T& pb) {
     }
 }
 
-void lang::data::Node::Module::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Module::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Decl::Include::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Decl::Include::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Decl::Include::_T>();
     pb->push_string("#include");
     pb->push_string(" ");
     pb->push_string(fmt_str("{}", x->path_));
 }
 
-void lang::data::Node::Decl::Include::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Decl::Include::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Decl::Namespace::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Decl::Namespace::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Decl::Namespace::_T>();
     pb->push_string("namespace");
     pb->push_string(" ");
@@ -4554,7 +4554,7 @@ void lang::data::Node::Decl::Namespace::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string(" ");
     pb->push_string("{");
     {
-        Int i;
+        langcc::Int i;
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->body_); i++) {
@@ -4579,13 +4579,13 @@ void lang::data::Node::Decl::Namespace::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string("}");
 }
 
-void lang::data::Node::Decl::Namespace::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Decl::Namespace::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Decl::Data::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Decl::Data::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Decl::Data::_T>();
     pb->push_string("def");
     pb->push_string(" ");
@@ -4599,7 +4599,7 @@ void lang::data::Node::Decl::Data::_T::write(lang_rt::PrBufStream_T& pb) {
     if (x->params_.is_some()) {
         pb->push_string("(");
         {
-            Int i;
+            langcc::Int i;
             bool is_iter = false;
             bool indented = false;
             for (i = 0; i _LT_ len(x->params_.as_some()); i++) {
@@ -4618,7 +4618,7 @@ void lang::data::Node::Decl::Data::_T::write(lang_rt::PrBufStream_T& pb) {
     }
     pb->push_string(" ");
     {
-        Int i1;
+        langcc::Int i1;
         bool is_iter1 = false;
         bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->mods_); i1++) {
@@ -4638,7 +4638,7 @@ void lang::data::Node::Decl::Data::_T::write(lang_rt::PrBufStream_T& pb) {
     }
     pb->push_string("{");
     {
-        Int i2;
+        langcc::Int i2;
         bool is_iter2 = false;
         bool indented2 = false;
         for (i2 = 0; i2 _LT_ len(x->entries_); i2++) {
@@ -4663,20 +4663,20 @@ void lang::data::Node::Decl::Data::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string("}");
 }
 
-void lang::data::Node::Decl::Data::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Decl::Data::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Decl::Enum::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Decl::Enum::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Decl::Enum::_T>();
     pb->push_string("enum");
     pb->push_string(" ");
     x->name_->write(pb);
     pb->push_string("{");
     {
-        Int i;
+        langcc::Int i;
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
@@ -4704,46 +4704,46 @@ void lang::data::Node::Decl::Enum::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string("}");
 }
 
-void lang::data::Node::Decl::Enum::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Decl::Enum::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Mod::Mut::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Mod::Mut::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Mod::Mut::_T>();
     pb->push_string("mut");
 }
 
-void lang::data::Node::Mod::Mut::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Mod::Mut::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Mod::Xform::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Mod::Xform::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Mod::Xform::_T>();
     pb->push_string("xform");
 }
 
-void lang::data::Node::Mod::Xform::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Mod::Xform::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Mod::Visit::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Mod::Visit::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Mod::Visit::_T>();
     pb->push_string("visit");
 }
 
-void lang::data::Node::Mod::Visit::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Mod::Visit::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Param::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Param::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Param::_T>();
     pb->push_string(fmt_str("{}", x->name_));
     pb->push_string(":");
@@ -4751,13 +4751,13 @@ void lang::data::Node::Param::_T::write(lang_rt::PrBufStream_T& pb) {
     x->type__->write(pb);
 }
 
-void lang::data::Node::Param::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Param::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Entry::Field::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Entry::Field::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Entry::Field::_T>();
     pb->push_string(fmt_str("{}", x->name_));
     if (x->no_hash__) {
@@ -4770,13 +4770,13 @@ void lang::data::Node::Entry::Field::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string(";");
 }
 
-void lang::data::Node::Entry::Field::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Entry::Field::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Entry::Method::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Entry::Method::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Entry::Method::_T>();
     pb->push_string("method");
     if (x->virtual__) {
@@ -4791,7 +4791,7 @@ void lang::data::Node::Entry::Method::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string(fmt_str("{}", x->name_));
     pb->push_string("(");
     {
-        Int i;
+        langcc::Int i;
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->params_); i++) {
@@ -4813,13 +4813,13 @@ void lang::data::Node::Entry::Method::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string(";");
 }
 
-void lang::data::Node::Entry::Method::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Entry::Method::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Expr::Id::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Expr::Id::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Expr::Id::_T>();
     if (x->ext_) {
         pb->push_string("^");
@@ -4827,18 +4827,18 @@ void lang::data::Node::Expr::Id::_T::write(lang_rt::PrBufStream_T& pb) {
     x->x_->write(pb);
 }
 
-void lang::data::Node::Expr::Id::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Expr::Id::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Expr::App::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Expr::App::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Expr::App::_T>();
     x->f_->write(pb);
     pb->push_string("(");
     {
-        Int i;
+        langcc::Int i;
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
@@ -4856,27 +4856,27 @@ void lang::data::Node::Expr::App::_T::write(lang_rt::PrBufStream_T& pb) {
     pb->push_string(")");
 }
 
-void lang::data::Node::Expr::App::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Expr::App::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Expr::Type_::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Expr::Type_::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Expr::Type_::_T>();
     pb->push_string("Type");
 }
 
-void lang::data::Node::Expr::Type_::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Expr::Type_::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::SumId::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::SumId::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::SumId::_T>();
     {
-        Int i;
+        langcc::Int i;
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
@@ -4893,16 +4893,16 @@ void lang::data::Node::SumId::_T::write(lang_rt::PrBufStream_T& pb) {
     }
 }
 
-void lang::data::Node::SumId::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::SumId::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Id::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Id::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Id::_T>();
     {
-        Int i;
+        langcc::Int i;
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
@@ -4919,13 +4919,13 @@ void lang::data::Node::Id::_T::write(lang_rt::PrBufStream_T& pb) {
     }
 }
 
-void lang::data::Node::Id::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Id::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Decl::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Decl::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Decl::_T>();
     switch (x->w_) {
         case lang::data::Node::Decl::_W::Include: {
@@ -4945,18 +4945,18 @@ void lang::data::Node::Decl::_T::write(lang_rt::PrBufStream_T& pb) {
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Decl::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Decl::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Mod::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Mod::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Mod::_T>();
     switch (x->w_) {
         case lang::data::Node::Mod::_W::Mut: {
@@ -4972,18 +4972,18 @@ void lang::data::Node::Mod::_T::write(lang_rt::PrBufStream_T& pb) {
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Mod::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Mod::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Entry::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Entry::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Entry::_T>();
     switch (x->w_) {
         case lang::data::Node::Entry::_W::Field: {
@@ -4995,18 +4995,18 @@ void lang::data::Node::Entry::_T::write(lang_rt::PrBufStream_T& pb) {
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Entry::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Entry::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::Expr::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::Expr::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::Expr::_T>();
     switch (x->w_) {
         case lang::data::Node::Expr::_W::Id: {
@@ -5022,18 +5022,18 @@ void lang::data::Node::Expr::_T::write(lang_rt::PrBufStream_T& pb) {
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::Expr::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::Expr::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-void lang::data::Node::_T::write(lang_rt::PrBufStream_T& pb) {
+void lang::data::Node::_T::write(langcc::PrBufStream_T& pb) {
     auto x = this->rc_from_this_poly<lang::data::Node::_T>();
     switch (x->w_) {
         case lang::data::Node::_W::Module: {
@@ -5069,52 +5069,52 @@ void lang::data::Node::_T::write(lang_rt::PrBufStream_T& pb) {
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-void lang::data::Node::_T::write(ostream& os, FmtFlags flags) {
-    auto pb = lang_rt::PrBufStream::make(make_rc<Vec<lang_rt::PrBufStreamItem_T>>());
+void lang::data::Node::_T::write(std::ostream& os, langcc::FmtFlags flags) {
+    auto pb = langcc::PrBufStream::make(langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());
     this->write(pb);
     pb->distill(os, flags);
 }
 
-IntPair lang::data::parser::action_by_vertex(lang_rt::ParserVertexId v, lang_rt::ParserLookahead la) {
-    static const u16_array tt_acc_raw = {0x0304, 0x0402, 0x0404, 0x0404, 0x0101, 0x0401, 0x0401, 0x0401, 0x0401, 0x0401, 0x0103, 0x0101, 0x0403, 0x0404, 0x0304, 0x0404, 0x0403, 0x0401, 0x0103, 0x0101, 0x0103, 0x0101, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0202, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0302, 0x0104, 0x0204, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0201, 0x0404, 0x0404, 0x0404, 0x0402, 0x0402, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0102, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0201, 0x0204, 0x0404, 0x0404, 0x0404, 0x0102, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0402, 0x0102, 0x0404, 0x0204, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0104, 0x0304, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0301, 0x0101, 0x0401, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0104, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0103, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0404, 0x0304, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0401, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0304, 0x0101, 0x0301, 0x0101, 0x0401, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0401, 0x0103, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0101, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0404, 0x0101, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0104, 0x0304, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0102, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0403, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0204, 0x0402, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0302, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0403, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0103, 0x0101, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0102, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0401, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0204, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0103, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0103, 0x0101, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0102, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0402, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0302, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404};
-    static const u16_array tt_arg = {0x0000, 0x0001, 0x0021, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0010, 0x0016, 0x0011, 0x0000, 0x0012, 0x0000, 0x0013, 0x0000, 0x0014, 0x0000, 0x0015, 0x0000, 0x0021, 0x0000, 0x0017, 0x0019, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0027, 0x000e, 0x004a, 0x004c, 0x0018, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x004b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0009, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0026, 0x0028, 0x0027, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0044, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0028, 0x0027, 0x0028, 0x0025, 0x0000, 0x0039, 0x0000, 0x0028, 0x0000, 0x0043, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x003c, 0x0038, 0x003a, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x0000, 0x0026, 0x0000, 0x003b, 0x003d, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0049, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0009, 0x0024, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0028, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0026, 0x0000, 0x0024, 0x0042, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0036, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0035, 0x0037, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x004b, 0x0000, 0x0000, 0x0000, 0x0029, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x002a, 0x002c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x002b, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x001a, 0x0000, 0x0000, 0x0000, 0x0031, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x001b, 0x001d, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0032, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x001c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0034, 0x0009, 0x0000, 0x0000, 0x002d, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0033, 0x0000, 0x0000, 0x0000, 0x0000, 0x002e, 0x0030, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x002f, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x004b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0045, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0046, 0x0048, 0x004e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0027, 0x0000, 0x0000, 0x0000, 0x0000, 0x003e, 0x0047, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x003f, 0x0041, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0040, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0049, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0049, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0023, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0023, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0023, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0009, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0039, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0038, 0x003a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000};
-    auto tt_acc = lang_rt::table_u16_array_as_u8_array(tt_acc_raw);
-    Int ind = la.v_[0] * 133 + v;
-    Int ret_acc = tt_acc[ind];
-    Int ret_arg = tt_arg[ind];
-    return make_pair(ret_acc, ret_arg);
+langcc::IntPair lang::data::parser::action_by_vertex(langcc::ParserVertexId v, langcc::ParserLookahead la) {
+    static const langcc::u16_array tt_acc_raw = {0x0304, 0x0402, 0x0404, 0x0404, 0x0101, 0x0401, 0x0401, 0x0401, 0x0401, 0x0401, 0x0103, 0x0101, 0x0403, 0x0404, 0x0304, 0x0404, 0x0403, 0x0401, 0x0103, 0x0101, 0x0103, 0x0101, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0202, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0302, 0x0104, 0x0204, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0201, 0x0404, 0x0404, 0x0404, 0x0402, 0x0402, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0102, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0201, 0x0204, 0x0404, 0x0404, 0x0404, 0x0102, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0402, 0x0102, 0x0404, 0x0204, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0104, 0x0304, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0301, 0x0101, 0x0401, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0104, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0103, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0404, 0x0304, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0401, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0304, 0x0101, 0x0301, 0x0101, 0x0401, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0401, 0x0103, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0101, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0404, 0x0101, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0104, 0x0304, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0102, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0403, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0204, 0x0402, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0302, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0202, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0403, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0103, 0x0101, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0102, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0401, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0204, 0x0401, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0103, 0x0101, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0103, 0x0101, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0102, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0304, 0x0101, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0402, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0302, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0403, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0402, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0204, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0104, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0401, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0101, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404, 0x0404};
+    static const langcc::u16_array tt_arg = {0x0000, 0x0001, 0x0021, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0010, 0x0016, 0x0011, 0x0000, 0x0012, 0x0000, 0x0013, 0x0000, 0x0014, 0x0000, 0x0015, 0x0000, 0x0021, 0x0000, 0x0017, 0x0019, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0027, 0x000e, 0x004a, 0x004c, 0x0018, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x004b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0009, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0026, 0x0028, 0x0027, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0044, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0028, 0x0027, 0x0028, 0x0025, 0x0000, 0x0039, 0x0000, 0x0028, 0x0000, 0x0043, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x003c, 0x0038, 0x003a, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x0000, 0x0026, 0x0000, 0x003b, 0x003d, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0049, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0009, 0x0024, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0028, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0026, 0x0000, 0x0024, 0x0042, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0036, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0035, 0x0037, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x004b, 0x0000, 0x0000, 0x0000, 0x0029, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x002a, 0x002c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x002b, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x001a, 0x0000, 0x0000, 0x0000, 0x0031, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x001b, 0x001d, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0032, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x001c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0034, 0x0009, 0x0000, 0x0000, 0x002d, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0033, 0x0000, 0x0000, 0x0000, 0x0000, 0x002e, 0x0030, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x002f, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x004b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0045, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0046, 0x0048, 0x004e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0027, 0x0000, 0x0000, 0x0000, 0x0000, 0x003e, 0x0047, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x003f, 0x0041, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0040, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x000d, 0x0000, 0x0028, 0x000f, 0x004d, 0x004f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0024, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0049, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0049, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0023, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0023, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0027, 0x000e, 0x004a, 0x004c, 0x0000, 0x0000, 0x0000, 0x001f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x001e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x004b, 0x0000, 0x0000, 0x0000, 0x0023, 0x0021, 0x0000, 0x0020, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0023, 0x0005, 0x0006, 0x0007, 0x0023, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0022, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0009, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0025, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0039, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0038, 0x003a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000};
+    auto tt_acc = langcc::table_u16_array_as_u8_array(tt_acc_raw);
+    langcc::Int ind = la.v_[0] * 133 + v;
+    langcc::Int ret_acc = tt_acc[ind];
+    langcc::Int ret_arg = tt_arg[ind];
+    return std::make_pair(ret_acc, ret_arg);
 }
 
-lang_rt::ParserVertexId lang::data::parser::vertex_dfa_step(lang_rt::ParserVertexId v, lang_rt::ParserSymId sym, lang_rt::ParserAttrMask attr) {
-    static const u16_array tt = {0x0002, 0x0000, 0x0085, 0x010a, 0x0000, 0x012c, 0x0000, 0x0132, 0x0000, 0x0140, 0x0000, 0x014e, 0x0000, 0x015c, 0x0000, 0x016a, 0x0000, 0x0178, 0x0000, 0x0186, 0x0000, 0x018c, 0x0000, 0x01a6, 0x0000, 0x01ac, 0x0000, 0x01c6, 0x0000, 0x01cc, 0x0000, 0x01de, 0x0000, 0x01e4, 0x0000, 0x01fa, 0x0000, 0x0200, 0x0000, 0x0216, 0x0000, 0x021c, 0x0000, 0x0232, 0x0000, 0x0238, 0x0000, 0x023e, 0x0000, 0x0244, 0x0000, 0x0256, 0x0000, 0x025c, 0x0000, 0x0266, 0x0000, 0x0274, 0x0000, 0x0282, 0x0000, 0x0290, 0x0000, 0x0296, 0x0000, 0x02a8, 0x0000, 0x02ba, 0x0000, 0x02c4, 0x0000, 0x02d2, 0x0000, 0x02d8, 0x0000, 0x02de, 0x0000, 0x02e4, 0x0000, 0x02ea, 0x0000, 0x02f0, 0x0000, 0x02fa, 0x0000, 0x0300, 0x0000, 0x0306, 0x0000, 0x030c, 0x0000, 0x0316, 0x0000, 0x031c, 0x0000, 0x0322, 0x0000, 0x032c, 0x0000, 0x033e, 0x0000, 0x0348, 0x0000, 0x0352, 0x0000, 0x0358, 0x0000, 0x035e, 0x0000, 0x0370, 0x0000, 0x0376, 0x0000, 0x037c, 0x0000, 0x0392, 0x0000, 0x0398, 0x0000, 0x03a6, 0x0000, 0x03b4, 0x0000, 0x03ca, 0x0000, 0x03dc, 0x0000, 0x03e2, 0x0000, 0x03f0, 0x0000, 0x0402, 0x0000, 0x0410, 0x0000, 0x041a, 0x0000, 0x0420, 0x0000, 0x0426, 0x0000, 0x0430, 0x0000, 0x0436, 0x0000, 0x0444, 0x0000, 0x044a, 0x0000, 0x0450, 0x0000, 0x045a, 0x0000, 0x0460, 0x0000, 0x0472, 0x0000, 0x0488, 0x0000, 0x048e, 0x0000, 0x04a4, 0x0000, 0x04aa, 0x0000, 0x04b4, 0x0000, 0x04ba, 0x0000, 0x04c4, 0x0000, 0x04ce, 0x0000, 0x04d8, 0x0000, 0x04de, 0x0000, 0x04f0, 0x0000, 0x04f6, 0x0000, 0x04fc, 0x0000, 0x0502, 0x0000, 0x050c, 0x0000, 0x0512, 0x0000, 0x0524, 0x0000, 0x053a, 0x0000, 0x0544, 0x0000, 0x054a, 0x0000, 0x0558, 0x0000, 0x0566, 0x0000, 0x056c, 0x0000, 0x057a, 0x0000, 0x0580, 0x0000, 0x0596, 0x0000, 0x059c, 0x0000, 0x05b2, 0x0000, 0x05b8, 0x0000, 0x05be, 0x0000, 0x05c4, 0x0000, 0x05ca, 0x0000, 0x05d0, 0x0000, 0x05d6, 0x0000, 0x05e8, 0x0000, 0x05ee, 0x0000, 0x05f4, 0x0000, 0x05fe, 0x0000, 0x0604, 0x0000, 0x060e, 0x0000, 0x0614, 0x0000, 0x0622, 0x0000, 0x062c, 0x0000, 0x0632, 0x0000, 0x0644, 0x0000, 0x064a, 0x0000, 0x0658, 0x0000, 0x0662, 0x0000, 0x0674, 0x0000, 0x067a, 0x0000, 0x0680, 0x0000, 0x0686, 0x0000, 0x068c, 0x0000, 0x069a, 0x0000, 0x06a0, 0x0000, 0x06aa, 0x0000, 0x0001, 0x0001, 0x0007, 0x0001, 0x001b, 0x001c, 0x001d, 0x001e, 0x001f, 0x0020, 0x000f, 0x0011, 0x0013, 0x0015, 0x0017, 0x0019, 0x001b, 0x001d, 0x0000, 0x0001, 0x0000, 0x0002, 0x0000, 0x0003, 0x0000, 0x0004, 0x0000, 0x0005, 0x0000, 0x0006, 0x0000, 0x0007, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0021, 0x004b, 0x0005, 0x0007, 0x0009, 0x0000, 0x0008, 0x0000, 0x0009, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0022, 0x004c, 0x0005, 0x0007, 0x0009, 0x0000, 0x000a, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0025, 0x004f, 0x0005, 0x0007, 0x0009, 0x0000, 0x000c, 0x0000, 0x000d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x000e, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x0010, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0027, 0x0051, 0x0005, 0x0007, 0x0009, 0x0000, 0x0012, 0x0000, 0x0013, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0005, 0x0021, 0x0029, 0x002a, 0x0022, 0x004c, 0x000b, 0x000d, 0x000f, 0x0011, 0x0013, 0x0015, 0x0000, 0x0014, 0x0000, 0x0015, 0x0000, 0x0016, 0x0000, 0x0017, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0005, 0x0022, 0x0015, 0x0010, 0x000e, 0x000f, 0x000b, 0x000d, 0x000f, 0x0011, 0x0013, 0x0015, 0x0000, 0x0018, 0x0000, 0x0019, 0x0000, 0x001a, 0x0000, 0x001b, 0x0000, 0x001c, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0025, 0x0002, 0x0017, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x001d, 0x0000, 0x001e, 0x0000, 0x001f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0026, 0x0043, 0x0011, 0x000c, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0020, 0x0000, 0x0021, 0x0000, 0x0022, 0x0000, 0x0023, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0028, 0x0049, 0x004a, 0x0002, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0024, 0x0000, 0x0025, 0x0000, 0x0026, 0x0000, 0x0027, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0027, 0x0047, 0x0048, 0x0002, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0028, 0x0000, 0x0029, 0x0000, 0x002a, 0x0000, 0x002b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002a, 0x0022, 0x004c, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x002c, 0x0000, 0x0017, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x001a, 0x0003, 0x0005, 0x0000, 0x002d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x002e, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0027, 0x0051, 0x0005, 0x0007, 0x0009, 0x0000, 0x002f, 0x0000, 0x0013, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x0030, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x003a, 0x003b, 0x0016, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0031, 0x0000, 0x0032, 0x0000, 0x0033, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x003c, 0x003d, 0x0018, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0034, 0x0000, 0x0035, 0x0000, 0x0036, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0009, 0x0003, 0x0005, 0x0000, 0x0037, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x0038, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0006, 0x0003, 0x0005, 0x0000, 0x0039, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0003, 0x0003, 0x0005, 0x0000, 0x003a, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0007, 0x0003, 0x0005, 0x0000, 0x003b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002d, 0x002e, 0x000d, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x003c, 0x0000, 0x003d, 0x0000, 0x003e, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0007, 0x0003, 0x0005, 0x0000, 0x003f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0004, 0x0003, 0x0005, 0x0000, 0x0040, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x003e, 0x003f, 0x0019, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0041, 0x0000, 0x0042, 0x0000, 0x0043, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0044, 0x0045, 0x0026, 0x0050, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0044, 0x0000, 0x0045, 0x0000, 0x0046, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x004a, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0047, 0x0000, 0x0027, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0048, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0048, 0x0000, 0x002b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x002b, 0x002c, 0x0022, 0x004c, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0049, 0x0000, 0x004a, 0x0000, 0x004b, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002f, 0x0030, 0x0009, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x004c, 0x0000, 0x004d, 0x0000, 0x004e, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0027, 0x0051, 0x0005, 0x0007, 0x0009, 0x0000, 0x004f, 0x0000, 0x0013, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0038, 0x0039, 0x0002, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0050, 0x0000, 0x0051, 0x0000, 0x0052, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x0053, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0002, 0x0003, 0x0005, 0x0000, 0x0054, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x000a, 0x0003, 0x0005, 0x0000, 0x0055, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0046, 0x000b, 0x0005, 0x0007, 0x0009, 0x0000, 0x0056, 0x0000, 0x0057, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0008, 0x0003, 0x0005, 0x0000, 0x0058, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002c, 0x0022, 0x004c, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0059, 0x0000, 0x004b, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0034, 0x0035, 0x0023, 0x004d, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x005a, 0x0000, 0x005b, 0x0000, 0x005c, 0x0000, 0x005d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0031, 0x0032, 0x0024, 0x004e, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x005e, 0x0000, 0x005f, 0x0000, 0x0060, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0008, 0x0003, 0x0005, 0x0000, 0x0062, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0005, 0x0003, 0x0005, 0x0000, 0x0063, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0005, 0x0003, 0x0005, 0x0000, 0x0064, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0009, 0x0003, 0x0005, 0x0000, 0x0065, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0045, 0x0026, 0x0050, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0066, 0x0000, 0x0046, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0007, 0x0003, 0x0005, 0x0000, 0x0067, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0035, 0x0023, 0x004d, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0068, 0x0000, 0x005c, 0x0000, 0x005d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0023, 0x0012, 0x0013, 0x0014, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0069, 0x0000, 0x006a, 0x0000, 0x006b, 0x0000, 0x006c, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x000a, 0x0003, 0x0005, 0x0000, 0x006d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0033, 0x000b, 0x0005, 0x0007, 0x0009, 0x0000, 0x006e, 0x0000, 0x006f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0024, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0070, 0x0000, 0x0071, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0039, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0072, 0x0000, 0x0052, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0040, 0x0041, 0x0024, 0x004e, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0073, 0x0000, 0x0074, 0x0000, 0x0075, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0036, 0x0037, 0x0025, 0x004f, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0076, 0x0000, 0x0077, 0x0000, 0x0078, 0x0000, 0x000d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0032, 0x0024, 0x004e, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0079, 0x0000, 0x0060, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0004, 0x0003, 0x0005, 0x0000, 0x007a, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x000a, 0x0003, 0x0005, 0x0000, 0x007b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0042, 0x000b, 0x0005, 0x0007, 0x0009, 0x0000, 0x007c, 0x0000, 0x007d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0008, 0x0003, 0x0005, 0x0000, 0x007e, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0037, 0x0025, 0x004f, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x007f, 0x0000, 0x0078, 0x0000, 0x000d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x0080, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0004, 0x0003, 0x0005, 0x0000, 0x0081, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0041, 0x0024, 0x004e, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0082, 0x0000, 0x0075, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x0083, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0005, 0x0003, 0x0005, 0x0000, 0x0084, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff};
-    return lang_rt::table_decode_r2_vec<i16, u16>(tt, v, sym, attr);
+langcc::ParserVertexId lang::data::parser::vertex_dfa_step(langcc::ParserVertexId v, langcc::ParserSymId sym, langcc::ParserAttrMask attr) {
+    static const langcc::u16_array tt = {0x0002, 0x0000, 0x0085, 0x010a, 0x0000, 0x012c, 0x0000, 0x0132, 0x0000, 0x0140, 0x0000, 0x014e, 0x0000, 0x015c, 0x0000, 0x016a, 0x0000, 0x0178, 0x0000, 0x0186, 0x0000, 0x018c, 0x0000, 0x01a6, 0x0000, 0x01ac, 0x0000, 0x01c6, 0x0000, 0x01cc, 0x0000, 0x01de, 0x0000, 0x01e4, 0x0000, 0x01fa, 0x0000, 0x0200, 0x0000, 0x0216, 0x0000, 0x021c, 0x0000, 0x0232, 0x0000, 0x0238, 0x0000, 0x023e, 0x0000, 0x0244, 0x0000, 0x0256, 0x0000, 0x025c, 0x0000, 0x0266, 0x0000, 0x0274, 0x0000, 0x0282, 0x0000, 0x0290, 0x0000, 0x0296, 0x0000, 0x02a8, 0x0000, 0x02ba, 0x0000, 0x02c4, 0x0000, 0x02d2, 0x0000, 0x02d8, 0x0000, 0x02de, 0x0000, 0x02e4, 0x0000, 0x02ea, 0x0000, 0x02f0, 0x0000, 0x02fa, 0x0000, 0x0300, 0x0000, 0x0306, 0x0000, 0x030c, 0x0000, 0x0316, 0x0000, 0x031c, 0x0000, 0x0322, 0x0000, 0x032c, 0x0000, 0x033e, 0x0000, 0x0348, 0x0000, 0x0352, 0x0000, 0x0358, 0x0000, 0x035e, 0x0000, 0x0370, 0x0000, 0x0376, 0x0000, 0x037c, 0x0000, 0x0392, 0x0000, 0x0398, 0x0000, 0x03a6, 0x0000, 0x03b4, 0x0000, 0x03ca, 0x0000, 0x03dc, 0x0000, 0x03e2, 0x0000, 0x03f0, 0x0000, 0x0402, 0x0000, 0x0410, 0x0000, 0x041a, 0x0000, 0x0420, 0x0000, 0x0426, 0x0000, 0x0430, 0x0000, 0x0436, 0x0000, 0x0444, 0x0000, 0x044a, 0x0000, 0x0450, 0x0000, 0x045a, 0x0000, 0x0460, 0x0000, 0x0472, 0x0000, 0x0488, 0x0000, 0x048e, 0x0000, 0x04a4, 0x0000, 0x04aa, 0x0000, 0x04b4, 0x0000, 0x04ba, 0x0000, 0x04c4, 0x0000, 0x04ce, 0x0000, 0x04d8, 0x0000, 0x04de, 0x0000, 0x04f0, 0x0000, 0x04f6, 0x0000, 0x04fc, 0x0000, 0x0502, 0x0000, 0x050c, 0x0000, 0x0512, 0x0000, 0x0524, 0x0000, 0x053a, 0x0000, 0x0544, 0x0000, 0x054a, 0x0000, 0x0558, 0x0000, 0x0566, 0x0000, 0x056c, 0x0000, 0x057a, 0x0000, 0x0580, 0x0000, 0x0596, 0x0000, 0x059c, 0x0000, 0x05b2, 0x0000, 0x05b8, 0x0000, 0x05be, 0x0000, 0x05c4, 0x0000, 0x05ca, 0x0000, 0x05d0, 0x0000, 0x05d6, 0x0000, 0x05e8, 0x0000, 0x05ee, 0x0000, 0x05f4, 0x0000, 0x05fe, 0x0000, 0x0604, 0x0000, 0x060e, 0x0000, 0x0614, 0x0000, 0x0622, 0x0000, 0x062c, 0x0000, 0x0632, 0x0000, 0x0644, 0x0000, 0x064a, 0x0000, 0x0658, 0x0000, 0x0662, 0x0000, 0x0674, 0x0000, 0x067a, 0x0000, 0x0680, 0x0000, 0x0686, 0x0000, 0x068c, 0x0000, 0x069a, 0x0000, 0x06a0, 0x0000, 0x06aa, 0x0000, 0x0001, 0x0001, 0x0007, 0x0001, 0x001b, 0x001c, 0x001d, 0x001e, 0x001f, 0x0020, 0x000f, 0x0011, 0x0013, 0x0015, 0x0017, 0x0019, 0x001b, 0x001d, 0x0000, 0x0001, 0x0000, 0x0002, 0x0000, 0x0003, 0x0000, 0x0004, 0x0000, 0x0005, 0x0000, 0x0006, 0x0000, 0x0007, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0021, 0x004b, 0x0005, 0x0007, 0x0009, 0x0000, 0x0008, 0x0000, 0x0009, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0022, 0x004c, 0x0005, 0x0007, 0x0009, 0x0000, 0x000a, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0025, 0x004f, 0x0005, 0x0007, 0x0009, 0x0000, 0x000c, 0x0000, 0x000d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x000e, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x0010, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0027, 0x0051, 0x0005, 0x0007, 0x0009, 0x0000, 0x0012, 0x0000, 0x0013, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0005, 0x0021, 0x0029, 0x002a, 0x0022, 0x004c, 0x000b, 0x000d, 0x000f, 0x0011, 0x0013, 0x0015, 0x0000, 0x0014, 0x0000, 0x0015, 0x0000, 0x0016, 0x0000, 0x0017, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0005, 0x0022, 0x0015, 0x0010, 0x000e, 0x000f, 0x000b, 0x000d, 0x000f, 0x0011, 0x0013, 0x0015, 0x0000, 0x0018, 0x0000, 0x0019, 0x0000, 0x001a, 0x0000, 0x001b, 0x0000, 0x001c, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0025, 0x0002, 0x0017, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x001d, 0x0000, 0x001e, 0x0000, 0x001f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0026, 0x0043, 0x0011, 0x000c, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0020, 0x0000, 0x0021, 0x0000, 0x0022, 0x0000, 0x0023, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0028, 0x0049, 0x004a, 0x0002, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0024, 0x0000, 0x0025, 0x0000, 0x0026, 0x0000, 0x0027, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0027, 0x0047, 0x0048, 0x0002, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0028, 0x0000, 0x0029, 0x0000, 0x002a, 0x0000, 0x002b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002a, 0x0022, 0x004c, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x002c, 0x0000, 0x0017, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x001a, 0x0003, 0x0005, 0x0000, 0x002d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x002e, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0027, 0x0051, 0x0005, 0x0007, 0x0009, 0x0000, 0x002f, 0x0000, 0x0013, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x0030, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x003a, 0x003b, 0x0016, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0031, 0x0000, 0x0032, 0x0000, 0x0033, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x003c, 0x003d, 0x0018, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0034, 0x0000, 0x0035, 0x0000, 0x0036, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0009, 0x0003, 0x0005, 0x0000, 0x0037, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0028, 0x0052, 0x0005, 0x0007, 0x0009, 0x0000, 0x0038, 0x0000, 0x0011, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0006, 0x0003, 0x0005, 0x0000, 0x0039, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0003, 0x0003, 0x0005, 0x0000, 0x003a, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0007, 0x0003, 0x0005, 0x0000, 0x003b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002d, 0x002e, 0x000d, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x003c, 0x0000, 0x003d, 0x0000, 0x003e, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0007, 0x0003, 0x0005, 0x0000, 0x003f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0004, 0x0003, 0x0005, 0x0000, 0x0040, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x003e, 0x003f, 0x0019, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0041, 0x0000, 0x0042, 0x0000, 0x0043, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0044, 0x0045, 0x0026, 0x0050, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0044, 0x0000, 0x0045, 0x0000, 0x0046, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x004a, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0047, 0x0000, 0x0027, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0048, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0048, 0x0000, 0x002b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x002b, 0x002c, 0x0022, 0x004c, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0049, 0x0000, 0x004a, 0x0000, 0x004b, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002f, 0x0030, 0x0009, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x004c, 0x0000, 0x004d, 0x0000, 0x004e, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0027, 0x0051, 0x0005, 0x0007, 0x0009, 0x0000, 0x004f, 0x0000, 0x0013, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0038, 0x0039, 0x0002, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0050, 0x0000, 0x0051, 0x0000, 0x0052, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x0053, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0002, 0x0003, 0x0005, 0x0000, 0x0054, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x000a, 0x0003, 0x0005, 0x0000, 0x0055, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0046, 0x000b, 0x0005, 0x0007, 0x0009, 0x0000, 0x0056, 0x0000, 0x0057, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0008, 0x0003, 0x0005, 0x0000, 0x0058, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x002c, 0x0022, 0x004c, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0059, 0x0000, 0x004b, 0x0000, 0x000b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0034, 0x0035, 0x0023, 0x004d, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x005a, 0x0000, 0x005b, 0x0000, 0x005c, 0x0000, 0x005d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0031, 0x0032, 0x0024, 0x004e, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x005e, 0x0000, 0x005f, 0x0000, 0x0060, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0008, 0x0003, 0x0005, 0x0000, 0x0062, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0005, 0x0003, 0x0005, 0x0000, 0x0063, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0005, 0x0003, 0x0005, 0x0000, 0x0064, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0009, 0x0003, 0x0005, 0x0000, 0x0065, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0045, 0x0026, 0x0050, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0066, 0x0000, 0x0046, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0007, 0x0003, 0x0005, 0x0000, 0x0067, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0035, 0x0023, 0x004d, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0068, 0x0000, 0x005c, 0x0000, 0x005d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0023, 0x0012, 0x0013, 0x0014, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0069, 0x0000, 0x006a, 0x0000, 0x006b, 0x0000, 0x006c, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x000a, 0x0003, 0x0005, 0x0000, 0x006d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0033, 0x000b, 0x0005, 0x0007, 0x0009, 0x0000, 0x006e, 0x0000, 0x006f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0024, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0070, 0x0000, 0x0071, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0039, 0x0002, 0x0005, 0x0007, 0x0009, 0x0000, 0x0072, 0x0000, 0x0052, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0040, 0x0041, 0x0024, 0x004e, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0073, 0x0000, 0x0074, 0x0000, 0x0075, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0004, 0x0036, 0x0037, 0x0025, 0x004f, 0x0009, 0x000b, 0x000d, 0x000f, 0x0011, 0x0000, 0x0076, 0x0000, 0x0077, 0x0000, 0x0078, 0x0000, 0x000d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0032, 0x0024, 0x004e, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0079, 0x0000, 0x0060, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0004, 0x0003, 0x0005, 0x0000, 0x007a, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x000a, 0x0003, 0x0005, 0x0000, 0x007b, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0042, 0x000b, 0x0005, 0x0007, 0x0009, 0x0000, 0x007c, 0x0000, 0x007d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0008, 0x0003, 0x0005, 0x0000, 0x007e, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0037, 0x0025, 0x004f, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x007f, 0x0000, 0x0078, 0x0000, 0x000d, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x0080, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0004, 0x0003, 0x0005, 0x0000, 0x0081, 0x0000, 0xffff, 0x0001, 0x0001, 0x0003, 0x0041, 0x0024, 0x004e, 0x0007, 0x0009, 0x000b, 0x000d, 0x0000, 0x0082, 0x0000, 0x0075, 0x0000, 0x0061, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0002, 0x0026, 0x0050, 0x0005, 0x0007, 0x0009, 0x0000, 0x0083, 0x0000, 0x000f, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff, 0x0001, 0x0001, 0x0001, 0x0005, 0x0003, 0x0005, 0x0000, 0x0084, 0x0000, 0xffff, 0x0001, 0x0001, 0x0000, 0x0001, 0x0000, 0xffff};
+    return langcc::table_decode_r2_vec<langcc::i16, langcc::u16>(tt, v, sym, attr);
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_0_4_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_0_4_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto x = rc_from_ptr_ext<Vec<rc_ptr<lang::data::Node::Decl::_T>>>(reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Decl::_T>>>>(res0.v_), st->unw_arena_);
+        auto x = langcc::rc_from_ptr_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>>(res0.v_), st->unw_arena_);
         x.decref();
-        auto ret = lang::data::Node::Module::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x);
+        auto ret = lang::data::Node::Module::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {33, start_pos};
+        langcc::SymItem ret_sym = {33, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5124,27 +5124,27 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_1_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_1_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
         auto res0 = st->Sr_addr_[sr_len - 1];
         auto res1 = st->Sr_addr_[sr_len - 2];
         sr_len = sr_len - 2;
-        auto x_site = lang_rt::result_decode_token_bounds(res0);
+        auto x_site = langcc::result_decode_token_bounds(res0);
         auto x = st->fetch_token(x_site.lo_);
-        auto ret = lang::data::Node::Decl::Include::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x);
+        auto ret = lang::data::Node::Decl::Include::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {34, start_pos};
+        langcc::SymItem ret_sym = {34, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5154,13 +5154,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_2_4_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_2_4_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 5;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -5173,16 +5173,16 @@ namespace lang::data::parser {
         auto res3 = st->Sr_addr_[sr_len - 4];
         auto res4 = st->Sr_addr_[sr_len - 5];
         sr_len = sr_len - 5;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Id::_T>>(res3.v_)->rc_from_this_poly<lang::data::Node::Id::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Id::_T>>(res3.v_)->rc_from_this_poly<lang::data::Node::Id::_T>();
         x.decref();
-        auto x1 = rc_from_ptr_ext<Vec<rc_ptr<lang::data::Node::Decl::_T>>>(reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Decl::_T>>>>(res1.v_), st->unw_arena_);
+        auto x1 = langcc::rc_from_ptr_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>>(res1.v_), st->unw_arena_);
         x1.decref();
-        auto ret = lang::data::Node::Decl::Namespace::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1);
+        auto ret = lang::data::Node::Decl::Namespace::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {34, start_pos};
+        langcc::SymItem ret_sym = {34, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5192,13 +5192,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_19_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_19_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 8;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -5217,20 +5217,20 @@ namespace lang::data::parser {
         auto res6 = st->Sr_addr_[sr_len - 7];
         auto res7 = st->Sr_addr_[sr_len - 8];
         sr_len = sr_len - 8;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::SumId::_T>>(res6.v_)->rc_from_this_poly<lang::data::Node::SumId::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::SumId::_T>>(res6.v_)->rc_from_this_poly<lang::data::Node::SumId::_T>();
         x.decref();
-        auto x1 = rc_from_ptr_ext_take<Option_T<rc_ptr<lang::data::Node::SumId::_T>>>(reinterpret_cast<Ptr<Option_T<rc_ptr<lang::data::Node::SumId::_T>>>>(res5.v_), st->unw_arena_);
-        auto x2 = rc_from_ptr_ext_take<Option_T<Vec_T<rc_ptr<lang::data::Node::Param::_T>>>>(reinterpret_cast<Ptr<Option_T<Vec_T<rc_ptr<lang::data::Node::Param::_T>>>>>(res4.v_), st->unw_arena_);
-        auto x3 = rc_from_ptr_ext<Vec<rc_ptr<lang::data::Node::Mod::_T>>>(reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Mod::_T>>>>(res3.v_), st->unw_arena_);
+        auto x1 = langcc::rc_from_ptr_ext_take<langcc::Option_T<langcc::rc_ptr<lang::data::Node::SumId::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Option_T<langcc::rc_ptr<lang::data::Node::SumId::_T>>>>(res5.v_), st->unw_arena_);
+        auto x2 = langcc::rc_from_ptr_ext_take<langcc::Option_T<langcc::Vec_T<langcc::rc_ptr<lang::data::Node::Param::_T>>>>(reinterpret_cast<langcc::Ptr<langcc::Option_T<langcc::Vec_T<langcc::rc_ptr<lang::data::Node::Param::_T>>>>>(res4.v_), st->unw_arena_);
+        auto x3 = langcc::rc_from_ptr_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Mod::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Mod::_T>>>>(res3.v_), st->unw_arena_);
         x3.decref();
-        auto x4 = rc_from_ptr_ext<Vec<rc_ptr<lang::data::Node::Entry::_T>>>(reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Entry::_T>>>>(res1.v_), st->unw_arena_);
+        auto x4 = langcc::rc_from_ptr_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Entry::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Entry::_T>>>>(res1.v_), st->unw_arena_);
         x4.decref();
-        auto ret = lang::data::Node::Decl::Data::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1, x2, x3, x4);
+        auto ret = lang::data::Node::Decl::Data::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1, x2, x3, x4);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {34, start_pos};
+        langcc::SymItem ret_sym = {34, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5240,13 +5240,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_4_4_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_4_4_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 5;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -5259,16 +5259,16 @@ namespace lang::data::parser {
         auto res3 = st->Sr_addr_[sr_len - 4];
         auto res4 = st->Sr_addr_[sr_len - 5];
         sr_len = sr_len - 5;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Id::_T>>(res3.v_)->rc_from_this_poly<lang::data::Node::Id::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Id::_T>>(res3.v_)->rc_from_this_poly<lang::data::Node::Id::_T>();
         x.decref();
-        auto x1 = rc_from_ptr_ext<Vec<StrSlice>>(reinterpret_cast<Ptr<Vec<StrSlice>>>(res1.v_), st->unw_arena_);
+        auto x1 = langcc::rc_from_ptr_ext<langcc::Vec<langcc::StrSlice>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::StrSlice>>>(res1.v_), st->unw_arena_);
         x1.decref();
-        auto ret = lang::data::Node::Decl::Enum::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1);
+        auto ret = lang::data::Node::Decl::Enum::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {34, start_pos};
+        langcc::SymItem ret_sym = {34, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5278,23 +5278,23 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_5_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_5_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = lang::data::Node::Mod::Mut::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead());
+        auto ret = lang::data::Node::Mod::Mut::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead());
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {35, start_pos};
+        langcc::SymItem ret_sym = {35, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5304,23 +5304,23 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_6_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_6_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = lang::data::Node::Mod::Xform::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead());
+        auto ret = lang::data::Node::Mod::Xform::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead());
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {35, start_pos};
+        langcc::SymItem ret_sym = {35, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5330,23 +5330,23 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_7_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_7_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = lang::data::Node::Mod::Visit::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead());
+        auto ret = lang::data::Node::Mod::Visit::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead());
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {35, start_pos};
+        langcc::SymItem ret_sym = {35, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5356,13 +5356,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_8_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_8_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -5371,16 +5371,16 @@ namespace lang::data::parser {
         auto res1 = st->Sr_addr_[sr_len - 2];
         auto res2 = st->Sr_addr_[sr_len - 3];
         sr_len = sr_len - 3;
-        auto x_site = lang_rt::result_decode_token_bounds(res2);
+        auto x_site = langcc::result_decode_token_bounds(res2);
         auto x = st->fetch_token(x_site.lo_);
-        auto x1 = reinterpret_cast<Ptr<lang::data::Node::Expr::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
+        auto x1 = reinterpret_cast<langcc::Ptr<lang::data::Node::Expr::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
         x1.decref();
-        auto ret = lang::data::Node::Param::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1);
+        auto ret = lang::data::Node::Param::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {36, start_pos};
+        langcc::SymItem ret_sym = {36, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5390,13 +5390,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_9_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_9_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 5;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -5409,17 +5409,17 @@ namespace lang::data::parser {
         auto res3 = st->Sr_addr_[sr_len - 4];
         auto res4 = st->Sr_addr_[sr_len - 5];
         sr_len = sr_len - 5;
-        auto x_site = lang_rt::result_decode_token_bounds(res4);
+        auto x_site = langcc::result_decode_token_bounds(res4);
         auto x = st->fetch_token(x_site.lo_);
-        auto x1 = rc_from_ptr_ext_take<bool>(reinterpret_cast<Ptr<bool>>(res3.v_), st->unw_arena_);
-        auto x2 = reinterpret_cast<Ptr<lang::data::Node::Expr::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
+        auto x1 = langcc::rc_from_ptr_ext_take<bool>(reinterpret_cast<langcc::Ptr<bool>>(res3.v_), st->unw_arena_);
+        auto x2 = reinterpret_cast<langcc::Ptr<lang::data::Node::Expr::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
         x2.decref();
-        auto ret = lang::data::Node::Entry::Field::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1, x2);
+        auto ret = lang::data::Node::Entry::Field::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1, x2);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {37, start_pos};
+        langcc::SymItem ret_sym = {37, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5429,13 +5429,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_11_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_11_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 10;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -5458,20 +5458,20 @@ namespace lang::data::parser {
         auto res8 = st->Sr_addr_[sr_len - 9];
         auto res9 = st->Sr_addr_[sr_len - 10];
         sr_len = sr_len - 10;
-        auto x = rc_from_ptr_ext_take<bool>(reinterpret_cast<Ptr<bool>>(res8.v_), st->unw_arena_);
-        auto x1 = rc_from_ptr_ext_take<bool>(reinterpret_cast<Ptr<bool>>(res7.v_), st->unw_arena_);
-        auto x_site = lang_rt::result_decode_token_bounds(res6);
+        auto x = langcc::rc_from_ptr_ext_take<bool>(reinterpret_cast<langcc::Ptr<bool>>(res8.v_), st->unw_arena_);
+        auto x1 = langcc::rc_from_ptr_ext_take<bool>(reinterpret_cast<langcc::Ptr<bool>>(res7.v_), st->unw_arena_);
+        auto x_site = langcc::result_decode_token_bounds(res6);
         auto x2 = st->fetch_token(x_site.lo_);
-        auto x3 = rc_from_ptr_ext<Vec<rc_ptr<lang::data::Node::Param::_T>>>(reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Param::_T>>>>(res4.v_), st->unw_arena_);
+        auto x3 = langcc::rc_from_ptr_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>>(res4.v_), st->unw_arena_);
         x3.decref();
-        auto x4 = reinterpret_cast<Ptr<lang::data::Node::Expr::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
+        auto x4 = reinterpret_cast<langcc::Ptr<lang::data::Node::Expr::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
         x4.decref();
-        auto ret = lang::data::Node::Entry::Method::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1, x2, x3, x4);
+        auto ret = lang::data::Node::Entry::Method::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1, x2, x3, x4);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {37, start_pos};
+        langcc::SymItem ret_sym = {37, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5481,28 +5481,28 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_11_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_11_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
         auto res0 = st->Sr_addr_[sr_len - 1];
         auto res1 = st->Sr_addr_[sr_len - 2];
         sr_len = sr_len - 2;
-        auto x = rc_from_ptr_ext_take<bool>(reinterpret_cast<Ptr<bool>>(res1.v_), st->unw_arena_);
-        auto x1 = reinterpret_cast<Ptr<lang::data::Node::Id::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Id::_T>();
+        auto x = langcc::rc_from_ptr_ext_take<bool>(reinterpret_cast<langcc::Ptr<bool>>(res1.v_), st->unw_arena_);
+        auto x1 = reinterpret_cast<langcc::Ptr<lang::data::Node::Id::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Id::_T>();
         x1.decref();
-        auto ret = lang::data::Node::Expr::Id::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1);
+        auto ret = lang::data::Node::Expr::Id::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {38, start_pos};
+        langcc::SymItem ret_sym = {38, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5512,13 +5512,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_12_5_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_12_5_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 4;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -5529,16 +5529,16 @@ namespace lang::data::parser {
         auto res2 = st->Sr_addr_[sr_len - 3];
         auto res3 = st->Sr_addr_[sr_len - 4];
         sr_len = sr_len - 4;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Expr::_T>>(res3.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Expr::_T>>(res3.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
         x.decref();
-        auto x1 = rc_from_ptr_ext<Vec<rc_ptr<lang::data::Node::Expr::_T>>>(reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Expr::_T>>>>(res1.v_), st->unw_arena_);
+        auto x1 = langcc::rc_from_ptr_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Expr::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Expr::_T>>>>(res1.v_), st->unw_arena_);
         x1.decref();
-        auto ret = lang::data::Node::Expr::App::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x, x1);
+        auto ret = lang::data::Node::Expr::App::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x, x1);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {38, start_pos};
+        langcc::SymItem ret_sym = {38, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5548,23 +5548,23 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_13_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_13_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = lang::data::Node::Expr::Type_::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead());
+        auto ret = lang::data::Node::Expr::Type_::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead());
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {38, start_pos};
+        langcc::SymItem ret_sym = {38, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5574,25 +5574,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_14_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_14_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto x = rc_from_ptr_ext<Vec<StrSlice>>(reinterpret_cast<Ptr<Vec<StrSlice>>>(res0.v_), st->unw_arena_);
+        auto x = langcc::rc_from_ptr_ext<langcc::Vec<langcc::StrSlice>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::StrSlice>>>(res0.v_), st->unw_arena_);
         x.decref();
-        auto ret = lang::data::Node::SumId::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x);
+        auto ret = lang::data::Node::SumId::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {39, start_pos};
+        langcc::SymItem ret_sym = {39, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5602,25 +5602,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_15_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_15_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto x = rc_from_ptr_ext<Vec<StrSlice>>(reinterpret_cast<Ptr<Vec<StrSlice>>>(res0.v_), st->unw_arena_);
+        auto x = langcc::rc_from_ptr_ext<langcc::Vec<langcc::StrSlice>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::StrSlice>>>(res0.v_), st->unw_arena_);
         x.decref();
-        auto ret = lang::data::Node::Id::make_ext(st->unw_arena_, st->gen()->gen(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, lang_rt::ParserAttrMask(), lang_rt::ParserLookahead(), x);
+        auto ret = lang::data::Node::Id::make_ext(st->unw_arena_, st->gen()->gen(), langcc::TokenBounds(start_pos, res0.bounds_.hi_), false, -1, langcc::ParserAttrMask(), langcc::ParserLookahead(), x);
         ret.incref();
-        auto res_item = lang_rt::Result_T(ret.get(), lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(ret.get(), langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {40, start_pos};
+        langcc::SymItem ret_sym = {40, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5630,13 +5630,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_start_33_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_start_33_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
@@ -5646,7 +5646,7 @@ namespace lang::data::parser {
         st->enroll_final_sym(sym0);
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {1, start_pos};
+        langcc::SymItem ret_sym = {1, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5656,13 +5656,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_start_34_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_start_34_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
@@ -5672,7 +5672,7 @@ namespace lang::data::parser {
         st->enroll_final_sym(sym0);
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {1, start_pos};
+        langcc::SymItem ret_sym = {1, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5682,13 +5682,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_start_37_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_start_37_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
@@ -5698,7 +5698,7 @@ namespace lang::data::parser {
         st->enroll_final_sym(sym0);
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {1, start_pos};
+        langcc::SymItem ret_sym = {1, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5708,13 +5708,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_start_38_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_start_38_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
@@ -5724,7 +5724,7 @@ namespace lang::data::parser {
         st->enroll_final_sym(sym0);
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {1, start_pos};
+        langcc::SymItem ret_sym = {1, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5734,13 +5734,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_start_40_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_start_40_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
@@ -5750,7 +5750,7 @@ namespace lang::data::parser {
         st->enroll_final_sym(sym0);
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {1, start_pos};
+        langcc::SymItem ret_sym = {1, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5760,13 +5760,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_start_39_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_start_39_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
@@ -5776,7 +5776,7 @@ namespace lang::data::parser {
         st->enroll_final_sym(sym0);
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {1, start_pos};
+        langcc::SymItem ret_sym = {1, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5786,20 +5786,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_0_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_0_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {41, start_pos};
+        langcc::SymItem ret_sym = {41, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5809,20 +5809,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_0_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_0_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {41, start_pos};
+        langcc::SymItem ret_sym = {41, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5832,27 +5832,27 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_0_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_0_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
         auto res0 = st->Sr_addr_[sr_len - 1];
         auto res1 = st->Sr_addr_[sr_len - 2];
         sr_len = sr_len - 2;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Decl::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Decl::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
         x.decref();
-        auto x1 = reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Decl::_T>>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {42, start_pos};
+        langcc::SymItem ret_sym = {42, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5862,25 +5862,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_0_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_0_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Decl::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Decl::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
         x.decref();
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {42, start_pos};
+        langcc::SymItem ret_sym = {42, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5890,20 +5890,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_2_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_2_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {43, start_pos};
+        langcc::SymItem ret_sym = {43, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5913,20 +5913,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_2_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_2_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {43, start_pos};
+        langcc::SymItem ret_sym = {43, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5936,27 +5936,27 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_2_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_2_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
         auto res0 = st->Sr_addr_[sr_len - 1];
         auto res1 = st->Sr_addr_[sr_len - 2];
         sr_len = sr_len - 2;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Decl::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Decl::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
         x.decref();
-        auto x1 = reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Decl::_T>>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {44, start_pos};
+        langcc::SymItem ret_sym = {44, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5966,25 +5966,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_2_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_2_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Decl::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Decl::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Decl::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Decl::_T>();
         x.decref();
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {44, start_pos};
+        langcc::SymItem ret_sym = {44, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -5994,24 +5994,24 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::SumId::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::SumId::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::SumId::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::SumId::_T>();
         x.decref();
-        auto ret = make_rc_inc_ext<Option_T<rc_ptr<lang::data::Node::SumId::_T>>>(st->unw_arena_, Some<rc_ptr<lang::data::Node::SumId::_T>>(x));
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto ret = langcc::make_rc_inc_ext<langcc::Option_T<langcc::rc_ptr<lang::data::Node::SumId::_T>>>(st->unw_arena_, langcc::Some<langcc::rc_ptr<lang::data::Node::SumId::_T>>(x));
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {45, start_pos};
+        langcc::SymItem ret_sym = {45, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6021,20 +6021,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto ret = make_rc_inc_ext<Option_T<rc_ptr<lang::data::Node::SumId::_T>>>(st->unw_arena_, None<rc_ptr<lang::data::Node::SumId::_T>>());
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, start_pos));
+        auto ret = langcc::make_rc_inc_ext<langcc::Option_T<langcc::rc_ptr<lang::data::Node::SumId::_T>>>(st->unw_arena_, langcc::None<langcc::rc_ptr<lang::data::Node::SumId::_T>>());
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {45, start_pos};
+        langcc::SymItem ret_sym = {45, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6044,13 +6044,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
@@ -6059,7 +6059,7 @@ namespace lang::data::parser {
         sr_len = sr_len - 2;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {46, start_pos};
+        langcc::SymItem ret_sym = {46, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6069,24 +6069,24 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_9_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_9_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto x = rc_from_ptr_ext<Vec<rc_ptr<lang::data::Node::Param::_T>>>(reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Param::_T>>>>(res0.v_), st->unw_arena_);
+        auto x = langcc::rc_from_ptr_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>(reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>>(res0.v_), st->unw_arena_);
         x.decref();
-        auto ret = make_rc_inc_ext<Option_T<Vec_T<rc_ptr<lang::data::Node::Param::_T>>>>(st->unw_arena_, Some<Vec_T<rc_ptr<lang::data::Node::Param::_T>>>(x));
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto ret = langcc::make_rc_inc_ext<langcc::Option_T<langcc::Vec_T<langcc::rc_ptr<lang::data::Node::Param::_T>>>>(st->unw_arena_, langcc::Some<langcc::Vec_T<langcc::rc_ptr<lang::data::Node::Param::_T>>>(x));
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {47, start_pos};
+        langcc::SymItem ret_sym = {47, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6096,20 +6096,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_10_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_10_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto ret = make_rc_inc_ext<Option_T<Vec_T<rc_ptr<lang::data::Node::Param::_T>>>>(st->unw_arena_, None<Vec_T<rc_ptr<lang::data::Node::Param::_T>>>());
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, start_pos));
+        auto ret = langcc::make_rc_inc_ext<langcc::Option_T<langcc::Vec_T<langcc::rc_ptr<lang::data::Node::Param::_T>>>>(st->unw_arena_, langcc::None<langcc::Vec_T<langcc::rc_ptr<lang::data::Node::Param::_T>>>());
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {47, start_pos};
+        langcc::SymItem ret_sym = {47, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6119,13 +6119,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_8_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_8_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -6136,7 +6136,7 @@ namespace lang::data::parser {
         sr_len = sr_len - 3;
         st->Sr_addr_[sr_len] = res1;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {48, start_pos};
+        langcc::SymItem ret_sym = {48, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6146,20 +6146,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_4_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_4_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {49, start_pos};
+        langcc::SymItem ret_sym = {49, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6169,20 +6169,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_5_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_5_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {49, start_pos};
+        langcc::SymItem ret_sym = {49, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6192,13 +6192,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_6_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_6_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -6207,14 +6207,14 @@ namespace lang::data::parser {
         auto res1 = st->Sr_addr_[sr_len - 2];
         auto res2 = st->Sr_addr_[sr_len - 3];
         sr_len = sr_len - 3;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Param::_T>>(res2.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Param::_T>>(res2.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
         x.decref();
-        auto x1 = reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Param::_T>>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {50, start_pos};
+        langcc::SymItem ret_sym = {50, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6224,25 +6224,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_7_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_7_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Param::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Param::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
         x.decref();
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {50, start_pos};
+        langcc::SymItem ret_sym = {50, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6252,21 +6252,21 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto res_item = lang_rt::Result_T(nullptr, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(nullptr, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {51, start_pos};
+        langcc::SymItem ret_sym = {51, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6276,20 +6276,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_11_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_11_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Mod::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Mod::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {52, start_pos};
+        langcc::SymItem ret_sym = {52, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6299,20 +6299,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_12_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_12_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {52, start_pos};
+        langcc::SymItem ret_sym = {52, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6322,27 +6322,27 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_13_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_13_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
         auto res0 = st->Sr_addr_[sr_len - 1];
         auto res1 = st->Sr_addr_[sr_len - 2];
         sr_len = sr_len - 2;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Mod::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Mod::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Mod::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Mod::_T>();
         x.decref();
-        auto x1 = reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Mod::_T>>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Mod::_T>>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {53, start_pos};
+        langcc::SymItem ret_sym = {53, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6352,25 +6352,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_14_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_14_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Mod::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Mod::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Mod::_T>();
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Mod::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Mod::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Mod::_T>();
         x.decref();
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {53, start_pos};
+        langcc::SymItem ret_sym = {53, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6380,20 +6380,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_15_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_15_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Entry::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Entry::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {54, start_pos};
+        langcc::SymItem ret_sym = {54, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6403,20 +6403,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_16_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_16_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {54, start_pos};
+        langcc::SymItem ret_sym = {54, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6426,27 +6426,27 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_17_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_17_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
         auto res0 = st->Sr_addr_[sr_len - 1];
         auto res1 = st->Sr_addr_[sr_len - 2];
         sr_len = sr_len - 2;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Entry::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Entry::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Entry::_T>>(res1.v_)->rc_from_this_poly<lang::data::Node::Entry::_T>();
         x.decref();
-        auto x1 = reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Entry::_T>>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Entry::_T>>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {55, start_pos};
+        langcc::SymItem ret_sym = {55, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6456,25 +6456,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_3_18_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_3_18_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Entry::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Entry::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Entry::_T>();
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Entry::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Entry::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Entry::_T>();
         x.decref();
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {55, start_pos};
+        langcc::SymItem ret_sym = {55, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6484,20 +6484,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_4_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_4_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {56, start_pos};
+        langcc::SymItem ret_sym = {56, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6507,20 +6507,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_4_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_4_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {56, start_pos};
+        langcc::SymItem ret_sym = {56, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6530,13 +6530,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_4_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_4_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -6545,14 +6545,14 @@ namespace lang::data::parser {
         auto res1 = st->Sr_addr_[sr_len - 2];
         auto res2 = st->Sr_addr_[sr_len - 3];
         sr_len = sr_len - 3;
-        auto x_site = lang_rt::result_decode_token_bounds(res2);
+        auto x_site = langcc::result_decode_token_bounds(res2);
         auto x = st->fetch_token(x_site.lo_);
-        auto x1 = reinterpret_cast<Ptr<Vec<StrSlice>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::StrSlice>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {57, start_pos};
+        langcc::SymItem ret_sym = {57, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6562,27 +6562,27 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_4_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_4_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 2;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         ss_len = ss_len - 2;
         auto res0 = st->Sr_addr_[sr_len - 1];
         auto res1 = st->Sr_addr_[sr_len - 2];
         sr_len = sr_len - 2;
-        auto vs = make_rc_inc_ext<Vec<StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x_site = lang_rt::result_decode_token_bounds(res1);
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x_site = langcc::result_decode_token_bounds(res1);
         auto x = st->fetch_token(x_site.lo_);
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {57, start_pos};
+        langcc::SymItem ret_sym = {57, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6592,22 +6592,22 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_9_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_9_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, true);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, true);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {58, start_pos};
+        langcc::SymItem ret_sym = {58, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6617,20 +6617,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_9_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_9_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, false);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, start_pos));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, false);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {58, start_pos};
+        langcc::SymItem ret_sym = {58, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6640,21 +6640,21 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_9_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_9_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto res_item = lang_rt::Result_T(nullptr, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(nullptr, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {59, start_pos};
+        langcc::SymItem ret_sym = {59, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6664,22 +6664,22 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, true);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, true);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {60, start_pos};
+        langcc::SymItem ret_sym = {60, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6689,20 +6689,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, false);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, start_pos));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, false);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {60, start_pos};
+        langcc::SymItem ret_sym = {60, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6712,21 +6712,21 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto res_item = lang_rt::Result_T(nullptr, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(nullptr, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {61, start_pos};
+        langcc::SymItem ret_sym = {61, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6736,22 +6736,22 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_4_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_4_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, true);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, true);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {62, start_pos};
+        langcc::SymItem ret_sym = {62, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6761,20 +6761,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_5_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_5_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, false);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, start_pos));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, false);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {62, start_pos};
+        langcc::SymItem ret_sym = {62, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6784,21 +6784,21 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto res_item = lang_rt::Result_T(nullptr, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(nullptr, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {63, start_pos};
+        langcc::SymItem ret_sym = {63, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6808,20 +6808,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_7_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_7_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {64, start_pos};
+        langcc::SymItem ret_sym = {64, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6831,20 +6831,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_8_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_8_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {64, start_pos};
+        langcc::SymItem ret_sym = {64, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6854,13 +6854,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_9_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_9_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -6869,14 +6869,14 @@ namespace lang::data::parser {
         auto res1 = st->Sr_addr_[sr_len - 2];
         auto res2 = st->Sr_addr_[sr_len - 3];
         sr_len = sr_len - 3;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Param::_T>>(res2.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Param::_T>>(res2.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
         x.decref();
-        auto x1 = reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Param::_T>>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {65, start_pos};
+        langcc::SymItem ret_sym = {65, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6886,25 +6886,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_10_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_10_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Param::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Param::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Param::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Param::_T>();
         x.decref();
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {65, start_pos};
+        langcc::SymItem ret_sym = {65, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6914,21 +6914,21 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_10_6_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_10_6_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto res_item = lang_rt::Result_T(nullptr, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(nullptr, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {66, start_pos};
+        langcc::SymItem ret_sym = {66, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6938,22 +6938,22 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_11_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_11_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, true);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, true);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {67, start_pos};
+        langcc::SymItem ret_sym = {67, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6963,20 +6963,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_11_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_11_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto ret = make_rc_inc_ext<bool>(st->unw_arena_, false);
-        auto res_item = lang_rt::Result_T(ret, lang_rt::TokenBounds(start_pos, start_pos));
+        auto ret = langcc::make_rc_inc_ext<bool>(st->unw_arena_, false);
+        auto res_item = langcc::Result_T(ret, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {67, start_pos};
+        langcc::SymItem ret_sym = {67, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -6986,20 +6986,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_12_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_12_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 0;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         ss_len = ss_len - 0;
         sr_len = sr_len - 0;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Expr::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, start_pos));
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Expr::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, start_pos));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {68, start_pos};
+        langcc::SymItem ret_sym = {68, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7009,20 +7009,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_12_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_12_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {68, start_pos};
+        langcc::SymItem ret_sym = {68, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7032,13 +7032,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_12_3_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_12_3_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -7047,14 +7047,14 @@ namespace lang::data::parser {
         auto res1 = st->Sr_addr_[sr_len - 2];
         auto res2 = st->Sr_addr_[sr_len - 3];
         sr_len = sr_len - 3;
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Expr::_T>>(res2.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Expr::_T>>(res2.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
         x.decref();
-        auto x1 = reinterpret_cast<Ptr<Vec<rc_ptr<lang::data::Node::Expr::_T>>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::rc_ptr<lang::data::Node::Expr::_T>>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {69, start_pos};
+        langcc::SymItem ret_sym = {69, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7064,25 +7064,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_12_4_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_12_4_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<rc_ptr<lang::data::Node::Expr::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x = reinterpret_cast<Ptr<lang::data::Node::Expr::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::rc_ptr<lang::data::Node::Expr::_T>>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x = reinterpret_cast<langcc::Ptr<lang::data::Node::Expr::_T>>(res0.v_)->rc_from_this_poly<lang::data::Node::Expr::_T>();
         x.decref();
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {69, start_pos};
+        langcc::SymItem ret_sym = {69, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7092,21 +7092,21 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_12_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_12_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto res_item = lang_rt::Result_T(nullptr, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(nullptr, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {70, start_pos};
+        langcc::SymItem ret_sym = {70, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7116,20 +7116,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_14_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_14_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {71, start_pos};
+        langcc::SymItem ret_sym = {71, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7139,13 +7139,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_14_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_14_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -7154,14 +7154,14 @@ namespace lang::data::parser {
         auto res1 = st->Sr_addr_[sr_len - 2];
         auto res2 = st->Sr_addr_[sr_len - 3];
         sr_len = sr_len - 3;
-        auto x_site = lang_rt::result_decode_token_bounds(res2);
+        auto x_site = langcc::result_decode_token_bounds(res2);
         auto x = st->fetch_token(x_site.lo_);
-        auto x1 = reinterpret_cast<Ptr<Vec<StrSlice>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::StrSlice>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {72, start_pos};
+        langcc::SymItem ret_sym = {72, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7171,25 +7171,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_14_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_14_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x_site = lang_rt::result_decode_token_bounds(res0);
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x_site = langcc::result_decode_token_bounds(res0);
         auto x = st->fetch_token(x_site.lo_);
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {72, start_pos};
+        langcc::SymItem ret_sym = {72, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7199,20 +7199,20 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_15_0_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_15_0_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
         st->Sr_addr_[sr_len] = res0;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {73, start_pos};
+        langcc::SymItem ret_sym = {73, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7222,13 +7222,13 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_15_1_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_15_1_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 3;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         auto sym1 = st->Ss_addr_[ss_len - 2];
         auto sym2 = st->Ss_addr_[ss_len - 3];
@@ -7237,14 +7237,14 @@ namespace lang::data::parser {
         auto res1 = st->Sr_addr_[sr_len - 2];
         auto res2 = st->Sr_addr_[sr_len - 3];
         sr_len = sr_len - 3;
-        auto x_site = lang_rt::result_decode_token_bounds(res2);
+        auto x_site = langcc::result_decode_token_bounds(res2);
         auto x = st->fetch_token(x_site.lo_);
-        auto x1 = reinterpret_cast<Ptr<Vec<StrSlice>>>(res0.v_);
+        auto x1 = reinterpret_cast<langcc::Ptr<langcc::Vec<langcc::StrSlice>>>(res0.v_);
         x1->push_front(x);
-        auto res_item = lang_rt::Result_T(x1, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(x1, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {74, start_pos};
+        langcc::SymItem ret_sym = {74, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7254,25 +7254,25 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) lang_rt::SymItem _parse_proc_15_2_0(lang_rt::ParserProcStatePtr st) {
-        Int ss_len = st->Ss_len_;
-        Int sr_len = st->Sr_len_;
-        Int sb_len = st->Sb_len_;
-        Int sv_len = st->Sv_len_;
+    __attribute__((noinline)) langcc::SymItem _parse_proc_15_2_0(langcc::ParserProcStatePtr st) {
+        langcc::Int ss_len = st->Ss_len_;
+        langcc::Int sr_len = st->Sr_len_;
+        langcc::Int sb_len = st->Sb_len_;
+        langcc::Int sv_len = st->Sv_len_;
         sv_len = sv_len - 1;
-        Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
+        langcc::Int start_pos = st->Sv_addr_[sv_len - 1].pos_;
         auto sym0 = st->Ss_addr_[ss_len - 1];
         ss_len = ss_len - 1;
         auto res0 = st->Sr_addr_[sr_len - 1];
         sr_len = sr_len - 1;
-        auto vs = make_rc_inc_ext<Vec<StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, _Vec_constr_internal());
-        auto x_site = lang_rt::result_decode_token_bounds(res0);
+        auto vs = langcc::make_rc_inc_ext<langcc::Vec<langcc::StrSlice>>(st->unw_arena_, st->unw_arena_, 0, 1, langcc::_Vec_constr_internal());
+        auto x_site = langcc::result_decode_token_bounds(res0);
         auto x = st->fetch_token(x_site.lo_);
         vs->push_back(x);
-        auto res_item = lang_rt::Result_T(vs, lang_rt::TokenBounds(start_pos, res0.bounds_.hi_));
+        auto res_item = langcc::Result_T(vs, langcc::TokenBounds(start_pos, res0.bounds_.hi_));
         st->Sr_addr_[sr_len] = res_item;
         ++sr_len;
-        lang_rt::SymItem ret_sym = {74, start_pos};
+        langcc::SymItem ret_sym = {74, start_pos};
         st->Ss_len_ = ss_len;
         st->Sr_len_ = sr_len;
         st->Sb_len_ = sb_len;
@@ -7281,8 +7281,8 @@ namespace lang::data::parser {
     }
 }
 
-lang_rt::ParserProcXforms lang::data::parser::proc_xform_by_prod_id() {
-    auto ret = make_rc<Vec<lang_rt::ParserProcXform>>();
+langcc::ParserProcXforms lang::data::parser::proc_xform_by_prod_id() {
+    auto ret = langcc::make_rc<langcc::Vec<langcc::ParserProcXform>>();
     ret->push_back(_parse_proc_0_4_0);
     ret->push_back(_parse_proc_1_0_0);
     ret->push_back(_parse_proc_2_4_0);
@@ -7366,18 +7366,18 @@ lang_rt::ParserProcXforms lang::data::parser::proc_xform_by_prod_id() {
     return ret;
 }
 
-lang_rt::ParserSymByName lang::data::parser::start_marker_by_name() {
-    lang_rt::ParserSymByName ret;
-    ret.insert(make_pair("Module", 27));
-    ret.insert(make_pair("Decl", 28));
-    ret.insert(make_pair("Entry", 29));
-    ret.insert(make_pair("Expr", 30));
-    ret.insert(make_pair("Id", 31));
-    ret.insert(make_pair("SumId", 32));
+langcc::ParserSymByName lang::data::parser::start_marker_by_name() {
+    langcc::ParserSymByName ret;
+    ret.insert(std::make_pair("Module", 27));
+    ret.insert(std::make_pair("Decl", 28));
+    ret.insert(std::make_pair("Entry", 29));
+    ret.insert(std::make_pair("Expr", 30));
+    ret.insert(std::make_pair("Id", 31));
+    ret.insert(std::make_pair("SumId", 32));
     return ret;
 }
 
-lang_rt::ParserSymId lang::data::parser::term_tok_to_sym(lang_rt::TokenId tok) {
+langcc::ParserSymId lang::data::parser::term_tok_to_sym(langcc::TokenId tok) {
     switch (tok) {
         case 0: {
             return 2;
@@ -7455,12 +7455,12 @@ lang_rt::ParserSymId lang::data::parser::term_tok_to_sym(lang_rt::TokenId tok) {
             return 26;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-lang_rt::ParserSymId lang::data::parser::sym_to_recur_step(lang_rt::ParserSymId sym) {
+langcc::ParserSymId lang::data::parser::sym_to_recur_step(langcc::ParserSymId sym) {
     switch (sym) {
         case 33: {
             return 75;
@@ -7592,12 +7592,12 @@ lang_rt::ParserSymId lang::data::parser::sym_to_recur_step(lang_rt::ParserSymId 
             return 117;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-string lang::data::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
+std::string lang::data::parser::sym_to_debug_string(langcc::ParserSymId sym) {
     switch (sym) {
         case 0: {
             return "$$";
@@ -7954,12 +7954,12 @@ string lang::data::parser::sym_to_debug_string(lang_rt::ParserSymId sym) {
             return "RecurStep(Iter(idBase))";
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-Int lang::data::parser::sym_to_num_attrs(lang_rt::ParserSymId sym) {
+langcc::Int lang::data::parser::sym_to_num_attrs(langcc::ParserSymId sym) {
     switch (sym) {
         case 1: {
             return 0;
@@ -8184,17 +8184,17 @@ Int lang::data::parser::sym_to_num_attrs(lang_rt::ParserSymId sym) {
             return 0;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int attr_ind) {
+std::string lang::data::parser::attr_to_debug_string(langcc::ParserSymId sym, langcc::Int attr_ind) {
     switch (sym) {
         case 1: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8202,7 +8202,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 2: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8210,7 +8210,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 3: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8218,7 +8218,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 4: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8226,7 +8226,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 5: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8234,7 +8234,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 6: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8242,7 +8242,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 7: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8250,7 +8250,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 8: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8258,7 +8258,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 9: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8266,7 +8266,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 10: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8274,7 +8274,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 11: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8282,7 +8282,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 12: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8290,7 +8290,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 13: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8298,7 +8298,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 14: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8306,7 +8306,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 15: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8314,7 +8314,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 16: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8322,7 +8322,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 17: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8330,7 +8330,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 18: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8338,7 +8338,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 19: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8346,7 +8346,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 20: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8354,7 +8354,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 21: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8362,7 +8362,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 22: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8370,7 +8370,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 23: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8378,7 +8378,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 24: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8386,7 +8386,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 25: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8394,7 +8394,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 26: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8402,7 +8402,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 27: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8410,7 +8410,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 28: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8418,7 +8418,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 29: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8426,7 +8426,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 30: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8434,7 +8434,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 31: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8442,7 +8442,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 32: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8450,7 +8450,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 33: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8458,7 +8458,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 34: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8466,7 +8466,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 35: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8474,7 +8474,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 36: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8482,7 +8482,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 37: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8490,7 +8490,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 38: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8498,7 +8498,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 39: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8506,7 +8506,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 40: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8514,7 +8514,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 41: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8522,7 +8522,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 42: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8530,7 +8530,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 43: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8538,7 +8538,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 44: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8546,7 +8546,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 45: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8554,7 +8554,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 46: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8562,7 +8562,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 47: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8570,7 +8570,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 48: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8578,7 +8578,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 49: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8586,7 +8586,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 50: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8594,7 +8594,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 51: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8602,7 +8602,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 52: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8610,7 +8610,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 53: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8618,7 +8618,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 54: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8626,7 +8626,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 55: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8634,7 +8634,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 56: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8642,7 +8642,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 57: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8650,7 +8650,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 58: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8658,7 +8658,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 59: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8666,7 +8666,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 60: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8674,7 +8674,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 61: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8682,7 +8682,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 62: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8690,7 +8690,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 63: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8698,7 +8698,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 64: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8706,7 +8706,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 65: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8714,7 +8714,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 66: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8722,7 +8722,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 67: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8730,7 +8730,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 68: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8738,7 +8738,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 69: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8746,7 +8746,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 70: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8754,7 +8754,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 71: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8762,7 +8762,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 72: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8770,7 +8770,7 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 73: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
@@ -8778,74 +8778,74 @@ string lang::data::parser::attr_to_debug_string(lang_rt::ParserSymId sym, Int at
         case 74: {
             switch (attr_ind) {
                 default: {
-                    AX("Not found: {}, {}", sym, attr_ind);
+                    langcc::AX("Not found: {}, {}", sym, attr_ind);
                 }
             }
             break;
         }
         default: {
-            AX();
+            langcc::AX();
         }
     }
 }
 
-inline __attribute__((always_inline)) Int lang::data::lexer::body::proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
-    lang_rt::SymItemVec emit_dst_sub;
+inline __attribute__((always_inline)) langcc::Int lang::data::lexer::body::proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos) {
+    langcc::SymItemVec emit_dst_sub;
     bool read_eof = false;
-    Int in_i = mode_start_pos;
-    Ptr<Ch> in_data = st->in_->data_.begin();
-    Int in_data_len = st->in_->data_len_;
+    langcc::Int in_i = mode_start_pos;
+    langcc::Ptr<langcc::Ch> in_data = st->in_->data_.begin();
+    langcc::Int in_data_len = st->in_->data_len_;
     auto label_ids_ascii = st->label_ids_ascii_->begin();
-    Int tok_lo;
-    Int tok_hi;
-    rc_ptr<lang_rt::LexWhitespaceState> ws_state_rc;
-    lang_rt::LexWhitespaceState * ws_state = nullptr;
+    langcc::Int tok_lo;
+    langcc::Int tok_hi;
+    langcc::rc_ptr<langcc::LexWhitespaceState> ws_state_rc;
+    langcc::LexWhitespaceState * ws_state = nullptr;
     if (mode->ws_sig_.is_some()) {
-        ws_state_rc = make_rc<lang_rt::LexWhitespaceState>(st, st->tok_to_sym_, mode_buf_pos, in_data, mode->ws_newline_ind_, mode->ws_indent_ind_, mode->ws_dedent_ind_, mode->ws_err_mixed_indent_ind_, mode->ws_err_text_after_lc_ind_, mode->ws_err_delim_mismatch_ind_, mode->ws_sig_.as_some());
+        ws_state_rc = langcc::make_rc<langcc::LexWhitespaceState>(st, st->tok_to_sym_, mode_buf_pos, in_data, mode->ws_newline_ind_, mode->ws_indent_ind_, mode->ws_dedent_ind_, mode->ws_err_mixed_indent_ind_, mode->ws_err_text_after_lc_ind_, mode->ws_err_delim_mismatch_ind_, mode->ws_sig_.as_some());
         ws_state = ws_state_rc.get();
     }
-    for (cc_nop(); true; cc_nop()) {
+    for (langcc::cc_nop(); true; langcc::cc_nop()) {
         tok_lo = in_i;
-        lang_rt::DFAVertexId v = 0;
-        lang_rt::DFAActionId best_act = lang_rt::DFATable::NO_ACTION;
-        lang_rt::TokenId best_tok;
-        for (cc_nop(); true; cc_nop()) {
-            lang_rt::TokenId cl = lang_rt::lexer_char_to_label(in_data, in_i, in_data_len, label_ids_ascii, st);
+        langcc::DFAVertexId v = 0;
+        langcc::DFAActionId best_act = langcc::DFATable::NO_ACTION;
+        langcc::TokenId best_tok;
+        for (langcc::cc_nop(); true; langcc::cc_nop()) {
+            langcc::TokenId cl = langcc::lexer_char_to_label(in_data, in_i, in_data_len, label_ids_ascii, st);
             v = step(v, cl);
-            if (__builtin_expect(v == lang_rt::DFATable::NO_VERTEX, 0)) {
+            if (__builtin_expect(v == langcc::DFATable::NO_VERTEX, 0)) {
                 break;
             }
-            if (__builtin_expect(cl == lang_rt::DFATable::EOF_LABEL, 0)) {
+            if (__builtin_expect(cl == langcc::DFATable::EOF_LABEL, 0)) {
                 read_eof = true;
             }
             if (__builtin_expect(!read_eof, 1)) {
                 in_i++;
             }
             auto acc_tok = acc(v);
-            if (acc_tok.first != lang_rt::DFATable::NO_ACTION) {
+            if (acc_tok.first != langcc::DFATable::NO_ACTION) {
                 tok_hi = in_i;
                 best_act = acc_tok.first;
                 best_tok = acc_tok.second;
             }
         }
         in_i = tok_lo;
-        lang_rt::lexer_state_proc_update_pre(best_act, best_tok, tok_lo, tok_hi, in_i, read_eof, st);
-        IntPair new_mode_dir = step_exec(st, emit_dst, ws_state, best_act, best_tok, in_i, tok_lo, tok_hi);
-        if (__builtin_expect(new_mode_dir.first == lang_rt::DFATable::NEW_MODE_POP_EMIT, 0)) {
+        langcc::lexer_state_proc_update_pre(best_act, best_tok, tok_lo, tok_hi, in_i, read_eof, st);
+        langcc::IntPair new_mode_dir = step_exec(st, emit_dst, ws_state, best_act, best_tok, in_i, tok_lo, tok_hi);
+        if (__builtin_expect(new_mode_dir.first == langcc::DFATable::NEW_MODE_POP_EMIT, 0)) {
             st->enqueue_emit_ext(emit_dst, ws_state, new_mode_dir.second, mode_buf_pos, in_i, true);
             if (!!ws_state) {
                 ws_state->finish(tok_hi, emit_dst);
             }
             return in_i;
         }
-        if (__builtin_expect(new_mode_dir.first == lang_rt::DFATable::NEW_MODE_POP_EXTRACT, 0)) {
+        if (__builtin_expect(new_mode_dir.first == langcc::DFATable::NEW_MODE_POP_EXTRACT, 0)) {
             st->extract_comment(mode_buf_pos, in_i);
             if (!!ws_state) {
                 ws_state->finish(tok_hi, emit_dst);
             }
             return in_i;
         }
-        if (__builtin_expect(new_mode_dir.first == lang_rt::DFATable::NEW_MODE_POP, 0)) {
+        if (__builtin_expect(new_mode_dir.first == langcc::DFATable::NEW_MODE_POP, 0)) {
             if (!!ws_state) {
                 ws_state->finish(tok_hi, emit_dst);
             }
@@ -8854,28 +8854,28 @@ inline __attribute__((always_inline)) Int lang::data::lexer::body::proc_mode_loo
         if (__builtin_expect(new_mode_dir.first >= 0, 0)) {
             auto desc_new = st->mode_descs_->operator[](new_mode_dir.first);
             in_i = lexer_proc_mode_loop(desc_new.get(), st, &emit_dst_sub, in_i, new_mode_dir.second);
-            lang_rt::lex_queue_pull_sub(st, emit_dst, &emit_dst_sub, ws_state);
+            langcc::lex_queue_pull_sub(st, emit_dst, &emit_dst_sub, ws_state);
         }
         if (__builtin_expect(read_eof, 0)) {
-            lang_rt::lexer_raise_nonempty_mode_stack(st, in_i);
+            langcc::lexer_raise_nonempty_mode_stack(st, in_i);
         }
     }
 }
 
-inline __attribute__((always_inline)) Int lang::data::lexer::comment_single::proc_mode_loop_opt(Ptr<lang_rt::LexerModeDesc> mode, Ptr<lang_rt::LexerState> st, Ptr<lang_rt::SymItemVec> emit_dst, Int mode_start_pos, Int mode_buf_pos) {
-    lang_rt::SymItemVec emit_dst_sub;
-    Int in_i = mode_start_pos;
-    Ptr<Ch> in_data = st->in_->data_.begin();
-    Int in_data_len = st->in_->data_len_;
-    Int tok_lo;
-    Int tok_hi;
-    Ptr<lang_rt::LexWhitespaceState> ws_state = nullptr;
-    for (cc_nop(); true; cc_nop()) {
+inline __attribute__((always_inline)) langcc::Int lang::data::lexer::comment_single::proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos) {
+    langcc::SymItemVec emit_dst_sub;
+    langcc::Int in_i = mode_start_pos;
+    langcc::Ptr<langcc::Ch> in_data = st->in_->data_.begin();
+    langcc::Int in_data_len = st->in_->data_len_;
+    langcc::Int tok_lo;
+    langcc::Int tok_hi;
+    langcc::Ptr<langcc::LexWhitespaceState> ws_state = nullptr;
+    for (langcc::cc_nop(); true; langcc::cc_nop()) {
         tok_lo = in_i;
-        lang_rt::DFAActionId best_act = lang_rt::DFATable::NO_ACTION;
-        lang_rt::TokenId best_tok;
-        for (cc_nop(); true; cc_nop()) {
-            Ch curr = -1;
+        langcc::DFAActionId best_act = langcc::DFATable::NO_ACTION;
+        langcc::TokenId best_tok;
+        for (langcc::cc_nop(); true; langcc::cc_nop()) {
+            langcc::Ch curr = -1;
             if (__builtin_expect(in_i == in_data_len, 0)) {
                 {
                     lexer_raise_unexpected_eof(st, in_i);
@@ -8888,53 +8888,53 @@ inline __attribute__((always_inline)) Int lang::data::lexer::comment_single::pro
                     tok_lo = in_i;
                     tok_hi = in_i + 1;
                     best_act = 0;
-                    best_tok = lang_rt::NO_TOKEN;
+                    best_tok = langcc::NO_TOKEN;
                     break;
                 }
             }
             ++in_i;
         }
-        IntPair new_mode_dir = mode->step_exec_fn_(st, emit_dst, ws_state, best_act, best_tok, in_i, tok_lo, tok_hi);
-        if (__builtin_expect(new_mode_dir.first == lang_rt::DFATable::NEW_MODE_POP_EMIT, 0)) {
+        langcc::IntPair new_mode_dir = mode->step_exec_fn_(st, emit_dst, ws_state, best_act, best_tok, in_i, tok_lo, tok_hi);
+        if (__builtin_expect(new_mode_dir.first == langcc::DFATable::NEW_MODE_POP_EMIT, 0)) {
             st->enqueue_emit_ext(emit_dst, ws_state, new_mode_dir.second, mode_buf_pos, in_i, true);
             return in_i;
         }
-        if (__builtin_expect(new_mode_dir.first == lang_rt::DFATable::NEW_MODE_POP_EXTRACT, 0)) {
+        if (__builtin_expect(new_mode_dir.first == langcc::DFATable::NEW_MODE_POP_EXTRACT, 0)) {
             st->extract_comment(mode_buf_pos, in_i);
             return in_i;
         }
-        if (__builtin_expect(new_mode_dir.first == lang_rt::DFATable::NEW_MODE_POP, 0)) {
+        if (__builtin_expect(new_mode_dir.first == langcc::DFATable::NEW_MODE_POP, 0)) {
             return in_i;
         }
         if (__builtin_expect(new_mode_dir.first >= 0, 0)) {
             auto desc_new = st->mode_descs_->operator[](new_mode_dir.first);
             in_i = lexer_proc_mode_loop(desc_new.get(), st, &emit_dst_sub, in_i, new_mode_dir.second);
-            lang_rt::lex_queue_pull_sub(st, emit_dst, &emit_dst_sub, ws_state);
+            langcc::lex_queue_pull_sub(st, emit_dst, &emit_dst_sub, ws_state);
         }
     }
 }
 
 lang::data::LangDesc_T lang::data::init() {
-    auto ret = make_rc<lang::data::LangDesc>();
-    ret->lexer_mode_descs_ = make_rc<Vec<lang_rt::LexerModeDesc_T>>();
-    auto body = make_rc<lang_rt::LexerModeDesc>();
+    auto ret = langcc::make_rc<lang::data::LangDesc>();
+    ret->lexer_mode_descs_ = langcc::make_rc<langcc::Vec<langcc::LexerModeDesc_T>>();
+    auto body = langcc::make_rc<langcc::LexerModeDesc>();
     body->step_fn_ = lexer::body::step;
     body->acc_fn_ = lexer::body::acc;
     body->step_exec_fn_ = lexer::body::step_exec;
     body->proc_mode_loop_opt_fn_ = lexer::body::proc_mode_loop_opt;
     ret->lexer_mode_descs_->push(body);
-    body->ws_sig_ = None<lang_rt::WsSigSpec>();
-    auto comment_single = make_rc<lang_rt::LexerModeDesc>();
+    body->ws_sig_ = langcc::None<langcc::WsSigSpec>();
+    auto comment_single = langcc::make_rc<langcc::LexerModeDesc>();
     comment_single->step_fn_ = lexer::comment_single::step;
     comment_single->acc_fn_ = lexer::comment_single::acc;
     comment_single->step_exec_fn_ = lexer::comment_single::step_exec;
     comment_single->proc_mode_loop_opt_fn_ = lexer::comment_single::proc_mode_loop_opt;
     ret->lexer_mode_descs_->push(comment_single);
-    comment_single->ws_sig_ = None<lang_rt::WsSigSpec>();
+    comment_single->ws_sig_ = langcc::None<langcc::WsSigSpec>();
     ret->label_ids_ascii_ = lexer::label_ids_ascii();
     ret->label_ids_unicode_ = lexer::label_ids_unicode();
     ret->lexer_main_mode_ = 0;
-    ret->parser_desc_ = make_rc<lang_rt::ParserDesc>();
+    ret->parser_desc_ = langcc::make_rc<langcc::ParserDesc>();
     ret->parser_desc_->start_vertex_ = 0;
     ret->parser_desc_->main_sym_ = "Module";
     ret->parser_desc_->start_full_sym_ = 1;

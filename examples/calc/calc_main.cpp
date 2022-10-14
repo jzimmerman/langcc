@@ -1,5 +1,8 @@
 #include "calc__gen.hpp"
 
+using namespace langcc;
+
+using namespace lang;
 using namespace lang::calc;
 using namespace lang::calc::Node;
 
@@ -89,7 +92,7 @@ bool is_const_zero(Expr_T e) {
     return false;
 }
 
-Expr_T expr_simpl(Expr_T e, QuoteEnv_T Q) {
+Expr_T expr_simpl(Expr_T e, calc::QuoteEnv_T Q) {
     unordered_map<string, Int> empty_env;
     try {
         return xform_lang_calc_Node(e, [&](Node_T node) -> Node_T {

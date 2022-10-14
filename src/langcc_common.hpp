@@ -14,16 +14,12 @@
 #include "grammar.hpp"
 #include "nfa.hpp"
 
-using namespace common;
+namespace langcc {
+
 using namespace lang;
 
-#define LR_NFA_Args LRVertex_T, LRLabel_T, LRLookAction_T
-
-using LR_NFA_T = NFA_T<LR_NFA_Args>;
-
-#define LR_DFA_Args Set_T<LRVertex_T>, LRLabel_T, LRLookAction_T
-
-using LR_DFA_T = NFA_T<LR_DFA_Args>;
+using LR_NFA_T = NFA_T<LRVertex_T, LRLabel_T, LRLookAction_T>;
+using LR_DFA_T = NFA_T<Set_T<LRVertex_T>, LRLabel_T, LRLookAction_T>;
 
 struct LangCompileContext {
     lang::meta::Node::Lang_T src_;
@@ -193,10 +189,8 @@ struct Lexer_NFAAcc {
         return ret;
     }
 };
-#define LexerNFA_Args Lexer_NFAVertex, Lexer_NFALabel_T, Lexer_NFAAcc
-using LexerNFA_T = NFA_T<LexerNFA_Args>;
-#define LexerNFASub_Args Lexer_NFAVertex, Lexer_NFALabel_T, Unit
-using LexerNFASub_T = NFA_T<LexerNFASub_Args>;
+using LexerNFA_T = NFA_T<Lexer_NFAVertex, Lexer_NFALabel_T, Lexer_NFAAcc>;
+using LexerNFASub_T = NFA_T<Lexer_NFAVertex, Lexer_NFALabel_T, Unit>;
 void lexer_step_exec_compile_instr_acc(
     Vec_T<cc::Node_T>& dst, meta::Node::LexerInstr_T instr, meta::Node::LexerDecl::Mode_T mode,
     GenName fun_ns, CppGenContext& cc, LangCompileContext& ctx);
@@ -312,11 +306,11 @@ void lang_emit_global_defs(LangCompileContext& ctx);
 void lang_emit_test_defs(LangCompileContext& ctx);
 void lang_emit_debug_defs(LangCompileContext& ctx);
 void lang_emit_extract_final(LangCompileContext& ctx, HeaderMode header_mode);
-data::Node_T data_gen_type_to_node(DataGenContext data, common::GenType_T ty);
+data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty);
 void data_gen_dtype_acc(
-    DataGenContext data, common::Ident_T id, common::GenDatatype_T dt,
-    common::Ident_T parent);
-Vec_T<string> lower_name_ident_struct(common::Ident_T id);
+    DataGenContext data, Ident_T id, GenDatatype_T dt,
+    Ident_T parent);
+Vec_T<string> lower_name_ident_struct(Ident_T id);
 void lexer_gen_cpp_defs(
     LangCompileContext& ctx, CppGenContext& cc, string src_base_name,
     Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_mode_dfas);
@@ -326,3 +320,5 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
 cc::Node_T parser_lr_unwind_impl_gen_cpp(
     CppGenContext& cc, Prod_T prod_cps, Prod_T prod_flat, LangCompileContext& ctx,
     string src_base_name);
+
+}

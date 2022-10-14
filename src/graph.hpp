@@ -4,18 +4,14 @@
 
 #include "common__data_gen.hpp"
 
-using namespace common;
+namespace langcc {
 
-#define GRAPH_P template<typename Vertex, typename Label>
-
-namespace common::Graph {
-    GRAPH_P struct _T;
+namespace Graph {
+    template<typename Vertex, typename Label> struct _T;
 }
-GRAPH_P using Graph_T = rc_ptr<common::Graph::_T<Vertex, Label>>;
+template<typename Vertex, typename Label> using Graph_T = rc_ptr<Graph::_T<Vertex, Label>>;
 
-#define GRAPH_A Graph_T<Vertex, Label>
-
-namespace common::Graph {
+namespace Graph {
     struct _T_inner {
         vector<vector<Int>> EL_;
         vector<vector<vector<Int>>> EV_;
@@ -51,7 +47,7 @@ namespace common::Graph {
         }
     };
 
-    GRAPH_P struct _T {
+    template<typename Vertex, typename Label> struct _T {
         VecUniq_T<Vertex> V_;
         VecUniq_T<Label> L_;
         _T_inner fwd_;
@@ -59,7 +55,7 @@ namespace common::Graph {
         Int num_edges_;
     };
 
-    GRAPH_P GRAPH_A empty() {
+    template<typename Vertex, typename Label> Graph_T<Vertex, Label> empty() {
         auto G = make_rc<Graph::_T<Vertex, Label>>();
         G->V_ = make_rc<VecUniq<Vertex>>();
         G->L_ = make_rc<VecUniq<Label>>();
@@ -67,15 +63,15 @@ namespace common::Graph {
         return G;
     }
 
-    GRAPH_P Int N(const GRAPH_A& G) {
+    template<typename Vertex, typename Label> Int N(const Graph_T<Vertex, Label>& G) {
         return G->V_->length();
     }
 
-    GRAPH_P Int M(const GRAPH_A& G) {
+    template<typename Vertex, typename Label> Int M(const Graph_T<Vertex, Label>& G) {
         return G->num_edges_;
     }
 
-    GRAPH_P Int add_vertex(GRAPH_A& G, const Vertex& v) {
+    template<typename Vertex, typename Label> Int add_vertex(Graph_T<Vertex, Label>& G, const Vertex& v) {
         auto ret = G->V_->insert_strict(v);
         auto ret1 = G->fwd_.add_vertex();
         auto ret2 = G->rev_.add_vertex();
@@ -84,12 +80,12 @@ namespace common::Graph {
         return ret;
     }
 
-    GRAPH_P Vertex vertex_by_ind(GRAPH_A& G, Int i) {
+    template<typename Vertex, typename Label> Vertex vertex_by_ind(Graph_T<Vertex, Label>& G, Int i) {
         check_range(i, N(G));
         return G->V_->at_index(i);
     }
 
-    GRAPH_P GRAPH_A vertex_only_copy(const GRAPH_A& G) {
+    template<typename Vertex, typename Label> Graph_T<Vertex, Label> vertex_only_copy(const Graph_T<Vertex, Label>& G) {
         auto ret = Graph::empty<Vertex, Label>();
         for (Int i = 0; i < N(G); i++) {
             ret->add_vertex(G->V_->at(i));
@@ -97,7 +93,9 @@ namespace common::Graph {
         return ret;
     }
 
-    GRAPH_P bool add_edge(GRAPH_A& G, Vertex v_src, Label label, Vertex v_dst) {
+    template<typename Vertex, typename Label> bool add_edge(
+        Graph_T<Vertex, Label>& G, Vertex v_src, Label label, Vertex v_dst) {
+
         auto lm = G->L_->index_of_maybe(label);
         if (lm.is_none()) {
             G->L_->insert_strict(label);
@@ -115,4 +113,6 @@ namespace common::Graph {
         }
         return ret;
     }
+}
+
 }

@@ -1,13 +1,13 @@
 #include "cc__gen.hpp"
 
 int main() {
-    global_init();
+    langcc::global_init();
     auto L = lang::cc::init();
     {
-        string sym_name = string_ws_strip(stdin_readline().as_some());
-        string body = "";
-        for (cc_nop(); true; cc_nop()) {
-            auto si = stdin_readline();
+        std::string sym_name = langcc::string_ws_strip(langcc::stdin_readline().as_some());
+        std::string body = "";
+        for (langcc::cc_nop(); true; langcc::cc_nop()) {
+            auto si = langcc::stdin_readline();
             if (si.is_none()) {
                 break;
             }

@@ -1,6 +1,8 @@
 
 #include "datacc.hpp"
 
+using namespace langcc;
+
 int main(int argc, char** argv) {
     global_init();
     set_log_level(1);

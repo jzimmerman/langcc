@@ -1,6 +1,8 @@
 
 #include "py__gen.hpp"
 
+using namespace langcc;
+
 void parse_file(lang::py::LangDesc_T L, string input_path) {
     {
         auto A = make_rc<Arena>();

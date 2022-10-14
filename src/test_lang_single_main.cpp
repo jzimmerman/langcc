@@ -3,6 +3,8 @@
 
 #include "langcc.hpp"
 
+using namespace langcc;
+
 i32 main(i32 argc, char** argv) {
     global_init();
     set_log_level(3);

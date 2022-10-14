@@ -3,6 +3,8 @@
 
 #include "langcc_rt.hpp"
 
+namespace langcc {
+
 LangCompileResult_T compile_lang_inner(
     lang::meta::Node_T src, Int k, Gensym_T gen_meta, LexOutput_T lex_res,
     string src_base_name, string dst_path, HeaderMode header_mode) {
@@ -262,4 +264,6 @@ void test_lang_toplevel(string test_name) {
     if (!ok) {
         AX();
     }
+}
+
 }

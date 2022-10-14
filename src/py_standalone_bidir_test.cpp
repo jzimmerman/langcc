@@ -1,8 +1,12 @@
 
 #include "py__gen.hpp"
 
-void pr(ostream& os, FmtFlags flags, lang::py::Node_T x) {
-    x->write(os, flags);
+using namespace langcc;
+
+namespace langcc {
+    void pr(ostream& os, FmtFlags flags, lang::py::Node_T x) {
+        x->write(os, flags);
+    }
 }
 
 lang::py::Node_T parse_string(lang::py::QuoteEnv_T Q, string input, string input_path) {

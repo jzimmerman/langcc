@@ -3,6 +3,7 @@
 
 #include "meta.hpp"
 
+namespace langcc {
 
 inline void pr(ostream& os, FmtFlags flags, Lexer_TopTokenInd x) {
     fmt(os, "Tok({}, {})", x.ind_, x.src_);
@@ -347,7 +348,7 @@ template<typename N> void lexer_nfa_item_compile(
 
 
 LexerNFASub_T lexer_nfa_compile_sub(meta::Node::ParseExpr_T x, LangCompileContext& ctx) {
-    auto nfa_sub = NFA::empty<LexerNFASub_Args>();
+    auto nfa_sub = NFA::empty<Lexer_NFAVertex, Lexer_NFALabel_T, Unit>();
     auto start_sub = NFA::gen_vertex_start(nfa_sub);
     auto end_sub = NFA::gen_vertex_acc(nfa_sub, Unit{});
 
@@ -421,7 +422,7 @@ void lexer_step_exec_compile_instr_acc(
         cpp_non_ws_token_instr = cc.qq("Stmt",
             "if (!mode_switch) { ws_state->non_ws_token(emit_dst); }");
     }
-    auto cpp_pop_instr = cc.qq("Stmt", "ret = make_pair(lang_rt::DFATable::NEW_MODE_POP, -1);");
+    auto cpp_pop_instr = cc.qq("Stmt", "ret = std::make_pair(langcc::DFATable::NEW_MODE_POP, -1);");
     auto cpp_mode_switch_instr = cc.qq("Stmt", "mode_switch = true;");
 
     if (instr->is_Emit()) {
@@ -453,7 +454,7 @@ void lexer_step_exec_compile_instr_acc(
         auto ic = instr->as_Push();
         auto mode_name = ic->name_.to_std_string();
         auto mode_ind = ctx.lexer_modes_ind_[mode_name];
-        dst->push_back(cc.qq("Stmt", "ret = make_pair(", fmt_str("{}", mode_ind), ", in_i);"));
+        dst->push_back(cc.qq("Stmt", "ret = std::make_pair(", fmt_str("{}", mode_ind), ", in_i);"));
         dst->push_back(cpp_mode_switch_instr);
 
     } else if (instr->is_Pop()) {
@@ -462,14 +463,14 @@ void lexer_step_exec_compile_instr_acc(
 
     } else if (instr->is_PopExtract()) {
         dst->push_back(
-            cc.qq("Stmt", "ret = make_pair(lang_rt::DFATable::NEW_MODE_POP_EXTRACT, -1);"));
+            cc.qq("Stmt", "ret = std::make_pair(langcc::DFATable::NEW_MODE_POP_EXTRACT, -1);"));
         dst->push_back(cpp_mode_switch_instr);
 
     } else if (instr->is_PopEmit()) {
         auto ic = instr->as_PopEmit();
         auto arg = parse_expr_to_base_maybe(ic->arg_).as_some();
         Int arg_id = ctx.tokens_top_by_id_rev_[arg];
-        dst->push_back(cc.qq("Stmt", "ret = make_pair(lang_rt::DFATable::NEW_MODE_POP_EMIT,",
+        dst->push_back(cc.qq("Stmt", "ret = std::make_pair(langcc::DFATable::NEW_MODE_POP_EMIT,",
             fmt_str("{}", arg_id), ");"));
         dst->push_back(cpp_mode_switch_instr);
 
@@ -554,7 +555,7 @@ Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_compile_dfas(LangCompileC
     auto ret = make_rc<Map<meta::Node::LexerDecl::Mode_T, LexerNFA_T>>();
 
     for (auto mode : ctx.lexer_modes_) {
-        auto nfa = NFA::empty<LexerNFA_Args>();
+        auto nfa = NFA::empty<Lexer_NFAVertex, Lexer_NFALabel_T, Lexer_NFAAcc>();
         auto v_start = NFA::gen_vertex_start(nfa);
 
         for (Int case_id = 0; case_id < mode->cases_->length(); case_id++) {
@@ -707,4 +708,6 @@ Option_T<LexerModeTrivial_T> lexer_extract_trivial_maybe(meta::Node::LexerDecl::
     }
 
     return Some<LexerModeTrivial_T>(ret);
+}
+
 }

@@ -3,16 +3,13 @@
 #include "langcc_util.hpp"
 
 #include "common__data_gen.hpp"
-
-using namespace common;
-
+    
 #include "graph.hpp"
 
-#define NFA_P template<typename Vertex, typename Label, typename Acc>
-#define NFA_A NFA_T<Vertex, Label, Acc>
+namespace langcc {
 
-namespace common::NFA {
-    NFA_P struct _T {
+namespace NFA {
+    template<typename Vertex, typename Label, typename Acc> struct _T {
         Graph_T<Vertex, Label> G_;
         Option_T<Int> start_;
         Vec_T<Set_T<Acc>> acc_;
@@ -20,9 +17,9 @@ namespace common::NFA {
     };
 }
 
-NFA_P using NFA_T = rc_ptr<NFA::_T<Vertex, Label, Acc>>;
+template<typename Vertex, typename Label, typename Acc> using NFA_T = rc_ptr<NFA::_T<Vertex, Label, Acc>>;
 
-NFA_P inline void pr(ostream& os, FmtFlags flags, const NFA_A& N) {
+template<typename Vertex, typename Label, typename Acc> inline void pr(ostream& os, FmtFlags flags, const NFA_T<Vertex, Label, Acc>& N) {
     vector<tuple<Int, Align>> aligns = {{2, Align::RIGHT}, {2, Align::RIGHT}, {2, Align::LEFT}};
 
     auto td = PrintTable::make(aligns);
@@ -77,8 +74,8 @@ NFA_P inline void pr(ostream& os, FmtFlags flags, const NFA_A& N) {
     fmt(os, "{}", td);
 }
 
-namespace common::NFA {
-    NFA_P NFA_A empty() {
+namespace NFA {
+    template<typename Vertex, typename Label, typename Acc> NFA_T<Vertex, Label, Acc> empty() {
         auto ret = make_rc<NFA::_T<Vertex, Label, Acc>>();
         ret->G_ = Graph::empty<Vertex, Label>();
         ret->start_ = None<Int>();
@@ -87,7 +84,7 @@ namespace common::NFA {
         return ret;
     }
 
-    NFA_P Int add_vertex(NFA_A& N, Vertex v) {
+    template<typename Vertex, typename Label, typename Acc> Int add_vertex(NFA_T<Vertex, Label, Acc>& N, Vertex v) {
         auto ret = Graph::add_vertex(N->G_, v);
         N->acc_->push(make_rc<Set<Acc>>());
         AT(Graph::N(N->G_) == N->acc_->length());
@@ -95,7 +92,7 @@ namespace common::NFA {
         return ret;
     }
 
-    NFA_P pair<Int, bool> ensure_vertex(NFA_A& N, Vertex v) {
+    template<typename Vertex, typename Label, typename Acc> pair<Int, bool> ensure_vertex(NFA_T<Vertex, Label, Acc>& N, Vertex v) {
         auto ret = N->G_->V_->index_of_maybe(v);
         if (ret.is_some()) {
             return make_pair(ret.as_some(), false);
@@ -103,19 +100,19 @@ namespace common::NFA {
         return make_pair(NFA::add_vertex(N, v), true);
     }
 
-    NFA_P Vertex gen_vertex(NFA_A& N) {
+    template<typename Vertex, typename Label, typename Acc> Vertex gen_vertex(NFA_T<Vertex, Label, Acc>& N) {
         auto ret = Graph::N(N->G_);
         Graph::add_vertex(N->G_, ret);
         N->acc_->push(make_rc<Set<Acc>>());
         return ret;
     }
 
-    NFA_P void add_action(NFA_A& N, Vertex v, Acc acc) {
+    template<typename Vertex, typename Label, typename Acc> void add_action(NFA_T<Vertex, Label, Acc>& N, Vertex v, Acc acc) {
         auto i = N->G_->V_->index_of_maybe(v).as_some();
         N->acc_->operator[](i)->insert(acc);
     }
 
-    NFA_P Vertex gen_vertex_acc(NFA_A& N, Acc acc) {
+    template<typename Vertex, typename Label, typename Acc> Vertex gen_vertex_acc(NFA_T<Vertex, Label, Acc>& N, Acc acc) {
         auto ret = Graph::N(N->G_);
         Graph::add_vertex(N->G_, ret);
         auto acc_s = make_rc<Set<Acc>>();
@@ -124,26 +121,26 @@ namespace common::NFA {
         return ret;
     }
 
-    NFA_P Vertex gen_vertex_start(NFA_A& N) {
+    template<typename Vertex, typename Label, typename Acc> Vertex gen_vertex_start(NFA_T<Vertex, Label, Acc>& N) {
         auto ret = gen_vertex(N);
         AT(N->start_.is_none());
         N->start_ = Some<Int>(N->G_->V_->index_of_maybe(ret).as_some());
         return ret;
     }
 
-    NFA_P void add_edge(NFA_A& N, Vertex v_src, Label label, Vertex v_dst) {
+    template<typename Vertex, typename Label, typename Acc> void add_edge(NFA_T<Vertex, Label, Acc>& N, Vertex v_src, Label label, Vertex v_dst) {
         Graph::add_edge(N->G_, v_src, label, v_dst);
     }
 
-    NFA_P VecUniq_T<Label> all_labels(NFA_A& N) {
+    template<typename Vertex, typename Label, typename Acc> VecUniq_T<Label> all_labels(NFA_T<Vertex, Label, Acc>& N) {
         return N->G_->L_;
     }
 
-    NFA_P VecUniq_T<Vertex> all_vertices(NFA_A& N) {
+    template<typename Vertex, typename Label, typename Acc> VecUniq_T<Vertex> all_vertices(NFA_T<Vertex, Label, Acc>& N) {
         return N->G_->V_;
     }
 
-    NFA_P Map_T<Label, Vec_T<Vertex>> outgoing_edges(NFA_A& N, Vertex v) {
+    template<typename Vertex, typename Label, typename Acc> Map_T<Label, Vec_T<Vertex>> outgoing_edges(NFA_T<Vertex, Label, Acc>& N, Vertex v) {
         auto ret = make_rc<Map<Label, Vec_T<Vertex>>>();
         auto vi = N->G_->V_->index_of_maybe(v).as_some();
         for (Int li = 0; li < N->G_->fwd_.EL_.at(vi).size(); li++) {
@@ -159,7 +156,7 @@ namespace common::NFA {
         return ret;
     }
 
-    NFA_P Map_T<Label, Vec_T<Vertex>> incoming_edges(NFA_A& N, Vertex v) {
+    template<typename Vertex, typename Label, typename Acc> Map_T<Label, Vec_T<Vertex>> incoming_edges(NFA_T<Vertex, Label, Acc>& N, Vertex v) {
         auto ret = make_rc<Map<Label, Vec_T<Vertex>>>();
         auto vi = N->G_->V_->index_of_maybe(v).as_some();
         for (Int li = 0; li < N->G_->rev_.EL_.at(vi).size(); li++) {
@@ -175,7 +172,7 @@ namespace common::NFA {
         return ret;
     }
 
-    NFA_P Set_T<Int> eps_closure(NFA_A& N, const Set_T<Int>& vs) {
+    template<typename Vertex, typename Label, typename Acc> Set_T<Int> eps_closure(NFA_T<Vertex, Label, Acc>& N, const Set_T<Int>& vs) {
         auto ret = make_rc<Set<Int>>();
         Vec<Int> Q;
         for (auto v : *vs) {
@@ -205,7 +202,7 @@ namespace common::NFA {
         return ret;
     }
 
-    NFA_P Set_T<Vertex> vertex_set_lookup(NFA_A& N, Set_T<Int> s) {
+    template<typename Vertex, typename Label, typename Acc> Set_T<Vertex> vertex_set_lookup(NFA_T<Vertex, Label, Acc>& N, Set_T<Int> s) {
         auto ret = make_rc<Set<Vertex>>();
         for (auto i : *s) {
             ret->insert(N->G_->V_->operator[](i));
@@ -213,7 +210,7 @@ namespace common::NFA {
         return ret;
     }
 
-    NFA_P NFA_T<Set_T<Vertex>, Label, Acc> nfa_subset_constr(NFA_A& N) {
+    template<typename Vertex, typename Label, typename Acc> NFA_T<Set_T<Vertex>, Label, Acc> nfa_subset_constr(NFA_T<Vertex, Label, Acc>& N) {
         auto D = NFA::empty<Set_T<Int>, Label, Acc>();
 
         Map<Set_T<Int>, pair<Label, Set_T<Int>>> reach_rev;
@@ -315,7 +312,7 @@ namespace common::NFA {
         return Dv;
     }
 
-    NFA_P bool has_conflicts(NFA_A& D) {
+    template<typename Vertex, typename Label, typename Acc> bool has_conflicts(NFA_T<Vertex, Label, Acc>& D) {
         for (const auto& v : *D->G_->V_) {
             auto vi = D->G_->V_->index_of_maybe(v).as_some();
             auto acc_i = D->acc_->operator[](vi);
@@ -326,7 +323,7 @@ namespace common::NFA {
         return false;
     }
 
-    NFA_P rc_ptr<NFA::_T<Int, Label, Acc>> vertex_stripped(NFA_A& N) {
+    template<typename Vertex, typename Label, typename Acc> rc_ptr<NFA::_T<Int, Label, Acc>> vertex_stripped(NFA_T<Vertex, Label, Acc>& N) {
         auto ret = NFA::empty<Int, Label, Acc>();
 
         for (const auto& v : *N->G_->V_) {
@@ -497,4 +494,6 @@ namespace common::NFA {
             }
         }
     }
+}
+
 }

@@ -2,6 +2,7 @@
 
 #include "nfa.hpp"
 
+namespace langcc {
 
 Int trunc_u16_s2u(Int x) {
     AT(x < 0x7fff);  // Leave one for sentinel
@@ -499,4 +500,6 @@ pair<Vec_T<Int>, Vec_T<Int>> parser_lr_action_by_vertex_impl_table_opt(
     }
 
     return make_pair(tt_acc_norm, tt_arg);
+}
+
 }

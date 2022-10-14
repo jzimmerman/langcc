@@ -1,7 +1,7 @@
 
 #include "meta__gen.hpp"
 
-namespace common {
+namespace langcc {
     def IdentBase {}
         def IdentBase.User { name: Str; }
         def IdentBase.Ordinal { i: Int; }

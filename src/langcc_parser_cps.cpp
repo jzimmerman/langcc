@@ -2,6 +2,8 @@
 #include "langcc_common.hpp"
 
 
+namespace langcc {
+
 void ctx_Gr_cps_init(LangCompileContext& ctx) {
     ctx.Gr_cps_ = Grammar::empty();
     ctx.Gr_cps_prod_constrs_ = make_rc<Map<Prod_T, VecUniq_T<ProdConstrFlat_T>>>();
@@ -198,4 +200,6 @@ void parser_grammar_to_cps(LangCompileContext& ctx) {
                 ctx);
         }
     }
+}
+
 }
