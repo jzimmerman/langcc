@@ -1902,7 +1902,7 @@ struct StrSlice {
     }
 
     inline string to_std_string() const {
-        return string(&base_->at_unchecked(lo_), hi_ - lo_);
+        return base_.valid() ? string(&base_->at_unchecked(lo_), hi_ - lo_) : std::string();
     }
 };
 
