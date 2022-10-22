@@ -228,6 +228,10 @@ template<typename T> struct rc_ptr {
     // If rc_ == 0, this is an arena-allocated pointer (not ref-counted).
     atomic<Int>* rc_;
 
+    inline bool valid() const {
+        return v_ != nullptr;
+    }
+
     inline T& operator*() {
         return *reinterpret_cast<T*>(v_);
     }
