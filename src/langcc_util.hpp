@@ -1887,8 +1887,11 @@ struct StrSlice {
     Int lo_;
     Int hi_;
 
-    StrSlice() : base_(nullptr), lo_(0), hi_(0) {}
     StrSlice(const Str_T& base, Int lo, Int hi) : base_(base), lo_(lo), hi_(hi) {}
+
+    // Note: default constructor for internal use only; does not produce a valid
+    // StrSlice instance.
+    StrSlice() : base_(nullptr), lo_(0), hi_(0) {}
 
     static inline StrSlice from_std_string(string x) {
         Int lo = 0;
