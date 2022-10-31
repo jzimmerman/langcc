@@ -78,6 +78,10 @@ void lang_init_validate(LangCompileContext& ctx) {
                 return;
             }
 
+            if (!node->is_ParseExpr()) {
+                ctx.error(node, "Not permitted in token definition");
+            }
+
             auto e = node->as_ParseExpr();
             if (e->is_Id()) {
                 auto ident = parse_expr_id_to_ident(e->as_Id()->id__);
@@ -106,7 +110,7 @@ void lang_init_validate(LangCompileContext& ctx) {
             } else if (e->is_AttrReq()) {
                 ctx.error(e, "Attr requirements not permitted in lexer token definitions");
             } else {
-                AX();
+                ctx.error(e, "Not permitted in token definition");
             }
         });
     }
