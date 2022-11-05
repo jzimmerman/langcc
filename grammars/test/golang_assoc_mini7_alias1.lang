@@ -2,7 +2,7 @@
 tokens {
     id <- `x`;
     ws <= ` `;
-    top <= id | `...` | `,`;
+    top <= id | `,`;
 }
 
 lexer {

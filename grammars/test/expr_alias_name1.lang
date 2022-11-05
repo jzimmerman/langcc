@@ -5,7 +5,7 @@ tokens {
     digit <= `0`..`9`;
     ws_inline <= (`\r` | `\t` | ` `);
 
-    op <= `:` | `.`;
+    op <= `:`;
 
     top <= id | op;
 }

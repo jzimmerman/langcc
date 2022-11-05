@@ -2,10 +2,8 @@
 tokens {
     a <- `a`;
     b <- `b`;
-    c <- `c`;
-    d <- `d`;
     ws <= ` `;
-    top <= a | b | c | d | `,`;
+    top <= a | b | `,`;
 }
 
 lexer {

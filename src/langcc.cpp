@@ -45,6 +45,13 @@ LangCompileResult_T compile_lang_inner(
     LOG(4, " === wr_map={}\n\ndt_map={}\n\nparent_map={}\n\nrd_map={}\n\n",
         ctx.gen_wr_map_, ctx.gen_dt_map_, ctx.gen_dt_parent_mapping_, ctx.gen_rd_map_);
 
+    if (!ctx.parser_allow_unreach_) {
+        auto unreach_err = parser_check_all_reach(ctx);
+        if (unreach_err.is_some()) {
+            return unreach_err.as_some();
+        }
+    }
+
     auto lr_conflicts = parser_lr_analysis(ctx);
 
     if (lr_conflicts->length() > 0) {

@@ -20,6 +20,8 @@ lexer {
 parser {
     main { S }
 
+    prop { allow_unreach; }
+
     S <- ident _ ident;
 }
 

@@ -60,7 +60,8 @@ struct LangCompileContext {
 
     // Parser metadata
     ParseExprPropsMap_T parse_expr_props_;
-    bool parser_name_strict_;
+    bool parser_name_strict_ { false };
+    bool parser_allow_unreach_ { false };
     VecUniq_T<Ident_T> parser_syms_top_;
     Option_T<string> parser_sym_top_main_;
     Map_T<Ident_T, Rule_T> parser_rules_;
@@ -269,6 +270,7 @@ StringSet_T<Unit> lr_prod_tail_constr_gen(
 GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k, LangCompileContext& ctx);
 Map_T<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>> lr_tabulate_nfa_acc(
     LR_NFA_T N, Set_T<LRVertex_T> vs);
+Option_T<LangCompileResult::Error::SymUnreach_T> parser_check_all_reach(LangCompileContext& ctx);
 Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx);
 
 

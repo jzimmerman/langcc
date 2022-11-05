@@ -345,6 +345,7 @@ namespace langcc {
         }
         def LangCompileResult.Error {}
             def LangCompileResult.Error.LRConf { conflict no_hash: Vec(LRConflict); }
+            def LangCompileResult.Error.SymUnreach { syms: Vec(Sym); }
             def LangCompileResult.Error.Other { desc: Str; }
 
     enum IsOwnDatatype { N; Y; }

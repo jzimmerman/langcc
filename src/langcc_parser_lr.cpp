@@ -1578,6 +1578,52 @@ Int lr_conflict_len_total(LRConflict_T confl) {
 }
 
 
+Option_T<LangCompileResult::Error::SymUnreach_T> parser_check_all_reach(LangCompileContext& ctx) {
+    auto sym_reach = make_rc<Set<Sym_T>>();
+
+    sym_reach->insert(ctx.Gr_flat_->start_.as_some());
+    auto Q = make_rc<Vec<Sym_T>>();
+    Q->push_back(ctx.Gr_flat_->start_.as_some());
+
+    while (!Q->empty()) {
+        auto curr = Q->pop_front_val();
+        if (!Grammar::sym_is_nonterm(curr)) {
+            continue;
+        }
+        for (auto prod : *ctx.Gr_flat_->prods_by_nonterm_->operator[](curr)) {
+            for (auto next : *prod->rhs_) {
+                if (!sym_reach->contains(next)) {
+                    sym_reach->insert(next);
+                    Q->push_back(next);
+                }
+            }
+        }
+    }
+
+    auto ret = make_rc<Vec<Sym_T>>();
+    for (auto sym : *ctx.Gr_flat_->nonterm_) {
+        if (!sym_reach->contains(sym)) {
+            ret->push(sym);
+        }
+    }
+    for (auto sym : *ctx.Gr_flat_->term_) {
+        if (!sym_reach->contains(sym)) {
+            if (sym->is_Term() && sym->as_Term()->tok_->tok_->is_Special()) {
+                continue;
+            }
+            ret->push(sym);
+        }
+    }
+
+    if (ret->length() > 0) {
+        return Some<LangCompileResult::Error::SymUnreach_T>(
+            LangCompileResult::Error::SymUnreach::make(ret));
+    }
+
+    return None<LangCompileResult::Error::SymUnreach_T>();
+}
+
+
 Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
     Int k = ctx.lr_k_;
 

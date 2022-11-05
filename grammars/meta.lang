@@ -8,7 +8,7 @@ tokens {
     kw <= `tokens` | `lexer` | `parser` | `test` | `compile_test`
         | `main` | `mode` | `prop` | `prec` | `attr`
         | `emit` | `pass` | `pop` | `pop_extract` | `pop_emit` | `push`
-        | `name_strict`
+        | `name_strict` | `allow_unreach`
         | `assoc_left` | `assoc_right` | `prefix` | `postfix`
         | `match` | `match_history`
         | `lhs` | `rhs` | `rhs_begin` | `rhs_mid` | `rhs_end`
@@ -20,7 +20,7 @@ tokens {
         | `LR` | `Err`;
 
     op <= `(` | `)` | `{` | `}` | `[` | `]` | `;`
-        | `<-` | `<=` | `<==` | `|` | `*` | `+` | `^` | `-` | `..` | `?` | `!` | `~` | `_`
+        | `<-` | `<=` | `|` | `*` | `+` | `^` | `-` | `..` | `?` | `!` | `~` | `_`
         | `->` | `=>` | `,` | `.` | `.` | `:` | `=`
         | `#T` | `#T2` | `#B` | `#B2` | `#L` | `#Alt`
         | `::` | `::+` | `::++` | `:?`
@@ -108,6 +108,7 @@ parser {
         _ e:ParseExpr `;`;
 
         ParserProp.NameStrict <- `name_strict`;
+        ParserProp.AllowUnreach <- `allow_unreach`;
         ParserProp.LRSpec <- `LR` `(` k:int_lit `)`;
         ParserProp.Err_ <- `Err`;
 

@@ -4,27 +4,11 @@ tokens {
 
     ws_inline <= `\r` | `\t` | ` `;
 
-    kw <= `break`    | `default`     | `func`   | `interface` | `select`
-        | `case`     | `defer`       | `go`     | `map`       | `struct`
-        | `chan`     | `else`        | `goto`   | `package`   | `switch`
-        | `const`    | `fallthrough` | `if`     | `range`     | `type`
-        | `continue` | `for`         | `import` | `return`    | `var`;
+    kw <= `func` | `for`;
 
-    op <= `+` | `&`  |  `&&` | `==` | `!=`  | `(` | `)`
-        | `-` | `|`  |  `||` | `<`  | `<=`  | `[` | `]`
-        | `*` | `^`  |  `<-` | `>`  | `>=`  | `{` | `}`
-        | `/` | `<<` | `++`  | `=`  | `:=`  | `,` | `;`
-        | `%` | `>>` | `--`  | `!`  | `...` | `.` | `:`
-              | `&^` ;
+    op <= `(` | `)` | `{` | `}` | `*` | `;`;
 
-    op_assign <- `&^=`
-               | `+=` | `&=`
-               | `-=` | `|=`
-               | `*=` | `^=`
-               | `/=` | `<<=`
-               | `%=` | `>>=`;
-
-    top <= id | kw | op | op_assign;
+    top <= id | kw | op;
 }
 
 

@@ -1,6 +1,6 @@
 
 tokens {
-    top <= `a` | `b` | `,` | `;`;
+    top <= `a` | `b` | `,`;
 }
 
 lexer {

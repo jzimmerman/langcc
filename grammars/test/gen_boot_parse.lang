@@ -7,7 +7,7 @@ tokens {
 
     kw <= `nil` | `some` | `none` | `false` | `true` | `vector` | `prod` | `term` | `data`;
 
-    op <= `(` | `)` | `::` | `,`;
+    op <= `(` | `)` | `,`;
 
     top <= id | kw | op;
 }
