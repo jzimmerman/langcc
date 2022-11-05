@@ -1004,7 +1004,7 @@ inline void pr_debug(ostream& os, FmtFlags flags, bool x) {
 }
 
 inline void pr(ostream& os, FmtFlags flags, Ch x) {
-    os << utf8_encode(x);
+    os << static_cast<uint32_t>(x);
 }
 
 inline void pr_debug(ostream& os, FmtFlags flags, Ch x) {
