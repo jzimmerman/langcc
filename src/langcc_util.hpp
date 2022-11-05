@@ -3218,8 +3218,8 @@ struct VecUniq: enable_rc_from_this<VecUniq<T>> {
     Map<T, Int> inds_;
 
     VecUniq<T> operator=(const VecUniq<T>&) = delete;
-    VecUniq<T>(const VecUniq<T>&) = delete;
-    VecUniq<T>(VecUniq<T>&&) = delete;
+    VecUniq(const VecUniq<T>&) = delete;
+    VecUniq(VecUniq<T>&&) = delete;
 
     inline VecUniq() {}
 
