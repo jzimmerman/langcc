@@ -238,7 +238,7 @@ struct ParseOutput : enable_rc_from_this<ParseOutput<Node, FAcc, FStep>> {
         LexOutput_T lex, ParseError_T err);
 };
 
-__attribute__((noinline)) Ch lex_decode_utf8(const char* x, Int& i, Int n);
+inline __attribute__((always_inline)) Ch lex_decode_utf8(const char* x, Int& i, Int n);
 
 template<typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 struct NodeAllocDecrefObj: NodeAllocDecrefInterface {
@@ -1384,7 +1384,7 @@ inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T& input, Arena* A
     return st->out_;
 }
 
-__attribute__((noinline)) Ch lex_decode_utf8(const char* x, Int& i, Int n) {
+inline __attribute__((always_inline)) Ch lex_decode_utf8(const char* x, Int& i, Int n) {
     char ch = x[i];
     Ch ch_full = 0;
     if ((ch & 0xe0) == 0xc0) {
@@ -1542,7 +1542,7 @@ struct ParserProcState {
     Gensym* unw_gen_;
     Arena* unw_arena_;
 
-    __attribute__((noinline)) void destroy_arrays() {
+    inline __attribute__((always_inline)) void destroy_arrays() {
         free_ext(this->Sv_addr_, this->unw_arena_);
         free_ext(this->Ss_addr_, this->unw_arena_);
         free_ext(this->Sr_addr_, this->unw_arena_);

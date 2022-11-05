@@ -1615,7 +1615,7 @@ struct Vec: enable_rc_from_this<Vec<T>> {
         return ret;
     }
 
-    __attribute__((noinline)) void reserve_unchecked(Int cap_new) {
+    inline __attribute__((always_inline)) void reserve_unchecked(Int cap_new) {
         auto addr_old = this->alloc_addr();
         auto addr_new = reinterpret_cast<T*>(malloc_ext(cap_new * sizeof(T), A_));
 
