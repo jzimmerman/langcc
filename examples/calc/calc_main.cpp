@@ -158,9 +158,7 @@ int main(int argc, char** argv) {
             return 0;
         }
 
-        auto gen = make_rc<Gensym>();
-        auto parse = L->parse_ext(
-            vec_from_std_string(l), None<string>(), gen, nullptr);
+        auto parse = Q->parse(l);
 
         if (!parse->is_success()) {
             LG_ERR("\nParse error: {}\n", parse->err_.as_some());
