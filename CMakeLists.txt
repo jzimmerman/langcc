@@ -74,9 +74,6 @@ add_executable(langcc
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_main.cpp
 )
 
-add_library(langcc_lib INTERFACE)
-target_include_directories(langcc_lib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
 #
 # Compile options
 #
