@@ -1,9 +1,6 @@
 
 tokens {
     str_lit <- false;  // Emitted by lexer mode
-
-        raw_str_lit_item <= unicode_any - `\``;
-
     top <= str_lit;
 }
 

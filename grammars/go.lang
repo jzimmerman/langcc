@@ -49,14 +49,6 @@ tokens {
 
     str_lit <- false;  // Emitted by lexer modes
 
-        interpreted_str_lit_item <=
-            str_char_proper | str_char_esc_builtin | char_esc_val;
-
-            str_char_proper <= unicode_any - (`\n` | `"` | `\\`);
-            str_char_esc_builtin <= `\\` (esc_char_arg_builtin | `"`);
-
-        raw_str_lit_item <= unicode_any - `\``;
-
     int_lit <- int_lit_def;
 
         int_lit_def <= dec_lit | bin_lit | oct_lit | hex_lit;

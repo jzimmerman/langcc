@@ -199,6 +199,7 @@ Vec_T<Lexer_TopTokenInd> lexer_token_inds_emit_reachable(
     ParseExpr_Base_T e, LangCompileContext& ctx);
 Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_compile_dfas(
     LangCompileContext& ctx);
+Option_T<LangCompileResult::Error::LexUnreach_T> lexer_check_all_reach(LangCompileContext& ctx);
 
 
 // Flattening

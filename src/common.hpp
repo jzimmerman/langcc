@@ -637,9 +637,14 @@ inline void pr(ostream& os, FmtFlags flags, LangCompileResult::Error_T x) {
             ++conf_i;
         }
     } else if (x->is_SymUnreach()) {
-        fmt(os, " ===== Unreachable symbols (add `prop {{ allow_unreach; }}` to override):\n");
+        fmt(os, " ===== Unreachable symbols (add `prop {{ allow_unreach; }}` to parser stanza to override):\n");
         for (auto sym : *x->as_SymUnreach()->syms_) {
             fmt(os, "  - {}\n", sym);
+        }
+    } else if (x->is_LexUnreach()) {
+        fmt(os, " ===== Unreachable symbols (add `prop {{ allow_unreach; }}` to parser stanza to override):\n");
+        for (auto id : *x->as_LexUnreach()->ids_) {
+            fmt(os, "  - {}\n", id);
         }
     } else if (x->is_Other()) {
         fmt(os, "Lang compilation error: {}", x->as_Other()->desc_);

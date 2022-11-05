@@ -115,6 +115,109 @@ void lang_init_validate_tabulate_lexer_instr_emit_rec(
 }
 
 
+void lexer_check_all_reach_visit_instr(
+    lang::meta::Node::LexerInstr_T instr, Map_T<Ident_T, ParseExpr_T>& id_reach,
+    Vec_T<Ident_T>& Q) {
+
+    if (instr->is_Emit()) {
+        auto cc = instr->as_Emit();
+        if (cc->arg_.is_some()) {
+            auto x = cc->arg_.as_some();
+            if (x->is_Id()) {
+                auto x_id = parse_expr_id_to_ident(x->as_Id()->id__);
+                if (!id_reach->contains_key(x_id)) {
+                    id_reach->insert(x_id, x);
+                    Q->push_back(x_id);
+                }
+            }
+        }
+    } else if (instr->is_Pass() || instr->is_Push() || instr->is_Pop() || instr->is_PopExtract()) {
+        // pass
+    } else if (instr->is_PopEmit()) {
+        auto cc = instr->as_PopEmit();
+        auto x = cc->arg_;
+        if (x->is_Id()) {
+            auto x_id = parse_expr_id_to_ident(x->as_Id()->id__);
+            if (!id_reach->contains_key(x_id)) {
+                id_reach->insert(x_id, x);
+                Q->push_back(x_id);
+            }
+        }
+    } else if (instr->is_MatchHistory()) {
+        for (auto case_sub : *instr->as_MatchHistory()->cases_) {
+            for (auto instr_sub : *case_sub->instrs_) {
+                lexer_check_all_reach_visit_instr(instr_sub, id_reach, Q);
+            }
+        }
+    } else {
+        AX();
+    }
+}
+
+
+Option_T<LangCompileResult::Error::LexUnreach_T> lexer_check_all_reach(LangCompileContext& ctx) {
+    auto id_reach = make_rc<Map<Ident_T, ParseExpr_T>>();
+    auto Q = make_rc<Vec<Ident_T>>();
+
+    for (auto mode : ctx.lexer_modes_) {
+        for (auto case_ : *mode->cases_) {
+            if (case_->tok_->is_Id()) {
+                auto x_id = parse_expr_id_to_ident(case_->tok_->as_Id()->id__);
+                if (!id_reach->contains_key(x_id)) {
+                    id_reach->insert(x_id, case_->tok_);
+                    Q->push_back(x_id);
+                }
+            } else if (case_->tok_->is_Alt()) {
+                for (auto x : *case_->tok_->as_Alt()->xs_) {
+                    if (x->is_Id()) {
+                        auto x_id = parse_expr_id_to_ident(x->as_Id()->id__);
+                        if (!id_reach->contains_key(x_id)) {
+                            id_reach->insert(x_id, x);
+                            Q->push_back(x_id);
+                        }
+                    }
+                }
+            }
+
+            for (auto instr : *case_->instrs_) {
+                lexer_check_all_reach_visit_instr(instr, id_reach, Q);
+            }
+        }
+    }
+
+    while (!Q->empty()) {
+        auto curr = Q->pop_front_val();
+        if (!ctx.tokens_def_.contains_key(curr)) {
+            ctx.error(id_reach->operator[](curr), "Identifier not found in lexer tokens");
+        }
+        visit_lang_meta_Node(ctx.tokens_def_[curr], [&](lang::meta::Node_T sub) {
+            if (sub->is_ParseExpr() && sub->as_ParseExpr()->is_Id()) {
+                auto sub_id = parse_expr_id_to_ident(sub->as_ParseExpr()->as_Id()->id__);
+                if (!id_reach->contains_key(sub_id)) {
+                    id_reach->insert(sub_id, sub->as_ParseExpr());
+                    Q->push_back(sub_id);
+                }
+            }
+        });
+    }
+
+    auto ret = make_rc<Vec<Ident_T>>();
+    for (auto def : ctx.tokens_def_) {
+        if (!id_reach->contains_key(def.first)) {
+            ret->push(def.first);
+        }
+    }
+
+    if (ret->length() > 0) {
+        return Some<LangCompileResult::Error::LexUnreach_T>(
+            LangCompileResult::Error::LexUnreach::make(ret));
+    }
+
+    return None<LangCompileResult::Error::LexUnreach_T>();
+}
+
+
+
 void lexer_extract_alias_toks_sub_acc(
     Vec<ParseExpr_Base_T>& dst, meta::Node::ParseExpr_T x, ParseExpr_Base_T root,
     LangCompileContext& ctx) {
