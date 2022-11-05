@@ -1505,8 +1505,8 @@ struct Vec: enable_rc_from_this<Vec<T>> {
     Int cap_;
 
     Vec<T> operator=(const Vec<T>&) = delete;
-    Vec<T>(const Vec<T>&) = delete;
-    Vec<T>(Vec<T>&&) = delete;
+    Vec(const Vec<T>&) = delete;
+    Vec(Vec<T>&&) = delete;
 
     inline void _init() {
         arr_ = reinterpret_cast<T*>(malloc_ext(cap_ * sizeof(T), A_));
