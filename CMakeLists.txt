@@ -19,9 +19,9 @@ endif ()
 find_package(LLVM REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
-if (NOT MACOSX)
-  find_package(Unwind REQUIRED)
-endif ()
+# if (NOT MACOSX)
+#   find_package(Unwind REQUIRED)
+# endif ()
 
 
 #
@@ -88,6 +88,6 @@ foreach (_project datacc langcc)
   # Libraries
   #
   if (NOT MACOSX)
-    target_link_libraries(${_project} PRIVATE Unwind::unwind)
+    target_link_libraries(${_project} PRIVATE unwind)
   endif ()
 endforeach ()
