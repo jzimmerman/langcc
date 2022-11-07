@@ -1,7 +1,7 @@
 
 tokens {
     a <- `a`;
-    top <= a | `,`;
+    top <= a;
 }
 
 lexer {

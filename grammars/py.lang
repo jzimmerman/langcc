@@ -26,7 +26,6 @@ tokens {
         | `*=`  | `/=`  | `%=`  | `&=`  | `|=`  | `^=`  | `//`  | `@=`
         | `:=`  | `->`  | `<<=` | `>>=` | `**=` | `//=` | `...` ;
 
-    unicode_non_newline <= unicode_any - `\n`;
     unicode_non_backslash <= unicode_any - `\\`;
     ascii_non_backslash <= ascii_base_any - `\\`;
 

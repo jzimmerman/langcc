@@ -454,6 +454,16 @@ struct QuoteEnv {
     inline rc_ptr<Node> qq_def(const Args&... args) {
         return this->qq_ext(None<string>(), args...);
     }
+
+    inline ParseOutput_T<Node, FAcc, FStep> parse_ext(
+        string input, Option_T<string> sym_target, Arena* A) {
+
+        return L_->parse_ext(vec_from_std_string(input), sym_target, gen_, A);
+    }
+
+    inline ParseOutput_T<Node, FAcc, FStep> parse(string input) {
+        return this->parse_ext(input, None<string>(), nullptr);
+    }
 };
 
 

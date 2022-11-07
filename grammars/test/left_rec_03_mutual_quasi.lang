@@ -1,5 +1,5 @@
 tokens {
-    top <= `a` | `b` | `x` | `y` | `+`;
+    top <= `a` | `x` | `+`;
 }
 
 lexer {

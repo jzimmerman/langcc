@@ -280,6 +280,14 @@ namespace lang::meta::Node::ParserProp {
     using NameStrict_T = langcc::rc_ptr<lang::meta::Node::ParserProp::NameStrict::_T>;
 }
 
+namespace lang::meta::Node::ParserProp::AllowUnreach {
+    struct _T;
+}
+
+namespace lang::meta::Node::ParserProp {
+    using AllowUnreach_T = langcc::rc_ptr<lang::meta::Node::ParserProp::AllowUnreach::_T>;
+}
+
 namespace lang::meta::Node::ParserProp::LRSpec {
     struct _T;
 }
@@ -1650,6 +1658,7 @@ namespace langcc {
 namespace lang::meta::Node::ParserProp {
     enum struct _W {
         NameStrict,
+        AllowUnreach,
         LRSpec,
         Err_,
     };
@@ -1663,22 +1672,28 @@ namespace lang::meta::Node::ParserProp {
         virtual ~_T();
         _T(lang::meta::Node::ParserProp::_W w);
         bool is_NameStrict();
+        bool is_AllowUnreach();
         bool is_LRSpec();
         bool is_Err_();
         lang::meta::Node::ParserProp::NameStrict_T as_NameStrict();
+        lang::meta::Node::ParserProp::AllowUnreach_T as_AllowUnreach();
         lang::meta::Node::ParserProp::LRSpec_T as_LRSpec();
         lang::meta::Node::ParserProp::Err__T as_Err_();
-        void match(std::function<void(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<void(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<void(lang::meta::Node::ParserProp::Err__T)> f_Err_);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_);
+        void match(std::function<void(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<void(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<void(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<void(lang::meta::Node::ParserProp::Err__T)> f_Err_);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_);
         void hash_ser_acc_lang_meta_Node_ParserProp(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_) {
+template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_) {
     switch (this->w_) {
         case lang::meta::Node::ParserProp::_W::NameStrict: {
             return f_NameStrict(this->as_NameStrict());
+            break;
+        }
+        case lang::meta::Node::ParserProp::_W::AllowUnreach: {
+            return f_AllowUnreach(this->as_AllowUnreach());
             break;
         }
         case lang::meta::Node::ParserProp::_W::LRSpec: {
@@ -2981,6 +2996,34 @@ namespace lang::meta::Node::ParserProp::NameStrict {
         lang::meta::Node::ParserProp::NameStrict_T with_attr(langcc::ParserAttrMask attr);
         lang::meta::Node::ParserProp::NameStrict_T with_first_k(langcc::ParserLookahead first_k);
         void hash_ser_acc_lang_meta_Node_ParserProp_NameStrict(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::AllowUnreach_T x);
+}
+
+namespace lang::meta::Node::ParserProp::AllowUnreach {
+    lang::meta::Node::ParserProp::AllowUnreach_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k);
+}
+
+namespace lang::meta::Node::ParserProp::AllowUnreach {
+    lang::meta::Node::ParserProp::AllowUnreach_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k);
+}
+
+namespace lang::meta::Node::ParserProp::AllowUnreach {
+    struct _T: lang::meta::Node::ParserProp::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        _T();
+        lang::meta::Node::ParserProp::AllowUnreach_T with_id(langcc::Int id);
+        lang::meta::Node::ParserProp::AllowUnreach_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::ParserProp::AllowUnreach_T with_is_top(bool is_top);
+        lang::meta::Node::ParserProp::AllowUnreach_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::ParserProp::AllowUnreach_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::ParserProp::AllowUnreach_T with_first_k(langcc::ParserLookahead first_k);
+        void hash_ser_acc_lang_meta_Node_ParserProp_AllowUnreach(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
     };
 }
@@ -5062,6 +5105,8 @@ void visit_lang_meta_Node(lang::meta::Node::ParserDecl::Main_T x, std::function<
 
 void visit_lang_meta_Node(lang::meta::Node::ParserProp::NameStrict_T x, std::function<void(lang::meta::Node_T)> f);
 
+void visit_lang_meta_Node(lang::meta::Node::ParserProp::AllowUnreach_T x, std::function<void(lang::meta::Node_T)> f);
+
 void visit_lang_meta_Node(lang::meta::Node::ParserProp::LRSpec_T x, std::function<void(lang::meta::Node_T)> f);
 
 void visit_lang_meta_Node(lang::meta::Node::ParserProp::Err__T x, std::function<void(lang::meta::Node_T)> f);
@@ -5279,6 +5324,8 @@ lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::Stanza::Lexer_T x, st
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserDecl::Main_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::NameStrict_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::AllowUnreach_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::LRSpec_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
@@ -5511,6 +5558,8 @@ lang::meta::Node::ParserDecl::Prop_T xform_lang_meta_Node(lang::meta::Node::Pars
 lang::meta::Node::ParserProp_T xform_lang_meta_Node(lang::meta::Node::ParserProp_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::ParserProp::NameStrict_T xform_lang_meta_Node(lang::meta::Node::ParserProp::NameStrict_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node::ParserProp::AllowUnreach_T xform_lang_meta_Node(lang::meta::Node::ParserProp::AllowUnreach_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::ParserProp::LRSpec_T xform_lang_meta_Node(lang::meta::Node::ParserProp::LRSpec_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 

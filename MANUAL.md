@@ -63,6 +63,9 @@ The following are valid command-line options for `langcc`:
 - `-vvv`: Verbose level 3.
 - `-vvvv`: Verbose level 4.
 
+`langcc` outputs code intended to be compiled with `clang++` using the C++'17 standard,
+and the generated parsers accept input encoded in UTF-8.
+
 ### datacc
 
 `datacc` is an internal component which `langcc` uses to generate many of its

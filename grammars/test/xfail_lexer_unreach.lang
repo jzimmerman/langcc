@@ -2,7 +2,7 @@
 tokens {
     a <- `a`;
     b <- `b`;
-    top <= a | b;
+    top <= a;
 }
 
 lexer {
@@ -17,20 +17,10 @@ lexer {
 parser {
     main { S }
 
-    X.A <- a;
-    X.B <- b;
+    prop { Err; }
 
-    S <- #L[X::eps];
+    S <- a;
 }
 
 test {
-    `a`;
-    `ab`;
-    `ba`;
-    `aa`;
-    ``;
-    `aba`;
-    `aabb`;
-    `ba##,`;
-    `a##,`;
 }

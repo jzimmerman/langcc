@@ -22,6 +22,13 @@ LangCompileResult_T compile_lang_inner(
 
     LOG(1, "Compiling lexer");
 
+    if (!ctx.parser_allow_unreach_) {
+        auto unreach_err = lexer_check_all_reach(ctx);
+        if (unreach_err.is_some()) {
+            return unreach_err.as_some();
+        }
+    }
+
     auto lexer_mode_dfas = lexer_compile_dfas(ctx);
 
     lexer_gen_cpp_defs(ctx, ctx.cc_, src_base_name, lexer_mode_dfas);
@@ -44,6 +51,13 @@ LangCompileResult_T compile_lang_inner(
 
     LOG(4, " === wr_map={}\n\ndt_map={}\n\nparent_map={}\n\nrd_map={}\n\n",
         ctx.gen_wr_map_, ctx.gen_dt_map_, ctx.gen_dt_parent_mapping_, ctx.gen_rd_map_);
+
+    if (!ctx.parser_allow_unreach_) {
+        auto unreach_err = parser_check_all_reach(ctx);
+        if (unreach_err.is_some()) {
+            return unreach_err.as_some();
+        }
+    }
 
     auto lr_conflicts = parser_lr_analysis(ctx);
 

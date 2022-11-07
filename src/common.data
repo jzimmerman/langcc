@@ -9,14 +9,6 @@ namespace langcc {
 
     def Ident { xs: Vec(IdentBase); }
 
-    def MetaVar { id: Ident; }
-
-    def BaseAttrReq {
-        id: Ident;
-        negate: bool;
-        bound: Option(Int);
-    }
-
     enum TokenBaseSpecial {
         Indent;
         Dedent;
@@ -353,6 +345,8 @@ namespace langcc {
         }
         def LangCompileResult.Error {}
             def LangCompileResult.Error.LRConf { conflict no_hash: Vec(LRConflict); }
+            def LangCompileResult.Error.LexUnreach { ids: Vec(Ident); }
+            def LangCompileResult.Error.SymUnreach { syms: Vec(Sym); }
             def LangCompileResult.Error.Other { desc: Str; }
 
     enum IsOwnDatatype { N; Y; }

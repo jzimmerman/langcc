@@ -477,6 +477,8 @@ void lang_init_validate(LangCompileContext& ctx) {
             for (auto prop : *decl->as_Prop()->props_) {
                 if (prop->is_NameStrict()) {
                     ctx.parser_name_strict_ = true;
+                } else if (prop->is_AllowUnreach()) {
+                    ctx.parser_allow_unreach_ = true;
                 }
             }
 

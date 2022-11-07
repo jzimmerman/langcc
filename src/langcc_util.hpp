@@ -225,7 +225,7 @@ void free_ext(void* x, Arena* A);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Non-atomic reference-counted pointers
+// Reference-counted pointers
 ////////////////////////////////////////////////////////////////////////////////
 
 template<typename T> struct rc_ptr {
@@ -1218,7 +1218,7 @@ inline Int& get_init_time_inner() {
 
 inline void init_time_system() {
     if (get_init_time_inner() != -1) {
-        AX("Time system initialized more than once");
+        return;
     }
     get_init_time_inner() = now();
 }
@@ -1226,7 +1226,8 @@ inline void init_time_system() {
 inline Int get_init_time() {
     Int ret = get_init_time_inner();
     if (ret == -1) {
-        AX("Time system not initialized; must call global_init");
+        init_time_system();
+        ret = get_init_time_inner();
     }
     return ret;
 }
@@ -3672,7 +3673,15 @@ inline void sig_handler_live(i32) {
     dump_stack();
 }
 
+inline bool& get_handlers_needs_init() {
+    static bool _handlers_needs_init = true;
+    return _handlers_needs_init;
+}
+
 inline void init_handlers() {
+    if (!get_handlers_needs_init()) {
+        return;
+    }
     signal(SIGSEGV, sig_handler);
     signal(SIGBUS, sig_handler);
     signal(SIGILL, sig_handler);
@@ -3680,6 +3689,7 @@ inline void init_handlers() {
     signal(SIGQUIT, sig_handler);
     signal(SIGUSR1, sig_handler_live);
     set_terminate(term_handler);
+    get_handlers_needs_init() = false;
 }
 
 inline void kill_child_proc(pid_t pid) {

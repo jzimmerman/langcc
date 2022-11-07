@@ -25,16 +25,12 @@ parser {
     S.cWb <- c ~W b;
     S.dWa <- d ~W a;
 
-    X <- c ~Xr;
-    Y <- c ~Yr ~Cm;
     Z <- c ~Zr ~Cm;
     W <- c ~Wr c;
 
     Cm.e <- eps;
     Cm.c <- c;
 
-    Xr <- c c c;
-    Yr <- c c c;
     Zr <- c c c;
     Wr <- c c c;
 
