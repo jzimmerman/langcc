@@ -5,34 +5,9 @@ set (PROJECT_SUMMARY "A Next-Generation Compiler Compiler")
 set(CMAKE_CXX_STANDARD 17)
 
 #
-# OS flags
-#
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(MACOSX TRUE)
-else ()
-  set(MACOSX FALSE)
-endif ()
-
-#
-# Find dependencies
-#
-find_package(LLVM REQUIRED CONFIG)
-message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
-# if (NOT MACOSX)
-#   find_package(Unwind REQUIRED)
-# endif ()
-
-
-#
-# Add LLVM definitions
-separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
-add_definitions(${LLVM_DEFINITIONS_LIST})
-
-#
 # Set include directories
 #
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/gen ${LLVM_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/gen)
 
 #
 # Create datacc target
@@ -73,21 +48,3 @@ add_executable(langcc
   ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_main.cpp
 )
-
-#
-# Compile options
-#
-foreach (_project datacc langcc)
-  #
-  # Enable some C++ compiler flags when supported
-  #
-  target_compile_options(${_project} PRIVATE
-    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
-    -Wno-attributes>)
-  #
-  # Libraries
-  #
-  if (NOT MACOSX)
-    target_link_libraries(${_project} PRIVATE unwind)
-  endif ()
-endforeach ()

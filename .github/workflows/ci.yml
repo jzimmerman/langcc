@@ -1,4 +1,4 @@
-name: macOS CI
+name: CI
 
 on:
   push:
@@ -8,8 +8,16 @@ on:
 
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - macos-11
+          - macos-12
 
-    runs-on: macos-12
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
@@ -17,8 +25,6 @@ jobs:
       run: git clone -b go1.17.8 --single-branch https://github.com/golang/go ../go
     - name: clone_python
       run: git clone -b v3.9.12 --single-branch https://github.com/python/cpython ../cpython
-    - name: install_deps
-      run: ./deps_macos.sh
     - name: make_single_test
       run: make -j8 build/unittest_lang
     - name: single_test1

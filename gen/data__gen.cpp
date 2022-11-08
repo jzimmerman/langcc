@@ -152,7 +152,7 @@ namespace lang::data::lexer::body {
 }
 
 namespace lang::data::lexer::body {
-    __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
+    inline __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
         switch (v) {
             case 0: {
                 return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
@@ -435,7 +435,7 @@ namespace lang::data::lexer::body {
 }
 
 namespace lang::data::lexer::body {
-    __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
+    inline __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
         auto ret = std::make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
@@ -474,7 +474,7 @@ namespace lang::data::lexer::comment_single {
 }
 
 namespace lang::data::lexer::comment_single {
-    __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
+    inline __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
         switch (v) {
             case 0: {
                 return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
@@ -493,7 +493,7 @@ namespace lang::data::lexer::comment_single {
 }
 
 namespace lang::data::lexer::comment_single {
-    __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
+    inline __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
         auto ret = std::make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
