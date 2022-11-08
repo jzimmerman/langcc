@@ -182,26 +182,9 @@ LangCompileResult_T compile_lang_full(
     if (run_tests == RunTests::Y) {
         makedirs("build/gen_test_bin");
 
-#ifdef __APPLE__
-        string sdkroot = STRINGIFY(__MACOS_SDKROOT__);
-        setenv("SDKROOT", sdkroot.c_str(), 1);
-#endif
-
         Vec<string> cmds;
         string cc = STRINGIFY(__CC__);
         cmds.push(cc);
-
-#ifndef __APPLE__
-        cmds.push("-Wno-attributes");
-#endif
-
-#ifdef __APPLE__
-        cmds.push("-D");
-        cmds.push(fmt_str("__MACOS_SDKROOT__={}", sdkroot));
-        cmds.push("-isystem");
-        cmds.push("/usr/local/include");
-#endif
-
         cmds.push("-o");
         auto tgt_path = fmt_str("build/gen_test_bin/{}__gen_test",
             lang_get_src_base_name(src_path));
@@ -210,10 +193,6 @@ LangCompileResult_T compile_lang_full(
         cmds.push("-ggdb");
         cmds.push("-g3");
         cmds.push("-std=c++17");
-        cmds.push("-fno-omit-frame-pointer");
-#ifdef __APPLE__
-        cmds.push("-mmacosx-version-min=12.0");
-#endif
         cmds.push("-I");
         cmds.push(fmt_str("./{}", dst_path));
         cmds.push("-I");
@@ -222,10 +201,6 @@ LangCompileResult_T compile_lang_full(
             cmds.push(res->as_Ok()->cpp_path_);
         }
         cmds.push(res->as_Ok()->cpp_test_path_);
-#ifndef __APPLE__
-        cmds.push("-lunwind");
-#endif
-        cmds.push("-ldl");
 
         string cmd;
         for (auto cmd_i : cmds) {

@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Set include directories
 #
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/gen)
-
+add_compile_definitions(__CC__=${CMAKE_CXX_COMPILER})
 #
 # Create datacc target
 #

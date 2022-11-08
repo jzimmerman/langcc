@@ -37,7 +37,7 @@ all: \
 	$(BUILD)/py_standalone_bidir_test
 
 CC = clang++
-CFLAGS = -I./src -I./gen -g -ggdb -g3 -O3 -std=c++17
+CFLAGS = -I./src -I./gen -g -ggdb -g3 -O3 -std=c++17 -D__CC__=$(CC)
 
 HPP_SRC = $(wildcard src/*.hpp)
 
