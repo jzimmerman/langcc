@@ -598,7 +598,17 @@ lang::data::Node::Module_T lang::data::Node::_T::as_Module() {
     return this->rc_from_this_poly<lang::data::Node::Module::_T>();
 }
 
+const lang::data::Node::Module_T lang::data::Node::_T::as_Module() const {
+    langcc::AT(this->is_Module());
+    return this->rc_from_this_poly<lang::data::Node::Module::_T>();
+}
+
 lang::data::Node::Param_T lang::data::Node::_T::as_Param() {
+    langcc::AT(this->is_Param());
+    return this->rc_from_this_poly<lang::data::Node::Param::_T>();
+}
+
+const lang::data::Node::Param_T lang::data::Node::_T::as_Param() const {
     langcc::AT(this->is_Param());
     return this->rc_from_this_poly<lang::data::Node::Param::_T>();
 }
@@ -608,7 +618,17 @@ lang::data::Node::SumId_T lang::data::Node::_T::as_SumId() {
     return this->rc_from_this_poly<lang::data::Node::SumId::_T>();
 }
 
+const lang::data::Node::SumId_T lang::data::Node::_T::as_SumId() const {
+    langcc::AT(this->is_SumId());
+    return this->rc_from_this_poly<lang::data::Node::SumId::_T>();
+}
+
 lang::data::Node::Id_T lang::data::Node::_T::as_Id() {
+    langcc::AT(this->is_Id());
+    return this->rc_from_this_poly<lang::data::Node::Id::_T>();
+}
+
+const lang::data::Node::Id_T lang::data::Node::_T::as_Id() const {
     langcc::AT(this->is_Id());
     return this->rc_from_this_poly<lang::data::Node::Id::_T>();
 }
@@ -618,7 +638,17 @@ lang::data::Node::Decl_T lang::data::Node::_T::as_Decl() {
     return this->rc_from_this_poly<lang::data::Node::Decl::_T>();
 }
 
+const lang::data::Node::Decl_T lang::data::Node::_T::as_Decl() const {
+    langcc::AT(this->is_Decl());
+    return this->rc_from_this_poly<lang::data::Node::Decl::_T>();
+}
+
 lang::data::Node::Mod_T lang::data::Node::_T::as_Mod() {
+    langcc::AT(this->is_Mod());
+    return this->rc_from_this_poly<lang::data::Node::Mod::_T>();
+}
+
+const lang::data::Node::Mod_T lang::data::Node::_T::as_Mod() const {
     langcc::AT(this->is_Mod());
     return this->rc_from_this_poly<lang::data::Node::Mod::_T>();
 }
@@ -628,7 +658,17 @@ lang::data::Node::Entry_T lang::data::Node::_T::as_Entry() {
     return this->rc_from_this_poly<lang::data::Node::Entry::_T>();
 }
 
+const lang::data::Node::Entry_T lang::data::Node::_T::as_Entry() const {
+    langcc::AT(this->is_Entry());
+    return this->rc_from_this_poly<lang::data::Node::Entry::_T>();
+}
+
 lang::data::Node::Expr_T lang::data::Node::_T::as_Expr() {
+    langcc::AT(this->is_Expr());
+    return this->rc_from_this_poly<lang::data::Node::Expr::_T>();
+}
+
+const lang::data::Node::Expr_T lang::data::Node::_T::as_Expr() const {
     langcc::AT(this->is_Expr());
     return this->rc_from_this_poly<lang::data::Node::Expr::_T>();
 }
@@ -1392,7 +1432,17 @@ lang::data::Node::Decl::Include_T lang::data::Node::Decl::_T::as_Include() {
     return this->rc_from_this_poly<lang::data::Node::Decl::Include::_T>();
 }
 
+const lang::data::Node::Decl::Include_T lang::data::Node::Decl::_T::as_Include() const {
+    langcc::AT(this->is_Include());
+    return this->rc_from_this_poly<lang::data::Node::Decl::Include::_T>();
+}
+
 lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::_T::as_Namespace() {
+    langcc::AT(this->is_Namespace());
+    return this->rc_from_this_poly<lang::data::Node::Decl::Namespace::_T>();
+}
+
+const lang::data::Node::Decl::Namespace_T lang::data::Node::Decl::_T::as_Namespace() const {
     langcc::AT(this->is_Namespace());
     return this->rc_from_this_poly<lang::data::Node::Decl::Namespace::_T>();
 }
@@ -1402,7 +1452,17 @@ lang::data::Node::Decl::Data_T lang::data::Node::Decl::_T::as_Data() {
     return this->rc_from_this_poly<lang::data::Node::Decl::Data::_T>();
 }
 
+const lang::data::Node::Decl::Data_T lang::data::Node::Decl::_T::as_Data() const {
+    langcc::AT(this->is_Data());
+    return this->rc_from_this_poly<lang::data::Node::Decl::Data::_T>();
+}
+
 lang::data::Node::Decl::Enum_T lang::data::Node::Decl::_T::as_Enum() {
+    langcc::AT(this->is_Enum());
+    return this->rc_from_this_poly<lang::data::Node::Decl::Enum::_T>();
+}
+
+const lang::data::Node::Decl::Enum_T lang::data::Node::Decl::_T::as_Enum() const {
     langcc::AT(this->is_Enum());
     return this->rc_from_this_poly<lang::data::Node::Decl::Enum::_T>();
 }
@@ -1484,12 +1544,27 @@ lang::data::Node::Mod::Mut_T lang::data::Node::Mod::_T::as_Mut() {
     return this->rc_from_this_poly<lang::data::Node::Mod::Mut::_T>();
 }
 
+const lang::data::Node::Mod::Mut_T lang::data::Node::Mod::_T::as_Mut() const {
+    langcc::AT(this->is_Mut());
+    return this->rc_from_this_poly<lang::data::Node::Mod::Mut::_T>();
+}
+
 lang::data::Node::Mod::Xform_T lang::data::Node::Mod::_T::as_Xform() {
     langcc::AT(this->is_Xform());
     return this->rc_from_this_poly<lang::data::Node::Mod::Xform::_T>();
 }
 
+const lang::data::Node::Mod::Xform_T lang::data::Node::Mod::_T::as_Xform() const {
+    langcc::AT(this->is_Xform());
+    return this->rc_from_this_poly<lang::data::Node::Mod::Xform::_T>();
+}
+
 lang::data::Node::Mod::Visit_T lang::data::Node::Mod::_T::as_Visit() {
+    langcc::AT(this->is_Visit());
+    return this->rc_from_this_poly<lang::data::Node::Mod::Visit::_T>();
+}
+
+const lang::data::Node::Mod::Visit_T lang::data::Node::Mod::_T::as_Visit() const {
     langcc::AT(this->is_Visit());
     return this->rc_from_this_poly<lang::data::Node::Mod::Visit::_T>();
 }
@@ -1559,7 +1634,17 @@ lang::data::Node::Entry::Field_T lang::data::Node::Entry::_T::as_Field() {
     return this->rc_from_this_poly<lang::data::Node::Entry::Field::_T>();
 }
 
+const lang::data::Node::Entry::Field_T lang::data::Node::Entry::_T::as_Field() const {
+    langcc::AT(this->is_Field());
+    return this->rc_from_this_poly<lang::data::Node::Entry::Field::_T>();
+}
+
 lang::data::Node::Entry::Method_T lang::data::Node::Entry::_T::as_Method() {
+    langcc::AT(this->is_Method());
+    return this->rc_from_this_poly<lang::data::Node::Entry::Method::_T>();
+}
+
+const lang::data::Node::Entry::Method_T lang::data::Node::Entry::_T::as_Method() const {
     langcc::AT(this->is_Method());
     return this->rc_from_this_poly<lang::data::Node::Entry::Method::_T>();
 }
@@ -1633,12 +1718,27 @@ lang::data::Node::Expr::Id_T lang::data::Node::Expr::_T::as_Id() {
     return this->rc_from_this_poly<lang::data::Node::Expr::Id::_T>();
 }
 
+const lang::data::Node::Expr::Id_T lang::data::Node::Expr::_T::as_Id() const {
+    langcc::AT(this->is_Id());
+    return this->rc_from_this_poly<lang::data::Node::Expr::Id::_T>();
+}
+
 lang::data::Node::Expr::App_T lang::data::Node::Expr::_T::as_App() {
     langcc::AT(this->is_App());
     return this->rc_from_this_poly<lang::data::Node::Expr::App::_T>();
 }
 
+const lang::data::Node::Expr::App_T lang::data::Node::Expr::_T::as_App() const {
+    langcc::AT(this->is_App());
+    return this->rc_from_this_poly<lang::data::Node::Expr::App::_T>();
+}
+
 lang::data::Node::Expr::Type__T lang::data::Node::Expr::_T::as_Type_() {
+    langcc::AT(this->is_Type_());
+    return this->rc_from_this_poly<lang::data::Node::Expr::Type_::_T>();
+}
+
+const lang::data::Node::Expr::Type__T lang::data::Node::Expr::_T::as_Type_() const {
     langcc::AT(this->is_Type_());
     return this->rc_from_this_poly<lang::data::Node::Expr::Type_::_T>();
 }

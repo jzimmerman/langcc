@@ -1309,7 +1309,17 @@ lang::meta::Node::Lang_T lang::meta::Node::_T::as_Lang() {
     return this->rc_from_this_poly<lang::meta::Node::Lang::_T>();
 }
 
+const lang::meta::Node::Lang_T lang::meta::Node::_T::as_Lang() const {
+    langcc::AT(this->is_Lang());
+    return this->rc_from_this_poly<lang::meta::Node::Lang::_T>();
+}
+
 lang::meta::Node::TokenDecl::op_T lang::meta::Node::_T::as_TokenDecl__op() {
+    langcc::AT(this->is_TokenDecl__op());
+    return this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::_T>();
+}
+
+const lang::meta::Node::TokenDecl::op_T lang::meta::Node::_T::as_TokenDecl__op() const {
     langcc::AT(this->is_TokenDecl__op());
     return this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::_T>();
 }
@@ -1319,7 +1329,17 @@ lang::meta::Node::TokenDecl_T lang::meta::Node::_T::as_TokenDecl() {
     return this->rc_from_this_poly<lang::meta::Node::TokenDecl::_T>();
 }
 
+const lang::meta::Node::TokenDecl_T lang::meta::Node::_T::as_TokenDecl() const {
+    langcc::AT(this->is_TokenDecl());
+    return this->rc_from_this_poly<lang::meta::Node::TokenDecl::_T>();
+}
+
 lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T lang::meta::Node::_T::as_LexerDecl__Mode__ws_sig___spec() {
+    langcc::AT(this->is_LexerDecl__Mode__ws_sig___spec());
+    return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T>();
+}
+
+const lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T lang::meta::Node::_T::as_LexerDecl__Mode__ws_sig___spec() const {
     langcc::AT(this->is_LexerDecl__Mode__ws_sig___spec());
     return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T>();
 }
@@ -1329,7 +1349,17 @@ lang::meta::Node::LexerDecl::Mode::ws_sig__T lang::meta::Node::_T::as_LexerDecl_
     return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::ws_sig_::_T>();
 }
 
+const lang::meta::Node::LexerDecl::Mode::ws_sig__T lang::meta::Node::_T::as_LexerDecl__Mode__ws_sig_() const {
+    langcc::AT(this->is_LexerDecl__Mode__ws_sig_());
+    return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::ws_sig_::_T>();
+}
+
 lang::meta::Node::LexerModeCase_T lang::meta::Node::_T::as_LexerModeCase() {
+    langcc::AT(this->is_LexerModeCase());
+    return this->rc_from_this_poly<lang::meta::Node::LexerModeCase::_T>();
+}
+
+const lang::meta::Node::LexerModeCase_T lang::meta::Node::_T::as_LexerModeCase() const {
     langcc::AT(this->is_LexerModeCase());
     return this->rc_from_this_poly<lang::meta::Node::LexerModeCase::_T>();
 }
@@ -1339,7 +1369,17 @@ lang::meta::Node::ParserDecl::Rule::op_T lang::meta::Node::_T::as_ParserDecl__Ru
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::_T>();
 }
 
+const lang::meta::Node::ParserDecl::Rule::op_T lang::meta::Node::_T::as_ParserDecl__Rule__op() const {
+    langcc::AT(this->is_ParserDecl__Rule__op());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::_T>();
+}
+
 lang::meta::Node::PrecItem_T lang::meta::Node::_T::as_PrecItem() {
+    langcc::AT(this->is_PrecItem());
+    return this->rc_from_this_poly<lang::meta::Node::PrecItem::_T>();
+}
+
+const lang::meta::Node::PrecItem_T lang::meta::Node::_T::as_PrecItem() const {
     langcc::AT(this->is_PrecItem());
     return this->rc_from_this_poly<lang::meta::Node::PrecItem::_T>();
 }
@@ -1349,7 +1389,17 @@ lang::meta::Node::AttrMatchCase_T lang::meta::Node::_T::as_AttrMatchCase() {
     return this->rc_from_this_poly<lang::meta::Node::AttrMatchCase::_T>();
 }
 
+const lang::meta::Node::AttrMatchCase_T lang::meta::Node::_T::as_AttrMatchCase() const {
+    langcc::AT(this->is_AttrMatchCase());
+    return this->rc_from_this_poly<lang::meta::Node::AttrMatchCase::_T>();
+}
+
 lang::meta::Node::TestCase_T lang::meta::Node::_T::as_TestCase() {
+    langcc::AT(this->is_TestCase());
+    return this->rc_from_this_poly<lang::meta::Node::TestCase::_T>();
+}
+
+const lang::meta::Node::TestCase_T lang::meta::Node::_T::as_TestCase() const {
     langcc::AT(this->is_TestCase());
     return this->rc_from_this_poly<lang::meta::Node::TestCase::_T>();
 }
@@ -1359,7 +1409,17 @@ lang::meta::Node::CompileTestCase_T lang::meta::Node::_T::as_CompileTestCase() {
     return this->rc_from_this_poly<lang::meta::Node::CompileTestCase::_T>();
 }
 
+const lang::meta::Node::CompileTestCase_T lang::meta::Node::_T::as_CompileTestCase() const {
+    langcc::AT(this->is_CompileTestCase());
+    return this->rc_from_this_poly<lang::meta::Node::CompileTestCase::_T>();
+}
+
 lang::meta::Node::ParseExpr::List::end_delim_T lang::meta::Node::_T::as_ParseExpr__List__end_delim() {
+    langcc::AT(this->is_ParseExpr__List__end_delim());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::_T>();
+}
+
+const lang::meta::Node::ParseExpr::List::end_delim_T lang::meta::Node::_T::as_ParseExpr__List__end_delim() const {
     langcc::AT(this->is_ParseExpr__List__end_delim());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::_T>();
 }
@@ -1369,7 +1429,17 @@ lang::meta::Node::Id_T lang::meta::Node::_T::as_Id() {
     return this->rc_from_this_poly<lang::meta::Node::Id::_T>();
 }
 
+const lang::meta::Node::Id_T lang::meta::Node::_T::as_Id() const {
+    langcc::AT(this->is_Id());
+    return this->rc_from_this_poly<lang::meta::Node::Id::_T>();
+}
+
 lang::meta::Node::Stanza_T lang::meta::Node::_T::as_Stanza() {
+    langcc::AT(this->is_Stanza());
+    return this->rc_from_this_poly<lang::meta::Node::Stanza::_T>();
+}
+
+const lang::meta::Node::Stanza_T lang::meta::Node::_T::as_Stanza() const {
     langcc::AT(this->is_Stanza());
     return this->rc_from_this_poly<lang::meta::Node::Stanza::_T>();
 }
@@ -1379,7 +1449,17 @@ lang::meta::Node::LexerDecl_T lang::meta::Node::_T::as_LexerDecl() {
     return this->rc_from_this_poly<lang::meta::Node::LexerDecl::_T>();
 }
 
+const lang::meta::Node::LexerDecl_T lang::meta::Node::_T::as_LexerDecl() const {
+    langcc::AT(this->is_LexerDecl());
+    return this->rc_from_this_poly<lang::meta::Node::LexerDecl::_T>();
+}
+
 lang::meta::Node::LexerInstr_T lang::meta::Node::_T::as_LexerInstr() {
+    langcc::AT(this->is_LexerInstr());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::_T>();
+}
+
+const lang::meta::Node::LexerInstr_T lang::meta::Node::_T::as_LexerInstr() const {
     langcc::AT(this->is_LexerInstr());
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::_T>();
 }
@@ -1389,7 +1469,17 @@ lang::meta::Node::ParserDecl_T lang::meta::Node::_T::as_ParserDecl() {
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::_T>();
 }
 
+const lang::meta::Node::ParserDecl_T lang::meta::Node::_T::as_ParserDecl() const {
+    langcc::AT(this->is_ParserDecl());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::_T>();
+}
+
 lang::meta::Node::ParserProp_T lang::meta::Node::_T::as_ParserProp() {
+    langcc::AT(this->is_ParserProp());
+    return this->rc_from_this_poly<lang::meta::Node::ParserProp::_T>();
+}
+
+const lang::meta::Node::ParserProp_T lang::meta::Node::_T::as_ParserProp() const {
     langcc::AT(this->is_ParserProp());
     return this->rc_from_this_poly<lang::meta::Node::ParserProp::_T>();
 }
@@ -1399,7 +1489,17 @@ lang::meta::Node::PrecAssoc_T lang::meta::Node::_T::as_PrecAssoc() {
     return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::_T>();
 }
 
+const lang::meta::Node::PrecAssoc_T lang::meta::Node::_T::as_PrecAssoc() const {
+    langcc::AT(this->is_PrecAssoc());
+    return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::_T>();
+}
+
 lang::meta::Node::AttrClause_T lang::meta::Node::_T::as_AttrClause() {
+    langcc::AT(this->is_AttrClause());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClause::_T>();
+}
+
+const lang::meta::Node::AttrClause_T lang::meta::Node::_T::as_AttrClause() const {
     langcc::AT(this->is_AttrClause());
     return this->rc_from_this_poly<lang::meta::Node::AttrClause::_T>();
 }
@@ -1409,7 +1509,17 @@ lang::meta::Node::AttrMatchCasePattern_T lang::meta::Node::_T::as_AttrMatchCaseP
     return this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::_T>();
 }
 
+const lang::meta::Node::AttrMatchCasePattern_T lang::meta::Node::_T::as_AttrMatchCasePattern() const {
+    langcc::AT(this->is_AttrMatchCasePattern());
+    return this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::_T>();
+}
+
 lang::meta::Node::AttrClauseExpr_T lang::meta::Node::_T::as_AttrClauseExpr() {
+    langcc::AT(this->is_AttrClauseExpr());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::_T>();
+}
+
+const lang::meta::Node::AttrClauseExpr_T lang::meta::Node::_T::as_AttrClauseExpr() const {
     langcc::AT(this->is_AttrClauseExpr());
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::_T>();
 }
@@ -1419,7 +1529,17 @@ lang::meta::Node::AttrClauseExprRhsLoc_T lang::meta::Node::_T::as_AttrClauseExpr
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::_T>();
 }
 
+const lang::meta::Node::AttrClauseExprRhsLoc_T lang::meta::Node::_T::as_AttrClauseExprRhsLoc() const {
+    langcc::AT(this->is_AttrClauseExprRhsLoc());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::_T>();
+}
+
 lang::meta::Node::ParseExpr_T lang::meta::Node::_T::as_ParseExpr() {
+    langcc::AT(this->is_ParseExpr());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::_T>();
+}
+
+const lang::meta::Node::ParseExpr_T lang::meta::Node::_T::as_ParseExpr() const {
     langcc::AT(this->is_ParseExpr());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::_T>();
 }
@@ -1429,12 +1549,27 @@ lang::meta::Node::AttrReq_T lang::meta::Node::_T::as_AttrReq() {
     return this->rc_from_this_poly<lang::meta::Node::AttrReq::_T>();
 }
 
+const lang::meta::Node::AttrReq_T lang::meta::Node::_T::as_AttrReq() const {
+    langcc::AT(this->is_AttrReq());
+    return this->rc_from_this_poly<lang::meta::Node::AttrReq::_T>();
+}
+
 lang::meta::Node::ParseExprListType_T lang::meta::Node::_T::as_ParseExprListType() {
     langcc::AT(this->is_ParseExprListType());
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::_T>();
 }
 
+const lang::meta::Node::ParseExprListType_T lang::meta::Node::_T::as_ParseExprListType() const {
+    langcc::AT(this->is_ParseExprListType());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::_T>();
+}
+
 lang::meta::Node::ParseExprListNum_T lang::meta::Node::_T::as_ParseExprListNum() {
+    langcc::AT(this->is_ParseExprListNum());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::_T>();
+}
+
+const lang::meta::Node::ParseExprListNum_T lang::meta::Node::_T::as_ParseExprListNum() const {
     langcc::AT(this->is_ParseExprListNum());
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::_T>();
 }
@@ -3107,7 +3242,17 @@ lang::meta::Node::Stanza::Tokens_T lang::meta::Node::Stanza::_T::as_Tokens() {
     return this->rc_from_this_poly<lang::meta::Node::Stanza::Tokens::_T>();
 }
 
+const lang::meta::Node::Stanza::Tokens_T lang::meta::Node::Stanza::_T::as_Tokens() const {
+    langcc::AT(this->is_Tokens());
+    return this->rc_from_this_poly<lang::meta::Node::Stanza::Tokens::_T>();
+}
+
 lang::meta::Node::Stanza::Lexer_T lang::meta::Node::Stanza::_T::as_Lexer() {
+    langcc::AT(this->is_Lexer());
+    return this->rc_from_this_poly<lang::meta::Node::Stanza::Lexer::_T>();
+}
+
+const lang::meta::Node::Stanza::Lexer_T lang::meta::Node::Stanza::_T::as_Lexer() const {
     langcc::AT(this->is_Lexer());
     return this->rc_from_this_poly<lang::meta::Node::Stanza::Lexer::_T>();
 }
@@ -3117,12 +3262,27 @@ lang::meta::Node::Stanza::Parser_T lang::meta::Node::Stanza::_T::as_Parser() {
     return this->rc_from_this_poly<lang::meta::Node::Stanza::Parser::_T>();
 }
 
+const lang::meta::Node::Stanza::Parser_T lang::meta::Node::Stanza::_T::as_Parser() const {
+    langcc::AT(this->is_Parser());
+    return this->rc_from_this_poly<lang::meta::Node::Stanza::Parser::_T>();
+}
+
 lang::meta::Node::Stanza::Test_T lang::meta::Node::Stanza::_T::as_Test() {
     langcc::AT(this->is_Test());
     return this->rc_from_this_poly<lang::meta::Node::Stanza::Test::_T>();
 }
 
+const lang::meta::Node::Stanza::Test_T lang::meta::Node::Stanza::_T::as_Test() const {
+    langcc::AT(this->is_Test());
+    return this->rc_from_this_poly<lang::meta::Node::Stanza::Test::_T>();
+}
+
 lang::meta::Node::Stanza::CompileTest_T lang::meta::Node::Stanza::_T::as_CompileTest() {
+    langcc::AT(this->is_CompileTest());
+    return this->rc_from_this_poly<lang::meta::Node::Stanza::CompileTest::_T>();
+}
+
+const lang::meta::Node::Stanza::CompileTest_T lang::meta::Node::Stanza::_T::as_CompileTest() const {
     langcc::AT(this->is_CompileTest());
     return this->rc_from_this_poly<lang::meta::Node::Stanza::CompileTest::_T>();
 }
@@ -3200,7 +3360,17 @@ lang::meta::Node::LexerDecl::Main_T lang::meta::Node::LexerDecl::_T::as_Main() {
     return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Main::_T>();
 }
 
+const lang::meta::Node::LexerDecl::Main_T lang::meta::Node::LexerDecl::_T::as_Main() const {
+    langcc::AT(this->is_Main());
+    return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Main::_T>();
+}
+
 lang::meta::Node::LexerDecl::Mode_T lang::meta::Node::LexerDecl::_T::as_Mode() {
+    langcc::AT(this->is_Mode());
+    return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::_T>();
+}
+
+const lang::meta::Node::LexerDecl::Mode_T lang::meta::Node::LexerDecl::_T::as_Mode() const {
     langcc::AT(this->is_Mode());
     return this->rc_from_this_poly<lang::meta::Node::LexerDecl::Mode::_T>();
 }
@@ -3306,7 +3476,17 @@ lang::meta::Node::LexerInstr::Emit_T lang::meta::Node::LexerInstr::_T::as_Emit()
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Emit::_T>();
 }
 
+const lang::meta::Node::LexerInstr::Emit_T lang::meta::Node::LexerInstr::_T::as_Emit() const {
+    langcc::AT(this->is_Emit());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Emit::_T>();
+}
+
 lang::meta::Node::LexerInstr::Pass_T lang::meta::Node::LexerInstr::_T::as_Pass() {
+    langcc::AT(this->is_Pass());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pass::_T>();
+}
+
+const lang::meta::Node::LexerInstr::Pass_T lang::meta::Node::LexerInstr::_T::as_Pass() const {
     langcc::AT(this->is_Pass());
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pass::_T>();
 }
@@ -3316,7 +3496,17 @@ lang::meta::Node::LexerInstr::Push_T lang::meta::Node::LexerInstr::_T::as_Push()
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Push::_T>();
 }
 
+const lang::meta::Node::LexerInstr::Push_T lang::meta::Node::LexerInstr::_T::as_Push() const {
+    langcc::AT(this->is_Push());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Push::_T>();
+}
+
 lang::meta::Node::LexerInstr::Pop_T lang::meta::Node::LexerInstr::_T::as_Pop() {
+    langcc::AT(this->is_Pop());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pop::_T>();
+}
+
+const lang::meta::Node::LexerInstr::Pop_T lang::meta::Node::LexerInstr::_T::as_Pop() const {
     langcc::AT(this->is_Pop());
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::Pop::_T>();
 }
@@ -3326,12 +3516,27 @@ lang::meta::Node::LexerInstr::PopExtract_T lang::meta::Node::LexerInstr::_T::as_
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopExtract::_T>();
 }
 
+const lang::meta::Node::LexerInstr::PopExtract_T lang::meta::Node::LexerInstr::_T::as_PopExtract() const {
+    langcc::AT(this->is_PopExtract());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopExtract::_T>();
+}
+
 lang::meta::Node::LexerInstr::PopEmit_T lang::meta::Node::LexerInstr::_T::as_PopEmit() {
     langcc::AT(this->is_PopEmit());
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopEmit::_T>();
 }
 
+const lang::meta::Node::LexerInstr::PopEmit_T lang::meta::Node::LexerInstr::_T::as_PopEmit() const {
+    langcc::AT(this->is_PopEmit());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::PopEmit::_T>();
+}
+
 lang::meta::Node::LexerInstr::MatchHistory_T lang::meta::Node::LexerInstr::_T::as_MatchHistory() {
+    langcc::AT(this->is_MatchHistory());
+    return this->rc_from_this_poly<lang::meta::Node::LexerInstr::MatchHistory::_T>();
+}
+
+const lang::meta::Node::LexerInstr::MatchHistory_T lang::meta::Node::LexerInstr::_T::as_MatchHistory() const {
     langcc::AT(this->is_MatchHistory());
     return this->rc_from_this_poly<lang::meta::Node::LexerInstr::MatchHistory::_T>();
 }
@@ -3441,7 +3646,17 @@ lang::meta::Node::ParserDecl::Main_T lang::meta::Node::ParserDecl::_T::as_Main()
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Main::_T>();
 }
 
+const lang::meta::Node::ParserDecl::Main_T lang::meta::Node::ParserDecl::_T::as_Main() const {
+    langcc::AT(this->is_Main());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Main::_T>();
+}
+
 lang::meta::Node::ParserDecl::Prop_T lang::meta::Node::ParserDecl::_T::as_Prop() {
+    langcc::AT(this->is_Prop());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Prop::_T>();
+}
+
+const lang::meta::Node::ParserDecl::Prop_T lang::meta::Node::ParserDecl::_T::as_Prop() const {
     langcc::AT(this->is_Prop());
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Prop::_T>();
 }
@@ -3451,12 +3666,27 @@ lang::meta::Node::ParserDecl::Prec_T lang::meta::Node::ParserDecl::_T::as_Prec()
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Prec::_T>();
 }
 
+const lang::meta::Node::ParserDecl::Prec_T lang::meta::Node::ParserDecl::_T::as_Prec() const {
+    langcc::AT(this->is_Prec());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Prec::_T>();
+}
+
 lang::meta::Node::ParserDecl::Attr_T lang::meta::Node::ParserDecl::_T::as_Attr() {
     langcc::AT(this->is_Attr());
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Attr::_T>();
 }
 
+const lang::meta::Node::ParserDecl::Attr_T lang::meta::Node::ParserDecl::_T::as_Attr() const {
+    langcc::AT(this->is_Attr());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Attr::_T>();
+}
+
 lang::meta::Node::ParserDecl::Rule_T lang::meta::Node::ParserDecl::_T::as_Rule() {
+    langcc::AT(this->is_Rule());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::_T>();
+}
+
+const lang::meta::Node::ParserDecl::Rule_T lang::meta::Node::ParserDecl::_T::as_Rule() const {
     langcc::AT(this->is_Rule());
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::_T>();
 }
@@ -3550,7 +3780,17 @@ lang::meta::Node::ParserProp::NameStrict_T lang::meta::Node::ParserProp::_T::as_
     return this->rc_from_this_poly<lang::meta::Node::ParserProp::NameStrict::_T>();
 }
 
+const lang::meta::Node::ParserProp::NameStrict_T lang::meta::Node::ParserProp::_T::as_NameStrict() const {
+    langcc::AT(this->is_NameStrict());
+    return this->rc_from_this_poly<lang::meta::Node::ParserProp::NameStrict::_T>();
+}
+
 lang::meta::Node::ParserProp::AllowUnreach_T lang::meta::Node::ParserProp::_T::as_AllowUnreach() {
+    langcc::AT(this->is_AllowUnreach());
+    return this->rc_from_this_poly<lang::meta::Node::ParserProp::AllowUnreach::_T>();
+}
+
+const lang::meta::Node::ParserProp::AllowUnreach_T lang::meta::Node::ParserProp::_T::as_AllowUnreach() const {
     langcc::AT(this->is_AllowUnreach());
     return this->rc_from_this_poly<lang::meta::Node::ParserProp::AllowUnreach::_T>();
 }
@@ -3560,7 +3800,17 @@ lang::meta::Node::ParserProp::LRSpec_T lang::meta::Node::ParserProp::_T::as_LRSp
     return this->rc_from_this_poly<lang::meta::Node::ParserProp::LRSpec::_T>();
 }
 
+const lang::meta::Node::ParserProp::LRSpec_T lang::meta::Node::ParserProp::_T::as_LRSpec() const {
+    langcc::AT(this->is_LRSpec());
+    return this->rc_from_this_poly<lang::meta::Node::ParserProp::LRSpec::_T>();
+}
+
 lang::meta::Node::ParserProp::Err__T lang::meta::Node::ParserProp::_T::as_Err_() {
+    langcc::AT(this->is_Err_());
+    return this->rc_from_this_poly<lang::meta::Node::ParserProp::Err_::_T>();
+}
+
+const lang::meta::Node::ParserProp::Err__T lang::meta::Node::ParserProp::_T::as_Err_() const {
     langcc::AT(this->is_Err_());
     return this->rc_from_this_poly<lang::meta::Node::ParserProp::Err_::_T>();
 }
@@ -3650,7 +3900,17 @@ lang::meta::Node::PrecAssoc::Left_T lang::meta::Node::PrecAssoc::_T::as_Left() {
     return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Left::_T>();
 }
 
+const lang::meta::Node::PrecAssoc::Left_T lang::meta::Node::PrecAssoc::_T::as_Left() const {
+    langcc::AT(this->is_Left());
+    return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Left::_T>();
+}
+
 lang::meta::Node::PrecAssoc::Right_T lang::meta::Node::PrecAssoc::_T::as_Right() {
+    langcc::AT(this->is_Right());
+    return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Right::_T>();
+}
+
+const lang::meta::Node::PrecAssoc::Right_T lang::meta::Node::PrecAssoc::_T::as_Right() const {
     langcc::AT(this->is_Right());
     return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Right::_T>();
 }
@@ -3660,7 +3920,17 @@ lang::meta::Node::PrecAssoc::Prefix_T lang::meta::Node::PrecAssoc::_T::as_Prefix
     return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Prefix::_T>();
 }
 
+const lang::meta::Node::PrecAssoc::Prefix_T lang::meta::Node::PrecAssoc::_T::as_Prefix() const {
+    langcc::AT(this->is_Prefix());
+    return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Prefix::_T>();
+}
+
 lang::meta::Node::PrecAssoc::Postfix_T lang::meta::Node::PrecAssoc::_T::as_Postfix() {
+    langcc::AT(this->is_Postfix());
+    return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Postfix::_T>();
+}
+
+const lang::meta::Node::PrecAssoc::Postfix_T lang::meta::Node::PrecAssoc::_T::as_Postfix() const {
     langcc::AT(this->is_Postfix());
     return this->rc_from_this_poly<lang::meta::Node::PrecAssoc::Postfix::_T>();
 }
@@ -3742,12 +4012,27 @@ lang::meta::Node::AttrClause::Expr_T lang::meta::Node::AttrClause::_T::as_Expr()
     return this->rc_from_this_poly<lang::meta::Node::AttrClause::Expr::_T>();
 }
 
+const lang::meta::Node::AttrClause::Expr_T lang::meta::Node::AttrClause::_T::as_Expr() const {
+    langcc::AT(this->is_Expr());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClause::Expr::_T>();
+}
+
 lang::meta::Node::AttrClause::Block_T lang::meta::Node::AttrClause::_T::as_Block() {
     langcc::AT(this->is_Block());
     return this->rc_from_this_poly<lang::meta::Node::AttrClause::Block::_T>();
 }
 
+const lang::meta::Node::AttrClause::Block_T lang::meta::Node::AttrClause::_T::as_Block() const {
+    langcc::AT(this->is_Block());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClause::Block::_T>();
+}
+
 lang::meta::Node::AttrClause::Match_T lang::meta::Node::AttrClause::_T::as_Match() {
+    langcc::AT(this->is_Match());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClause::Match::_T>();
+}
+
+const lang::meta::Node::AttrClause::Match_T lang::meta::Node::AttrClause::_T::as_Match() const {
     langcc::AT(this->is_Match());
     return this->rc_from_this_poly<lang::meta::Node::AttrClause::Match::_T>();
 }
@@ -3817,7 +4102,17 @@ lang::meta::Node::AttrMatchCasePattern::Alt_T lang::meta::Node::AttrMatchCasePat
     return this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::Alt::_T>();
 }
 
+const lang::meta::Node::AttrMatchCasePattern::Alt_T lang::meta::Node::AttrMatchCasePattern::_T::as_Alt() const {
+    langcc::AT(this->is_Alt());
+    return this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::Alt::_T>();
+}
+
 lang::meta::Node::AttrMatchCasePattern::Wildcard_T lang::meta::Node::AttrMatchCasePattern::_T::as_Wildcard() {
+    langcc::AT(this->is_Wildcard());
+    return this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::Wildcard::_T>();
+}
+
+const lang::meta::Node::AttrMatchCasePattern::Wildcard_T lang::meta::Node::AttrMatchCasePattern::_T::as_Wildcard() const {
     langcc::AT(this->is_Wildcard());
     return this->rc_from_this_poly<lang::meta::Node::AttrMatchCasePattern::Wildcard::_T>();
 }
@@ -3891,12 +4186,27 @@ lang::meta::Node::AttrClauseExpr::LhsGeq_T lang::meta::Node::AttrClauseExpr::_T:
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::LhsGeq::_T>();
 }
 
+const lang::meta::Node::AttrClauseExpr::LhsGeq_T lang::meta::Node::AttrClauseExpr::_T::as_LhsGeq() const {
+    langcc::AT(this->is_LhsGeq());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::LhsGeq::_T>();
+}
+
 lang::meta::Node::AttrClauseExpr::RhsGeq_T lang::meta::Node::AttrClauseExpr::_T::as_RhsGeq() {
     langcc::AT(this->is_RhsGeq());
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::RhsGeq::_T>();
 }
 
+const lang::meta::Node::AttrClauseExpr::RhsGeq_T lang::meta::Node::AttrClauseExpr::_T::as_RhsGeq() const {
+    langcc::AT(this->is_RhsGeq());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::RhsGeq::_T>();
+}
+
 lang::meta::Node::AttrClauseExpr::Implies_T lang::meta::Node::AttrClauseExpr::_T::as_Implies() {
+    langcc::AT(this->is_Implies());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::Implies::_T>();
+}
+
+const lang::meta::Node::AttrClauseExpr::Implies_T lang::meta::Node::AttrClauseExpr::_T::as_Implies() const {
     langcc::AT(this->is_Implies());
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExpr::Implies::_T>();
 }
@@ -3982,7 +4292,17 @@ lang::meta::Node::AttrClauseExprRhsLoc::All_T lang::meta::Node::AttrClauseExprRh
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::All::_T>();
 }
 
+const lang::meta::Node::AttrClauseExprRhsLoc::All_T lang::meta::Node::AttrClauseExprRhsLoc::_T::as_All() const {
+    langcc::AT(this->is_All());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::All::_T>();
+}
+
 lang::meta::Node::AttrClauseExprRhsLoc::Begin_T lang::meta::Node::AttrClauseExprRhsLoc::_T::as_Begin() {
+    langcc::AT(this->is_Begin());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T>();
+}
+
+const lang::meta::Node::AttrClauseExprRhsLoc::Begin_T lang::meta::Node::AttrClauseExprRhsLoc::_T::as_Begin() const {
     langcc::AT(this->is_Begin());
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T>();
 }
@@ -3992,7 +4312,17 @@ lang::meta::Node::AttrClauseExprRhsLoc::Mid_T lang::meta::Node::AttrClauseExprRh
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T>();
 }
 
+const lang::meta::Node::AttrClauseExprRhsLoc::Mid_T lang::meta::Node::AttrClauseExprRhsLoc::_T::as_Mid() const {
+    langcc::AT(this->is_Mid());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T>();
+}
+
 lang::meta::Node::AttrClauseExprRhsLoc::End_T lang::meta::Node::AttrClauseExprRhsLoc::_T::as_End() {
+    langcc::AT(this->is_End());
+    return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::End::_T>();
+}
+
+const lang::meta::Node::AttrClauseExprRhsLoc::End_T lang::meta::Node::AttrClauseExprRhsLoc::_T::as_End() const {
     langcc::AT(this->is_End());
     return this->rc_from_this_poly<lang::meta::Node::AttrClauseExprRhsLoc::End::_T>();
 }
@@ -4258,7 +4588,17 @@ lang::meta::Node::ParseExpr::Id_T lang::meta::Node::ParseExpr::_T::as_Id() {
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Id::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Id_T lang::meta::Node::ParseExpr::_T::as_Id() const {
+    langcc::AT(this->is_Id());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Id::_T>();
+}
+
 lang::meta::Node::ParseExpr::Eof_T lang::meta::Node::ParseExpr::_T::as_Eof() {
+    langcc::AT(this->is_Eof());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eof::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Eof_T lang::meta::Node::ParseExpr::_T::as_Eof() const {
     langcc::AT(this->is_Eof());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eof::_T>();
 }
@@ -4268,7 +4608,17 @@ lang::meta::Node::ParseExpr::False_T lang::meta::Node::ParseExpr::_T::as_False()
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::False::_T>();
 }
 
+const lang::meta::Node::ParseExpr::False_T lang::meta::Node::ParseExpr::_T::as_False() const {
+    langcc::AT(this->is_False());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::False::_T>();
+}
+
 lang::meta::Node::ParseExpr::Eps_T lang::meta::Node::ParseExpr::_T::as_Eps() {
+    langcc::AT(this->is_Eps());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eps::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Eps_T lang::meta::Node::ParseExpr::_T::as_Eps() const {
     langcc::AT(this->is_Eps());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Eps::_T>();
 }
@@ -4278,7 +4628,17 @@ lang::meta::Node::ParseExpr::Indent_T lang::meta::Node::ParseExpr::_T::as_Indent
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Indent::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Indent_T lang::meta::Node::ParseExpr::_T::as_Indent() const {
+    langcc::AT(this->is_Indent());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Indent::_T>();
+}
+
 lang::meta::Node::ParseExpr::Dedent_T lang::meta::Node::ParseExpr::_T::as_Dedent() {
+    langcc::AT(this->is_Dedent());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Dedent::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Dedent_T lang::meta::Node::ParseExpr::_T::as_Dedent() const {
     langcc::AT(this->is_Dedent());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Dedent::_T>();
 }
@@ -4288,7 +4648,17 @@ lang::meta::Node::ParseExpr::Newline_T lang::meta::Node::ParseExpr::_T::as_Newli
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Newline::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Newline_T lang::meta::Node::ParseExpr::_T::as_Newline() const {
+    langcc::AT(this->is_Newline());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Newline::_T>();
+}
+
 lang::meta::Node::ParseExpr::UnicodeAny_T lang::meta::Node::ParseExpr::_T::as_UnicodeAny() {
+    langcc::AT(this->is_UnicodeAny());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::UnicodeAny::_T>();
+}
+
+const lang::meta::Node::ParseExpr::UnicodeAny_T lang::meta::Node::ParseExpr::_T::as_UnicodeAny() const {
     langcc::AT(this->is_UnicodeAny());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::UnicodeAny::_T>();
 }
@@ -4298,7 +4668,17 @@ lang::meta::Node::ParseExpr::AsciiBaseAny_T lang::meta::Node::ParseExpr::_T::as_
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::AsciiBaseAny::_T>();
 }
 
+const lang::meta::Node::ParseExpr::AsciiBaseAny_T lang::meta::Node::ParseExpr::_T::as_AsciiBaseAny() const {
+    langcc::AT(this->is_AsciiBaseAny());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::AsciiBaseAny::_T>();
+}
+
 lang::meta::Node::ParseExpr::Alt_T lang::meta::Node::ParseExpr::_T::as_Alt() {
+    langcc::AT(this->is_Alt());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Alt::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Alt_T lang::meta::Node::ParseExpr::_T::as_Alt() const {
     langcc::AT(this->is_Alt());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Alt::_T>();
 }
@@ -4308,7 +4688,17 @@ lang::meta::Node::ParseExpr::AltExplicit_T lang::meta::Node::ParseExpr::_T::as_A
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::AltExplicit::_T>();
 }
 
+const lang::meta::Node::ParseExpr::AltExplicit_T lang::meta::Node::ParseExpr::_T::as_AltExplicit() const {
+    langcc::AT(this->is_AltExplicit());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::AltExplicit::_T>();
+}
+
 lang::meta::Node::ParseExpr::Minus_T lang::meta::Node::ParseExpr::_T::as_Minus() {
+    langcc::AT(this->is_Minus());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Minus::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Minus_T lang::meta::Node::ParseExpr::_T::as_Minus() const {
     langcc::AT(this->is_Minus());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Minus::_T>();
 }
@@ -4318,7 +4708,17 @@ lang::meta::Node::ParseExpr::Concat_T lang::meta::Node::ParseExpr::_T::as_Concat
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Concat::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Concat_T lang::meta::Node::ParseExpr::_T::as_Concat() const {
+    langcc::AT(this->is_Concat());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Concat::_T>();
+}
+
 lang::meta::Node::ParseExpr::Optional_T lang::meta::Node::ParseExpr::_T::as_Optional() {
+    langcc::AT(this->is_Optional());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Optional::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Optional_T lang::meta::Node::ParseExpr::_T::as_Optional() const {
     langcc::AT(this->is_Optional());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Optional::_T>();
 }
@@ -4328,7 +4728,17 @@ lang::meta::Node::ParseExpr::Rep_T lang::meta::Node::ParseExpr::_T::as_Rep() {
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Rep::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Rep_T lang::meta::Node::ParseExpr::_T::as_Rep() const {
+    langcc::AT(this->is_Rep());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Rep::_T>();
+}
+
 lang::meta::Node::ParseExpr::RepNonzero_T lang::meta::Node::ParseExpr::_T::as_RepNonzero() {
+    langcc::AT(this->is_RepNonzero());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepNonzero::_T>();
+}
+
+const lang::meta::Node::ParseExpr::RepNonzero_T lang::meta::Node::ParseExpr::_T::as_RepNonzero() const {
     langcc::AT(this->is_RepNonzero());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepNonzero::_T>();
 }
@@ -4338,7 +4748,17 @@ lang::meta::Node::ParseExpr::RepCount_T lang::meta::Node::ParseExpr::_T::as_RepC
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepCount::_T>();
 }
 
+const lang::meta::Node::ParseExpr::RepCount_T lang::meta::Node::ParseExpr::_T::as_RepCount() const {
+    langcc::AT(this->is_RepCount());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::RepCount::_T>();
+}
+
 lang::meta::Node::ParseExpr::CharRange_T lang::meta::Node::ParseExpr::_T::as_CharRange() {
+    langcc::AT(this->is_CharRange());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::CharRange::_T>();
+}
+
+const lang::meta::Node::ParseExpr::CharRange_T lang::meta::Node::ParseExpr::_T::as_CharRange() const {
     langcc::AT(this->is_CharRange());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::CharRange::_T>();
 }
@@ -4348,7 +4768,17 @@ lang::meta::Node::ParseExpr::StrLit_T lang::meta::Node::ParseExpr::_T::as_StrLit
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::StrLit::_T>();
 }
 
+const lang::meta::Node::ParseExpr::StrLit_T lang::meta::Node::ParseExpr::_T::as_StrLit() const {
+    langcc::AT(this->is_StrLit());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::StrLit::_T>();
+}
+
 lang::meta::Node::ParseExpr::Underscore_T lang::meta::Node::ParseExpr::_T::as_Underscore() {
+    langcc::AT(this->is_Underscore());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Underscore::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Underscore_T lang::meta::Node::ParseExpr::_T::as_Underscore() const {
     langcc::AT(this->is_Underscore());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Underscore::_T>();
 }
@@ -4358,7 +4788,17 @@ lang::meta::Node::ParseExpr::Pass_T lang::meta::Node::ParseExpr::_T::as_Pass() {
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Pass::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Pass_T lang::meta::Node::ParseExpr::_T::as_Pass() const {
+    langcc::AT(this->is_Pass());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Pass::_T>();
+}
+
 lang::meta::Node::ParseExpr::Paren_T lang::meta::Node::ParseExpr::_T::as_Paren() {
+    langcc::AT(this->is_Paren());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Paren::_T>();
+}
+
+const lang::meta::Node::ParseExpr::Paren_T lang::meta::Node::ParseExpr::_T::as_Paren() const {
     langcc::AT(this->is_Paren());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Paren::_T>();
 }
@@ -4368,7 +4808,17 @@ lang::meta::Node::ParseExpr::Name_T lang::meta::Node::ParseExpr::_T::as_Name() {
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Name::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Name_T lang::meta::Node::ParseExpr::_T::as_Name() const {
+    langcc::AT(this->is_Name());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Name::_T>();
+}
+
 lang::meta::Node::ParseExpr::List_T lang::meta::Node::ParseExpr::_T::as_List() {
+    langcc::AT(this->is_List());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::_T>();
+}
+
+const lang::meta::Node::ParseExpr::List_T lang::meta::Node::ParseExpr::_T::as_List() const {
     langcc::AT(this->is_List());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::_T>();
 }
@@ -4378,7 +4828,17 @@ lang::meta::Node::ParseExpr::Unfold_T lang::meta::Node::ParseExpr::_T::as_Unfold
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Unfold::_T>();
 }
 
+const lang::meta::Node::ParseExpr::Unfold_T lang::meta::Node::ParseExpr::_T::as_Unfold() const {
+    langcc::AT(this->is_Unfold());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::Unfold::_T>();
+}
+
 lang::meta::Node::ParseExpr::AttrReq_T lang::meta::Node::ParseExpr::_T::as_AttrReq() {
+    langcc::AT(this->is_AttrReq());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::AttrReq::_T>();
+}
+
+const lang::meta::Node::ParseExpr::AttrReq_T lang::meta::Node::ParseExpr::_T::as_AttrReq() const {
     langcc::AT(this->is_AttrReq());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::AttrReq::_T>();
 }
@@ -4540,7 +5000,17 @@ lang::meta::Node::AttrReq::Base_T lang::meta::Node::AttrReq::_T::as_Base() {
     return this->rc_from_this_poly<lang::meta::Node::AttrReq::Base::_T>();
 }
 
+const lang::meta::Node::AttrReq::Base_T lang::meta::Node::AttrReq::_T::as_Base() const {
+    langcc::AT(this->is_Base());
+    return this->rc_from_this_poly<lang::meta::Node::AttrReq::Base::_T>();
+}
+
 lang::meta::Node::AttrReq::PrecStar_T lang::meta::Node::AttrReq::_T::as_PrecStar() {
+    langcc::AT(this->is_PrecStar());
+    return this->rc_from_this_poly<lang::meta::Node::AttrReq::PrecStar::_T>();
+}
+
+const lang::meta::Node::AttrReq::PrecStar_T lang::meta::Node::AttrReq::_T::as_PrecStar() const {
     langcc::AT(this->is_PrecStar());
     return this->rc_from_this_poly<lang::meta::Node::AttrReq::PrecStar::_T>();
 }
@@ -4630,7 +5100,17 @@ lang::meta::Node::ParseExprListType::List_T lang::meta::Node::ParseExprListType:
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::List::_T>();
 }
 
+const lang::meta::Node::ParseExprListType::List_T lang::meta::Node::ParseExprListType::_T::as_List() const {
+    langcc::AT(this->is_List());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::List::_T>();
+}
+
 lang::meta::Node::ParseExprListType::Block_T lang::meta::Node::ParseExprListType::_T::as_Block() {
+    langcc::AT(this->is_Block());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block::_T>();
+}
+
+const lang::meta::Node::ParseExprListType::Block_T lang::meta::Node::ParseExprListType::_T::as_Block() const {
     langcc::AT(this->is_Block());
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block::_T>();
 }
@@ -4640,12 +5120,27 @@ lang::meta::Node::ParseExprListType::Block2_T lang::meta::Node::ParseExprListTyp
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block2::_T>();
 }
 
+const lang::meta::Node::ParseExprListType::Block2_T lang::meta::Node::ParseExprListType::_T::as_Block2() const {
+    langcc::AT(this->is_Block2());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Block2::_T>();
+}
+
 lang::meta::Node::ParseExprListType::Top_T lang::meta::Node::ParseExprListType::_T::as_Top() {
     langcc::AT(this->is_Top());
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top::_T>();
 }
 
+const lang::meta::Node::ParseExprListType::Top_T lang::meta::Node::ParseExprListType::_T::as_Top() const {
+    langcc::AT(this->is_Top());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top::_T>();
+}
+
 lang::meta::Node::ParseExprListType::Top2_T lang::meta::Node::ParseExprListType::_T::as_Top2() {
+    langcc::AT(this->is_Top2());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top2::_T>();
+}
+
+const lang::meta::Node::ParseExprListType::Top2_T lang::meta::Node::ParseExprListType::_T::as_Top2() const {
     langcc::AT(this->is_Top2());
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListType::Top2::_T>();
 }
@@ -4731,12 +5226,27 @@ lang::meta::Node::ParseExprListNum::Ge0_T lang::meta::Node::ParseExprListNum::_T
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge0::_T>();
 }
 
+const lang::meta::Node::ParseExprListNum::Ge0_T lang::meta::Node::ParseExprListNum::_T::as_Ge0() const {
+    langcc::AT(this->is_Ge0());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge0::_T>();
+}
+
 lang::meta::Node::ParseExprListNum::Ge1_T lang::meta::Node::ParseExprListNum::_T::as_Ge1() {
     langcc::AT(this->is_Ge1());
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge1::_T>();
 }
 
+const lang::meta::Node::ParseExprListNum::Ge1_T lang::meta::Node::ParseExprListNum::_T::as_Ge1() const {
+    langcc::AT(this->is_Ge1());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge1::_T>();
+}
+
 lang::meta::Node::ParseExprListNum::Ge2_T lang::meta::Node::ParseExprListNum::_T::as_Ge2() {
+    langcc::AT(this->is_Ge2());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge2::_T>();
+}
+
+const lang::meta::Node::ParseExprListNum::Ge2_T lang::meta::Node::ParseExprListNum::_T::as_Ge2() const {
     langcc::AT(this->is_Ge2());
     return this->rc_from_this_poly<lang::meta::Node::ParseExprListNum::Ge2::_T>();
 }
@@ -5596,7 +6106,17 @@ lang::meta::Node::TokenDecl::op::DEF_T lang::meta::Node::TokenDecl::op::_T::as_D
     return this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF::_T>();
 }
 
+const lang::meta::Node::TokenDecl::op::DEF_T lang::meta::Node::TokenDecl::op::_T::as_DEF() const {
+    langcc::AT(this->is_DEF());
+    return this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF::_T>();
+}
+
 lang::meta::Node::TokenDecl::op::DEF_ALIAS_T lang::meta::Node::TokenDecl::op::_T::as_DEF_ALIAS() {
+    langcc::AT(this->is_DEF_ALIAS());
+    return this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T>();
+}
+
+const lang::meta::Node::TokenDecl::op::DEF_ALIAS_T lang::meta::Node::TokenDecl::op::_T::as_DEF_ALIAS() const {
     langcc::AT(this->is_DEF_ALIAS());
     return this->rc_from_this_poly<lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T>();
 }
@@ -16802,7 +17322,17 @@ lang::meta::Node::ParserDecl::Rule::op::DEF_T lang::meta::Node::ParserDecl::Rule
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF::_T>();
 }
 
+const lang::meta::Node::ParserDecl::Rule::op::DEF_T lang::meta::Node::ParserDecl::Rule::op::_T::as_DEF() const {
+    langcc::AT(this->is_DEF());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF::_T>();
+}
+
 lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T lang::meta::Node::ParserDecl::Rule::op::_T::as_DEF_ALIAS() {
+    langcc::AT(this->is_DEF_ALIAS());
+    return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T>();
+}
+
+const lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T lang::meta::Node::ParserDecl::Rule::op::_T::as_DEF_ALIAS() const {
     langcc::AT(this->is_DEF_ALIAS());
     return this->rc_from_this_poly<lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T>();
 }
@@ -16876,12 +17406,27 @@ lang::meta::Node::ParseExpr::List::end_delim::NONE_T lang::meta::Node::ParseExpr
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::NONE::_T>();
 }
 
+const lang::meta::Node::ParseExpr::List::end_delim::NONE_T lang::meta::Node::ParseExpr::List::end_delim::_T::as_NONE() const {
+    langcc::AT(this->is_NONE());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::NONE::_T>();
+}
+
 lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T lang::meta::Node::ParseExpr::List::end_delim::_T::as_OPTIONAL() {
     langcc::AT(this->is_OPTIONAL());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T>();
 }
 
+const lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T lang::meta::Node::ParseExpr::List::end_delim::_T::as_OPTIONAL() const {
+    langcc::AT(this->is_OPTIONAL());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T>();
+}
+
 lang::meta::Node::ParseExpr::List::end_delim::SOME_T lang::meta::Node::ParseExpr::List::end_delim::_T::as_SOME() {
+    langcc::AT(this->is_SOME());
+    return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::SOME::_T>();
+}
+
+const lang::meta::Node::ParseExpr::List::end_delim::SOME_T lang::meta::Node::ParseExpr::List::end_delim::_T::as_SOME() const {
     langcc::AT(this->is_SOME());
     return this->rc_from_this_poly<lang::meta::Node::ParseExpr::List::end_delim::SOME::_T>();
 }

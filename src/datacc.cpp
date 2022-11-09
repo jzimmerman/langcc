@@ -1721,6 +1721,14 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
                                sum_case,
                            }))),
             cpp_sum_as_params[sum_case]));
+        cpp_fields->push_back(ctx.cc_.gen_cpp_fun_proto_entry(
+            NodeV_empty(), NodeV_empty(),
+            Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
+            lower_name_cpp(LowerTy::SUM_AS_BASE, name_full, ctx,
+                           Some(name_lit({
+                               sum_case,
+                           }))),
+            cpp_sum_as_params[sum_case], true, true));
       }
 
       // match()
@@ -1914,12 +1922,13 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
         auto cpp_struct_decl_name_tmpl_sub =
             ctx.cc_.gen_cpp_id_with_template_args_acc(cpp_struct_decl_name_sub,
                                                       cpp_template_params_sub);
+        auto mods = inline_maybe_mods(header_mode, ctx);
         ctx.cc_.push_def(
             cpp_template_params->length() > 0,
             ctx.cc_
                 .gen_cpp_fun_body(
                     cpp_template_params, NodeV_empty(),
-                    inline_maybe_mods(header_mode, ctx),
+                    mods,
                     Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
                     lower_name_cpp(
                         LowerTy::SUM_AS_FULL, name_full, ctx,
@@ -1929,6 +1938,23 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
                         Some<Vec_T<cc::Node_T>>(cpp_template_params)),
                     cpp_sum_as_params[sum_case], NodeV_empty(),
                     cpp_sum_as_body[sum_case])
+                ->as_Decl());
+        mods->push_back(ctx.cc_.qq("Mod", "const"));
+        ctx.cc_.push_def(
+            cpp_template_params->length() > 0,
+            ctx.cc_
+                .gen_cpp_fun_body(
+                    cpp_template_params, NodeV_empty(),
+                    mods,
+                    Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
+                    lower_name_cpp(
+                        LowerTy::SUM_AS_FULL, name_full, ctx,
+                        Some(name_lit({
+                            sum_case,
+                        })),
+                        Some<Vec_T<cc::Node_T>>(cpp_template_params)),
+                    cpp_sum_as_params[sum_case], NodeV_empty(),
+                    cpp_sum_as_body[sum_case], true)
                 ->as_Decl());
       }
 

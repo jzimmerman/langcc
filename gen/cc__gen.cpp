@@ -1261,7 +1261,17 @@ lang::cc::Node::Module_T lang::cc::Node::_T::as_Module() {
     return this->rc_from_this_poly<lang::cc::Node::Module::_T>();
 }
 
+const lang::cc::Node::Module_T lang::cc::Node::_T::as_Module() const {
+    langcc::AT(this->is_Module());
+    return this->rc_from_this_poly<lang::cc::Node::Module::_T>();
+}
+
 lang::cc::Node::Decl::Struct::tmpl::item::args::item_T lang::cc::Node::_T::as_Decl__Struct__tmpl__item__args__item() {
+    langcc::AT(this->is_Decl__Struct__tmpl__item__args__item());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::item::args::item::_T>();
+}
+
+const lang::cc::Node::Decl::Struct::tmpl::item::args::item_T lang::cc::Node::_T::as_Decl__Struct__tmpl__item__args__item() const {
     langcc::AT(this->is_Decl__Struct__tmpl__item__args__item());
     return this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::item::args::item::_T>();
 }
@@ -1271,7 +1281,17 @@ lang::cc::Node::Decl::Struct::tmpl::item_T lang::cc::Node::_T::as_Decl__Struct__
     return this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::item::_T>();
 }
 
+const lang::cc::Node::Decl::Struct::tmpl::item_T lang::cc::Node::_T::as_Decl__Struct__tmpl__item() const {
+    langcc::AT(this->is_Decl__Struct__tmpl__item());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Struct::tmpl::item::_T>();
+}
+
 lang::cc::Node::Entry::Fun::tmpl::item::args::item_T lang::cc::Node::_T::as_Entry__Fun__tmpl__item__args__item() {
+    langcc::AT(this->is_Entry__Fun__tmpl__item__args__item());
+    return this->rc_from_this_poly<lang::cc::Node::Entry::Fun::tmpl::item::args::item::_T>();
+}
+
+const lang::cc::Node::Entry::Fun::tmpl::item::args::item_T lang::cc::Node::_T::as_Entry__Fun__tmpl__item__args__item() const {
     langcc::AT(this->is_Entry__Fun__tmpl__item__args__item());
     return this->rc_from_this_poly<lang::cc::Node::Entry::Fun::tmpl::item::args::item::_T>();
 }
@@ -1281,7 +1301,17 @@ lang::cc::Node::Entry::Fun::tmpl::item_T lang::cc::Node::_T::as_Entry__Fun__tmpl
     return this->rc_from_this_poly<lang::cc::Node::Entry::Fun::tmpl::item::_T>();
 }
 
+const lang::cc::Node::Entry::Fun::tmpl::item_T lang::cc::Node::_T::as_Entry__Fun__tmpl__item() const {
+    langcc::AT(this->is_Entry__Fun__tmpl__item());
+    return this->rc_from_this_poly<lang::cc::Node::Entry::Fun::tmpl::item::_T>();
+}
+
 lang::cc::Node::Param::val_T lang::cc::Node::_T::as_Param__val() {
+    langcc::AT(this->is_Param__val());
+    return this->rc_from_this_poly<lang::cc::Node::Param::val::_T>();
+}
+
+const lang::cc::Node::Param::val_T lang::cc::Node::_T::as_Param__val() const {
     langcc::AT(this->is_Param__val());
     return this->rc_from_this_poly<lang::cc::Node::Param::val::_T>();
 }
@@ -1291,7 +1321,17 @@ lang::cc::Node::Param_T lang::cc::Node::_T::as_Param() {
     return this->rc_from_this_poly<lang::cc::Node::Param::_T>();
 }
 
+const lang::cc::Node::Param_T lang::cc::Node::_T::as_Param() const {
+    langcc::AT(this->is_Param());
+    return this->rc_from_this_poly<lang::cc::Node::Param::_T>();
+}
+
 lang::cc::Node::Decl::Fun::tmpl::item::args::item_T lang::cc::Node::_T::as_Decl__Fun__tmpl__item__args__item() {
+    langcc::AT(this->is_Decl__Fun__tmpl__item__args__item());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::item::args::item::_T>();
+}
+
+const lang::cc::Node::Decl::Fun::tmpl::item::args::item_T lang::cc::Node::_T::as_Decl__Fun__tmpl__item__args__item() const {
     langcc::AT(this->is_Decl__Fun__tmpl__item__args__item());
     return this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::item::args::item::_T>();
 }
@@ -1301,7 +1341,17 @@ lang::cc::Node::Decl::Fun::tmpl::item_T lang::cc::Node::_T::as_Decl__Fun__tmpl__
     return this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::item::_T>();
 }
 
+const lang::cc::Node::Decl::Fun::tmpl::item_T lang::cc::Node::_T::as_Decl__Fun__tmpl__item() const {
+    langcc::AT(this->is_Decl__Fun__tmpl__item());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Fun::tmpl::item::_T>();
+}
+
 lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T lang::cc::Node::_T::as_Decl__UsingAlias__tmpl__item__args__item() {
+    langcc::AT(this->is_Decl__UsingAlias__tmpl__item__args__item());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item::_T>();
+}
+
+const lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T lang::cc::Node::_T::as_Decl__UsingAlias__tmpl__item__args__item() const {
     langcc::AT(this->is_Decl__UsingAlias__tmpl__item__args__item());
     return this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item::_T>();
 }
@@ -1311,7 +1361,17 @@ lang::cc::Node::Decl::UsingAlias::tmpl::item_T lang::cc::Node::_T::as_Decl__Usin
     return this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::tmpl::item::_T>();
 }
 
+const lang::cc::Node::Decl::UsingAlias::tmpl::item_T lang::cc::Node::_T::as_Decl__UsingAlias__tmpl__item() const {
+    langcc::AT(this->is_Decl__UsingAlias__tmpl__item());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::tmpl::item::_T>();
+}
+
 lang::cc::Node::Block_T lang::cc::Node::_T::as_Block() {
+    langcc::AT(this->is_Block());
+    return this->rc_from_this_poly<lang::cc::Node::Block::_T>();
+}
+
+const lang::cc::Node::Block_T lang::cc::Node::_T::as_Block() const {
     langcc::AT(this->is_Block());
     return this->rc_from_this_poly<lang::cc::Node::Block::_T>();
 }
@@ -1321,7 +1381,17 @@ lang::cc::Node::TypedDecl::vars::item::val_T lang::cc::Node::_T::as_TypedDecl__v
     return this->rc_from_this_poly<lang::cc::Node::TypedDecl::vars::item::val::_T>();
 }
 
+const lang::cc::Node::TypedDecl::vars::item::val_T lang::cc::Node::_T::as_TypedDecl__vars__item__val() const {
+    langcc::AT(this->is_TypedDecl__vars__item__val());
+    return this->rc_from_this_poly<lang::cc::Node::TypedDecl::vars::item::val::_T>();
+}
+
 lang::cc::Node::TypedDecl::vars::item_T lang::cc::Node::_T::as_TypedDecl__vars__item() {
+    langcc::AT(this->is_TypedDecl__vars__item());
+    return this->rc_from_this_poly<lang::cc::Node::TypedDecl::vars::item::_T>();
+}
+
+const lang::cc::Node::TypedDecl::vars::item_T lang::cc::Node::_T::as_TypedDecl__vars__item() const {
     langcc::AT(this->is_TypedDecl__vars__item());
     return this->rc_from_this_poly<lang::cc::Node::TypedDecl::vars::item::_T>();
 }
@@ -1331,7 +1401,17 @@ lang::cc::Node::TypedDecl_T lang::cc::Node::_T::as_TypedDecl() {
     return this->rc_from_this_poly<lang::cc::Node::TypedDecl::_T>();
 }
 
+const lang::cc::Node::TypedDecl_T lang::cc::Node::_T::as_TypedDecl() const {
+    langcc::AT(this->is_TypedDecl());
+    return this->rc_from_this_poly<lang::cc::Node::TypedDecl::_T>();
+}
+
 lang::cc::Node::Expr::UnaryPre::op_T lang::cc::Node::_T::as_Expr__UnaryPre__op() {
+    langcc::AT(this->is_Expr__UnaryPre__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::_T>();
+}
+
+const lang::cc::Node::Expr::UnaryPre::op_T lang::cc::Node::_T::as_Expr__UnaryPre__op() const {
     langcc::AT(this->is_Expr__UnaryPre__op());
     return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::_T>();
 }
@@ -1341,7 +1421,17 @@ lang::cc::Node::Expr::IncDecPre::op_T lang::cc::Node::_T::as_Expr__IncDecPre__op
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::_T>();
 }
 
+const lang::cc::Node::Expr::IncDecPre::op_T lang::cc::Node::_T::as_Expr__IncDecPre__op() const {
+    langcc::AT(this->is_Expr__IncDecPre__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::_T>();
+}
+
 lang::cc::Node::Expr::IncDecPost::op_T lang::cc::Node::_T::as_Expr__IncDecPost__op() {
+    langcc::AT(this->is_Expr__IncDecPost__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::_T>();
+}
+
+const lang::cc::Node::Expr::IncDecPost::op_T lang::cc::Node::_T::as_Expr__IncDecPost__op() const {
     langcc::AT(this->is_Expr__IncDecPost__op());
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::_T>();
 }
@@ -1351,7 +1441,17 @@ lang::cc::Node::Expr::Bin1::op_T lang::cc::Node::_T::as_Expr__Bin1__op() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::_T>();
 }
 
+const lang::cc::Node::Expr::Bin1::op_T lang::cc::Node::_T::as_Expr__Bin1__op() const {
+    langcc::AT(this->is_Expr__Bin1__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::_T>();
+}
+
 lang::cc::Node::Expr::Bin2::op_T lang::cc::Node::_T::as_Expr__Bin2__op() {
+    langcc::AT(this->is_Expr__Bin2__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::_T>();
+}
+
+const lang::cc::Node::Expr::Bin2::op_T lang::cc::Node::_T::as_Expr__Bin2__op() const {
     langcc::AT(this->is_Expr__Bin2__op());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::_T>();
 }
@@ -1361,7 +1461,17 @@ lang::cc::Node::Expr::Bin3::op_T lang::cc::Node::_T::as_Expr__Bin3__op() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::_T>();
 }
 
+const lang::cc::Node::Expr::Bin3::op_T lang::cc::Node::_T::as_Expr__Bin3__op() const {
+    langcc::AT(this->is_Expr__Bin3__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::_T>();
+}
+
 lang::cc::Node::Expr::Bin4::op_T lang::cc::Node::_T::as_Expr__Bin4__op() {
+    langcc::AT(this->is_Expr__Bin4__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::_T>();
+}
+
+const lang::cc::Node::Expr::Bin4::op_T lang::cc::Node::_T::as_Expr__Bin4__op() const {
     langcc::AT(this->is_Expr__Bin4__op());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::_T>();
 }
@@ -1371,7 +1481,17 @@ lang::cc::Node::Expr::Bin5::op_T lang::cc::Node::_T::as_Expr__Bin5__op() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::_T>();
 }
 
+const lang::cc::Node::Expr::Bin5::op_T lang::cc::Node::_T::as_Expr__Bin5__op() const {
+    langcc::AT(this->is_Expr__Bin5__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::_T>();
+}
+
 lang::cc::Node::Expr::Bin6::op_T lang::cc::Node::_T::as_Expr__Bin6__op() {
+    langcc::AT(this->is_Expr__Bin6__op());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::_T>();
+}
+
+const lang::cc::Node::Expr::Bin6::op_T lang::cc::Node::_T::as_Expr__Bin6__op() const {
     langcc::AT(this->is_Expr__Bin6__op());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::_T>();
 }
@@ -1381,7 +1501,17 @@ lang::cc::Node::Decl_T lang::cc::Node::_T::as_Decl() {
     return this->rc_from_this_poly<lang::cc::Node::Decl::_T>();
 }
 
+const lang::cc::Node::Decl_T lang::cc::Node::_T::as_Decl() const {
+    langcc::AT(this->is_Decl());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::_T>();
+}
+
 lang::cc::Node::StructDeclDef_T lang::cc::Node::_T::as_StructDeclDef() {
+    langcc::AT(this->is_StructDeclDef());
+    return this->rc_from_this_poly<lang::cc::Node::StructDeclDef::_T>();
+}
+
+const lang::cc::Node::StructDeclDef_T lang::cc::Node::_T::as_StructDeclDef() const {
     langcc::AT(this->is_StructDeclDef());
     return this->rc_from_this_poly<lang::cc::Node::StructDeclDef::_T>();
 }
@@ -1391,7 +1521,17 @@ lang::cc::Node::Entry_T lang::cc::Node::_T::as_Entry() {
     return this->rc_from_this_poly<lang::cc::Node::Entry::_T>();
 }
 
+const lang::cc::Node::Entry_T lang::cc::Node::_T::as_Entry() const {
+    langcc::AT(this->is_Entry());
+    return this->rc_from_this_poly<lang::cc::Node::Entry::_T>();
+}
+
 lang::cc::Node::FunDeclDef_T lang::cc::Node::_T::as_FunDeclDef() {
+    langcc::AT(this->is_FunDeclDef());
+    return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::_T>();
+}
+
+const lang::cc::Node::FunDeclDef_T lang::cc::Node::_T::as_FunDeclDef() const {
     langcc::AT(this->is_FunDeclDef());
     return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::_T>();
 }
@@ -1401,7 +1541,17 @@ lang::cc::Node::Mod_T lang::cc::Node::_T::as_Mod() {
     return this->rc_from_this_poly<lang::cc::Node::Mod::_T>();
 }
 
+const lang::cc::Node::Mod_T lang::cc::Node::_T::as_Mod() const {
+    langcc::AT(this->is_Mod());
+    return this->rc_from_this_poly<lang::cc::Node::Mod::_T>();
+}
+
 lang::cc::Node::Stmt_T lang::cc::Node::_T::as_Stmt() {
+    langcc::AT(this->is_Stmt());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::_T>();
+}
+
+const lang::cc::Node::Stmt_T lang::cc::Node::_T::as_Stmt() const {
     langcc::AT(this->is_Stmt());
     return this->rc_from_this_poly<lang::cc::Node::Stmt::_T>();
 }
@@ -1411,12 +1561,27 @@ lang::cc::Node::ExprExt_T lang::cc::Node::_T::as_ExprExt() {
     return this->rc_from_this_poly<lang::cc::Node::ExprExt::_T>();
 }
 
+const lang::cc::Node::ExprExt_T lang::cc::Node::_T::as_ExprExt() const {
+    langcc::AT(this->is_ExprExt());
+    return this->rc_from_this_poly<lang::cc::Node::ExprExt::_T>();
+}
+
 lang::cc::Node::SwitchCase_T lang::cc::Node::_T::as_SwitchCase() {
     langcc::AT(this->is_SwitchCase());
     return this->rc_from_this_poly<lang::cc::Node::SwitchCase::_T>();
 }
 
+const lang::cc::Node::SwitchCase_T lang::cc::Node::_T::as_SwitchCase() const {
+    langcc::AT(this->is_SwitchCase());
+    return this->rc_from_this_poly<lang::cc::Node::SwitchCase::_T>();
+}
+
 lang::cc::Node::Expr_T lang::cc::Node::_T::as_Expr() {
+    langcc::AT(this->is_Expr());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::_T>();
+}
+
+const lang::cc::Node::Expr_T lang::cc::Node::_T::as_Expr() const {
     langcc::AT(this->is_Expr());
     return this->rc_from_this_poly<lang::cc::Node::Expr::_T>();
 }
@@ -2428,7 +2593,17 @@ lang::cc::Node::Decl::Struct_T lang::cc::Node::Decl::_T::as_Struct() {
     return this->rc_from_this_poly<lang::cc::Node::Decl::Struct::_T>();
 }
 
+const lang::cc::Node::Decl::Struct_T lang::cc::Node::Decl::_T::as_Struct() const {
+    langcc::AT(this->is_Struct());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Struct::_T>();
+}
+
 lang::cc::Node::Decl::EnumStruct_T lang::cc::Node::Decl::_T::as_EnumStruct() {
+    langcc::AT(this->is_EnumStruct());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::EnumStruct::_T>();
+}
+
+const lang::cc::Node::Decl::EnumStruct_T lang::cc::Node::Decl::_T::as_EnumStruct() const {
     langcc::AT(this->is_EnumStruct());
     return this->rc_from_this_poly<lang::cc::Node::Decl::EnumStruct::_T>();
 }
@@ -2438,7 +2613,17 @@ lang::cc::Node::Decl::Fun_T lang::cc::Node::Decl::_T::as_Fun() {
     return this->rc_from_this_poly<lang::cc::Node::Decl::Fun::_T>();
 }
 
+const lang::cc::Node::Decl::Fun_T lang::cc::Node::Decl::_T::as_Fun() const {
+    langcc::AT(this->is_Fun());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Fun::_T>();
+}
+
 lang::cc::Node::Decl::Namespace_T lang::cc::Node::Decl::_T::as_Namespace() {
+    langcc::AT(this->is_Namespace());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Namespace::_T>();
+}
+
+const lang::cc::Node::Decl::Namespace_T lang::cc::Node::Decl::_T::as_Namespace() const {
     langcc::AT(this->is_Namespace());
     return this->rc_from_this_poly<lang::cc::Node::Decl::Namespace::_T>();
 }
@@ -2448,7 +2633,17 @@ lang::cc::Node::Decl::UsingAlias_T lang::cc::Node::Decl::_T::as_UsingAlias() {
     return this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::_T>();
 }
 
+const lang::cc::Node::Decl::UsingAlias_T lang::cc::Node::Decl::_T::as_UsingAlias() const {
+    langcc::AT(this->is_UsingAlias());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::UsingAlias::_T>();
+}
+
 lang::cc::Node::Decl::UsingNamespace_T lang::cc::Node::Decl::_T::as_UsingNamespace() {
+    langcc::AT(this->is_UsingNamespace());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::UsingNamespace::_T>();
+}
+
+const lang::cc::Node::Decl::UsingNamespace_T lang::cc::Node::Decl::_T::as_UsingNamespace() const {
     langcc::AT(this->is_UsingNamespace());
     return this->rc_from_this_poly<lang::cc::Node::Decl::UsingNamespace::_T>();
 }
@@ -2458,7 +2653,17 @@ lang::cc::Node::Decl::Include_T lang::cc::Node::Decl::_T::as_Include() {
     return this->rc_from_this_poly<lang::cc::Node::Decl::Include::_T>();
 }
 
+const lang::cc::Node::Decl::Include_T lang::cc::Node::Decl::_T::as_Include() const {
+    langcc::AT(this->is_Include());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::Include::_T>();
+}
+
 lang::cc::Node::Decl::PragmaOnce_T lang::cc::Node::Decl::_T::as_PragmaOnce() {
+    langcc::AT(this->is_PragmaOnce());
+    return this->rc_from_this_poly<lang::cc::Node::Decl::PragmaOnce::_T>();
+}
+
+const lang::cc::Node::Decl::PragmaOnce_T lang::cc::Node::Decl::_T::as_PragmaOnce() const {
     langcc::AT(this->is_PragmaOnce());
     return this->rc_from_this_poly<lang::cc::Node::Decl::PragmaOnce::_T>();
 }
@@ -2548,7 +2753,17 @@ lang::cc::Node::StructDeclDef::Decl_T lang::cc::Node::StructDeclDef::_T::as_Decl
     return this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Decl::_T>();
 }
 
+const lang::cc::Node::StructDeclDef::Decl_T lang::cc::Node::StructDeclDef::_T::as_Decl() const {
+    langcc::AT(this->is_Decl());
+    return this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Decl::_T>();
+}
+
 lang::cc::Node::StructDeclDef::Def_T lang::cc::Node::StructDeclDef::_T::as_Def() {
+    langcc::AT(this->is_Def());
+    return this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Def::_T>();
+}
+
+const lang::cc::Node::StructDeclDef::Def_T lang::cc::Node::StructDeclDef::_T::as_Def() const {
     langcc::AT(this->is_Def());
     return this->rc_from_this_poly<lang::cc::Node::StructDeclDef::Def::_T>();
 }
@@ -2614,7 +2829,17 @@ lang::cc::Node::Entry::Field_T lang::cc::Node::Entry::_T::as_Field() {
     return this->rc_from_this_poly<lang::cc::Node::Entry::Field::_T>();
 }
 
+const lang::cc::Node::Entry::Field_T lang::cc::Node::Entry::_T::as_Field() const {
+    langcc::AT(this->is_Field());
+    return this->rc_from_this_poly<lang::cc::Node::Entry::Field::_T>();
+}
+
 lang::cc::Node::Entry::Fun_T lang::cc::Node::Entry::_T::as_Fun() {
+    langcc::AT(this->is_Fun());
+    return this->rc_from_this_poly<lang::cc::Node::Entry::Fun::_T>();
+}
+
+const lang::cc::Node::Entry::Fun_T lang::cc::Node::Entry::_T::as_Fun() const {
     langcc::AT(this->is_Fun());
     return this->rc_from_this_poly<lang::cc::Node::Entry::Fun::_T>();
 }
@@ -2696,7 +2921,17 @@ lang::cc::Node::FunDeclDef::Decl_T lang::cc::Node::FunDeclDef::_T::as_Decl() {
     return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Decl::_T>();
 }
 
+const lang::cc::Node::FunDeclDef::Decl_T lang::cc::Node::FunDeclDef::_T::as_Decl() const {
+    langcc::AT(this->is_Decl());
+    return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Decl::_T>();
+}
+
 lang::cc::Node::FunDeclDef::Def_T lang::cc::Node::FunDeclDef::_T::as_Def() {
+    langcc::AT(this->is_Def());
+    return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Def::_T>();
+}
+
+const lang::cc::Node::FunDeclDef::Def_T lang::cc::Node::FunDeclDef::_T::as_Def() const {
     langcc::AT(this->is_Def());
     return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Def::_T>();
 }
@@ -2706,7 +2941,17 @@ lang::cc::Node::FunDeclDef::Del_T lang::cc::Node::FunDeclDef::_T::as_Del() {
     return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Del::_T>();
 }
 
+const lang::cc::Node::FunDeclDef::Del_T lang::cc::Node::FunDeclDef::_T::as_Del() const {
+    langcc::AT(this->is_Del());
+    return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Del::_T>();
+}
+
 lang::cc::Node::FunDeclDef::Zero_T lang::cc::Node::FunDeclDef::_T::as_Zero() {
+    langcc::AT(this->is_Zero());
+    return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Zero::_T>();
+}
+
+const lang::cc::Node::FunDeclDef::Zero_T lang::cc::Node::FunDeclDef::_T::as_Zero() const {
     langcc::AT(this->is_Zero());
     return this->rc_from_this_poly<lang::cc::Node::FunDeclDef::Zero::_T>();
 }
@@ -2812,7 +3057,17 @@ lang::cc::Node::Mod::Const_T lang::cc::Node::Mod::_T::as_Const() {
     return this->rc_from_this_poly<lang::cc::Node::Mod::Const::_T>();
 }
 
+const lang::cc::Node::Mod::Const_T lang::cc::Node::Mod::_T::as_Const() const {
+    langcc::AT(this->is_Const());
+    return this->rc_from_this_poly<lang::cc::Node::Mod::Const::_T>();
+}
+
 lang::cc::Node::Mod::Inline_T lang::cc::Node::Mod::_T::as_Inline() {
+    langcc::AT(this->is_Inline());
+    return this->rc_from_this_poly<lang::cc::Node::Mod::Inline::_T>();
+}
+
+const lang::cc::Node::Mod::Inline_T lang::cc::Node::Mod::_T::as_Inline() const {
     langcc::AT(this->is_Inline());
     return this->rc_from_this_poly<lang::cc::Node::Mod::Inline::_T>();
 }
@@ -2822,7 +3077,17 @@ lang::cc::Node::Mod::Static_T lang::cc::Node::Mod::_T::as_Static() {
     return this->rc_from_this_poly<lang::cc::Node::Mod::Static::_T>();
 }
 
+const lang::cc::Node::Mod::Static_T lang::cc::Node::Mod::_T::as_Static() const {
+    langcc::AT(this->is_Static());
+    return this->rc_from_this_poly<lang::cc::Node::Mod::Static::_T>();
+}
+
 lang::cc::Node::Mod::Virtual_T lang::cc::Node::Mod::_T::as_Virtual() {
+    langcc::AT(this->is_Virtual());
+    return this->rc_from_this_poly<lang::cc::Node::Mod::Virtual::_T>();
+}
+
+const lang::cc::Node::Mod::Virtual_T lang::cc::Node::Mod::_T::as_Virtual() const {
     langcc::AT(this->is_Virtual());
     return this->rc_from_this_poly<lang::cc::Node::Mod::Virtual::_T>();
 }
@@ -2832,7 +3097,17 @@ lang::cc::Node::Mod::NoInline_T lang::cc::Node::Mod::_T::as_NoInline() {
     return this->rc_from_this_poly<lang::cc::Node::Mod::NoInline::_T>();
 }
 
+const lang::cc::Node::Mod::NoInline_T lang::cc::Node::Mod::_T::as_NoInline() const {
+    langcc::AT(this->is_NoInline());
+    return this->rc_from_this_poly<lang::cc::Node::Mod::NoInline::_T>();
+}
+
 lang::cc::Node::Mod::AlwaysInline_T lang::cc::Node::Mod::_T::as_AlwaysInline() {
+    langcc::AT(this->is_AlwaysInline());
+    return this->rc_from_this_poly<lang::cc::Node::Mod::AlwaysInline::_T>();
+}
+
+const lang::cc::Node::Mod::AlwaysInline_T lang::cc::Node::Mod::_T::as_AlwaysInline() const {
     langcc::AT(this->is_AlwaysInline());
     return this->rc_from_this_poly<lang::cc::Node::Mod::AlwaysInline::_T>();
 }
@@ -2978,7 +3253,17 @@ lang::cc::Node::Stmt::Decl_T lang::cc::Node::Stmt::_T::as_Decl() {
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Decl::_T>();
 }
 
+const lang::cc::Node::Stmt::Decl_T lang::cc::Node::Stmt::_T::as_Decl() const {
+    langcc::AT(this->is_Decl());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::Decl::_T>();
+}
+
 lang::cc::Node::Stmt::Expr_T lang::cc::Node::Stmt::_T::as_Expr() {
+    langcc::AT(this->is_Expr());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::Expr::_T>();
+}
+
+const lang::cc::Node::Stmt::Expr_T lang::cc::Node::Stmt::_T::as_Expr() const {
     langcc::AT(this->is_Expr());
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Expr::_T>();
 }
@@ -2988,7 +3273,17 @@ lang::cc::Node::Stmt::Block_T lang::cc::Node::Stmt::_T::as_Block() {
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Block::_T>();
 }
 
+const lang::cc::Node::Stmt::Block_T lang::cc::Node::Stmt::_T::as_Block() const {
+    langcc::AT(this->is_Block());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::Block::_T>();
+}
+
 lang::cc::Node::Stmt::If_T lang::cc::Node::Stmt::_T::as_If() {
+    langcc::AT(this->is_If());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::If::_T>();
+}
+
+const lang::cc::Node::Stmt::If_T lang::cc::Node::Stmt::_T::as_If() const {
     langcc::AT(this->is_If());
     return this->rc_from_this_poly<lang::cc::Node::Stmt::If::_T>();
 }
@@ -2998,7 +3293,17 @@ lang::cc::Node::Stmt::IfElse_T lang::cc::Node::Stmt::_T::as_IfElse() {
     return this->rc_from_this_poly<lang::cc::Node::Stmt::IfElse::_T>();
 }
 
+const lang::cc::Node::Stmt::IfElse_T lang::cc::Node::Stmt::_T::as_IfElse() const {
+    langcc::AT(this->is_IfElse());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::IfElse::_T>();
+}
+
 lang::cc::Node::Stmt::For_T lang::cc::Node::Stmt::_T::as_For() {
+    langcc::AT(this->is_For());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::For::_T>();
+}
+
+const lang::cc::Node::Stmt::For_T lang::cc::Node::Stmt::_T::as_For() const {
     langcc::AT(this->is_For());
     return this->rc_from_this_poly<lang::cc::Node::Stmt::For::_T>();
 }
@@ -3008,7 +3313,17 @@ lang::cc::Node::Stmt::Switch_T lang::cc::Node::Stmt::_T::as_Switch() {
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Switch::_T>();
 }
 
+const lang::cc::Node::Stmt::Switch_T lang::cc::Node::Stmt::_T::as_Switch() const {
+    langcc::AT(this->is_Switch());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::Switch::_T>();
+}
+
 lang::cc::Node::Stmt::Break_T lang::cc::Node::Stmt::_T::as_Break() {
+    langcc::AT(this->is_Break());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::Break::_T>();
+}
+
+const lang::cc::Node::Stmt::Break_T lang::cc::Node::Stmt::_T::as_Break() const {
     langcc::AT(this->is_Break());
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Break::_T>();
 }
@@ -3018,7 +3333,17 @@ lang::cc::Node::Stmt::Continue_T lang::cc::Node::Stmt::_T::as_Continue() {
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Continue::_T>();
 }
 
+const lang::cc::Node::Stmt::Continue_T lang::cc::Node::Stmt::_T::as_Continue() const {
+    langcc::AT(this->is_Continue());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::Continue::_T>();
+}
+
 lang::cc::Node::Stmt::Return_T lang::cc::Node::Stmt::_T::as_Return() {
+    langcc::AT(this->is_Return());
+    return this->rc_from_this_poly<lang::cc::Node::Stmt::Return::_T>();
+}
+
+const lang::cc::Node::Stmt::Return_T lang::cc::Node::Stmt::_T::as_Return() const {
     langcc::AT(this->is_Return());
     return this->rc_from_this_poly<lang::cc::Node::Stmt::Return::_T>();
 }
@@ -3116,7 +3441,17 @@ lang::cc::Node::ExprExt::Expr_T lang::cc::Node::ExprExt::_T::as_Expr() {
     return this->rc_from_this_poly<lang::cc::Node::ExprExt::Expr::_T>();
 }
 
+const lang::cc::Node::ExprExt::Expr_T lang::cc::Node::ExprExt::_T::as_Expr() const {
+    langcc::AT(this->is_Expr());
+    return this->rc_from_this_poly<lang::cc::Node::ExprExt::Expr::_T>();
+}
+
 lang::cc::Node::ExprExt::Decl_T lang::cc::Node::ExprExt::_T::as_Decl() {
+    langcc::AT(this->is_Decl());
+    return this->rc_from_this_poly<lang::cc::Node::ExprExt::Decl::_T>();
+}
+
+const lang::cc::Node::ExprExt::Decl_T lang::cc::Node::ExprExt::_T::as_Decl() const {
     langcc::AT(this->is_Decl());
     return this->rc_from_this_poly<lang::cc::Node::ExprExt::Decl::_T>();
 }
@@ -3182,7 +3517,17 @@ lang::cc::Node::SwitchCase::Case_T lang::cc::Node::SwitchCase::_T::as_Case() {
     return this->rc_from_this_poly<lang::cc::Node::SwitchCase::Case::_T>();
 }
 
+const lang::cc::Node::SwitchCase::Case_T lang::cc::Node::SwitchCase::_T::as_Case() const {
+    langcc::AT(this->is_Case());
+    return this->rc_from_this_poly<lang::cc::Node::SwitchCase::Case::_T>();
+}
+
 lang::cc::Node::SwitchCase::Default_T lang::cc::Node::SwitchCase::_T::as_Default() {
+    langcc::AT(this->is_Default());
+    return this->rc_from_this_poly<lang::cc::Node::SwitchCase::Default::_T>();
+}
+
+const lang::cc::Node::SwitchCase::Default_T lang::cc::Node::SwitchCase::_T::as_Default() const {
     langcc::AT(this->is_Default());
     return this->rc_from_this_poly<lang::cc::Node::SwitchCase::Default::_T>();
 }
@@ -3448,7 +3793,17 @@ lang::cc::Node::Expr::Paren_T lang::cc::Node::Expr::_T::as_Paren() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Paren::_T>();
 }
 
+const lang::cc::Node::Expr::Paren_T lang::cc::Node::Expr::_T::as_Paren() const {
+    langcc::AT(this->is_Paren());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Paren::_T>();
+}
+
 lang::cc::Node::Expr::Call_T lang::cc::Node::Expr::_T::as_Call() {
+    langcc::AT(this->is_Call());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Call::_T>();
+}
+
+const lang::cc::Node::Expr::Call_T lang::cc::Node::Expr::_T::as_Call() const {
     langcc::AT(this->is_Call());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Call::_T>();
 }
@@ -3458,7 +3813,17 @@ lang::cc::Node::Expr::Index_T lang::cc::Node::Expr::_T::as_Index() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Index::_T>();
 }
 
+const lang::cc::Node::Expr::Index_T lang::cc::Node::Expr::_T::as_Index() const {
+    langcc::AT(this->is_Index());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Index::_T>();
+}
+
 lang::cc::Node::Expr::IndexEmpty_T lang::cc::Node::Expr::_T::as_IndexEmpty() {
+    langcc::AT(this->is_IndexEmpty());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IndexEmpty::_T>();
+}
+
+const lang::cc::Node::Expr::IndexEmpty_T lang::cc::Node::Expr::_T::as_IndexEmpty() const {
     langcc::AT(this->is_IndexEmpty());
     return this->rc_from_this_poly<lang::cc::Node::Expr::IndexEmpty::_T>();
 }
@@ -3468,7 +3833,17 @@ lang::cc::Node::Expr::Dot_T lang::cc::Node::Expr::_T::as_Dot() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Dot::_T>();
 }
 
+const lang::cc::Node::Expr::Dot_T lang::cc::Node::Expr::_T::as_Dot() const {
+    langcc::AT(this->is_Dot());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Dot::_T>();
+}
+
 lang::cc::Node::Expr::Arrow_T lang::cc::Node::Expr::_T::as_Arrow() {
+    langcc::AT(this->is_Arrow());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Arrow::_T>();
+}
+
+const lang::cc::Node::Expr::Arrow_T lang::cc::Node::Expr::_T::as_Arrow() const {
     langcc::AT(this->is_Arrow());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Arrow::_T>();
 }
@@ -3478,7 +3853,17 @@ lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::_T::as_Ref_() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Ref_::_T>();
 }
 
+const lang::cc::Node::Expr::Ref__T lang::cc::Node::Expr::_T::as_Ref_() const {
+    langcc::AT(this->is_Ref_());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Ref_::_T>();
+}
+
 lang::cc::Node::Expr::AddrOf_T lang::cc::Node::Expr::_T::as_AddrOf() {
+    langcc::AT(this->is_AddrOf());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::AddrOf::_T>();
+}
+
+const lang::cc::Node::Expr::AddrOf_T lang::cc::Node::Expr::_T::as_AddrOf() const {
     langcc::AT(this->is_AddrOf());
     return this->rc_from_this_poly<lang::cc::Node::Expr::AddrOf::_T>();
 }
@@ -3488,7 +3873,17 @@ lang::cc::Node::Expr::Deref_T lang::cc::Node::Expr::_T::as_Deref() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Deref::_T>();
 }
 
+const lang::cc::Node::Expr::Deref_T lang::cc::Node::Expr::_T::as_Deref() const {
+    langcc::AT(this->is_Deref());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Deref::_T>();
+}
+
 lang::cc::Node::Expr::UnaryPre_T lang::cc::Node::Expr::_T::as_UnaryPre() {
+    langcc::AT(this->is_UnaryPre());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::_T>();
+}
+
+const lang::cc::Node::Expr::UnaryPre_T lang::cc::Node::Expr::_T::as_UnaryPre() const {
     langcc::AT(this->is_UnaryPre());
     return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::_T>();
 }
@@ -3498,7 +3893,17 @@ lang::cc::Node::Expr::IncDecPre_T lang::cc::Node::Expr::_T::as_IncDecPre() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::_T>();
 }
 
+const lang::cc::Node::Expr::IncDecPre_T lang::cc::Node::Expr::_T::as_IncDecPre() const {
+    langcc::AT(this->is_IncDecPre());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::_T>();
+}
+
 lang::cc::Node::Expr::IncDecPost_T lang::cc::Node::Expr::_T::as_IncDecPost() {
+    langcc::AT(this->is_IncDecPost());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::_T>();
+}
+
+const lang::cc::Node::Expr::IncDecPost_T lang::cc::Node::Expr::_T::as_IncDecPost() const {
     langcc::AT(this->is_IncDecPost());
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::_T>();
 }
@@ -3508,7 +3913,17 @@ lang::cc::Node::Expr::Assign_T lang::cc::Node::Expr::_T::as_Assign() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Assign::_T>();
 }
 
+const lang::cc::Node::Expr::Assign_T lang::cc::Node::Expr::_T::as_Assign() const {
+    langcc::AT(this->is_Assign());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Assign::_T>();
+}
+
 lang::cc::Node::Expr::Bin1_T lang::cc::Node::Expr::_T::as_Bin1() {
+    langcc::AT(this->is_Bin1());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::_T>();
+}
+
+const lang::cc::Node::Expr::Bin1_T lang::cc::Node::Expr::_T::as_Bin1() const {
     langcc::AT(this->is_Bin1());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::_T>();
 }
@@ -3518,7 +3933,17 @@ lang::cc::Node::Expr::Bin2_T lang::cc::Node::Expr::_T::as_Bin2() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::_T>();
 }
 
+const lang::cc::Node::Expr::Bin2_T lang::cc::Node::Expr::_T::as_Bin2() const {
+    langcc::AT(this->is_Bin2());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::_T>();
+}
+
 lang::cc::Node::Expr::Bin3_T lang::cc::Node::Expr::_T::as_Bin3() {
+    langcc::AT(this->is_Bin3());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::_T>();
+}
+
+const lang::cc::Node::Expr::Bin3_T lang::cc::Node::Expr::_T::as_Bin3() const {
     langcc::AT(this->is_Bin3());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::_T>();
 }
@@ -3528,7 +3953,17 @@ lang::cc::Node::Expr::Bin4_T lang::cc::Node::Expr::_T::as_Bin4() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::_T>();
 }
 
+const lang::cc::Node::Expr::Bin4_T lang::cc::Node::Expr::_T::as_Bin4() const {
+    langcc::AT(this->is_Bin4());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::_T>();
+}
+
 lang::cc::Node::Expr::Bin5_T lang::cc::Node::Expr::_T::as_Bin5() {
+    langcc::AT(this->is_Bin5());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::_T>();
+}
+
+const lang::cc::Node::Expr::Bin5_T lang::cc::Node::Expr::_T::as_Bin5() const {
     langcc::AT(this->is_Bin5());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::_T>();
 }
@@ -3538,7 +3973,17 @@ lang::cc::Node::Expr::Bin6_T lang::cc::Node::Expr::_T::as_Bin6() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::_T>();
 }
 
+const lang::cc::Node::Expr::Bin6_T lang::cc::Node::Expr::_T::as_Bin6() const {
+    langcc::AT(this->is_Bin6());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::_T>();
+}
+
 lang::cc::Node::Expr::Template_T lang::cc::Node::Expr::_T::as_Template() {
+    langcc::AT(this->is_Template());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Template::_T>();
+}
+
+const lang::cc::Node::Expr::Template_T lang::cc::Node::Expr::_T::as_Template() const {
     langcc::AT(this->is_Template());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Template::_T>();
 }
@@ -3548,7 +3993,17 @@ lang::cc::Node::Expr::New_T lang::cc::Node::Expr::_T::as_New() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::New::_T>();
 }
 
+const lang::cc::Node::Expr::New_T lang::cc::Node::Expr::_T::as_New() const {
+    langcc::AT(this->is_New());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::New::_T>();
+}
+
 lang::cc::Node::Expr::Delete_T lang::cc::Node::Expr::_T::as_Delete() {
+    langcc::AT(this->is_Delete());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Delete::_T>();
+}
+
+const lang::cc::Node::Expr::Delete_T lang::cc::Node::Expr::_T::as_Delete() const {
     langcc::AT(this->is_Delete());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Delete::_T>();
 }
@@ -3558,7 +4013,17 @@ lang::cc::Node::Expr::Ellipsis_T lang::cc::Node::Expr::_T::as_Ellipsis() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Ellipsis::_T>();
 }
 
+const lang::cc::Node::Expr::Ellipsis_T lang::cc::Node::Expr::_T::as_Ellipsis() const {
+    langcc::AT(this->is_Ellipsis());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Ellipsis::_T>();
+}
+
 lang::cc::Node::Expr::Tilde_T lang::cc::Node::Expr::_T::as_Tilde() {
+    langcc::AT(this->is_Tilde());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Tilde::_T>();
+}
+
+const lang::cc::Node::Expr::Tilde_T lang::cc::Node::Expr::_T::as_Tilde() const {
     langcc::AT(this->is_Tilde());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Tilde::_T>();
 }
@@ -3568,12 +4033,27 @@ lang::cc::Node::Expr::Namespace_T lang::cc::Node::Expr::_T::as_Namespace() {
     return this->rc_from_this_poly<lang::cc::Node::Expr::Namespace::_T>();
 }
 
+const lang::cc::Node::Expr::Namespace_T lang::cc::Node::Expr::_T::as_Namespace() const {
+    langcc::AT(this->is_Namespace());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Namespace::_T>();
+}
+
 lang::cc::Node::Expr::Id_T lang::cc::Node::Expr::_T::as_Id() {
     langcc::AT(this->is_Id());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Id::_T>();
 }
 
+const lang::cc::Node::Expr::Id_T lang::cc::Node::Expr::_T::as_Id() const {
+    langcc::AT(this->is_Id());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Id::_T>();
+}
+
 lang::cc::Node::Expr::Lit_T lang::cc::Node::Expr::_T::as_Lit() {
+    langcc::AT(this->is_Lit());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::_T>();
+}
+
+const lang::cc::Node::Expr::Lit_T lang::cc::Node::Expr::_T::as_Lit() const {
     langcc::AT(this->is_Lit());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::_T>();
 }
@@ -14916,12 +15396,27 @@ lang::cc::Node::Expr::Lit::Integer_T lang::cc::Node::Expr::Lit::_T::as_Integer()
     return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Integer::_T>();
 }
 
+const lang::cc::Node::Expr::Lit::Integer_T lang::cc::Node::Expr::Lit::_T::as_Integer() const {
+    langcc::AT(this->is_Integer());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Integer::_T>();
+}
+
 lang::cc::Node::Expr::Lit::Str__T lang::cc::Node::Expr::Lit::_T::as_Str_() {
     langcc::AT(this->is_Str_());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Str_::_T>();
 }
 
+const lang::cc::Node::Expr::Lit::Str__T lang::cc::Node::Expr::Lit::_T::as_Str_() const {
+    langcc::AT(this->is_Str_());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Str_::_T>();
+}
+
 lang::cc::Node::Expr::Lit::Array_T lang::cc::Node::Expr::Lit::_T::as_Array() {
+    langcc::AT(this->is_Array());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Array::_T>();
+}
+
+const lang::cc::Node::Expr::Lit::Array_T lang::cc::Node::Expr::Lit::_T::as_Array() const {
     langcc::AT(this->is_Array());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Lit::Array::_T>();
 }
@@ -15176,7 +15671,17 @@ lang::cc::Node::Expr::UnaryPre::op::NOT_T lang::cc::Node::Expr::UnaryPre::op::_T
     return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NOT::_T>();
 }
 
+const lang::cc::Node::Expr::UnaryPre::op::NOT_T lang::cc::Node::Expr::UnaryPre::op::_T::as_NOT() const {
+    langcc::AT(this->is_NOT());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NOT::_T>();
+}
+
 lang::cc::Node::Expr::UnaryPre::op::NEG_T lang::cc::Node::Expr::UnaryPre::op::_T::as_NEG() {
+    langcc::AT(this->is_NEG());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NEG::_T>();
+}
+
+const lang::cc::Node::Expr::UnaryPre::op::NEG_T lang::cc::Node::Expr::UnaryPre::op::_T::as_NEG() const {
     langcc::AT(this->is_NEG());
     return this->rc_from_this_poly<lang::cc::Node::Expr::UnaryPre::op::NEG::_T>();
 }
@@ -15242,7 +15747,17 @@ lang::cc::Node::Expr::IncDecPre::op::INC_T lang::cc::Node::Expr::IncDecPre::op::
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::INC::_T>();
 }
 
+const lang::cc::Node::Expr::IncDecPre::op::INC_T lang::cc::Node::Expr::IncDecPre::op::_T::as_INC() const {
+    langcc::AT(this->is_INC());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::INC::_T>();
+}
+
 lang::cc::Node::Expr::IncDecPre::op::DEC_T lang::cc::Node::Expr::IncDecPre::op::_T::as_DEC() {
+    langcc::AT(this->is_DEC());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::DEC::_T>();
+}
+
+const lang::cc::Node::Expr::IncDecPre::op::DEC_T lang::cc::Node::Expr::IncDecPre::op::_T::as_DEC() const {
     langcc::AT(this->is_DEC());
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPre::op::DEC::_T>();
 }
@@ -15308,7 +15823,17 @@ lang::cc::Node::Expr::IncDecPost::op::INC_T lang::cc::Node::Expr::IncDecPost::op
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::INC::_T>();
 }
 
+const lang::cc::Node::Expr::IncDecPost::op::INC_T lang::cc::Node::Expr::IncDecPost::op::_T::as_INC() const {
+    langcc::AT(this->is_INC());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::INC::_T>();
+}
+
 lang::cc::Node::Expr::IncDecPost::op::DEC_T lang::cc::Node::Expr::IncDecPost::op::_T::as_DEC() {
+    langcc::AT(this->is_DEC());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::DEC::_T>();
+}
+
+const lang::cc::Node::Expr::IncDecPost::op::DEC_T lang::cc::Node::Expr::IncDecPost::op::_T::as_DEC() const {
     langcc::AT(this->is_DEC());
     return this->rc_from_this_poly<lang::cc::Node::Expr::IncDecPost::op::DEC::_T>();
 }
@@ -15366,6 +15891,11 @@ lang::cc::Node::Expr::Bin1::op::LOR_T lang::cc::Node::Expr::Bin1::op::_T::as_LOR
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::LOR::_T>();
 }
 
+const lang::cc::Node::Expr::Bin1::op::LOR_T lang::cc::Node::Expr::Bin1::op::_T::as_LOR() const {
+    langcc::AT(this->is_LOR());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin1::op::LOR::_T>();
+}
+
 void lang::cc::Node::Expr::Bin1::op::_T::match(std::function<void(lang::cc::Node::Expr::Bin1::op::LOR_T)> f_LOR) {
     switch (this->w_) {
         case lang::cc::Node::Expr::Bin1::op::_W::LOR: {
@@ -15411,6 +15941,11 @@ bool lang::cc::Node::Expr::Bin2::op::_T::is_LAND() const {
 }
 
 lang::cc::Node::Expr::Bin2::op::LAND_T lang::cc::Node::Expr::Bin2::op::_T::as_LAND() {
+    langcc::AT(this->is_LAND());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::LAND::_T>();
+}
+
+const lang::cc::Node::Expr::Bin2::op::LAND_T lang::cc::Node::Expr::Bin2::op::_T::as_LAND() const {
     langcc::AT(this->is_LAND());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin2::op::LAND::_T>();
 }
@@ -15504,7 +16039,17 @@ lang::cc::Node::Expr::Bin3::op::EQ_T lang::cc::Node::Expr::Bin3::op::_T::as_EQ()
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::EQ::_T>();
 }
 
+const lang::cc::Node::Expr::Bin3::op::EQ_T lang::cc::Node::Expr::Bin3::op::_T::as_EQ() const {
+    langcc::AT(this->is_EQ());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::EQ::_T>();
+}
+
 lang::cc::Node::Expr::Bin3::op::NE_T lang::cc::Node::Expr::Bin3::op::_T::as_NE() {
+    langcc::AT(this->is_NE());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::NE::_T>();
+}
+
+const lang::cc::Node::Expr::Bin3::op::NE_T lang::cc::Node::Expr::Bin3::op::_T::as_NE() const {
     langcc::AT(this->is_NE());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::NE::_T>();
 }
@@ -15514,7 +16059,17 @@ lang::cc::Node::Expr::Bin3::op::LE_T lang::cc::Node::Expr::Bin3::op::_T::as_LE()
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LE::_T>();
 }
 
+const lang::cc::Node::Expr::Bin3::op::LE_T lang::cc::Node::Expr::Bin3::op::_T::as_LE() const {
+    langcc::AT(this->is_LE());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LE::_T>();
+}
+
 lang::cc::Node::Expr::Bin3::op::GE_T lang::cc::Node::Expr::Bin3::op::_T::as_GE() {
+    langcc::AT(this->is_GE());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GE::_T>();
+}
+
+const lang::cc::Node::Expr::Bin3::op::GE_T lang::cc::Node::Expr::Bin3::op::_T::as_GE() const {
     langcc::AT(this->is_GE());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GE::_T>();
 }
@@ -15524,7 +16079,17 @@ lang::cc::Node::Expr::Bin3::op::LT_T lang::cc::Node::Expr::Bin3::op::_T::as_LT()
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LT::_T>();
 }
 
+const lang::cc::Node::Expr::Bin3::op::LT_T lang::cc::Node::Expr::Bin3::op::_T::as_LT() const {
+    langcc::AT(this->is_LT());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::LT::_T>();
+}
+
 lang::cc::Node::Expr::Bin3::op::GT_T lang::cc::Node::Expr::Bin3::op::_T::as_GT() {
+    langcc::AT(this->is_GT());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GT::_T>();
+}
+
+const lang::cc::Node::Expr::Bin3::op::GT_T lang::cc::Node::Expr::Bin3::op::_T::as_GT() const {
     langcc::AT(this->is_GT());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin3::op::GT::_T>();
 }
@@ -15598,6 +16163,11 @@ lang::cc::Node::Expr::Bin4::op::SHL_T lang::cc::Node::Expr::Bin4::op::_T::as_SHL
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::SHL::_T>();
 }
 
+const lang::cc::Node::Expr::Bin4::op::SHL_T lang::cc::Node::Expr::Bin4::op::_T::as_SHL() const {
+    langcc::AT(this->is_SHL());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin4::op::SHL::_T>();
+}
+
 void lang::cc::Node::Expr::Bin4::op::_T::match(std::function<void(lang::cc::Node::Expr::Bin4::op::SHL_T)> f_SHL) {
     switch (this->w_) {
         case lang::cc::Node::Expr::Bin4::op::_W::SHL: {
@@ -15655,7 +16225,17 @@ lang::cc::Node::Expr::Bin5::op::PLUS_T lang::cc::Node::Expr::Bin5::op::_T::as_PL
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::PLUS::_T>();
 }
 
+const lang::cc::Node::Expr::Bin5::op::PLUS_T lang::cc::Node::Expr::Bin5::op::_T::as_PLUS() const {
+    langcc::AT(this->is_PLUS());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::PLUS::_T>();
+}
+
 lang::cc::Node::Expr::Bin5::op::MINUS_T lang::cc::Node::Expr::Bin5::op::_T::as_MINUS() {
+    langcc::AT(this->is_MINUS());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::MINUS::_T>();
+}
+
+const lang::cc::Node::Expr::Bin5::op::MINUS_T lang::cc::Node::Expr::Bin5::op::_T::as_MINUS() const {
     langcc::AT(this->is_MINUS());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin5::op::MINUS::_T>();
 }
@@ -15729,12 +16309,27 @@ lang::cc::Node::Expr::Bin6::op::TIMES_T lang::cc::Node::Expr::Bin6::op::_T::as_T
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::TIMES::_T>();
 }
 
+const lang::cc::Node::Expr::Bin6::op::TIMES_T lang::cc::Node::Expr::Bin6::op::_T::as_TIMES() const {
+    langcc::AT(this->is_TIMES());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::TIMES::_T>();
+}
+
 lang::cc::Node::Expr::Bin6::op::DIVIDE_T lang::cc::Node::Expr::Bin6::op::_T::as_DIVIDE() {
     langcc::AT(this->is_DIVIDE());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::DIVIDE::_T>();
 }
 
+const lang::cc::Node::Expr::Bin6::op::DIVIDE_T lang::cc::Node::Expr::Bin6::op::_T::as_DIVIDE() const {
+    langcc::AT(this->is_DIVIDE());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::DIVIDE::_T>();
+}
+
 lang::cc::Node::Expr::Bin6::op::MODULO_T lang::cc::Node::Expr::Bin6::op::_T::as_MODULO() {
+    langcc::AT(this->is_MODULO());
+    return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::MODULO::_T>();
+}
+
+const lang::cc::Node::Expr::Bin6::op::MODULO_T lang::cc::Node::Expr::Bin6::op::_T::as_MODULO() const {
     langcc::AT(this->is_MODULO());
     return this->rc_from_this_poly<lang::cc::Node::Expr::Bin6::op::MODULO::_T>();
 }
