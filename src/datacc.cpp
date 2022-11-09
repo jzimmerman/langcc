@@ -1705,7 +1705,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
                            Some(name_lit({
                                sum_case,
                            }))),
-            cpp_sum_is_params[sum_case]));
+            cpp_sum_is_params[sum_case], true));
       }
 
       // as_X()
@@ -1900,7 +1900,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
                         })),
                         Some<Vec_T<cc::Node_T>>(cpp_template_params)),
                     cpp_sum_is_params[sum_case], NodeV_empty(),
-                    cpp_sum_is_body[sum_case])
+                    cpp_sum_is_body[sum_case], true)
                 ->as_Decl());
       }
 

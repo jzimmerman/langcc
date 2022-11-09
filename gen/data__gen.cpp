@@ -561,35 +561,35 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node_T x) {
 lang::data::Node::_T::~_T() {
 }
 
-bool lang::data::Node::_T::is_Module() {
+bool lang::data::Node::_T::is_Module() const {
     return w_ == lang::data::Node::_W::Module;
 }
 
-bool lang::data::Node::_T::is_Param() {
+bool lang::data::Node::_T::is_Param() const {
     return w_ == lang::data::Node::_W::Param;
 }
 
-bool lang::data::Node::_T::is_SumId() {
+bool lang::data::Node::_T::is_SumId() const {
     return w_ == lang::data::Node::_W::SumId;
 }
 
-bool lang::data::Node::_T::is_Id() {
+bool lang::data::Node::_T::is_Id() const {
     return w_ == lang::data::Node::_W::Id;
 }
 
-bool lang::data::Node::_T::is_Decl() {
+bool lang::data::Node::_T::is_Decl() const {
     return w_ == lang::data::Node::_W::Decl;
 }
 
-bool lang::data::Node::_T::is_Mod() {
+bool lang::data::Node::_T::is_Mod() const {
     return w_ == lang::data::Node::_W::Mod;
 }
 
-bool lang::data::Node::_T::is_Entry() {
+bool lang::data::Node::_T::is_Entry() const {
     return w_ == lang::data::Node::_W::Entry;
 }
 
-bool lang::data::Node::_T::is_Expr() {
+bool lang::data::Node::_T::is_Expr() const {
     return w_ == lang::data::Node::_W::Expr;
 }
 
@@ -1371,19 +1371,19 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl_T x) {
 lang::data::Node::Decl::_T::~_T() {
 }
 
-bool lang::data::Node::Decl::_T::is_Include() {
+bool lang::data::Node::Decl::_T::is_Include() const {
     return w_ == lang::data::Node::Decl::_W::Include;
 }
 
-bool lang::data::Node::Decl::_T::is_Namespace() {
+bool lang::data::Node::Decl::_T::is_Namespace() const {
     return w_ == lang::data::Node::Decl::_W::Namespace;
 }
 
-bool lang::data::Node::Decl::_T::is_Data() {
+bool lang::data::Node::Decl::_T::is_Data() const {
     return w_ == lang::data::Node::Decl::_W::Data;
 }
 
-bool lang::data::Node::Decl::_T::is_Enum() {
+bool lang::data::Node::Decl::_T::is_Enum() const {
     return w_ == lang::data::Node::Decl::_W::Enum;
 }
 
@@ -1467,15 +1467,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod_T x) {
 lang::data::Node::Mod::_T::~_T() {
 }
 
-bool lang::data::Node::Mod::_T::is_Mut() {
+bool lang::data::Node::Mod::_T::is_Mut() const {
     return w_ == lang::data::Node::Mod::_W::Mut;
 }
 
-bool lang::data::Node::Mod::_T::is_Xform() {
+bool lang::data::Node::Mod::_T::is_Xform() const {
     return w_ == lang::data::Node::Mod::_W::Xform;
 }
 
-bool lang::data::Node::Mod::_T::is_Visit() {
+bool lang::data::Node::Mod::_T::is_Visit() const {
     return w_ == lang::data::Node::Mod::_W::Visit;
 }
 
@@ -1546,11 +1546,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x) 
 lang::data::Node::Entry::_T::~_T() {
 }
 
-bool lang::data::Node::Entry::_T::is_Field() {
+bool lang::data::Node::Entry::_T::is_Field() const {
     return w_ == lang::data::Node::Entry::_W::Field;
 }
 
-bool lang::data::Node::Entry::_T::is_Method() {
+bool lang::data::Node::Entry::_T::is_Method() const {
     return w_ == lang::data::Node::Entry::_W::Method;
 }
 
@@ -1616,15 +1616,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr_T x) {
 lang::data::Node::Expr::_T::~_T() {
 }
 
-bool lang::data::Node::Expr::_T::is_Id() {
+bool lang::data::Node::Expr::_T::is_Id() const {
     return w_ == lang::data::Node::Expr::_W::Id;
 }
 
-bool lang::data::Node::Expr::_T::is_App() {
+bool lang::data::Node::Expr::_T::is_App() const {
     return w_ == lang::data::Node::Expr::_W::App;
 }
 
-bool lang::data::Node::Expr::_T::is_Type_() {
+bool lang::data::Node::Expr::_T::is_Type_() const {
     return w_ == lang::data::Node::Expr::_W::Type_;
 }
 

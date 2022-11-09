@@ -1124,135 +1124,135 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node_T x) {
 lang::cc::Node::_T::~_T() {
 }
 
-bool lang::cc::Node::_T::is_Module() {
+bool lang::cc::Node::_T::is_Module() const {
     return w_ == lang::cc::Node::_W::Module;
 }
 
-bool lang::cc::Node::_T::is_Decl__Struct__tmpl__item__args__item() {
+bool lang::cc::Node::_T::is_Decl__Struct__tmpl__item__args__item() const {
     return w_ == lang::cc::Node::_W::Decl__Struct__tmpl__item__args__item;
 }
 
-bool lang::cc::Node::_T::is_Decl__Struct__tmpl__item() {
+bool lang::cc::Node::_T::is_Decl__Struct__tmpl__item() const {
     return w_ == lang::cc::Node::_W::Decl__Struct__tmpl__item;
 }
 
-bool lang::cc::Node::_T::is_Entry__Fun__tmpl__item__args__item() {
+bool lang::cc::Node::_T::is_Entry__Fun__tmpl__item__args__item() const {
     return w_ == lang::cc::Node::_W::Entry__Fun__tmpl__item__args__item;
 }
 
-bool lang::cc::Node::_T::is_Entry__Fun__tmpl__item() {
+bool lang::cc::Node::_T::is_Entry__Fun__tmpl__item() const {
     return w_ == lang::cc::Node::_W::Entry__Fun__tmpl__item;
 }
 
-bool lang::cc::Node::_T::is_Param__val() {
+bool lang::cc::Node::_T::is_Param__val() const {
     return w_ == lang::cc::Node::_W::Param__val;
 }
 
-bool lang::cc::Node::_T::is_Param() {
+bool lang::cc::Node::_T::is_Param() const {
     return w_ == lang::cc::Node::_W::Param;
 }
 
-bool lang::cc::Node::_T::is_Decl__Fun__tmpl__item__args__item() {
+bool lang::cc::Node::_T::is_Decl__Fun__tmpl__item__args__item() const {
     return w_ == lang::cc::Node::_W::Decl__Fun__tmpl__item__args__item;
 }
 
-bool lang::cc::Node::_T::is_Decl__Fun__tmpl__item() {
+bool lang::cc::Node::_T::is_Decl__Fun__tmpl__item() const {
     return w_ == lang::cc::Node::_W::Decl__Fun__tmpl__item;
 }
 
-bool lang::cc::Node::_T::is_Decl__UsingAlias__tmpl__item__args__item() {
+bool lang::cc::Node::_T::is_Decl__UsingAlias__tmpl__item__args__item() const {
     return w_ == lang::cc::Node::_W::Decl__UsingAlias__tmpl__item__args__item;
 }
 
-bool lang::cc::Node::_T::is_Decl__UsingAlias__tmpl__item() {
+bool lang::cc::Node::_T::is_Decl__UsingAlias__tmpl__item() const {
     return w_ == lang::cc::Node::_W::Decl__UsingAlias__tmpl__item;
 }
 
-bool lang::cc::Node::_T::is_Block() {
+bool lang::cc::Node::_T::is_Block() const {
     return w_ == lang::cc::Node::_W::Block;
 }
 
-bool lang::cc::Node::_T::is_TypedDecl__vars__item__val() {
+bool lang::cc::Node::_T::is_TypedDecl__vars__item__val() const {
     return w_ == lang::cc::Node::_W::TypedDecl__vars__item__val;
 }
 
-bool lang::cc::Node::_T::is_TypedDecl__vars__item() {
+bool lang::cc::Node::_T::is_TypedDecl__vars__item() const {
     return w_ == lang::cc::Node::_W::TypedDecl__vars__item;
 }
 
-bool lang::cc::Node::_T::is_TypedDecl() {
+bool lang::cc::Node::_T::is_TypedDecl() const {
     return w_ == lang::cc::Node::_W::TypedDecl;
 }
 
-bool lang::cc::Node::_T::is_Expr__UnaryPre__op() {
+bool lang::cc::Node::_T::is_Expr__UnaryPre__op() const {
     return w_ == lang::cc::Node::_W::Expr__UnaryPre__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__IncDecPre__op() {
+bool lang::cc::Node::_T::is_Expr__IncDecPre__op() const {
     return w_ == lang::cc::Node::_W::Expr__IncDecPre__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__IncDecPost__op() {
+bool lang::cc::Node::_T::is_Expr__IncDecPost__op() const {
     return w_ == lang::cc::Node::_W::Expr__IncDecPost__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__Bin1__op() {
+bool lang::cc::Node::_T::is_Expr__Bin1__op() const {
     return w_ == lang::cc::Node::_W::Expr__Bin1__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__Bin2__op() {
+bool lang::cc::Node::_T::is_Expr__Bin2__op() const {
     return w_ == lang::cc::Node::_W::Expr__Bin2__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__Bin3__op() {
+bool lang::cc::Node::_T::is_Expr__Bin3__op() const {
     return w_ == lang::cc::Node::_W::Expr__Bin3__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__Bin4__op() {
+bool lang::cc::Node::_T::is_Expr__Bin4__op() const {
     return w_ == lang::cc::Node::_W::Expr__Bin4__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__Bin5__op() {
+bool lang::cc::Node::_T::is_Expr__Bin5__op() const {
     return w_ == lang::cc::Node::_W::Expr__Bin5__op;
 }
 
-bool lang::cc::Node::_T::is_Expr__Bin6__op() {
+bool lang::cc::Node::_T::is_Expr__Bin6__op() const {
     return w_ == lang::cc::Node::_W::Expr__Bin6__op;
 }
 
-bool lang::cc::Node::_T::is_Decl() {
+bool lang::cc::Node::_T::is_Decl() const {
     return w_ == lang::cc::Node::_W::Decl;
 }
 
-bool lang::cc::Node::_T::is_StructDeclDef() {
+bool lang::cc::Node::_T::is_StructDeclDef() const {
     return w_ == lang::cc::Node::_W::StructDeclDef;
 }
 
-bool lang::cc::Node::_T::is_Entry() {
+bool lang::cc::Node::_T::is_Entry() const {
     return w_ == lang::cc::Node::_W::Entry;
 }
 
-bool lang::cc::Node::_T::is_FunDeclDef() {
+bool lang::cc::Node::_T::is_FunDeclDef() const {
     return w_ == lang::cc::Node::_W::FunDeclDef;
 }
 
-bool lang::cc::Node::_T::is_Mod() {
+bool lang::cc::Node::_T::is_Mod() const {
     return w_ == lang::cc::Node::_W::Mod;
 }
 
-bool lang::cc::Node::_T::is_Stmt() {
+bool lang::cc::Node::_T::is_Stmt() const {
     return w_ == lang::cc::Node::_W::Stmt;
 }
 
-bool lang::cc::Node::_T::is_ExprExt() {
+bool lang::cc::Node::_T::is_ExprExt() const {
     return w_ == lang::cc::Node::_W::ExprExt;
 }
 
-bool lang::cc::Node::_T::is_SwitchCase() {
+bool lang::cc::Node::_T::is_SwitchCase() const {
     return w_ == lang::cc::Node::_W::SwitchCase;
 }
 
-bool lang::cc::Node::_T::is_Expr() {
+bool lang::cc::Node::_T::is_Expr() const {
     return w_ == lang::cc::Node::_W::Expr;
 }
 
@@ -2391,35 +2391,35 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl_T x) {
 lang::cc::Node::Decl::_T::~_T() {
 }
 
-bool lang::cc::Node::Decl::_T::is_Struct() {
+bool lang::cc::Node::Decl::_T::is_Struct() const {
     return w_ == lang::cc::Node::Decl::_W::Struct;
 }
 
-bool lang::cc::Node::Decl::_T::is_EnumStruct() {
+bool lang::cc::Node::Decl::_T::is_EnumStruct() const {
     return w_ == lang::cc::Node::Decl::_W::EnumStruct;
 }
 
-bool lang::cc::Node::Decl::_T::is_Fun() {
+bool lang::cc::Node::Decl::_T::is_Fun() const {
     return w_ == lang::cc::Node::Decl::_W::Fun;
 }
 
-bool lang::cc::Node::Decl::_T::is_Namespace() {
+bool lang::cc::Node::Decl::_T::is_Namespace() const {
     return w_ == lang::cc::Node::Decl::_W::Namespace;
 }
 
-bool lang::cc::Node::Decl::_T::is_UsingAlias() {
+bool lang::cc::Node::Decl::_T::is_UsingAlias() const {
     return w_ == lang::cc::Node::Decl::_W::UsingAlias;
 }
 
-bool lang::cc::Node::Decl::_T::is_UsingNamespace() {
+bool lang::cc::Node::Decl::_T::is_UsingNamespace() const {
     return w_ == lang::cc::Node::Decl::_W::UsingNamespace;
 }
 
-bool lang::cc::Node::Decl::_T::is_Include() {
+bool lang::cc::Node::Decl::_T::is_Include() const {
     return w_ == lang::cc::Node::Decl::_W::Include;
 }
 
-bool lang::cc::Node::Decl::_T::is_PragmaOnce() {
+bool lang::cc::Node::Decl::_T::is_PragmaOnce() const {
     return w_ == lang::cc::Node::Decl::_W::PragmaOnce;
 }
 
@@ -2535,11 +2535,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef
 lang::cc::Node::StructDeclDef::_T::~_T() {
 }
 
-bool lang::cc::Node::StructDeclDef::_T::is_Decl() {
+bool lang::cc::Node::StructDeclDef::_T::is_Decl() const {
     return w_ == lang::cc::Node::StructDeclDef::_W::Decl;
 }
 
-bool lang::cc::Node::StructDeclDef::_T::is_Def() {
+bool lang::cc::Node::StructDeclDef::_T::is_Def() const {
     return w_ == lang::cc::Node::StructDeclDef::_W::Def;
 }
 
@@ -2601,11 +2601,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry_T x) {
 lang::cc::Node::Entry::_T::~_T() {
 }
 
-bool lang::cc::Node::Entry::_T::is_Field() {
+bool lang::cc::Node::Entry::_T::is_Field() const {
     return w_ == lang::cc::Node::Entry::_W::Field;
 }
 
-bool lang::cc::Node::Entry::_T::is_Fun() {
+bool lang::cc::Node::Entry::_T::is_Fun() const {
     return w_ == lang::cc::Node::Entry::_W::Fun;
 }
 
@@ -2675,19 +2675,19 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef_T 
 lang::cc::Node::FunDeclDef::_T::~_T() {
 }
 
-bool lang::cc::Node::FunDeclDef::_T::is_Decl() {
+bool lang::cc::Node::FunDeclDef::_T::is_Decl() const {
     return w_ == lang::cc::Node::FunDeclDef::_W::Decl;
 }
 
-bool lang::cc::Node::FunDeclDef::_T::is_Def() {
+bool lang::cc::Node::FunDeclDef::_T::is_Def() const {
     return w_ == lang::cc::Node::FunDeclDef::_W::Def;
 }
 
-bool lang::cc::Node::FunDeclDef::_T::is_Del() {
+bool lang::cc::Node::FunDeclDef::_T::is_Del() const {
     return w_ == lang::cc::Node::FunDeclDef::_W::Del;
 }
 
-bool lang::cc::Node::FunDeclDef::_T::is_Zero() {
+bool lang::cc::Node::FunDeclDef::_T::is_Zero() const {
     return w_ == lang::cc::Node::FunDeclDef::_W::Zero;
 }
 
@@ -2783,27 +2783,27 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod_T x) {
 lang::cc::Node::Mod::_T::~_T() {
 }
 
-bool lang::cc::Node::Mod::_T::is_Const() {
+bool lang::cc::Node::Mod::_T::is_Const() const {
     return w_ == lang::cc::Node::Mod::_W::Const;
 }
 
-bool lang::cc::Node::Mod::_T::is_Inline() {
+bool lang::cc::Node::Mod::_T::is_Inline() const {
     return w_ == lang::cc::Node::Mod::_W::Inline;
 }
 
-bool lang::cc::Node::Mod::_T::is_Static() {
+bool lang::cc::Node::Mod::_T::is_Static() const {
     return w_ == lang::cc::Node::Mod::_W::Static;
 }
 
-bool lang::cc::Node::Mod::_T::is_Virtual() {
+bool lang::cc::Node::Mod::_T::is_Virtual() const {
     return w_ == lang::cc::Node::Mod::_W::Virtual;
 }
 
-bool lang::cc::Node::Mod::_T::is_NoInline() {
+bool lang::cc::Node::Mod::_T::is_NoInline() const {
     return w_ == lang::cc::Node::Mod::_W::NoInline;
 }
 
-bool lang::cc::Node::Mod::_T::is_AlwaysInline() {
+bool lang::cc::Node::Mod::_T::is_AlwaysInline() const {
     return w_ == lang::cc::Node::Mod::_W::AlwaysInline;
 }
 
@@ -2933,43 +2933,43 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt_T x) {
 lang::cc::Node::Stmt::_T::~_T() {
 }
 
-bool lang::cc::Node::Stmt::_T::is_Decl() {
+bool lang::cc::Node::Stmt::_T::is_Decl() const {
     return w_ == lang::cc::Node::Stmt::_W::Decl;
 }
 
-bool lang::cc::Node::Stmt::_T::is_Expr() {
+bool lang::cc::Node::Stmt::_T::is_Expr() const {
     return w_ == lang::cc::Node::Stmt::_W::Expr;
 }
 
-bool lang::cc::Node::Stmt::_T::is_Block() {
+bool lang::cc::Node::Stmt::_T::is_Block() const {
     return w_ == lang::cc::Node::Stmt::_W::Block;
 }
 
-bool lang::cc::Node::Stmt::_T::is_If() {
+bool lang::cc::Node::Stmt::_T::is_If() const {
     return w_ == lang::cc::Node::Stmt::_W::If;
 }
 
-bool lang::cc::Node::Stmt::_T::is_IfElse() {
+bool lang::cc::Node::Stmt::_T::is_IfElse() const {
     return w_ == lang::cc::Node::Stmt::_W::IfElse;
 }
 
-bool lang::cc::Node::Stmt::_T::is_For() {
+bool lang::cc::Node::Stmt::_T::is_For() const {
     return w_ == lang::cc::Node::Stmt::_W::For;
 }
 
-bool lang::cc::Node::Stmt::_T::is_Switch() {
+bool lang::cc::Node::Stmt::_T::is_Switch() const {
     return w_ == lang::cc::Node::Stmt::_W::Switch;
 }
 
-bool lang::cc::Node::Stmt::_T::is_Break() {
+bool lang::cc::Node::Stmt::_T::is_Break() const {
     return w_ == lang::cc::Node::Stmt::_W::Break;
 }
 
-bool lang::cc::Node::Stmt::_T::is_Continue() {
+bool lang::cc::Node::Stmt::_T::is_Continue() const {
     return w_ == lang::cc::Node::Stmt::_W::Continue;
 }
 
-bool lang::cc::Node::Stmt::_T::is_Return() {
+bool lang::cc::Node::Stmt::_T::is_Return() const {
     return w_ == lang::cc::Node::Stmt::_W::Return;
 }
 
@@ -3103,11 +3103,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::ExprExt_T x) 
 lang::cc::Node::ExprExt::_T::~_T() {
 }
 
-bool lang::cc::Node::ExprExt::_T::is_Expr() {
+bool lang::cc::Node::ExprExt::_T::is_Expr() const {
     return w_ == lang::cc::Node::ExprExt::_W::Expr;
 }
 
-bool lang::cc::Node::ExprExt::_T::is_Decl() {
+bool lang::cc::Node::ExprExt::_T::is_Decl() const {
     return w_ == lang::cc::Node::ExprExt::_W::Decl;
 }
 
@@ -3169,11 +3169,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase_T 
 lang::cc::Node::SwitchCase::_T::~_T() {
 }
 
-bool lang::cc::Node::SwitchCase::_T::is_Case() {
+bool lang::cc::Node::SwitchCase::_T::is_Case() const {
     return w_ == lang::cc::Node::SwitchCase::_W::Case;
 }
 
-bool lang::cc::Node::SwitchCase::_T::is_Default() {
+bool lang::cc::Node::SwitchCase::_T::is_Default() const {
     return w_ == lang::cc::Node::SwitchCase::_W::Default;
 }
 
@@ -3335,111 +3335,111 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr_T x) {
 lang::cc::Node::Expr::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::_T::is_Paren() {
+bool lang::cc::Node::Expr::_T::is_Paren() const {
     return w_ == lang::cc::Node::Expr::_W::Paren;
 }
 
-bool lang::cc::Node::Expr::_T::is_Call() {
+bool lang::cc::Node::Expr::_T::is_Call() const {
     return w_ == lang::cc::Node::Expr::_W::Call;
 }
 
-bool lang::cc::Node::Expr::_T::is_Index() {
+bool lang::cc::Node::Expr::_T::is_Index() const {
     return w_ == lang::cc::Node::Expr::_W::Index;
 }
 
-bool lang::cc::Node::Expr::_T::is_IndexEmpty() {
+bool lang::cc::Node::Expr::_T::is_IndexEmpty() const {
     return w_ == lang::cc::Node::Expr::_W::IndexEmpty;
 }
 
-bool lang::cc::Node::Expr::_T::is_Dot() {
+bool lang::cc::Node::Expr::_T::is_Dot() const {
     return w_ == lang::cc::Node::Expr::_W::Dot;
 }
 
-bool lang::cc::Node::Expr::_T::is_Arrow() {
+bool lang::cc::Node::Expr::_T::is_Arrow() const {
     return w_ == lang::cc::Node::Expr::_W::Arrow;
 }
 
-bool lang::cc::Node::Expr::_T::is_Ref_() {
+bool lang::cc::Node::Expr::_T::is_Ref_() const {
     return w_ == lang::cc::Node::Expr::_W::Ref_;
 }
 
-bool lang::cc::Node::Expr::_T::is_AddrOf() {
+bool lang::cc::Node::Expr::_T::is_AddrOf() const {
     return w_ == lang::cc::Node::Expr::_W::AddrOf;
 }
 
-bool lang::cc::Node::Expr::_T::is_Deref() {
+bool lang::cc::Node::Expr::_T::is_Deref() const {
     return w_ == lang::cc::Node::Expr::_W::Deref;
 }
 
-bool lang::cc::Node::Expr::_T::is_UnaryPre() {
+bool lang::cc::Node::Expr::_T::is_UnaryPre() const {
     return w_ == lang::cc::Node::Expr::_W::UnaryPre;
 }
 
-bool lang::cc::Node::Expr::_T::is_IncDecPre() {
+bool lang::cc::Node::Expr::_T::is_IncDecPre() const {
     return w_ == lang::cc::Node::Expr::_W::IncDecPre;
 }
 
-bool lang::cc::Node::Expr::_T::is_IncDecPost() {
+bool lang::cc::Node::Expr::_T::is_IncDecPost() const {
     return w_ == lang::cc::Node::Expr::_W::IncDecPost;
 }
 
-bool lang::cc::Node::Expr::_T::is_Assign() {
+bool lang::cc::Node::Expr::_T::is_Assign() const {
     return w_ == lang::cc::Node::Expr::_W::Assign;
 }
 
-bool lang::cc::Node::Expr::_T::is_Bin1() {
+bool lang::cc::Node::Expr::_T::is_Bin1() const {
     return w_ == lang::cc::Node::Expr::_W::Bin1;
 }
 
-bool lang::cc::Node::Expr::_T::is_Bin2() {
+bool lang::cc::Node::Expr::_T::is_Bin2() const {
     return w_ == lang::cc::Node::Expr::_W::Bin2;
 }
 
-bool lang::cc::Node::Expr::_T::is_Bin3() {
+bool lang::cc::Node::Expr::_T::is_Bin3() const {
     return w_ == lang::cc::Node::Expr::_W::Bin3;
 }
 
-bool lang::cc::Node::Expr::_T::is_Bin4() {
+bool lang::cc::Node::Expr::_T::is_Bin4() const {
     return w_ == lang::cc::Node::Expr::_W::Bin4;
 }
 
-bool lang::cc::Node::Expr::_T::is_Bin5() {
+bool lang::cc::Node::Expr::_T::is_Bin5() const {
     return w_ == lang::cc::Node::Expr::_W::Bin5;
 }
 
-bool lang::cc::Node::Expr::_T::is_Bin6() {
+bool lang::cc::Node::Expr::_T::is_Bin6() const {
     return w_ == lang::cc::Node::Expr::_W::Bin6;
 }
 
-bool lang::cc::Node::Expr::_T::is_Template() {
+bool lang::cc::Node::Expr::_T::is_Template() const {
     return w_ == lang::cc::Node::Expr::_W::Template;
 }
 
-bool lang::cc::Node::Expr::_T::is_New() {
+bool lang::cc::Node::Expr::_T::is_New() const {
     return w_ == lang::cc::Node::Expr::_W::New;
 }
 
-bool lang::cc::Node::Expr::_T::is_Delete() {
+bool lang::cc::Node::Expr::_T::is_Delete() const {
     return w_ == lang::cc::Node::Expr::_W::Delete;
 }
 
-bool lang::cc::Node::Expr::_T::is_Ellipsis() {
+bool lang::cc::Node::Expr::_T::is_Ellipsis() const {
     return w_ == lang::cc::Node::Expr::_W::Ellipsis;
 }
 
-bool lang::cc::Node::Expr::_T::is_Tilde() {
+bool lang::cc::Node::Expr::_T::is_Tilde() const {
     return w_ == lang::cc::Node::Expr::_W::Tilde;
 }
 
-bool lang::cc::Node::Expr::_T::is_Namespace() {
+bool lang::cc::Node::Expr::_T::is_Namespace() const {
     return w_ == lang::cc::Node::Expr::_W::Namespace;
 }
 
-bool lang::cc::Node::Expr::_T::is_Id() {
+bool lang::cc::Node::Expr::_T::is_Id() const {
     return w_ == lang::cc::Node::Expr::_W::Id;
 }
 
-bool lang::cc::Node::Expr::_T::is_Lit() {
+bool lang::cc::Node::Expr::_T::is_Lit() const {
     return w_ == lang::cc::Node::Expr::_W::Lit;
 }
 
@@ -14899,15 +14899,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit_T x
 lang::cc::Node::Expr::Lit::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::Lit::_T::is_Integer() {
+bool lang::cc::Node::Expr::Lit::_T::is_Integer() const {
     return w_ == lang::cc::Node::Expr::Lit::_W::Integer;
 }
 
-bool lang::cc::Node::Expr::Lit::_T::is_Str_() {
+bool lang::cc::Node::Expr::Lit::_T::is_Str_() const {
     return w_ == lang::cc::Node::Expr::Lit::_W::Str_;
 }
 
-bool lang::cc::Node::Expr::Lit::_T::is_Array() {
+bool lang::cc::Node::Expr::Lit::_T::is_Array() const {
     return w_ == lang::cc::Node::Expr::Lit::_W::Array;
 }
 
@@ -15163,11 +15163,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPr
 lang::cc::Node::Expr::UnaryPre::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::UnaryPre::op::_T::is_NOT() {
+bool lang::cc::Node::Expr::UnaryPre::op::_T::is_NOT() const {
     return w_ == lang::cc::Node::Expr::UnaryPre::op::_W::NOT;
 }
 
-bool lang::cc::Node::Expr::UnaryPre::op::_T::is_NEG() {
+bool lang::cc::Node::Expr::UnaryPre::op::_T::is_NEG() const {
     return w_ == lang::cc::Node::Expr::UnaryPre::op::_W::NEG;
 }
 
@@ -15229,11 +15229,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecP
 lang::cc::Node::Expr::IncDecPre::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::IncDecPre::op::_T::is_INC() {
+bool lang::cc::Node::Expr::IncDecPre::op::_T::is_INC() const {
     return w_ == lang::cc::Node::Expr::IncDecPre::op::_W::INC;
 }
 
-bool lang::cc::Node::Expr::IncDecPre::op::_T::is_DEC() {
+bool lang::cc::Node::Expr::IncDecPre::op::_T::is_DEC() const {
     return w_ == lang::cc::Node::Expr::IncDecPre::op::_W::DEC;
 }
 
@@ -15295,11 +15295,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecP
 lang::cc::Node::Expr::IncDecPost::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::IncDecPost::op::_T::is_INC() {
+bool lang::cc::Node::Expr::IncDecPost::op::_T::is_INC() const {
     return w_ == lang::cc::Node::Expr::IncDecPost::op::_W::INC;
 }
 
-bool lang::cc::Node::Expr::IncDecPost::op::_T::is_DEC() {
+bool lang::cc::Node::Expr::IncDecPost::op::_T::is_DEC() const {
     return w_ == lang::cc::Node::Expr::IncDecPost::op::_W::DEC;
 }
 
@@ -15357,7 +15357,7 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1::o
 lang::cc::Node::Expr::Bin1::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::Bin1::op::_T::is_LOR() {
+bool lang::cc::Node::Expr::Bin1::op::_T::is_LOR() const {
     return w_ == lang::cc::Node::Expr::Bin1::op::_W::LOR;
 }
 
@@ -15406,7 +15406,7 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2::o
 lang::cc::Node::Expr::Bin2::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::Bin2::op::_T::is_LAND() {
+bool lang::cc::Node::Expr::Bin2::op::_T::is_LAND() const {
     return w_ == lang::cc::Node::Expr::Bin2::op::_W::LAND;
 }
 
@@ -15475,27 +15475,27 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::o
 lang::cc::Node::Expr::Bin3::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::Bin3::op::_T::is_EQ() {
+bool lang::cc::Node::Expr::Bin3::op::_T::is_EQ() const {
     return w_ == lang::cc::Node::Expr::Bin3::op::_W::EQ;
 }
 
-bool lang::cc::Node::Expr::Bin3::op::_T::is_NE() {
+bool lang::cc::Node::Expr::Bin3::op::_T::is_NE() const {
     return w_ == lang::cc::Node::Expr::Bin3::op::_W::NE;
 }
 
-bool lang::cc::Node::Expr::Bin3::op::_T::is_LE() {
+bool lang::cc::Node::Expr::Bin3::op::_T::is_LE() const {
     return w_ == lang::cc::Node::Expr::Bin3::op::_W::LE;
 }
 
-bool lang::cc::Node::Expr::Bin3::op::_T::is_GE() {
+bool lang::cc::Node::Expr::Bin3::op::_T::is_GE() const {
     return w_ == lang::cc::Node::Expr::Bin3::op::_W::GE;
 }
 
-bool lang::cc::Node::Expr::Bin3::op::_T::is_LT() {
+bool lang::cc::Node::Expr::Bin3::op::_T::is_LT() const {
     return w_ == lang::cc::Node::Expr::Bin3::op::_W::LT;
 }
 
-bool lang::cc::Node::Expr::Bin3::op::_T::is_GT() {
+bool lang::cc::Node::Expr::Bin3::op::_T::is_GT() const {
     return w_ == lang::cc::Node::Expr::Bin3::op::_W::GT;
 }
 
@@ -15589,7 +15589,7 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4::o
 lang::cc::Node::Expr::Bin4::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::Bin4::op::_T::is_SHL() {
+bool lang::cc::Node::Expr::Bin4::op::_T::is_SHL() const {
     return w_ == lang::cc::Node::Expr::Bin4::op::_W::SHL;
 }
 
@@ -15642,11 +15642,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::o
 lang::cc::Node::Expr::Bin5::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::Bin5::op::_T::is_PLUS() {
+bool lang::cc::Node::Expr::Bin5::op::_T::is_PLUS() const {
     return w_ == lang::cc::Node::Expr::Bin5::op::_W::PLUS;
 }
 
-bool lang::cc::Node::Expr::Bin5::op::_T::is_MINUS() {
+bool lang::cc::Node::Expr::Bin5::op::_T::is_MINUS() const {
     return w_ == lang::cc::Node::Expr::Bin5::op::_W::MINUS;
 }
 
@@ -15712,15 +15712,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::o
 lang::cc::Node::Expr::Bin6::op::_T::~_T() {
 }
 
-bool lang::cc::Node::Expr::Bin6::op::_T::is_TIMES() {
+bool lang::cc::Node::Expr::Bin6::op::_T::is_TIMES() const {
     return w_ == lang::cc::Node::Expr::Bin6::op::_W::TIMES;
 }
 
-bool lang::cc::Node::Expr::Bin6::op::_T::is_DIVIDE() {
+bool lang::cc::Node::Expr::Bin6::op::_T::is_DIVIDE() const {
     return w_ == lang::cc::Node::Expr::Bin6::op::_W::DIVIDE;
 }
 
-bool lang::cc::Node::Expr::Bin6::op::_T::is_MODULO() {
+bool lang::cc::Node::Expr::Bin6::op::_T::is_MODULO() const {
     return w_ == lang::cc::Node::Expr::Bin6::op::_W::MODULO;
 }
 

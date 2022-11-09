@@ -109,7 +109,8 @@ struct CppGenContext {
     inline cc::Node_T gen_cpp_fun_proto_decl(
         NodeV cpp_template_params, NodeV mods, NodeRM ret, const GenName& decl_name, NodeV params);
     inline cc::Node_T gen_cpp_fun_proto_entry(
-        NodeV cpp_template_params, NodeV mods, NodeRM ret, NodeR fun_name, NodeV params);
+        NodeV cpp_template_params, NodeV mods, NodeRM ret, NodeR fun_name, NodeV params, 
+        bool const_post = false);
     inline cc::Node_T gen_cpp_fun_call(NodeR f, NodeV args);
     inline cc::Node_T gen_cpp_fun_body(NodeV cpp_template_params, NodeV cpp_template_params2,
         NodeV mods, NodeRM ret, NodeR fun_name, NodeV params, NodeV init_exprs, NodeV body,
@@ -340,11 +341,14 @@ inline void CppGenContext::gen_cpp_fun_proto_acc(LexOutput_T& lex_args,
 
 
 inline cc::Node_T CppGenContext::gen_cpp_fun_proto_entry(
-    NodeV cpp_template_params, NodeV mods, NodeRM ret, NodeR fun_name, NodeV params) {
+    NodeV cpp_template_params, NodeV mods, NodeRM ret, NodeR fun_name, NodeV params, bool const_post) {
 
     auto lex_args = Q_->make_lex_builder();
     this->gen_cpp_template_params_acc(lex_args, cpp_template_params);
     this->gen_cpp_fun_proto_acc(lex_args, mods, ret, fun_name, params);
+    if (const_post) {
+        Q_->qq_args_acc(lex_args, "const");
+    }
     Q_->qq_args_acc(lex_args, ";");
     return Q_->qq_inner(Some<string>("Entry"), lex_args);
 }

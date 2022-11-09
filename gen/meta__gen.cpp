@@ -1196,111 +1196,111 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node_T x) {
 lang::meta::Node::_T::~_T() {
 }
 
-bool lang::meta::Node::_T::is_Lang() {
+bool lang::meta::Node::_T::is_Lang() const {
     return w_ == lang::meta::Node::_W::Lang;
 }
 
-bool lang::meta::Node::_T::is_TokenDecl__op() {
+bool lang::meta::Node::_T::is_TokenDecl__op() const {
     return w_ == lang::meta::Node::_W::TokenDecl__op;
 }
 
-bool lang::meta::Node::_T::is_TokenDecl() {
+bool lang::meta::Node::_T::is_TokenDecl() const {
     return w_ == lang::meta::Node::_W::TokenDecl;
 }
 
-bool lang::meta::Node::_T::is_LexerDecl__Mode__ws_sig___spec() {
+bool lang::meta::Node::_T::is_LexerDecl__Mode__ws_sig___spec() const {
     return w_ == lang::meta::Node::_W::LexerDecl__Mode__ws_sig___spec;
 }
 
-bool lang::meta::Node::_T::is_LexerDecl__Mode__ws_sig_() {
+bool lang::meta::Node::_T::is_LexerDecl__Mode__ws_sig_() const {
     return w_ == lang::meta::Node::_W::LexerDecl__Mode__ws_sig_;
 }
 
-bool lang::meta::Node::_T::is_LexerModeCase() {
+bool lang::meta::Node::_T::is_LexerModeCase() const {
     return w_ == lang::meta::Node::_W::LexerModeCase;
 }
 
-bool lang::meta::Node::_T::is_ParserDecl__Rule__op() {
+bool lang::meta::Node::_T::is_ParserDecl__Rule__op() const {
     return w_ == lang::meta::Node::_W::ParserDecl__Rule__op;
 }
 
-bool lang::meta::Node::_T::is_PrecItem() {
+bool lang::meta::Node::_T::is_PrecItem() const {
     return w_ == lang::meta::Node::_W::PrecItem;
 }
 
-bool lang::meta::Node::_T::is_AttrMatchCase() {
+bool lang::meta::Node::_T::is_AttrMatchCase() const {
     return w_ == lang::meta::Node::_W::AttrMatchCase;
 }
 
-bool lang::meta::Node::_T::is_TestCase() {
+bool lang::meta::Node::_T::is_TestCase() const {
     return w_ == lang::meta::Node::_W::TestCase;
 }
 
-bool lang::meta::Node::_T::is_CompileTestCase() {
+bool lang::meta::Node::_T::is_CompileTestCase() const {
     return w_ == lang::meta::Node::_W::CompileTestCase;
 }
 
-bool lang::meta::Node::_T::is_ParseExpr__List__end_delim() {
+bool lang::meta::Node::_T::is_ParseExpr__List__end_delim() const {
     return w_ == lang::meta::Node::_W::ParseExpr__List__end_delim;
 }
 
-bool lang::meta::Node::_T::is_Id() {
+bool lang::meta::Node::_T::is_Id() const {
     return w_ == lang::meta::Node::_W::Id;
 }
 
-bool lang::meta::Node::_T::is_Stanza() {
+bool lang::meta::Node::_T::is_Stanza() const {
     return w_ == lang::meta::Node::_W::Stanza;
 }
 
-bool lang::meta::Node::_T::is_LexerDecl() {
+bool lang::meta::Node::_T::is_LexerDecl() const {
     return w_ == lang::meta::Node::_W::LexerDecl;
 }
 
-bool lang::meta::Node::_T::is_LexerInstr() {
+bool lang::meta::Node::_T::is_LexerInstr() const {
     return w_ == lang::meta::Node::_W::LexerInstr;
 }
 
-bool lang::meta::Node::_T::is_ParserDecl() {
+bool lang::meta::Node::_T::is_ParserDecl() const {
     return w_ == lang::meta::Node::_W::ParserDecl;
 }
 
-bool lang::meta::Node::_T::is_ParserProp() {
+bool lang::meta::Node::_T::is_ParserProp() const {
     return w_ == lang::meta::Node::_W::ParserProp;
 }
 
-bool lang::meta::Node::_T::is_PrecAssoc() {
+bool lang::meta::Node::_T::is_PrecAssoc() const {
     return w_ == lang::meta::Node::_W::PrecAssoc;
 }
 
-bool lang::meta::Node::_T::is_AttrClause() {
+bool lang::meta::Node::_T::is_AttrClause() const {
     return w_ == lang::meta::Node::_W::AttrClause;
 }
 
-bool lang::meta::Node::_T::is_AttrMatchCasePattern() {
+bool lang::meta::Node::_T::is_AttrMatchCasePattern() const {
     return w_ == lang::meta::Node::_W::AttrMatchCasePattern;
 }
 
-bool lang::meta::Node::_T::is_AttrClauseExpr() {
+bool lang::meta::Node::_T::is_AttrClauseExpr() const {
     return w_ == lang::meta::Node::_W::AttrClauseExpr;
 }
 
-bool lang::meta::Node::_T::is_AttrClauseExprRhsLoc() {
+bool lang::meta::Node::_T::is_AttrClauseExprRhsLoc() const {
     return w_ == lang::meta::Node::_W::AttrClauseExprRhsLoc;
 }
 
-bool lang::meta::Node::_T::is_ParseExpr() {
+bool lang::meta::Node::_T::is_ParseExpr() const {
     return w_ == lang::meta::Node::_W::ParseExpr;
 }
 
-bool lang::meta::Node::_T::is_AttrReq() {
+bool lang::meta::Node::_T::is_AttrReq() const {
     return w_ == lang::meta::Node::_W::AttrReq;
 }
 
-bool lang::meta::Node::_T::is_ParseExprListType() {
+bool lang::meta::Node::_T::is_ParseExprListType() const {
     return w_ == lang::meta::Node::_W::ParseExprListType;
 }
 
-bool lang::meta::Node::_T::is_ParseExprListNum() {
+bool lang::meta::Node::_T::is_ParseExprListNum() const {
     return w_ == lang::meta::Node::_W::ParseExprListNum;
 }
 
@@ -3082,23 +3082,23 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza_T x)
 lang::meta::Node::Stanza::_T::~_T() {
 }
 
-bool lang::meta::Node::Stanza::_T::is_Tokens() {
+bool lang::meta::Node::Stanza::_T::is_Tokens() const {
     return w_ == lang::meta::Node::Stanza::_W::Tokens;
 }
 
-bool lang::meta::Node::Stanza::_T::is_Lexer() {
+bool lang::meta::Node::Stanza::_T::is_Lexer() const {
     return w_ == lang::meta::Node::Stanza::_W::Lexer;
 }
 
-bool lang::meta::Node::Stanza::_T::is_Parser() {
+bool lang::meta::Node::Stanza::_T::is_Parser() const {
     return w_ == lang::meta::Node::Stanza::_W::Parser;
 }
 
-bool lang::meta::Node::Stanza::_T::is_Test() {
+bool lang::meta::Node::Stanza::_T::is_Test() const {
     return w_ == lang::meta::Node::Stanza::_W::Test;
 }
 
-bool lang::meta::Node::Stanza::_T::is_CompileTest() {
+bool lang::meta::Node::Stanza::_T::is_CompileTest() const {
     return w_ == lang::meta::Node::Stanza::_W::CompileTest;
 }
 
@@ -3187,11 +3187,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T
 lang::meta::Node::LexerDecl::_T::~_T() {
 }
 
-bool lang::meta::Node::LexerDecl::_T::is_Main() {
+bool lang::meta::Node::LexerDecl::_T::is_Main() const {
     return w_ == lang::meta::Node::LexerDecl::_W::Main;
 }
 
-bool lang::meta::Node::LexerDecl::_T::is_Mode() {
+bool lang::meta::Node::LexerDecl::_T::is_Mode() const {
     return w_ == lang::meta::Node::LexerDecl::_W::Mode;
 }
 
@@ -3273,31 +3273,31 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr_
 lang::meta::Node::LexerInstr::_T::~_T() {
 }
 
-bool lang::meta::Node::LexerInstr::_T::is_Emit() {
+bool lang::meta::Node::LexerInstr::_T::is_Emit() const {
     return w_ == lang::meta::Node::LexerInstr::_W::Emit;
 }
 
-bool lang::meta::Node::LexerInstr::_T::is_Pass() {
+bool lang::meta::Node::LexerInstr::_T::is_Pass() const {
     return w_ == lang::meta::Node::LexerInstr::_W::Pass;
 }
 
-bool lang::meta::Node::LexerInstr::_T::is_Push() {
+bool lang::meta::Node::LexerInstr::_T::is_Push() const {
     return w_ == lang::meta::Node::LexerInstr::_W::Push;
 }
 
-bool lang::meta::Node::LexerInstr::_T::is_Pop() {
+bool lang::meta::Node::LexerInstr::_T::is_Pop() const {
     return w_ == lang::meta::Node::LexerInstr::_W::Pop;
 }
 
-bool lang::meta::Node::LexerInstr::_T::is_PopExtract() {
+bool lang::meta::Node::LexerInstr::_T::is_PopExtract() const {
     return w_ == lang::meta::Node::LexerInstr::_W::PopExtract;
 }
 
-bool lang::meta::Node::LexerInstr::_T::is_PopEmit() {
+bool lang::meta::Node::LexerInstr::_T::is_PopEmit() const {
     return w_ == lang::meta::Node::LexerInstr::_W::PopEmit;
 }
 
-bool lang::meta::Node::LexerInstr::_T::is_MatchHistory() {
+bool lang::meta::Node::LexerInstr::_T::is_MatchHistory() const {
     return w_ == lang::meta::Node::LexerInstr::_W::MatchHistory;
 }
 
@@ -3416,23 +3416,23 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl_
 lang::meta::Node::ParserDecl::_T::~_T() {
 }
 
-bool lang::meta::Node::ParserDecl::_T::is_Main() {
+bool lang::meta::Node::ParserDecl::_T::is_Main() const {
     return w_ == lang::meta::Node::ParserDecl::_W::Main;
 }
 
-bool lang::meta::Node::ParserDecl::_T::is_Prop() {
+bool lang::meta::Node::ParserDecl::_T::is_Prop() const {
     return w_ == lang::meta::Node::ParserDecl::_W::Prop;
 }
 
-bool lang::meta::Node::ParserDecl::_T::is_Prec() {
+bool lang::meta::Node::ParserDecl::_T::is_Prec() const {
     return w_ == lang::meta::Node::ParserDecl::_W::Prec;
 }
 
-bool lang::meta::Node::ParserDecl::_T::is_Attr() {
+bool lang::meta::Node::ParserDecl::_T::is_Attr() const {
     return w_ == lang::meta::Node::ParserDecl::_W::Attr;
 }
 
-bool lang::meta::Node::ParserDecl::_T::is_Rule() {
+bool lang::meta::Node::ParserDecl::_T::is_Rule() const {
     return w_ == lang::meta::Node::ParserDecl::_W::Rule;
 }
 
@@ -3529,19 +3529,19 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp_
 lang::meta::Node::ParserProp::_T::~_T() {
 }
 
-bool lang::meta::Node::ParserProp::_T::is_NameStrict() {
+bool lang::meta::Node::ParserProp::_T::is_NameStrict() const {
     return w_ == lang::meta::Node::ParserProp::_W::NameStrict;
 }
 
-bool lang::meta::Node::ParserProp::_T::is_AllowUnreach() {
+bool lang::meta::Node::ParserProp::_T::is_AllowUnreach() const {
     return w_ == lang::meta::Node::ParserProp::_W::AllowUnreach;
 }
 
-bool lang::meta::Node::ParserProp::_T::is_LRSpec() {
+bool lang::meta::Node::ParserProp::_T::is_LRSpec() const {
     return w_ == lang::meta::Node::ParserProp::_W::LRSpec;
 }
 
-bool lang::meta::Node::ParserProp::_T::is_Err_() {
+bool lang::meta::Node::ParserProp::_T::is_Err_() const {
     return w_ == lang::meta::Node::ParserProp::_W::Err_;
 }
 
@@ -3629,19 +3629,19 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc_T
 lang::meta::Node::PrecAssoc::_T::~_T() {
 }
 
-bool lang::meta::Node::PrecAssoc::_T::is_Left() {
+bool lang::meta::Node::PrecAssoc::_T::is_Left() const {
     return w_ == lang::meta::Node::PrecAssoc::_W::Left;
 }
 
-bool lang::meta::Node::PrecAssoc::_T::is_Right() {
+bool lang::meta::Node::PrecAssoc::_T::is_Right() const {
     return w_ == lang::meta::Node::PrecAssoc::_W::Right;
 }
 
-bool lang::meta::Node::PrecAssoc::_T::is_Prefix() {
+bool lang::meta::Node::PrecAssoc::_T::is_Prefix() const {
     return w_ == lang::meta::Node::PrecAssoc::_W::Prefix;
 }
 
-bool lang::meta::Node::PrecAssoc::_T::is_Postfix() {
+bool lang::meta::Node::PrecAssoc::_T::is_Postfix() const {
     return w_ == lang::meta::Node::PrecAssoc::_W::Postfix;
 }
 
@@ -3725,15 +3725,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause_
 lang::meta::Node::AttrClause::_T::~_T() {
 }
 
-bool lang::meta::Node::AttrClause::_T::is_Expr() {
+bool lang::meta::Node::AttrClause::_T::is_Expr() const {
     return w_ == lang::meta::Node::AttrClause::_W::Expr;
 }
 
-bool lang::meta::Node::AttrClause::_T::is_Block() {
+bool lang::meta::Node::AttrClause::_T::is_Block() const {
     return w_ == lang::meta::Node::AttrClause::_W::Block;
 }
 
-bool lang::meta::Node::AttrClause::_T::is_Match() {
+bool lang::meta::Node::AttrClause::_T::is_Match() const {
     return w_ == lang::meta::Node::AttrClause::_W::Match;
 }
 
@@ -3804,11 +3804,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCa
 lang::meta::Node::AttrMatchCasePattern::_T::~_T() {
 }
 
-bool lang::meta::Node::AttrMatchCasePattern::_T::is_Alt() {
+bool lang::meta::Node::AttrMatchCasePattern::_T::is_Alt() const {
     return w_ == lang::meta::Node::AttrMatchCasePattern::_W::Alt;
 }
 
-bool lang::meta::Node::AttrMatchCasePattern::_T::is_Wildcard() {
+bool lang::meta::Node::AttrMatchCasePattern::_T::is_Wildcard() const {
     return w_ == lang::meta::Node::AttrMatchCasePattern::_W::Wildcard;
 }
 
@@ -3874,15 +3874,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseE
 lang::meta::Node::AttrClauseExpr::_T::~_T() {
 }
 
-bool lang::meta::Node::AttrClauseExpr::_T::is_LhsGeq() {
+bool lang::meta::Node::AttrClauseExpr::_T::is_LhsGeq() const {
     return w_ == lang::meta::Node::AttrClauseExpr::_W::LhsGeq;
 }
 
-bool lang::meta::Node::AttrClauseExpr::_T::is_RhsGeq() {
+bool lang::meta::Node::AttrClauseExpr::_T::is_RhsGeq() const {
     return w_ == lang::meta::Node::AttrClauseExpr::_W::RhsGeq;
 }
 
-bool lang::meta::Node::AttrClauseExpr::_T::is_Implies() {
+bool lang::meta::Node::AttrClauseExpr::_T::is_Implies() const {
     return w_ == lang::meta::Node::AttrClauseExpr::_W::Implies;
 }
 
@@ -3961,19 +3961,19 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseE
 lang::meta::Node::AttrClauseExprRhsLoc::_T::~_T() {
 }
 
-bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_All() {
+bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_All() const {
     return w_ == lang::meta::Node::AttrClauseExprRhsLoc::_W::All;
 }
 
-bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_Begin() {
+bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_Begin() const {
     return w_ == lang::meta::Node::AttrClauseExprRhsLoc::_W::Begin;
 }
 
-bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_Mid() {
+bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_Mid() const {
     return w_ == lang::meta::Node::AttrClauseExprRhsLoc::_W::Mid;
 }
 
-bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_End() {
+bool lang::meta::Node::AttrClauseExprRhsLoc::_T::is_End() const {
     return w_ == lang::meta::Node::AttrClauseExprRhsLoc::_W::End;
 }
 
@@ -4149,107 +4149,107 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr_T
 lang::meta::Node::ParseExpr::_T::~_T() {
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Id() {
+bool lang::meta::Node::ParseExpr::_T::is_Id() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Id;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Eof() {
+bool lang::meta::Node::ParseExpr::_T::is_Eof() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Eof;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_False() {
+bool lang::meta::Node::ParseExpr::_T::is_False() const {
     return w_ == lang::meta::Node::ParseExpr::_W::False;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Eps() {
+bool lang::meta::Node::ParseExpr::_T::is_Eps() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Eps;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Indent() {
+bool lang::meta::Node::ParseExpr::_T::is_Indent() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Indent;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Dedent() {
+bool lang::meta::Node::ParseExpr::_T::is_Dedent() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Dedent;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Newline() {
+bool lang::meta::Node::ParseExpr::_T::is_Newline() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Newline;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_UnicodeAny() {
+bool lang::meta::Node::ParseExpr::_T::is_UnicodeAny() const {
     return w_ == lang::meta::Node::ParseExpr::_W::UnicodeAny;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_AsciiBaseAny() {
+bool lang::meta::Node::ParseExpr::_T::is_AsciiBaseAny() const {
     return w_ == lang::meta::Node::ParseExpr::_W::AsciiBaseAny;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Alt() {
+bool lang::meta::Node::ParseExpr::_T::is_Alt() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Alt;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_AltExplicit() {
+bool lang::meta::Node::ParseExpr::_T::is_AltExplicit() const {
     return w_ == lang::meta::Node::ParseExpr::_W::AltExplicit;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Minus() {
+bool lang::meta::Node::ParseExpr::_T::is_Minus() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Minus;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Concat() {
+bool lang::meta::Node::ParseExpr::_T::is_Concat() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Concat;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Optional() {
+bool lang::meta::Node::ParseExpr::_T::is_Optional() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Optional;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Rep() {
+bool lang::meta::Node::ParseExpr::_T::is_Rep() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Rep;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_RepNonzero() {
+bool lang::meta::Node::ParseExpr::_T::is_RepNonzero() const {
     return w_ == lang::meta::Node::ParseExpr::_W::RepNonzero;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_RepCount() {
+bool lang::meta::Node::ParseExpr::_T::is_RepCount() const {
     return w_ == lang::meta::Node::ParseExpr::_W::RepCount;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_CharRange() {
+bool lang::meta::Node::ParseExpr::_T::is_CharRange() const {
     return w_ == lang::meta::Node::ParseExpr::_W::CharRange;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_StrLit() {
+bool lang::meta::Node::ParseExpr::_T::is_StrLit() const {
     return w_ == lang::meta::Node::ParseExpr::_W::StrLit;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Underscore() {
+bool lang::meta::Node::ParseExpr::_T::is_Underscore() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Underscore;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Pass() {
+bool lang::meta::Node::ParseExpr::_T::is_Pass() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Pass;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Paren() {
+bool lang::meta::Node::ParseExpr::_T::is_Paren() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Paren;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Name() {
+bool lang::meta::Node::ParseExpr::_T::is_Name() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Name;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_List() {
+bool lang::meta::Node::ParseExpr::_T::is_List() const {
     return w_ == lang::meta::Node::ParseExpr::_W::List;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_Unfold() {
+bool lang::meta::Node::ParseExpr::_T::is_Unfold() const {
     return w_ == lang::meta::Node::ParseExpr::_W::Unfold;
 }
 
-bool lang::meta::Node::ParseExpr::_T::is_AttrReq() {
+bool lang::meta::Node::ParseExpr::_T::is_AttrReq() const {
     return w_ == lang::meta::Node::ParseExpr::_W::AttrReq;
 }
 
@@ -4527,11 +4527,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq_T x
 lang::meta::Node::AttrReq::_T::~_T() {
 }
 
-bool lang::meta::Node::AttrReq::_T::is_Base() {
+bool lang::meta::Node::AttrReq::_T::is_Base() const {
     return w_ == lang::meta::Node::AttrReq::_W::Base;
 }
 
-bool lang::meta::Node::AttrReq::_T::is_PrecStar() {
+bool lang::meta::Node::AttrReq::_T::is_PrecStar() const {
     return w_ == lang::meta::Node::AttrReq::_W::PrecStar;
 }
 
@@ -4605,23 +4605,23 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprLi
 lang::meta::Node::ParseExprListType::_T::~_T() {
 }
 
-bool lang::meta::Node::ParseExprListType::_T::is_List() {
+bool lang::meta::Node::ParseExprListType::_T::is_List() const {
     return w_ == lang::meta::Node::ParseExprListType::_W::List;
 }
 
-bool lang::meta::Node::ParseExprListType::_T::is_Block() {
+bool lang::meta::Node::ParseExprListType::_T::is_Block() const {
     return w_ == lang::meta::Node::ParseExprListType::_W::Block;
 }
 
-bool lang::meta::Node::ParseExprListType::_T::is_Block2() {
+bool lang::meta::Node::ParseExprListType::_T::is_Block2() const {
     return w_ == lang::meta::Node::ParseExprListType::_W::Block2;
 }
 
-bool lang::meta::Node::ParseExprListType::_T::is_Top() {
+bool lang::meta::Node::ParseExprListType::_T::is_Top() const {
     return w_ == lang::meta::Node::ParseExprListType::_W::Top;
 }
 
-bool lang::meta::Node::ParseExprListType::_T::is_Top2() {
+bool lang::meta::Node::ParseExprListType::_T::is_Top2() const {
     return w_ == lang::meta::Node::ParseExprListType::_W::Top2;
 }
 
@@ -4714,15 +4714,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprLi
 lang::meta::Node::ParseExprListNum::_T::~_T() {
 }
 
-bool lang::meta::Node::ParseExprListNum::_T::is_Ge0() {
+bool lang::meta::Node::ParseExprListNum::_T::is_Ge0() const {
     return w_ == lang::meta::Node::ParseExprListNum::_W::Ge0;
 }
 
-bool lang::meta::Node::ParseExprListNum::_T::is_Ge1() {
+bool lang::meta::Node::ParseExprListNum::_T::is_Ge1() const {
     return w_ == lang::meta::Node::ParseExprListNum::_W::Ge1;
 }
 
-bool lang::meta::Node::ParseExprListNum::_T::is_Ge2() {
+bool lang::meta::Node::ParseExprListNum::_T::is_Ge2() const {
     return w_ == lang::meta::Node::ParseExprListNum::_W::Ge2;
 }
 
@@ -5583,11 +5583,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::
 lang::meta::Node::TokenDecl::op::_T::~_T() {
 }
 
-bool lang::meta::Node::TokenDecl::op::_T::is_DEF() {
+bool lang::meta::Node::TokenDecl::op::_T::is_DEF() const {
     return w_ == lang::meta::Node::TokenDecl::op::_W::DEF;
 }
 
-bool lang::meta::Node::TokenDecl::op::_T::is_DEF_ALIAS() {
+bool lang::meta::Node::TokenDecl::op::_T::is_DEF_ALIAS() const {
     return w_ == lang::meta::Node::TokenDecl::op::_W::DEF_ALIAS;
 }
 
@@ -16789,11 +16789,11 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl:
 lang::meta::Node::ParserDecl::Rule::op::_T::~_T() {
 }
 
-bool lang::meta::Node::ParserDecl::Rule::op::_T::is_DEF() {
+bool lang::meta::Node::ParserDecl::Rule::op::_T::is_DEF() const {
     return w_ == lang::meta::Node::ParserDecl::Rule::op::_W::DEF;
 }
 
-bool lang::meta::Node::ParserDecl::Rule::op::_T::is_DEF_ALIAS() {
+bool lang::meta::Node::ParserDecl::Rule::op::_T::is_DEF_ALIAS() const {
     return w_ == lang::meta::Node::ParserDecl::Rule::op::_W::DEF_ALIAS;
 }
 
@@ -16859,15 +16859,15 @@ void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::
 lang::meta::Node::ParseExpr::List::end_delim::_T::~_T() {
 }
 
-bool lang::meta::Node::ParseExpr::List::end_delim::_T::is_NONE() {
+bool lang::meta::Node::ParseExpr::List::end_delim::_T::is_NONE() const {
     return w_ == lang::meta::Node::ParseExpr::List::end_delim::_W::NONE;
 }
 
-bool lang::meta::Node::ParseExpr::List::end_delim::_T::is_OPTIONAL() {
+bool lang::meta::Node::ParseExpr::List::end_delim::_T::is_OPTIONAL() const {
     return w_ == lang::meta::Node::ParseExpr::List::end_delim::_W::OPTIONAL;
 }
 
-bool lang::meta::Node::ParseExpr::List::end_delim::_T::is_SOME() {
+bool lang::meta::Node::ParseExpr::List::end_delim::_T::is_SOME() const {
     return w_ == lang::meta::Node::ParseExpr::List::end_delim::_W::SOME;
 }
 
