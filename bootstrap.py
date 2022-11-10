@@ -6,7 +6,6 @@ is_windows = os.name == "nt"
 build_dir = Path("build")
 if is_windows:
     build_dir = build_dir / os.environ.get("BUILD_TYPE", "Debug")
-grammars_dir = Path("grammars")
 
 
 def run_command(command):
@@ -32,9 +31,9 @@ def main():
     build_target("datacc")
     build_target("langcc")
     build_target("unittest_lang")
-    generate_grammar(grammars_dir / "data.lang")
-    generate_grammar(grammars_dir / "cc.lang")
-    generate_grammar(grammars_dir / "meta.lang")
+    generate_grammar("grammars/data.lang")
+    generate_grammar("grammars/cc.lang")
+    generate_grammar("grammars/meta.lang")
 
     build_target("clean")
     build_target("datacc")
