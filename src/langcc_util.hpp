@@ -712,7 +712,7 @@ inline string utf8_encode(vector<Ch> chs) {
 
 inline Option_T<vector<Ch>> utf8_decode(string s) {
   vector<Ch> ret;
-  size_t i = 0;
+  u64 i = 0;
   while (i < s.length()) {
     auto c = static_cast<u8>(s[i]);
     if (c < 0x80) {
@@ -831,7 +831,7 @@ inline Option_T<Int> string_to_int(string x) {
 
 inline Option_T<Int> string_to_int_hex(string x) {
   u64 ret = 0;
-  for (size_t i = 0; i < x.length(); i++) {
+  for (u64 i = 0; i < x.length(); i++) {
     ret <<= 4;
     ret |= hex_nybble_to_u8(x[i]);
   }
@@ -974,7 +974,7 @@ inline vector<string> str_split(const string &x, const string &delim) {
   vector<string> ret;
   string curr = x;
   while (true) {
-    size_t pos = curr.find(delim);
+    u64 pos = curr.find(delim);
     if (pos == string::npos) {
       ret.push_back(curr);
       break;
@@ -996,13 +996,13 @@ inline string str_repeat(const string &s, Int count) {
 inline bool u8_is_ws(u8 x) { return isspace(x); }
 
 inline string string_ws_strip(string x) {
-  size_t i;
+  u64 i;
   for (i = 0; i < x.length(); i++) {
     if (!u8_is_ws(x[i])) {
       break;
     }
   }
-  size_t j;
+  u64 j;
   for (j = x.length(); j >= 0; j--) {
     if (j == 0 || !u8_is_ws(x[j - 1])) {
       break;
@@ -3759,10 +3759,10 @@ inline bool run_unit_tests() {
     test_names.insert(test.name_);
   }
 
-  size_t unit_tests_max_concurrent = std::thread::hardware_concurrency();
+  u64 unit_tests_max_concurrent = std::thread::hardware_concurrency();
 
   auto ts = get_unit_tests();
-  size_t test_dispatch_i = 0;
+  u64 test_dispatch_i = 0;
 
   LG_ERR(">>> Launching {} tests ({} concurrently)", len(get_unit_tests()),
          unit_tests_max_concurrent);
