@@ -1,16 +1,26 @@
 import subprocess
 import os
 
+is_windows = os.name == "nt"
+
+
+def run_command(command):
+    if is_windows:
+        command[0] = f"{command[0]}.exe"
+        subprocess.check_call(command, shell=True)
+    else:
+        subprocess.check_call(command)
+
 
 def build_target(target):
     build_type = os.environ.get("BUILD_TYPE", "Debug")
-    subprocess.check_call(
+    run_command(
         ["cmake", "--build", "build", "--config", build_type, "--target", target]
     )
 
 
 def generate_grammar(grammar_file):
-    subprocess.check_call("build/langcc", grammar_file, "gen")
+    run_command("build/langcc", grammar_file, "gen")
 
 
 def main():
@@ -25,15 +35,15 @@ def main():
     build_target("datacc")
     build_target("langcc")
     build_target("unittest_lang")
-    subprocess.check_call("build/unittest_lang")
+    run_command("build/unittest_lang")
     build_target("go_standalone_test")
-    subprocess.check_call("build/go_standalone_test", "1")
+    run_command("build/go_standalone_test", "1")
     build_target("py_standalone_test")
-    subprocess.check_call("build/py_standalone_test", "1")
+    run_command("build/py_standalone_test", "1")
     build_target("go_standalone_bidir_test")
-    subprocess.check_call("build/go_standalone_bidir_test", "1")
+    run_command("build/go_standalone_bidir_test", "1")
     build_target("py_standalone_bidir_test")
-    subprocess.check_call("build/py_standalone_bidir_test", "1")
+    run_command("build/py_standalone_bidir_test", "1")
 
 
 if __name__ == "__main__":
