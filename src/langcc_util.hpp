@@ -207,7 +207,8 @@ typedef NTSTATUS (*RtlCloneUserProcess_f)(
 #endif
 
   len = strlen(tmpl);
-  if (len < 6 + suffix_len || strcmp(&tmpl[len - 6 - suffix_len], "XXXXXX")) {
+  if (len < 6 + suffix_len ||
+      strncmp(&tmpl[len - 6 - suffix_len], "XXXXXX", 6)) {
     errno = EINVAL;
     return -1;
   }
