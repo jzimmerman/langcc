@@ -20,7 +20,7 @@ int main(i32 argc, char** argv) {
             if (!entry.is_regular_file()) {
                 continue;
             }
-            string path = entry.path();
+            string path = entry.path().string();
             auto v = str_split(path, "/");
             auto path_last = v.operator[](v.size() - 1);
             auto w = str_split(path_last, ".lang");
