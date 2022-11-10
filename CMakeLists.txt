@@ -48,3 +48,62 @@ add_executable(langcc
   ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_main.cpp
 )
+
+
+#
+# Create test targets
+#
+
+# Unittests:
+add_executable(unittest_lib
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/unittest_lib_main.cpp
+)
+add_executable(unittest_lang
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/unittest_lang_main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_lexer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_parser_flatten.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_parser_attr.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_parser_cps.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_parser_lr.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_encode.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_normalize.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_emit.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/cc__gen.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/data__gen.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/meta__gen.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/common__data_gen.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
+)
+
+# go_standalone_test
+add_custom_command(
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/langcc ${CMAKE_CURRENT_SOURCE_DIR}/grammars/go.lang ${CMAKE_CURRENT_SOURCE_DIR}/gen
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/langcc ${CMAKE_CURRENT_SOURCE_DIR}/grammars/go.lang
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/gen/go__gen.cpp
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+add_executable(go_standalone_test
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/go_standalone_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/go__gen.cpp
+)
+add_executable(go_standalone_bidir_test
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/go_standalone_bidir_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/go__gen.cpp
+)
+
+# py_standalone_test
+add_custom_command(
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/langcc ${CMAKE_CURRENT_SOURCE_DIR}/grammars/py.lang ${CMAKE_CURRENT_SOURCE_DIR}/gen
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/langcc ${CMAKE_CURRENT_SOURCE_DIR}/grammars/py.lang
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/gen/py__gen.cpp
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+add_executable(py_standalone_test
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/py_standalone_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/py__gen.cpp
+)
+add_executable(py_standalone_bidir_test
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/py_standalone_bidir_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen/py__gen.cpp
+)

@@ -8,3 +8,4 @@ examples/calc/gen
 examples/basic/gen
 examples/calc/build
 examples/basic/build
+.mypy_cache/

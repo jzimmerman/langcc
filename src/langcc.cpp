@@ -189,9 +189,6 @@ LangCompileResult_T compile_lang_full(
         auto tgt_path = fmt_str("build/gen_test_bin/{}__gen_test",
             lang_get_src_base_name(src_path));
         cmds.push(tgt_path);
-        cmds.push("-g");
-        cmds.push("-ggdb");
-        cmds.push("-g3");
         cmds.push("-std=c++17");
         cmds.push("-I");
         cmds.push(fmt_str("./{}", dst_path));
