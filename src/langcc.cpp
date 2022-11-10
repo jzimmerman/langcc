@@ -189,7 +189,13 @@ LangCompileResult_T compile_lang_full(
         auto tgt_path = fmt_str("build/gen_test_bin/{}__gen_test",
             lang_get_src_base_name(src_path));
         cmds.push(tgt_path);
+#ifndef NDEBUG
+        cmds.push("-g");
+#endif
         cmds.push("-std=c++17");
+#ifdef __APPLE__
+        cmds.push("-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk");
+#endif
         cmds.push("-I");
         cmds.push(fmt_str("./{}", dst_path));
         cmds.push("-I");
