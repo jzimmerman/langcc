@@ -4,6 +4,8 @@ import os
 
 is_windows = os.name == "nt"
 build_dir = Path("build")
+if is_windows:
+    build_dir = build_dir / os.environ.get("BUILD_TYPE", "Debug")
 grammars_dir = Path("grammars")
 
 
