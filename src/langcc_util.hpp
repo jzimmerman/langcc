@@ -36,8 +36,8 @@
 #define UNW_LOCAL_ONLY
 
 #include <fcntl.h>
-// #include <sys/types.h>
-// #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 namespace langcc {
@@ -48,13 +48,9 @@ using namespace std;
 // Common definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-void init_handlers();
 void init_time_system();
 
-inline void global_init() {
-  init_handlers();
-  init_time_system();
-}
+inline void global_init() { init_time_system(); }
 
 using i8 = int8_t;
 using u8 = uint8_t;
@@ -3397,20 +3393,6 @@ inline void makedirs(const string &path) {
   std::filesystem::create_directories(path);
 }
 
-inline void init_handlers() {
-  //   if (!get_handlers_needs_init()) {
-  //     return;
-  //   }
-  //   signal(SIGSEGV, sig_handler);
-  //   signal(SIGBUS, sig_handler);
-  //   signal(SIGILL, sig_handler);
-  //   signal(SIGINT, sig_handler);
-  //   signal(SIGQUIT, sig_handler);
-  //   signal(SIGUSR1, sig_handler_live);
-  //   set_terminate(term_handler);
-  //   get_handlers_needs_init() = false;
-}
-
 inline void kill_child_proc(pid_t pid) {
   kill(pid, SIGQUIT);
   usleep(1000);
@@ -3657,98 +3639,6 @@ inline bool run_unit_tests() {
   }
 
   return res_fail.size() == 0;
-}
-
-inline string llvm_symbolize(string input) {
-  constexpr Int buf_n = 64;
-  char name_in[buf_n], name_out[buf_n], name_err[buf_n];
-  strncpy(name_in, "/tmp/stdin_XXXXXX.txt", buf_n);
-  strncpy(name_out, "/tmp/stdout_XXXXXX.txt", buf_n);
-  strncpy(name_err, "/tmp/stderr_XXXXXX.txt", buf_n);
-
-  {
-    auto stdin_file = sys_chk_nonneg(mkstemps(name_in, 4), "mkstemps stdin");
-    auto stdout_file = sys_chk_nonneg(mkstemps(name_out, 4), "mkstemps stdout");
-    auto stderr_file = sys_chk_nonneg(mkstemps(name_err, 4), "mkstemps stderr");
-    close(stdin_file);
-    close(stdout_file);
-    close(stderr_file);
-  }
-  string stdin_filename = name_in;
-  string stdout_filename = name_out;
-  string stderr_filename = name_err;
-
-  write_file(stdin_filename, input);
-
-  pid_t pid = fork();
-
-  AT(pid >= 0);
-  if (pid == 0) {
-    auto stdin_file =
-        sys_chk_nonneg(open(stdin_filename.c_str(), O_RDONLY), "open stdin");
-    auto stdout_file =
-        sys_chk_nonneg(open(stdout_filename.c_str(), O_WRONLY), "open stdout");
-    auto stderr_file =
-        sys_chk_nonneg(open(stderr_filename.c_str(), O_WRONLY), "open stderr");
-    { sys_chk_nonneg(dup2(stdin_file, STDIN_FILENO), "dup2 stdin"); }
-    { sys_chk_nonneg(dup2(stdout_file, STDOUT_FILENO), "dup2 stdout"); }
-    { sys_chk_nonneg(dup2(stderr_file, STDERR_FILENO), "dup2 stderr"); }
-    close(stdin_file);
-    close(stdout_file);
-    close(stderr_file);
-    const char *path = STRINGIFY(__LLVM_SYMBOLIZER_PATH__);
-    execl(path, path, nullptr);
-    perror("execl");
-    exit(1);
-  } else {
-    i32 status;
-    waitpid(pid, &status, 0);
-    if (status != 0) {
-      LG_ERR("exec failure: {}\nstderr:\n{}\n\n", read_file(stderr_filename));
-    }
-    auto ret = read_file(stdout_filename);
-    std::filesystem::remove(stdin_filename);
-    std::filesystem::remove(stdout_filename);
-    std::filesystem::remove(stderr_filename);
-    return ret;
-  }
-}
-
-inline string sym_long_summarize(string sym) {
-  string ret;
-  Int angles = 0;
-  Int parens = 0;
-  for (char c : sym) {
-    if (c == '(') {
-      ++parens;
-      continue;
-    }
-    if (c == ')') {
-      --parens;
-      continue;
-    }
-    if (c == '>') {
-      --angles;
-      if (angles == 0 && parens == 0) {
-        ret += "..";
-      }
-    }
-    if (angles == 0 && parens == 0) {
-      ret += c;
-    }
-    if (c == '<') {
-      ++angles;
-    }
-  }
-  return ret;
-}
-
-inline string sym_path_long_excerpt(string path_line) {
-  string cwd = std::filesystem::current_path().string();
-  if (str_starts_with(path_line, cwd + "/")) {
-    path_line = path_line.substr(cwd.length() + 1);
-  }
-  return path_line;
 }
 
 } // namespace langcc
