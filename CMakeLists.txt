@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/gen)
 add_compile_definitions(__CC__=${CMAKE_CXX_COMPILER})
 if (MSVC)
-  add_compile_options(/wd4244 /wd4065 /wd4996 /wd5051)
+  add_compile_options(/wd4244 /wd4065 /wd4996 /wd5051 /wd4311 /wd4302 /wd4018)
 endif()
 #
 # Create datacc target

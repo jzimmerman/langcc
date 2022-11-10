@@ -120,8 +120,12 @@ typedef NTSTATUS (*RtlCloneUserProcess_f)(
                    NULL, NULL, NULL, &process_info);
 
   if (result == RTL_CLONE_PARENT) {
-    HANDLE me, hp, ht, hcp = 0;
-    DWORD pi, ti;
+    HANDLE me = 0;
+    HANDLE hp = 0;
+    HANDLE ht = 0;
+    HANDLE hcp = 0;
+    DWORD pi = 0;
+    DWORD ti = 0;
     me = GetCurrentProcess();
     pi = (DWORD)process_info.ClientId.UniqueProcess;
     ti = (DWORD)process_info.ClientId.UniqueThread;
@@ -178,7 +182,7 @@ typedef NTSTATUS (*RtlCloneUserProcess_f)(
   static const char letters[] =
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-  int len;
+  size_t len;
   char *XXXXXX;
   static unsigned long long value;
   unsigned long long random_time_bits;
@@ -3624,7 +3628,7 @@ inline void kill_child_proc(pid_t pid) {
 
 inline string gen_tempfile(string prefix, string suffix) {
   string filename = prefix + "XXXXXX" + suffix;
-  i32 fd = mkstemps(filename.data(), suffix.length());
+  int fd = mkstemps(filename.data(), static_cast<int>(suffix.length()));
   AT(fd != -1);
   close(fd);
   return filename;

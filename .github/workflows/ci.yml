@@ -34,11 +34,25 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target unittest_lang
 
     - name: single_test1
+      if: runner.os != 'Windows'
       run: build/unittest_lang golang_if_func_assoc2
     - name: single_test2
+      if: runner.os != 'Windows'
       run: build/unittest_lang calc
     - name: single_test3
+      if: runner.os != 'Windows'
       run: build/unittest_lang xfail_lexer_cycle
+    - name: single_test1
+    
+    - name: win-single_test1
+      if: runner.os == 'Windows'
+      run: build/${{env.BUILD_TYPE}}/unittest_lang.exe golang_if_func_assoc2
+    - name: win-single_test2
+      if: runner.os == 'Windows'
+      run: build/${{env.BUILD_TYPE}}/unittest_lang.exe calc
+    - name: win-single_test3
+      if: runner.os == 'Windows'
+      run: build/${{env.BUILD_TYPE}}/unittest_lang.exe xfail_lexer_cycle
 
     - name: clone_golang
       run: git clone -b go1.17.8 --single-branch https://github.com/golang/go ../go
