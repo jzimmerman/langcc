@@ -127,12 +127,12 @@ struct SymItem {
   ParserLookahead first_k_;
 
   inline SymItem()
-      : tok_(NO_TOKEN), id_(NO_SYM), start_pos_(-1),
-        attr_(attr_mask_trivial()) {}
+      : tok_(NO_TOKEN), id_(NO_SYM), attr_(attr_mask_trivial()),
+        start_pos_(-1) {}
 
   inline SymItem(ParserSymId id, Int start_pos)
-      : tok_(NO_TOKEN), id_(id), start_pos_(start_pos),
-        attr_(attr_mask_trivial()), tok_in_lo_(-1), tok_in_hi_(-1) {}
+      : tok_(NO_TOKEN), id_(id), attr_(attr_mask_trivial()),
+        start_pos_(start_pos), tok_in_lo_(-1), tok_in_hi_(-1) {}
 
   static inline SymItem make_lex_token_parse_sym(TokenId tok, ParserSymId sym,
                                                  Int tok_i, Int tok_in_lo,
@@ -160,7 +160,7 @@ struct SymItem {
 
 using SymItemVec = Vec<SymItem>;
 
-inline void pr(ostream &os, FmtFlags flags, SymItem item) {
+inline void pr(ostream &os, FmtFlags /*flags*/, SymItem item) {
   fmt(os, "<SymItem: sym={}, attr={}, tok={}, res={} ({}, {}), first_k={}>",
       item.id_, item.attr_, item.tok_, !!item.res_.v_, item.res_.bounds_.lo_,
       item.res_.bounds_.hi_, item.first_k_);
@@ -362,7 +362,7 @@ struct QuoteEnv {
     return parse_out->res_.as_some();
   }
 
-  inline void qq_args_acc(LexOutput_T &lex) {}
+  inline void qq_args_acc(LexOutput_T & /*lex*/) {}
 
   template <typename... Args>
   inline void qq_args_acc(LexOutput_T &lex, string arg, const Args &...args) {
@@ -473,8 +473,8 @@ struct QuoteEnv {
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 inline QuoteEnv_T<Node, FAcc, FStep>
-LangDesc<Node, FAcc, FStep>::quote_env(const string &id_sym,
-                                       const string &ns_tok) {
+LangDesc<Node, FAcc, FStep>::quote_env(const string & /*id_sym*/,
+                                       const string & /*ns_tok*/) {
 
   auto ret = make_rc<QuoteEnv<Node, FAcc, FStep>>();
   ret->L_ = this->rc_from_this();
@@ -517,7 +517,7 @@ struct LexError : enable_rc_from_this<LexError> {
   }
 };
 
-inline void pr(ostream &os, FmtFlags flags, LexError_T err) {
+inline void pr(ostream &os, FmtFlags /*flags*/, LexError_T err) {
   fmt(os, "{}", err->desc_);
 }
 
@@ -573,7 +573,7 @@ struct LexInput : enable_rc_from_this<LexInput> {
         ch_full = lex_decode_utf8(x_str, i_new, n);
         i = i_new;
 
-        if (ch_full == -1) {
+        if (ch_full == static_cast<Ch>(-1)) {
           auto utf8_err = Some(
               LexError::make(ret, len(ret->data_), "UTF-8 decoding error"));
           ret->err_ = utf8_err;
@@ -705,7 +705,7 @@ struct LexInput : enable_rc_from_this<LexInput> {
   }
 };
 
-inline void pr(ostream &os, FmtFlags flags, LexInput_T lex) {
+inline void pr(ostream &os, FmtFlags /*flags*/, LexInput_T lex) {
   fmt(os, "LexInput: `{}`", vec_to_std_string(lex->input_));
 }
 
@@ -869,7 +869,7 @@ inline void LexOutput::push_item(SymItem item) {
   this->items_internal_->push(item);
 }
 
-inline void pr_debug(ostream &os, FmtFlags flags, LexOutput_T lex) {
+inline void pr_debug(ostream &os, FmtFlags /*flags*/, LexOutput_T lex) {
   if (lex->quoted_) {
     os << "LexOutput(quoted):[";
     Int tok_i = 0;
@@ -1038,8 +1038,8 @@ struct LexerState : enable_rc_from_this<LexerState> {
   }
 
   [[always_inlines]] inline void
-  enqueue_emit_ext(Vec<SymItem> *dst, LexWhitespaceState *ws, TokenId tok,
-                   Int tok_lo, Int tok_hi, bool has_contents) {
+  enqueue_emit_ext(Vec<SymItem> *dst, LexWhitespaceState * /*ws*/, TokenId tok,
+                   Int tok_lo, Int tok_hi, bool /*has_contents*/) {
 
     auto item = SymItem::make_lex_token(tok, tok_to_sym_, tok_lo, tok_hi);
     if (!!dst) {
@@ -1299,8 +1299,8 @@ inline void lex_queue_pull_sub(LexerState *st, SymItemVec *dst, SymItemVec *src,
   src->clear();
 }
 
-[[always_inlines]] inline void lexer_raise_nonempty_mode_stack(LexerState *st,
-                                                               Int in_i) {
+[[always_inlines]] inline void
+lexer_raise_nonempty_mode_stack(LexerState * /*st*/, Int /*in_i*/) {
 
   AX("Lexer definition error: nonempty mode stack at eof");
 }
@@ -1312,7 +1312,7 @@ inline void lex_queue_pull_sub(LexerState *st, SymItemVec *dst, SymItemVec *src,
 }
 
 [[always_inlines]] inline DFALabelId
-lexer_char_to_label(Ch *in_data, Int in_i, Int in_data_len,
+lexer_char_to_label(Ch *in_data, Int in_i, Int /*in_data_len*/,
                     DFALabelId *label_ids_ascii, LexerState *st) {
 
   Ch c = in_data[in_i];
@@ -1339,8 +1339,8 @@ lexer_char_to_label(Ch *in_data, Int in_i, Int in_data_len,
 }
 
 [[always_inlines]] inline void
-lexer_state_proc_update_pre(Int best_acc, Int best_tok, Int &tok_lo,
-                            Int &tok_hi, Int &in_i, bool read_eof,
+lexer_state_proc_update_pre(Int best_acc, Int /*best_tok*/, Int & /*tok_lo*/,
+                            Int & /*tok_hi*/, Int &in_i, bool /*read_eof*/,
                             LexerState *st) {
 
   if (__builtin_expect(best_acc == DFATable::NO_ACTION, 0)) {
@@ -1364,7 +1364,7 @@ lexer_state_proc_update_pre(Int best_acc, Int best_tok, Int &tok_lo,
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T &input,
-                                                    Arena *A) {
+                                                    Arena * /*A*/) {
   AT(input->length() < 0x7fffffff);
 
   auto in = LexInput::make_from_str(input);
@@ -1591,7 +1591,7 @@ struct ParseOutput;
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 using ParseOutput_T = rc_ptr<ParseOutput<Node, FAcc, FStep>>;
 
-inline void pr(ostream &os, FmtFlags flags, ParserAttrMask attr) {
+inline void pr(ostream &os, FmtFlags /*flags*/, ParserAttrMask attr) {
   fmt(os, "{{");
   for (Int i = 0; i < 8; i++) {
     fmt(os, "{},", Int(attr.v_[i]));
@@ -1599,7 +1599,7 @@ inline void pr(ostream &os, FmtFlags flags, ParserAttrMask attr) {
   fmt(os, "..}}");
 }
 
-inline void pr(ostream &os, FmtFlags flags, ParserLookahead la) {
+inline void pr(ostream &os, FmtFlags /*flags*/, ParserLookahead la) {
   fmt(os, "{{");
   for (Int i = 0; i < 8; i++) {
     fmt(os, "{},", Int(la.v_[i]));
@@ -1875,8 +1875,6 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
               fmt_str("Unexpected end-of-file"), st_i, lex_out);
         }
 
-        auto pos_prev = pos;
-
         Int v = st_inline.Sv_addr_[st_inline.Sv_len_ - 1].v_;
 
         auto next = FStep(v, sym_curr.id_, sym_curr.attr_);
@@ -2005,7 +2003,6 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
             auto ret_res_node = rc_from_ptr_ext_dec<Node>(ret_res.v_, A);
 
             AR_eq(st_inline.Ss_len_, 1);
-            auto item_final = st_inline.Ss_addr_[0];
             --st_inline.Ss_len_;
 
             ret_res_node->is_top_ = true;
@@ -2198,6 +2195,7 @@ make_ext(ArenaPtr arena, Vec_T<langcc::PrBufStreamItem_T> items);
 
 namespace langcc::PrBufStream {
 struct _T : hash_obj, enable_rc_from_this_poly {
+  virtual ~_T() = default;
   void distill(Ref<ostream> os, FmtFlags flags);
   void push_string(string x);
   void push_newline();
@@ -2468,8 +2466,8 @@ langcc::PrBufStreamItem::String::_T::hash_ser_acc(langcc::SerBuf &buf) const {
       hash_ser_acc_langcc_PrBufStreamItem_String(buf);
 }
 
-inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
-                             langcc::PrBufStreamItem::Newline_T x) {
+inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags /*flags*/,
+                             langcc::PrBufStreamItem::Newline_T /*x*/) {
   os << "langcc::PrBufStreamItem::Newline {";
   os << "}";
 }
@@ -2500,8 +2498,8 @@ langcc::PrBufStreamItem::Newline::_T::hash_ser_acc(langcc::SerBuf &buf) const {
       hash_ser_acc_langcc_PrBufStreamItem_Newline(buf);
 }
 
-inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
-                             langcc::PrBufStreamItem::Indent_T x) {
+inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags /*flags*/,
+                             langcc::PrBufStreamItem::Indent_T /*x*/) {
   os << "langcc::PrBufStreamItem::Indent {";
   os << "}";
 }
@@ -2533,8 +2531,8 @@ langcc::PrBufStreamItem::Indent::_T::hash_ser_acc(SerBuf &buf) const {
       hash_ser_acc_langcc_PrBufStreamItem_Indent(buf);
 }
 
-inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
-                             langcc::PrBufStreamItem::Dedent_T x) {
+inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags /*flags*/,
+                             langcc::PrBufStreamItem::Dedent_T /*x*/) {
   os << "langcc::PrBufStreamItem::Dedent {";
   os << "}";
 }
@@ -2765,14 +2763,12 @@ template <typename Num, typename UNum, typename Buf>
 template <typename Num, typename UNum>
 [[always_inlines]] inline Int table_decode_r2(const UNum tt[], Int x, Int y) {
   {
-    Int n = tt[2];
     tt += 3;
     Int offset = table_decode_offset<UNum>(tt, x);
     tt += offset;
   }
 
   {
-    Int n = tt[2];
     tt += 3;
     Int offset = table_decode_offset<UNum>(tt, y);
     tt += offset;

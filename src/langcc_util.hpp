@@ -534,7 +534,7 @@ void init_rc_contents(T *x, void *v, atomic<Int> *rc) {
 
 template <typename T, typename std::enable_if<!std::is_base_of<
                           _enable_rc_from_this, T>::value>::type * = nullptr>
-void init_rc_contents(T *x, void *v, atomic<Int> *rc) {}
+void init_rc_contents(T * /*x*/, void * /*v*/, atomic<Int> * /*rc*/) {}
 
 template <typename T, typename... Ts> rc_ptr<T> make_rc(Ts... args) {
   static_assert(sizeof(Int) == 8);
@@ -598,10 +598,10 @@ inline string str_with_replace_all(const string &x, const string &a,
 
   string ret = "";
 
-  Int pos_curr = 0;
+  size_t pos_curr = 0;
 
   while (true) {
-    Int pos_next = x.find(a, pos_curr);
+    size_t pos_next = x.find(a, pos_curr);
     if (pos_next == string::npos) {
       ret += x.substr(pos_curr, x.length() - pos_curr);
       return ret;
@@ -712,7 +712,7 @@ inline string utf8_encode(vector<Ch> chs) {
 
 inline Option_T<vector<Ch>> utf8_decode(string s) {
   vector<Ch> ret;
-  Int i = 0;
+  size_t i = 0;
   while (i < s.length()) {
     auto c = static_cast<u8>(s[i]);
     if (c < 0x80) {
@@ -831,7 +831,7 @@ inline Option_T<Int> string_to_int(string x) {
 
 inline Option_T<Int> string_to_int_hex(string x) {
   u64 ret = 0;
-  for (Int i = 0; i < x.length(); i++) {
+  for (size_t i = 0; i < x.length(); i++) {
     ret <<= 4;
     ret |= hex_nybble_to_u8(x[i]);
   }
@@ -974,7 +974,7 @@ inline vector<string> str_split(const string &x, const string &delim) {
   vector<string> ret;
   string curr = x;
   while (true) {
-    Int pos = curr.find(delim);
+    size_t pos = curr.find(delim);
     if (pos == string::npos) {
       ret.push_back(curr);
       break;
@@ -996,13 +996,13 @@ inline string str_repeat(const string &s, Int count) {
 inline bool u8_is_ws(u8 x) { return isspace(x); }
 
 inline string string_ws_strip(string x) {
-  Int i;
+  size_t i;
   for (i = 0; i < x.length(); i++) {
     if (!u8_is_ws(x[i])) {
       break;
     }
   }
-  Int j;
+  size_t j;
   for (j = x.length(); j >= 0; j--) {
     if (j == 0 || !u8_is_ws(x[j - 1])) {
       break;
@@ -1078,69 +1078,78 @@ struct FmtFlags {
   }
 };
 
-inline void pr(ostream &os, FmtFlags flags, const string &x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, const string &x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, const string &x) {
+inline void pr_debug(ostream &os, FmtFlags /*flags*/, const string &x) {
   os << "\"" << x << "\"";
 }
 
-inline void pr(ostream &os, FmtFlags flags, const char *x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, const char *x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, const char *x) {
+inline void pr_debug(ostream &os, FmtFlags /*flags*/, const char *x) {
   os << "\"" << x << "\"";
 }
 
-template <typename T> inline void pr(ostream &os, FmtFlags flags, T *x) {
+template <typename T> inline void pr(ostream &os, FmtFlags /*flags*/, T *x) {
   os << "0x" << hex_u64_display(reinterpret_cast<u64>(x));
 }
 
-template <typename T> inline void pr_debug(ostream &os, FmtFlags flags, T *x) {
+template <typename T>
+inline void pr_debug(ostream &os, FmtFlags /*flags*/, T *x) {
   os << "0x" << hex_u64_display(reinterpret_cast<u64>(x));
 }
 
-inline void pr(ostream &os, FmtFlags flags, Int x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, unsigned long x) { os << x; }
+
+inline void pr_debug(ostream &os, FmtFlags flags, unsigned long x) {
+  pr(os, flags, x);
+}
+
+inline void pr(ostream &os, FmtFlags /*flags*/, Int x) { os << x; }
 
 inline void pr_debug(ostream &os, FmtFlags flags, Int x) { pr(os, flags, x); }
 
-inline void pr(ostream &os, FmtFlags flags, u32 x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, u32 x) { os << x; }
 
 inline void pr_debug(ostream &os, FmtFlags flags, u32 x) { pr(os, flags, x); }
 
-inline void pr(ostream &os, FmtFlags flags, u64 x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, u64 x) { os << x; }
 
 inline void pr_debug(ostream &os, FmtFlags flags, u64 x) { pr(os, flags, x); }
 
-inline void pr(ostream &os, FmtFlags flags, f32 x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, f32 x) { os << x; }
 
 inline void pr_debug(ostream &os, FmtFlags flags, f32 x) { pr(os, flags, x); }
 
-inline void pr(ostream &os, FmtFlags flags, f64 x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, f64 x) { os << x; }
 
 inline void pr_debug(ostream &os, FmtFlags flags, f64 x) { pr(os, flags, x); }
 
-inline void pr(ostream &os, FmtFlags flags, bool x) {
+inline void pr(ostream &os, FmtFlags /*flags*/, bool x) {
   os << (x ? "true" : "false");
 }
 
-inline void pr_debug(ostream &os, FmtFlags flags, bool x) {
+inline void pr_debug(ostream &os, FmtFlags /*flags*/, bool x) {
   os << (x ? "true" : "false");
 }
 
-inline void pr(ostream &os, FmtFlags flags, Ch x) {
+inline void pr(ostream &os, FmtFlags /*flags*/, Ch x) {
   os << static_cast<uint32_t>(x);
 }
 
-inline void pr_debug(ostream &os, FmtFlags flags, Ch x) {
+inline void pr_debug(ostream &os, FmtFlags /*flags*/, Ch x) {
   os << "\"" << escape_string_char(x) << "\"";
 }
 
-inline void pr(ostream &os, FmtFlags flags, i32 x) { os << x; }
+inline void pr(ostream &os, FmtFlags /*flags*/, i32 x) { os << x; }
 
-inline void pr(ostream &os, FmtFlags flags, char c) { os << c; }
+inline void pr(ostream &os, FmtFlags /*flags*/, char c) { os << c; }
 
-inline void pr(ostream &os, FmtFlags flags, Unit x) { os << "()"; }
+inline void pr(ostream &os, FmtFlags /*flags*/, Unit /*x*/) { os << "()"; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, Unit x) { os << "()"; }
+inline void pr_debug(ostream &os, FmtFlags /*flags*/, Unit /*x*/) {
+  os << "()";
+}
 
 template <typename T>
 inline void pr(ostream &os, FmtFlags flags, const vector<T> &x) {
@@ -1279,7 +1288,7 @@ inline void fmt_flat(ostream &os, const string &s, const vector<string> &args) {
   }
 }
 
-inline void fmt_acc(vector<string> &args_acc) {}
+inline void fmt_acc(vector<string> & /*args_acc*/) {}
 
 template <typename T, typename... Ts>
 inline void fmt_acc(vector<string> &args_acc, const T &t, const Ts &...ts) {
@@ -1528,11 +1537,13 @@ template <typename T> Option::_T<T>::_T(Option::_W w, const T &t) : w_(w) {
   new (t_) T(t);
 }
 
-template <typename T> Option::_T<T>::~_T() {
+namespace Option {
+template <typename T> _T<T>::~_T() {
   if (this->is_some()) {
     reinterpret_cast<T *>(t_)->~T();
   }
 }
+} // namespace Option
 
 template <typename T> Option::_W Option::_T<T>::w() { return this->w_; }
 
@@ -1600,7 +1611,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
     free_ext(arr_, A_);
   }
 
-  inline Vec() : A_(nullptr), len_(0), begin_(0), end_(0), cap_(1) {
+  inline Vec() : A_(nullptr), begin_(0), end_(0), len_(0), cap_(1) {
     this->_init();
   }
 
@@ -1967,7 +1978,7 @@ inline void pr_debug(ostream &os, FmtFlags flags, StrSlice x) {
   pr_debug(os, flags, x.to_std_string());
 }
 
-inline void pr(ostream &os, FmtFlags flags, StrSlice x) {
+inline void pr(ostream &os, FmtFlags /*flags*/, StrSlice x) {
   auto base_ptr = x.base_->begin();
   for (Int i = x.lo_; i < x.hi_; i++) {
     os << base_ptr[i];
@@ -2603,7 +2614,7 @@ inline void hash_ser(SerBuf &buf, const Int &x) { ser_int(buf, x); }
 
 inline HashVal val_hash(Int x) { return val_hash_base(x); }
 
-inline void hash_ser(SerBuf &buf, const Unit &x) { ser_int(buf, 0); }
+inline void hash_ser(SerBuf &buf, const Unit & /*x*/) { ser_int(buf, 0); }
 
 inline HashVal val_hash(Unit x) { return val_hash_base(x); }
 
@@ -2739,7 +2750,7 @@ inline void hash_ser(SerBuf &buf, const StrSlice &s) {
 
 inline HashVal val_hash(const StrSlice &s) { return val_hash_base(s); }
 
-inline void pr(ostream &os, FmtFlags flags, HashVal hv) {
+inline void pr(ostream &os, FmtFlags /*flags*/, HashVal hv) {
   for (Int i = 0; i < 32; i++) {
     os << hex_byte_display(hv.v_[i]);
   }
@@ -2779,7 +2790,7 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
     auto n = vs_.length();
     auto k2 = K(k);
     auto v2 = V(v);
-    vs_.push(make_pair<K, V>(move(k2), move(v2)));
+    vs_.push(make_pair<K, V>(std::move(k2), std::move(v2)));
     live_.push(true);
     if (m_.find(hk) != m_.end()) {
       auto i = m_[hk];
@@ -3512,7 +3523,7 @@ struct PrintTable {
   }
 };
 
-inline void pr(ostream &os, FmtFlags flags, PrintTable_T td) {
+inline void pr(ostream &os, FmtFlags /*flags*/, PrintTable_T td) {
   AT(!td->buffer_active_, "buffer active");
   for (Int i = 0; i < td->num_rows(); i++) {
     td->write_row(os, i);
@@ -3754,10 +3765,10 @@ inline bool run_unit_tests() {
     test_names.insert(test.name_);
   }
 
-  Int unit_tests_max_concurrent = std::thread::hardware_concurrency();
+  size_t unit_tests_max_concurrent = std::thread::hardware_concurrency();
 
   auto ts = get_unit_tests();
-  Int test_dispatch_i = 0;
+  size_t test_dispatch_i = 0;
 
   LG_ERR(">>> Launching {} tests ({} concurrently)", len(get_unit_tests()),
          unit_tests_max_concurrent);
