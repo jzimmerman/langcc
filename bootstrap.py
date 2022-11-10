@@ -20,7 +20,7 @@ def build_target(target):
 
 
 def generate_grammar(grammar_file):
-    run_command("build/langcc", grammar_file, "gen")
+    run_command(["build/langcc", grammar_file, "gen"])
 
 
 def main():
@@ -35,15 +35,15 @@ def main():
     build_target("datacc")
     build_target("langcc")
     build_target("unittest_lang")
-    run_command("build/unittest_lang")
+    run_command(["build/unittest_lang"])
     build_target("go_standalone_test")
-    run_command("build/go_standalone_test", "1")
+    run_command(["build/go_standalone_test", "1"])
     build_target("py_standalone_test")
-    run_command("build/py_standalone_test", "1")
+    run_command(["build/py_standalone_test", "1"])
     build_target("go_standalone_bidir_test")
-    run_command("build/go_standalone_bidir_test", "1")
+    run_command(["build/go_standalone_bidir_test", "1"])
     build_target("py_standalone_bidir_test")
-    run_command("build/py_standalone_bidir_test", "1")
+    run_command(["build/py_standalone_bidir_test", "1"])
 
 
 if __name__ == "__main__":
