@@ -186,7 +186,36 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
     makedirs("build/gen_test_bin");
 
     Vec<string> cmds;
-
+#ifdef WIN32
+    string cc = STRINGIFY(__CC__);
+    cmds.push("\"" + cc + "\"");
+    cmds.push("/std:c++17 /DWIN32 /D_WINDOWS /W3 /GR /EHsc /wd4244 /wd4065 "
+              "/wd4996 /wd5051 /wd4311 /wd4302 /wd4018");
+#ifdef NDEBUG
+    cmds.push("/MD /O2 /Ob2 /DNDEBUG");
+#else
+    cmds.push("/MDd /Zi /Ob0 /Od /RTC1");
+#endif
+    cmds.push("/I");
+    cmds.push(fmt_str("./{}", dst_path));
+    cmds.push("/I");
+    cmds.push("./src");
+    if (header_mode == HeaderMode::N) {
+      cmds.push(res->as_Ok()->cpp_path_);
+    }
+    cmds.push(res->as_Ok()->cpp_test_path_);
+    cmds.push("/link");
+    auto tgt_path = fmt_str("build\\gen_test_bin\\{}__gen_test",
+                            lang_get_src_base_name(src_path)) +
+                    ".exe";
+    cmds.push("/out:" + tgt_path);
+    cmds.push("/INCREMENTAL /subsystem:console");
+#ifndef NDEBUG
+    cmds.push("/debug");
+#endif
+    cmds.push("kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib "
+              "ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib");
+#else
     string cc = STRINGIFY(__CC__);
     cmds.push(cc);
     cmds.push("-o");
@@ -208,6 +237,7 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
       cmds.push(res->as_Ok()->cpp_path_);
     }
     cmds.push(res->as_Ok()->cpp_test_path_);
+#endif
 
     string cmd;
     for (auto cmd_i : cmds) {
