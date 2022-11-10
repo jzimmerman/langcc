@@ -42,7 +42,6 @@ jobs:
     - name: single_test3
       if: runner.os != 'Windows'
       run: build/unittest_lang xfail_lexer_cycle
-    - name: single_test1
     
     - name: win-single_test1
       if: runner.os == 'Windows'
