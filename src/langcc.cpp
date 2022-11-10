@@ -209,12 +209,6 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
                             lang_get_src_base_name(src_path)) +
                     ".exe";
     cmds.push("/out:" + tgt_path);
-    cmds.push("/INCREMENTAL /subsystem:console");
-#ifndef NDEBUG
-    cmds.push("/debug");
-#endif
-    cmds.push("kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib "
-              "ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib");
 #else
     string cc = STRINGIFY(__CC__);
     cmds.push(cc);
