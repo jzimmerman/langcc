@@ -32,7 +32,7 @@ tokens {
     dec_lit <= `0` | (`1`..`9`) (`0`..`9`)*;
     hex_digit <= (`0`..`9` | `a`..`f`);
     hex_lit <= `0x` hex_digit+;
-    
+
     oct_digit <= `0`..`7`;
 
     oct_escape <= `\\` oct_digit^3;
@@ -149,6 +149,9 @@ parser {
         Mod.Virtual <- `virtual`;
         Mod.NoInline <- `__attribute__` `(` `(` `noinline` `)` `)`;
         Mod.AlwaysInline <- `__attribute__` `(` `(` `always_inline` `)` `)`;
+        Mod.Attribute <- `[` `[` attrs:#L[Attribute::`,`] `]` `]`;
+            Attribute.Simple <- name:Id;
+            Attribute.Namespaced <- ns:Id `::` name:Id;
 
     Decl.Namespace <- `namespace` _ name:Type _ `{` body:#B2[Decl::eps] `}`;
 
