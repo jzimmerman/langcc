@@ -1099,12 +1099,6 @@ inline void pr_debug(ostream &os, FmtFlags /*flags*/, T *x) {
   os << "0x" << hex_u64_display(reinterpret_cast<u64>(x));
 }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, unsigned long x) { os << x; }
-
-inline void pr_debug(ostream &os, FmtFlags flags, unsigned long x) {
-  pr(os, flags, x);
-}
-
 inline void pr(ostream &os, FmtFlags /*flags*/, Int x) { os << x; }
 
 inline void pr_debug(ostream &os, FmtFlags flags, Int x) { pr(os, flags, x); }
