@@ -152,7 +152,7 @@ namespace lang::data::lexer::body {
 }
 
 namespace lang::data::lexer::body {
-    inline __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
+    [[always_inlines]] inline langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
         switch (v) {
             case 0: {
                 return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
@@ -435,7 +435,7 @@ namespace lang::data::lexer::body {
 }
 
 namespace lang::data::lexer::body {
-    inline __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
+    [[always_inlines]] inline langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
         auto ret = std::make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
@@ -474,7 +474,7 @@ namespace lang::data::lexer::comment_single {
 }
 
 namespace lang::data::lexer::comment_single {
-    inline __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
+    [[always_inlines]] inline langcc::DFAActionWithToken acc(langcc::DFAVertexId v) {
         switch (v) {
             case 0: {
                 return std::make_pair(langcc::DFATable::NO_ACTION, langcc::NO_TOKEN);
@@ -493,7 +493,7 @@ namespace lang::data::lexer::comment_single {
 }
 
 namespace lang::data::lexer::comment_single {
-    inline __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
+    [[always_inlines]] inline langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi) {
         auto ret = std::make_pair(-1, -1);
         bool mode_switch = false;
         switch (acc) {
@@ -5196,7 +5196,7 @@ langcc::ParserVertexId lang::data::parser::vertex_dfa_step(langcc::ParserVertexI
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_0_4_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_0_4_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5224,7 +5224,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_1_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_1_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5254,7 +5254,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_2_4_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_2_4_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5292,7 +5292,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_19_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_19_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5340,7 +5340,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_4_4_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_4_4_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5378,7 +5378,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_5_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_5_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5404,7 +5404,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_6_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_6_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5430,7 +5430,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_7_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_7_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5456,7 +5456,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_8_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_8_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5490,7 +5490,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_9_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_9_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5529,7 +5529,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_11_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_11_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5581,7 +5581,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_11_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_11_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5612,7 +5612,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_12_5_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_12_5_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5648,7 +5648,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_13_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_13_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5674,7 +5674,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_14_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_14_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5702,7 +5702,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_15_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_15_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5730,7 +5730,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_start_33_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_start_33_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5756,7 +5756,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_start_34_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_start_34_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5782,7 +5782,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_start_37_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_start_37_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5808,7 +5808,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_start_38_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_start_38_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5834,7 +5834,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_start_40_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_start_40_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5860,7 +5860,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_start_39_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_start_39_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5886,7 +5886,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_0_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_0_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5909,7 +5909,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_0_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_0_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5932,7 +5932,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_0_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_0_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5962,7 +5962,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_0_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_0_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -5990,7 +5990,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_2_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_2_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6013,7 +6013,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_2_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_2_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6036,7 +6036,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_2_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_2_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6066,7 +6066,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_2_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_2_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6094,7 +6094,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6121,7 +6121,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6144,7 +6144,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6169,7 +6169,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_9_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_9_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6196,7 +6196,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_10_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_10_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6219,7 +6219,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_8_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_8_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6246,7 +6246,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_4_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_4_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6269,7 +6269,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_5_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_5_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6292,7 +6292,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_6_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_6_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6324,7 +6324,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_7_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_7_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6352,7 +6352,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6376,7 +6376,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_11_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_11_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6399,7 +6399,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_12_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_12_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6422,7 +6422,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_13_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_13_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6452,7 +6452,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_14_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_14_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6480,7 +6480,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_15_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_15_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6503,7 +6503,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_16_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_16_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6526,7 +6526,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_17_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_17_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6556,7 +6556,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_3_18_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_3_18_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6584,7 +6584,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_4_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_4_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6607,7 +6607,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_4_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_4_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6630,7 +6630,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_4_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_4_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6662,7 +6662,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_4_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_4_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6692,7 +6692,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_9_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_9_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6717,7 +6717,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_9_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_9_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6740,7 +6740,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_9_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_9_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6764,7 +6764,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6789,7 +6789,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6812,7 +6812,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6836,7 +6836,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_4_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_4_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6861,7 +6861,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_5_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_5_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6884,7 +6884,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6908,7 +6908,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_7_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_7_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6931,7 +6931,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_8_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_8_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6954,7 +6954,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_9_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_9_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -6986,7 +6986,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_10_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_10_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7014,7 +7014,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_10_6_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_10_6_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7038,7 +7038,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_11_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_11_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7063,7 +7063,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_11_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_11_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7086,7 +7086,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_12_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_12_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7109,7 +7109,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_12_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_12_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7132,7 +7132,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_12_3_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_12_3_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7164,7 +7164,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_12_4_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_12_4_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7192,7 +7192,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_12_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_12_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7216,7 +7216,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_14_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_14_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7239,7 +7239,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_14_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_14_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7271,7 +7271,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_14_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_14_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7299,7 +7299,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_15_0_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_15_0_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7322,7 +7322,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_15_1_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_15_1_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -7354,7 +7354,7 @@ namespace lang::data::parser {
 }
 
 namespace lang::data::parser {
-    __attribute__((noinline)) langcc::SymItem _parse_proc_15_2_0(langcc::ParserProcStatePtr st) {
+    [[noinlines]] langcc::SymItem _parse_proc_15_2_0(langcc::ParserProcStatePtr st) {
         langcc::Int ss_len = st->Ss_len_;
         langcc::Int sr_len = st->Sr_len_;
         langcc::Int sb_len = st->Sb_len_;
@@ -8889,7 +8889,7 @@ std::string lang::data::parser::attr_to_debug_string(langcc::ParserSymId sym, la
     }
 }
 
-inline __attribute__((always_inline)) langcc::Int lang::data::lexer::body::proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos) {
+[[always_inlines]] inline langcc::Int lang::data::lexer::body::proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos) {
     langcc::SymItemVec emit_dst_sub;
     bool read_eof = false;
     langcc::Int in_i = mode_start_pos;
@@ -8962,7 +8962,7 @@ inline __attribute__((always_inline)) langcc::Int lang::data::lexer::body::proc_
     }
 }
 
-inline __attribute__((always_inline)) langcc::Int lang::data::lexer::comment_single::proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos) {
+[[always_inlines]] inline langcc::Int lang::data::lexer::comment_single::proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos) {
     langcc::SymItemVec emit_dst_sub;
     langcc::Int in_i = mode_start_pos;
     langcc::Ptr<langcc::Ch> in_data = st->in_->data_.begin();

@@ -243,8 +243,7 @@ struct ParseOutput : enable_rc_from_this<ParseOutput<Node, FAcc, FStep>> {
                                                             ParseError_T err);
 };
 
-inline __attribute__((always_inline)) Ch lex_decode_utf8(const char *x, Int &i,
-                                                         Int n);
+[[always_inlines]] inline Ch lex_decode_utf8(const char *x, Int &i, Int n);
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 struct NodeAllocDecrefObj : NodeAllocDecrefInterface {
@@ -1038,7 +1037,7 @@ struct LexerState : enable_rc_from_this<LexerState> {
     throw this->in_->lex_error_val("Unexpected match history item", in_i);
   }
 
-  inline __attribute__((always_inline)) void
+  [[always_inlines]] inline void
   enqueue_emit_ext(Vec<SymItem> *dst, LexWhitespaceState *ws, TokenId tok,
                    Int tok_lo, Int tok_hi, bool has_contents) {
 
@@ -1300,19 +1299,19 @@ inline void lex_queue_pull_sub(LexerState *st, SymItemVec *dst, SymItemVec *src,
   src->clear();
 }
 
-inline __attribute__((always_inline)) void
-lexer_raise_nonempty_mode_stack(LexerState *st, Int in_i) {
+[[always_inlines]] inline void lexer_raise_nonempty_mode_stack(LexerState *st,
+                                                               Int in_i) {
 
   AX("Lexer definition error: nonempty mode stack at eof");
 }
 
-inline __attribute__((always_inline)) void
-lexer_raise_unexpected_eof(LexerState *st, Int in_i) {
+[[always_inlines]] inline void lexer_raise_unexpected_eof(LexerState *st,
+                                                          Int in_i) {
 
   throw st->in_->lex_error_val("Unexpected end-of-file", in_i);
 }
 
-inline __attribute__((always_inline)) DFALabelId
+[[always_inlines]] inline DFALabelId
 lexer_char_to_label(Ch *in_data, Int in_i, Int in_data_len,
                     DFALabelId *label_ids_ascii, LexerState *st) {
 
@@ -1339,7 +1338,7 @@ lexer_char_to_label(Ch *in_data, Int in_i, Int in_data_len,
   return cl;
 }
 
-inline __attribute__((always_inline)) void
+[[always_inlines]] inline void
 lexer_state_proc_update_pre(Int best_acc, Int best_tok, Int &tok_lo,
                             Int &tok_hi, Int &in_i, bool read_eof,
                             LexerState *st) {
@@ -1349,15 +1348,15 @@ lexer_state_proc_update_pre(Int best_acc, Int best_tok, Int &tok_lo,
   }
 }
 
-inline __attribute__((always_inline)) void
-lexer_state_eof_fail(Int &in_i, LexerState *st) {
+[[always_inlines]] inline void lexer_state_eof_fail(Int &in_i, LexerState *st) {
   throw st->in_->lex_error_val("Unexpected end-of-file", in_i);
 }
 
-inline __attribute__((always_inline)) Int
-lexer_proc_mode_loop(LexerModeDesc *mode, Ptr<langcc::LexerState> st,
-                     langcc::SymItemVec *emit_dst, Int mode_start_pos,
-                     Int mode_buf_pos) {
+[[always_inlines]] inline Int lexer_proc_mode_loop(LexerModeDesc *mode,
+                                                   Ptr<langcc::LexerState> st,
+                                                   langcc::SymItemVec *emit_dst,
+                                                   Int mode_start_pos,
+                                                   Int mode_buf_pos) {
 
   return mode->proc_mode_loop_opt_fn_(mode, st, emit_dst, mode_start_pos,
                                       mode_buf_pos);
@@ -1394,8 +1393,7 @@ inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T &input,
   return st->out_;
 }
 
-inline __attribute__((always_inline)) Ch lex_decode_utf8(const char *x, Int &i,
-                                                         Int n) {
+[[always_inlines]] inline Ch lex_decode_utf8(const char *x, Int &i, Int n) {
   char ch = x[i];
   Ch ch_full = 0;
   if ((ch & 0xe0) == 0xc0) {
@@ -1549,26 +1547,26 @@ struct ParserProcState {
   Gensym *unw_gen_;
   Arena *unw_arena_;
 
-  inline __attribute__((always_inline)) void destroy_arrays() {
+  [[always_inlines]] inline void destroy_arrays() {
     free_ext(this->Sv_addr_, this->unw_arena_);
     free_ext(this->Ss_addr_, this->unw_arena_);
     free_ext(this->Sr_addr_, this->unw_arena_);
     free_ext(this->Sb_addr_, this->unw_arena_);
   }
 
-  inline __attribute__((always_inline)) StrSlice fetch_token(Int tok_i) {
+  [[always_inlines]] inline StrSlice fetch_token(Int tok_i) {
     return lex_res_->fetch_token(tok_i);
   }
 
-  inline __attribute__((always_inline)) Gensym *gen() { return unw_gen_; }
+  [[always_inlines]] inline Gensym *gen() { return unw_gen_; }
 
-  inline __attribute__((always_inline)) Arena *arena() { return unw_arena_; }
+  [[always_inlines]] inline Arena *arena() { return unw_arena_; }
 
-  inline __attribute__((always_inline)) void enroll_final_sym(SymItem sym) {
+  [[always_inlines]] inline void enroll_final_sym(SymItem sym) {
     sym_final_ = sym;
   }
 
-  inline __attribute__((always_inline)) ParserProcXform *desc_proc_xform() {
+  [[always_inlines]] inline ParserProcXform *desc_proc_xform() {
     return desc_proc_xform_;
   }
 };
@@ -1609,7 +1607,7 @@ inline void pr(ostream &os, FmtFlags flags, ParserLookahead la) {
   fmt(os, "}}");
 }
 
-inline __attribute__((always_inline)) SymItem
+[[always_inlines]] inline SymItem
 parser_proc_sym_at(Int j, ParserDesc *desc_raw, SymItem *lex_out_items,
                    Int n_lex_out_items, const string &sym_target) {
 
@@ -1703,7 +1701,7 @@ ParseOutput<Node, FAcc, FStep>::make_error(LexOutput_T lex, ParseError_T err) {
 }
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
-inline __attribute__((always_inline)) ParseOutput_T<Node, FAcc, FStep>
+[[always_inlines]] inline ParseOutput_T<Node, FAcc, FStep>
 parse_error_output_here(string desc, Int st_i, LexOutput_T lex_) {
 
   auto in_i = st_i;
@@ -1716,8 +1714,8 @@ parse_error_output_here(string desc, Int st_i, LexOutput_T lex_) {
 }
 
 template <typename T>
-inline __attribute__((always_inline)) void
-parse_rt_check_realloc(T **addr, Int len, Int *cap, Arena *A) {
+[[always_inlines]] inline void parse_rt_check_realloc(T **addr, Int len,
+                                                      Int *cap, Arena *A) {
 
   Int cap_prev = *cap;
 
@@ -2189,12 +2187,12 @@ void pr_debug(std::ostream &os, langcc::FmtFlags flags,
 }
 
 namespace langcc::PrBufStream {
-__attribute__((always_inline)) langcc::PrBufStream_T
+[[always_inlines]] langcc::PrBufStream_T
 make(Vec_T<langcc::PrBufStreamItem_T> items);
 }
 
 namespace langcc::PrBufStream {
-__attribute__((always_inline)) langcc::PrBufStream_T
+[[always_inlines]] langcc::PrBufStream_T
 make_ext(ArenaPtr arena, Vec_T<langcc::PrBufStreamItem_T> items);
 }
 
@@ -2220,12 +2218,12 @@ void pr_debug(std::ostream &os, langcc::FmtFlags flags,
 }
 
 namespace langcc::PrBufStreamItem::String {
-__attribute__((always_inline)) langcc::PrBufStreamItem::String_T make(string x);
+[[always_inlines]] langcc::PrBufStreamItem::String_T make(string x);
 }
 
 namespace langcc::PrBufStreamItem::String {
-__attribute__((always_inline)) langcc::PrBufStreamItem::String_T
-make_ext(ArenaPtr arena, string x);
+[[always_inlines]] langcc::PrBufStreamItem::String_T make_ext(ArenaPtr arena,
+                                                              string x);
 }
 
 namespace langcc::PrBufStreamItem::String {
@@ -2244,12 +2242,11 @@ void pr_debug(std::ostream &os, langcc::FmtFlags flags,
 }
 
 namespace langcc::PrBufStreamItem::Newline {
-__attribute__((always_inline)) langcc::PrBufStreamItem::Newline_T make();
+[[always_inlines]] langcc::PrBufStreamItem::Newline_T make();
 }
 
 namespace langcc::PrBufStreamItem::Newline {
-__attribute__((always_inline)) langcc::PrBufStreamItem::Newline_T
-make_ext(ArenaPtr arena);
+[[always_inlines]] langcc::PrBufStreamItem::Newline_T make_ext(ArenaPtr arena);
 }
 
 namespace langcc::PrBufStreamItem::Newline {
@@ -2266,12 +2263,11 @@ void pr_debug(std::ostream &os, langcc::FmtFlags flags,
 }
 
 namespace langcc::PrBufStreamItem::Indent {
-__attribute__((always_inline)) langcc::PrBufStreamItem::Indent_T make();
+[[always_inlines]] langcc::PrBufStreamItem::Indent_T make();
 }
 
 namespace langcc::PrBufStreamItem::Indent {
-__attribute__((always_inline)) langcc::PrBufStreamItem::Indent_T
-make_ext(ArenaPtr arena);
+[[always_inlines]] langcc::PrBufStreamItem::Indent_T make_ext(ArenaPtr arena);
 }
 
 namespace langcc::PrBufStreamItem::Indent {
@@ -2288,12 +2284,11 @@ void pr_debug(std::ostream &os, langcc::FmtFlags flags,
 }
 
 namespace langcc::PrBufStreamItem::Dedent {
-__attribute__((always_inline)) langcc::PrBufStreamItem::Dedent_T make();
+[[always_inlines]] langcc::PrBufStreamItem::Dedent_T make();
 }
 
 namespace langcc::PrBufStreamItem::Dedent {
-__attribute__((always_inline)) langcc::PrBufStreamItem::Dedent_T
-make_ext(ArenaPtr arena);
+[[always_inlines]] langcc::PrBufStreamItem::Dedent_T make_ext(ArenaPtr arena);
 }
 
 namespace langcc::PrBufStreamItem::Dedent {
@@ -2393,14 +2388,14 @@ inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
 
 inline langcc::PrBufStream::_T::_T() {}
 
-inline __attribute__((always_inline)) langcc::PrBufStream_T
+[[always_inlines]] inline langcc::PrBufStream_T
 langcc::PrBufStream::make(Vec_T<langcc::PrBufStreamItem_T> items) {
   auto ret = make_rc<langcc::PrBufStream::_T>();
   ret->items_ = items;
   return ret;
 }
 
-inline __attribute__((always_inline)) langcc::PrBufStream_T
+[[always_inlines]] inline langcc::PrBufStream_T
 langcc::PrBufStream::make_ext(ArenaPtr arena,
                               Vec_T<langcc::PrBufStreamItem_T> items) {
   auto ret1 = make_rc_ext<langcc::PrBufStream::_T>(arena);
@@ -2438,14 +2433,14 @@ inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
 inline langcc::PrBufStreamItem::String::_T::_T()
     : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::String) {}
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::String_T
+[[always_inlines]] inline langcc::PrBufStreamItem::String_T
 langcc::PrBufStreamItem::String::make(std::string x) {
   auto ret = make_rc<langcc::PrBufStreamItem::String::_T>();
   ret->x_ = x;
   return ret;
 }
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::String_T
+[[always_inlines]] inline langcc::PrBufStreamItem::String_T
 langcc::PrBufStreamItem::String::make_ext(langcc::ArenaPtr arena,
                                           std::string x) {
   auto ret1 = make_rc_ext<langcc::PrBufStreamItem::String::_T>(arena);
@@ -2482,13 +2477,13 @@ inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
 inline langcc::PrBufStreamItem::Newline::_T::_T()
     : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::Newline) {}
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::Newline_T
+[[always_inlines]] inline langcc::PrBufStreamItem::Newline_T
 langcc::PrBufStreamItem::Newline::make() {
   auto ret = make_rc<langcc::PrBufStreamItem::Newline::_T>();
   return ret;
 }
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::Newline_T
+[[always_inlines]] inline langcc::PrBufStreamItem::Newline_T
 langcc::PrBufStreamItem::Newline::make_ext(langcc::ArenaPtr arena) {
   auto ret1 = make_rc_ext<langcc::PrBufStreamItem::Newline::_T>(arena);
   return ret1;
@@ -2514,13 +2509,13 @@ inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
 inline langcc::PrBufStreamItem::Indent::_T::_T()
     : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::Indent) {}
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::Indent_T
+[[always_inlines]] inline langcc::PrBufStreamItem::Indent_T
 langcc::PrBufStreamItem::Indent::make() {
   auto ret = make_rc<langcc::PrBufStreamItem::Indent::_T>();
   return ret;
 }
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::Indent_T
+[[always_inlines]] inline langcc::PrBufStreamItem::Indent_T
 langcc::PrBufStreamItem::Indent::make_ext(langcc::ArenaPtr arena) {
   auto ret1 = make_rc_ext<langcc::PrBufStreamItem::Indent::_T>(arena);
   return ret1;
@@ -2547,13 +2542,13 @@ inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
 inline langcc::PrBufStreamItem::Dedent::_T::_T()
     : langcc::PrBufStreamItem::_T(langcc::PrBufStreamItem::_W::Dedent) {}
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::Dedent_T
+[[always_inlines]] inline langcc::PrBufStreamItem::Dedent_T
 langcc::PrBufStreamItem::Dedent::make() {
   auto ret = make_rc<langcc::PrBufStreamItem::Dedent::_T>();
   return ret;
 }
 
-inline __attribute__((always_inline)) langcc::PrBufStreamItem::Dedent_T
+[[always_inlines]] inline langcc::PrBufStreamItem::Dedent_T
 langcc::PrBufStreamItem::Dedent::make_ext(langcc::ArenaPtr arena) {
   auto ret1 = make_rc_ext<langcc::PrBufStreamItem::Dedent::_T>(arena);
   return ret1;
@@ -2656,15 +2651,14 @@ namespace langcc {
 constexpr bool DECODE_EXPENSIVE_ASSERT = false;
 
 template <typename UNum>
-inline __attribute__((always_inline)) Int table_decode_offset(const UNum tt[],
-                                                              Int v) {
+[[always_inlines]] inline Int table_decode_offset(const UNum tt[], Int v) {
   auto b =
       *(reinterpret_cast<const u32 *>(tt) + v); // Note: assumes little-endian
   return b;
 }
 
 template <typename Num, typename UNum, typename Buf>
-inline __attribute__((always_inline)) pair<Int, Int>
+[[always_inlines]] inline pair<Int, Int>
 table_decode_r1_vec_pair(const UNum tt[], Int x, Buf z) {
 
   tt += 3;
@@ -2704,8 +2698,8 @@ table_decode_r1_vec_pair(const UNum tt[], Int x, Buf z) {
 }
 
 template <typename Num, typename UNum, typename Buf>
-inline __attribute__((always_inline)) Int
-table_decode_r2_vec(const UNum tt[], Int x, Int y, Buf z) {
+[[always_inlines]] inline Int table_decode_r2_vec(const UNum tt[], Int x, Int y,
+                                                  Buf z) {
 
   tt += 3;
   Int offset = table_decode_offset<UNum>(tt, x);
@@ -2769,8 +2763,7 @@ table_decode_r2_vec(const UNum tt[], Int x, Int y, Buf z) {
 }
 
 template <typename Num, typename UNum>
-inline __attribute__((always_inline)) Int table_decode_r2(const UNum tt[],
-                                                          Int x, Int y) {
+[[always_inlines]] inline Int table_decode_r2(const UNum tt[], Int x, Int y) {
   {
     Int n = tt[2];
     tt += 3;
@@ -2788,12 +2781,11 @@ inline __attribute__((always_inline)) Int table_decode_r2(const UNum tt[],
   return static_cast<Num>(tt[1]);
 }
 
-inline __attribute__((always_inline)) const u8 *
-table_u16_array_as_u8_array(const u16 *x) {
+[[always_inlines]] inline const u8 *table_u16_array_as_u8_array(const u16 *x) {
   return reinterpret_cast<const u8 *>(x);
 }
 
-inline __attribute__((always_inline)) const i16 *
+[[always_inlines]] inline const i16 *
 table_u16_array_as_i16_array(const u16 *x) {
   return reinterpret_cast<const i16 *>(x);
 }

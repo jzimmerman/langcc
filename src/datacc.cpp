@@ -1653,8 +1653,8 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     if (!is_sum) {
       auto mods = make_rc<Vec<cc::Node_T>>();
       if (header_mode == HeaderMode::Y) {
+        mods->push_back(ctx.cc_.qq("Mod", "[[always_inline]]"));
         mods->push_back(ctx.cc_.qq("Mod", "inline"));
-        mods->push_back(ctx.cc_.qq("Mod", "__attribute__((always_inline))"));
       }
 
       // make()
@@ -1834,8 +1834,8 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     if (!is_sum) {
       auto mods = make_rc<Vec<cc::Node_T>>();
       if (header_mode == HeaderMode::Y) {
+        mods->push_back(ctx.cc_.qq("Mod", "[[always_inline]]"));
         mods->push_back(ctx.cc_.qq("Mod", "inline"));
-        mods->push_back(ctx.cc_.qq("Mod", "__attribute__((always_inline))"));
       }
 
       // make()
@@ -1927,8 +1927,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
             cpp_template_params->length() > 0,
             ctx.cc_
                 .gen_cpp_fun_body(
-                    cpp_template_params, NodeV_empty(),
-                    mods,
+                    cpp_template_params, NodeV_empty(), mods,
                     Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
                     lower_name_cpp(
                         LowerTy::SUM_AS_FULL, name_full, ctx,
@@ -1944,8 +1943,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
             cpp_template_params->length() > 0,
             ctx.cc_
                 .gen_cpp_fun_body(
-                    cpp_template_params, NodeV_empty(),
-                    mods,
+                    cpp_template_params, NodeV_empty(), mods,
                     Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
                     lower_name_cpp(
                         LowerTy::SUM_AS_FULL, name_full, ctx,

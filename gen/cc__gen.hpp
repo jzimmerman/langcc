@@ -11,9 +11,9 @@ namespace lang::cc::lexer {
 namespace lang::cc::lexer::body {
     langcc::DFAVertexId step(langcc::DFAVertexId v, langcc::DFALabelId lbl);
 
-    inline __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v);
+    [[always_inlines]] inline langcc::DFAActionWithToken acc(langcc::DFAVertexId v);
 
-    inline __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi);
+    [[always_inlines]] inline langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi);
 
     langcc::Int proc_mode_loop(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos);
 }
@@ -21,9 +21,9 @@ namespace lang::cc::lexer::body {
 namespace lang::cc::lexer::comment_single {
     langcc::DFAVertexId step(langcc::DFAVertexId v, langcc::DFALabelId lbl);
 
-    inline __attribute__((always_inline)) langcc::DFAActionWithToken acc(langcc::DFAVertexId v);
+    [[always_inlines]] inline langcc::DFAActionWithToken acc(langcc::DFAVertexId v);
 
-    inline __attribute__((always_inline)) langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi);
+    [[always_inlines]] inline langcc::IntPair step_exec(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Ptr<langcc::LexWhitespaceState> ws_state, langcc::DFAActionId acc, langcc::TokenId tok, langcc::Int& in_i, langcc::Int& tok_lo, langcc::Int& tok_hi);
 
     langcc::Int proc_mode_loop(langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos);
 }
@@ -6620,9 +6620,9 @@ namespace lang::cc {
 }
 
 namespace lang::cc::lexer::body {
-    inline __attribute__((always_inline)) langcc::Int proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos);
+    [[always_inlines]] inline langcc::Int proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos);
 }
 
 namespace lang::cc::lexer::comment_single {
-    inline __attribute__((always_inline)) langcc::Int proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos);
+    [[always_inlines]] inline langcc::Int proc_mode_loop_opt(langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st, langcc::Ptr<langcc::SymItemVec> emit_dst, langcc::Int mode_start_pos, langcc::Int mode_buf_pos);
 }

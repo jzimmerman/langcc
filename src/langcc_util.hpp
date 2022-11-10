@@ -33,12 +33,17 @@
 #include <signal.h>
 #endif
 
-#define UNW_LOCAL_ONLY
-
 #include <fcntl.h>
 #include <sys/types.h>
+#ifdef WIN32
+#define always_inlines msvc::forceinline
+#define noinlines msvc::noinline
+#else
+#define always_inlines gnu::always_inline
+#define noinlines gnu::noinline
 #include <sys/wait.h>
 #include <unistd.h>
+#endif
 
 namespace langcc {
 
@@ -107,9 +112,9 @@ template <typename... Ts> inline void AT(bool cond, const string &s, Ts... ts);
 inline void AT(bool cond);
 
 template <typename... Ts>
-__attribute__((noreturn)) inline void AX(const string &s, Ts... ts);
+[[noreturn]] inline void AX(const string &s, Ts... ts);
 
-__attribute__((noreturn)) inline void AX();
+[[noreturn]] inline void AX();
 
 template <typename T, typename U> inline void AR_eq(T t, U u);
 
@@ -333,8 +338,7 @@ template <typename T, typename... Ts> T *make_rc_inc(Ts... args) {
   return ret_ptr;
 }
 
-template <typename T>
-inline __attribute__((always_inline)) void rc_ptr<T>::incref() const {
+template <typename T> [[always_inlines]] inline void rc_ptr<T>::incref() const {
   if (__builtin_expect(!!rc_, 0)) {
     if (__builtin_expect(!!v_, 1)) {
       rc_->fetch_add(1);
@@ -342,8 +346,7 @@ inline __attribute__((always_inline)) void rc_ptr<T>::incref() const {
   }
 }
 
-template <typename T>
-inline __attribute__((always_inline)) void rc_ptr<T>::decref() {
+template <typename T> [[always_inlines]] inline void rc_ptr<T>::decref() {
   if (__builtin_expect(!!rc_, 0)) {
     if (__builtin_expect(!!v_, 1)) {
       Int rc_new = rc_->fetch_sub(1) - 1;
@@ -1196,12 +1199,12 @@ inline void AT(bool cond) {
 }
 
 template <typename... Ts>
-__attribute__((noreturn)) inline void AX(const string &s, Ts... ts) {
+[[noreturn]] inline void AX(const string &s, Ts... ts) {
   AT(false, s, ts...);
   throw std::runtime_error("Assertion failed");
 }
 
-__attribute__((noreturn)) inline void AX() {
+[[noreturn]] inline void AX() {
   AT(false);
   throw std::runtime_error("Assertion failed");
 }
@@ -1247,10 +1250,10 @@ inline void check_range(Int i, Int n) {
   AR_lt(i, n);
 }
 
-inline void __attribute((noreturn)) todo() { AX("Not yet implemented"); }
+[[noreturn]] inline void todo() { AX("Not yet implemented"); }
 
 template <typename... Ts>
-inline void __attribute((noreturn)) todo(string msg, const Ts &...ts) {
+[[noreturn]] inline void todo(string msg, const Ts &...ts) {
   AX("Not yet implemented: " + msg, ts...);
 }
 
@@ -1466,7 +1469,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
     return ret;
   }
 
-  inline __attribute__((always_inline)) void reserve_unchecked(Int cap_new) {
+  [[always_inlines]] inline void reserve_unchecked(Int cap_new) {
     auto addr_old = this->alloc_addr();
     auto addr_new = reinterpret_cast<T *>(malloc_ext(cap_new * sizeof(T), A_));
 
@@ -1484,8 +1487,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
     end_ = end_new;
   }
 
-  __attribute__((always_inline)) inline void
-  adjust_len_inplace_unchecked(Int len_new) {
+  [[always_inlines]] inline void adjust_len_inplace_unchecked(Int len_new) {
     end_ = begin_ + len_new;
     len_ = len_new;
   }
@@ -1857,7 +1859,7 @@ struct Arena : enable_rc_from_this<Arena> {
   }
 
   template <typename T, typename... Ts>
-  __attribute__((always_inline)) rc_ptr<T> make_new(Ts... args) {
+  [[always_inlines]] rc_ptr<T> make_new(Ts... args) {
     auto new_addr = this->alloc(sizeof(T));
     new (new_addr) T(args...);
     rc_ptr<T> ret;
@@ -1871,8 +1873,7 @@ struct Arena : enable_rc_from_this<Arena> {
 using ArenaPtr = Arena *;
 
 template <typename T, typename... Ts>
-inline __attribute__((always_inline)) rc_ptr<T> make_rc_ext(Arena *A,
-                                                            Ts... args) {
+[[always_inlines]] inline rc_ptr<T> make_rc_ext(Arena *A, Ts... args) {
   if (__builtin_expect(!!A, 1)) {
     return A->make_new<T>(args...);
   } else {
@@ -1881,7 +1882,7 @@ inline __attribute__((always_inline)) rc_ptr<T> make_rc_ext(Arena *A,
 }
 
 template <typename T, typename... Ts>
-inline __attribute__((always_inline)) T *make_rc_inc_ext(Arena *A, Ts... args) {
+[[always_inlines]] inline T *make_rc_inc_ext(Arena *A, Ts... args) {
   if (__builtin_expect(!!A, 1)) {
     return reinterpret_cast<T *>(A->make_new<T>(args...).v_);
   }
