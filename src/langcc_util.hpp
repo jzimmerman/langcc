@@ -35,10 +35,9 @@
 
 #define UNW_LOCAL_ONLY
 
-#include <dlfcn.h>
 #include <fcntl.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+// #include <sys/types.h>
+// #include <sys/wait.h>
 #include <unistd.h>
 
 namespace langcc {
@@ -272,7 +271,7 @@ struct enable_rc_from_this_poly : _enable_rc_from_this {
   template <typename U> rc_ptr<U> rc_from_this_poly() {
     return rc_ptr<U>::from_contents(_rc_contents_v_, _rc_contents_rc_);
   }
-  
+
   template <typename U> const rc_ptr<U> rc_from_this_poly() const {
     return rc_ptr<U>::from_contents(_rc_contents_v_, _rc_contents_rc_);
   }
