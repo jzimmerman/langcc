@@ -38,11 +38,225 @@
 #ifdef WIN32
 #define always_inlines msvc::forceinline
 #define noinlines msvc::noinline
+#define __builtin_expect(expr, x) (expr)
 #else
 #define always_inlines gnu::always_inline
 #define noinlines gnu::noinline
 #include <sys/wait.h>
 #include <unistd.h>
+#endif
+
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <assert.h>
+#include <errno.h>
+#include <io.h>
+#include <process.h> /* for _cwait, WAIT_CHILD */
+#include <stdio.h>
+#include <stdlib.h>
+#include <winnt.h>
+#include <winternl.h>
+#undef OPTIONAL
+
+#define STDIN_FILENO _fileno(stdin)
+#define STDOUT_FILENO _fileno(stdout)
+#define STDERR_FILENO _fileno(stderr)
+
+typedef struct _SECTION_IMAGE_INFORMATION {
+  PVOID EntryPoint;
+  ULONG StackZeroBits;
+  ULONG StackReserved;
+  ULONG StackCommit;
+  ULONG ImageSubsystem;
+  WORD SubSystemVersionLow;
+  WORD SubSystemVersionHigh;
+  ULONG Unknown1;
+  ULONG ImageCharacteristics;
+  ULONG ImageMachineType;
+  ULONG Unknown2[3];
+} SECTION_IMAGE_INFORMATION, *PSECTION_IMAGE_INFORMATION;
+
+typedef struct _RTL_USER_PROCESS_INFORMATION {
+  ULONG Size;
+  HANDLE Process;
+  HANDLE Thread;
+  CLIENT_ID ClientId;
+  SECTION_IMAGE_INFORMATION ImageInformation;
+} RTL_USER_PROCESS_INFORMATION, *PRTL_USER_PROCESS_INFORMATION;
+
+#define RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED 0x00000001
+#define RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES 0x00000002
+#define RTL_CLONE_PROCESS_FLAGS_NO_SYNCHRONIZE 0x00000004
+
+#define RTL_CLONE_PARENT 0
+#define RTL_CLONE_CHILD 297
+
+typedef intptr_t pid_t;
+typedef NTSTATUS (*RtlCloneUserProcess_f)(
+    ULONG ProcessFlags,
+    PSECURITY_DESCRIPTOR ProcessSecurityDescriptor /* optional */,
+    PSECURITY_DESCRIPTOR ThreadSecurityDescriptor /* optional */,
+    HANDLE DebugPort /* optional */,
+    PRTL_USER_PROCESS_INFORMATION ProcessInformation);
+
+[[always_inlines]] inline pid_t fork(void) {
+  HMODULE mod;
+  RtlCloneUserProcess_f clone_p;
+  RTL_USER_PROCESS_INFORMATION process_info;
+  NTSTATUS result;
+
+  mod = GetModuleHandle("ntdll.dll");
+  if (!mod)
+    return -ENOSYS;
+
+  clone_p = (RtlCloneUserProcess_f)GetProcAddress(mod, "RtlCloneUserProcess");
+  if (clone_p == NULL)
+    return -ENOSYS;
+
+  /* lets do this */
+  result = clone_p(RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED |
+                       RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES,
+                   NULL, NULL, NULL, &process_info);
+
+  if (result == RTL_CLONE_PARENT) {
+    HANDLE me, hp, ht, hcp = 0;
+    DWORD pi, ti;
+    me = GetCurrentProcess();
+    pi = (DWORD)process_info.ClientId.UniqueProcess;
+    ti = (DWORD)process_info.ClientId.UniqueThread;
+
+    assert(hp = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pi));
+    assert(ht = OpenThread(THREAD_ALL_ACCESS, FALSE, ti));
+
+    ResumeThread(ht);
+    CloseHandle(ht);
+    CloseHandle(hp);
+    return (pid_t)pi;
+  } else if (result == RTL_CLONE_CHILD) {
+    /* fix stdio */
+    AllocConsole();
+    return 0;
+  } else
+    return -1;
+
+  /* NOTREACHED */
+  return -1;
+}
+#define SIGKILL 0
+#define SIGQUIT 0
+[[always_inlines]] inline int kill(pid_t pid, int sig) {
+  const auto process = OpenProcess(PROCESS_TERMINATE, false, pid);
+  TerminateProcess(process, 1);
+  CloseHandle(process);
+  return 0;
+}
+[[always_inlines]] inline void usleep(__int64 usec) {
+  HANDLE timer;
+  LARGE_INTEGER ft;
+
+  ft.QuadPart = -(10 * usec); // Convert to 100 nanosecond interval, negative
+                              // value indicates relative time
+
+  timer = CreateWaitableTimer(NULL, TRUE, NULL);
+  SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+  WaitForSingleObject(timer, INFINITE);
+  CloseHandle(timer);
+}
+
+// kill
+#define WNOHANG WAIT_CHILD
+[[always_inlines]] inline pid_t waitpid(pid_t pid, int *statusp, int options) {
+  return _cwait(statusp, pid, options);
+}
+
+/* Generate a temporary file name based on TMPL.  TMPL must match the
+   rules for mk[s]temp (i.e. end in "XXXXXX").  The name constructed
+   does not exist at the time of the call to mkstemp.  TMPL is
+   overwritten with the result.  */
+[[always_inlines]] inline int mkstemps(char *tmpl, int suffix_len) {
+  static const char letters[] =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+  int len;
+  char *XXXXXX;
+  static unsigned long long value;
+  unsigned long long random_time_bits;
+  unsigned int count;
+  int fd = -1;
+  int save_errno = errno;
+
+  /* A lower bound on the number of temporary files to attempt to
+     generate.  The maximum total number of temporary file names that
+     can exist for a given template is 62**6.  It should never be
+     necessary to try all these combinations.  Instead if a reasonable
+     number of names is tried (we define reasonable as 62**3) fail to
+     give the system administrator the chance to remove the problems.  */
+#define ATTEMPTS_MIN (62 * 62 * 62)
+
+  /* The number of times to attempt to generate a temporary file.  To
+     conform to POSIX, this must be no smaller than TMP_MAX.  */
+#if ATTEMPTS_MIN < TMP_MAX
+  unsigned int attempts = TMP_MAX;
+#else
+  unsigned int attempts = ATTEMPTS_MIN;
+#endif
+
+  len = strlen(tmpl);
+  if (len < 6 + suffix_len || strcmp(&tmpl[len - 6 - suffix_len], "XXXXXX")) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  /* This is where the Xs start.  */
+  XXXXXX = &tmpl[len - 6 - suffix_len];
+
+  /* Get some more or less random data.  */
+  {
+    SYSTEMTIME stNow;
+    FILETIME ftNow;
+
+    // get system time
+    GetSystemTime(&stNow);
+    stNow.wMilliseconds = 500;
+    if (!SystemTimeToFileTime(&stNow, &ftNow)) {
+      errno = -1;
+      return -1;
+    }
+
+    random_time_bits = (((unsigned long long)ftNow.dwHighDateTime << 32) |
+                        (unsigned long long)ftNow.dwLowDateTime);
+  }
+  value += random_time_bits ^ (unsigned long long)GetCurrentThreadId();
+
+  for (count = 0; count < attempts; value += 7777, ++count) {
+    unsigned long long v = value;
+
+    /* Fill in the random bits.  */
+    XXXXXX[0] = letters[v % 62];
+    v /= 62;
+    XXXXXX[1] = letters[v % 62];
+    v /= 62;
+    XXXXXX[2] = letters[v % 62];
+    v /= 62;
+    XXXXXX[3] = letters[v % 62];
+    v /= 62;
+    XXXXXX[4] = letters[v % 62];
+    v /= 62;
+    XXXXXX[5] = letters[v % 62];
+
+    fd = open(tmpl, O_RDWR | O_CREAT | O_EXCL, _S_IREAD | _S_IWRITE);
+    if (fd >= 0) {
+      errno = save_errno;
+      return fd;
+    } else if (errno != EEXIST)
+      return -1;
+  }
+
+  /* We got out of the loop because we ran out of combinations to try.  */
+  errno = EEXIST;
+  return -1;
+}
 #endif
 
 namespace langcc {
@@ -2559,7 +2773,9 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
   inline void insert(const K &k, const V &v) {
     auto hk = val_hash(k);
     auto n = vs_.length();
-    vs_.push(make_pair<K, V>(K(k), V(v)));
+    auto k2 = K(k);
+    auto v2 = V(v);
+    vs_.push(make_pair<K, V>(move(k2), move(v2)));
     live_.push(true);
     if (m_.find(hk) != m_.end()) {
       auto i = m_[hk];
