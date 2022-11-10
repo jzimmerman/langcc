@@ -56,9 +56,11 @@ add_executable(langcc
 
 # Unittests:
 add_executable(unittest_lib
+  EXCLUDE_FROM_ALL
   ${CMAKE_CURRENT_SOURCE_DIR}/src/unittest_lib_main.cpp
 )
 add_executable(unittest_lang
+  EXCLUDE_FROM_ALL
   ${CMAKE_CURRENT_SOURCE_DIR}/src/unittest_lang_main.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_lexer.cpp
@@ -84,10 +86,12 @@ add_custom_command(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 add_executable(go_standalone_test
+  EXCLUDE_FROM_ALL
   ${CMAKE_CURRENT_SOURCE_DIR}/src/go_standalone_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/go__gen.cpp
 )
 add_executable(go_standalone_bidir_test
+  EXCLUDE_FROM_ALL
   ${CMAKE_CURRENT_SOURCE_DIR}/src/go_standalone_bidir_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/go__gen.cpp
 )
@@ -100,10 +104,12 @@ add_custom_command(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 add_executable(py_standalone_test
+  EXCLUDE_FROM_ALL
   ${CMAKE_CURRENT_SOURCE_DIR}/src/py_standalone_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/py__gen.cpp
 )
 add_executable(py_standalone_bidir_test
+  EXCLUDE_FROM_ALL
   ${CMAKE_CURRENT_SOURCE_DIR}/src/py_standalone_bidir_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/py__gen.cpp
 )
