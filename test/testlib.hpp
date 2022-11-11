@@ -170,7 +170,7 @@ inline bool run_unit_tests() {
   Time monitor_start = now();
   Time timeout = 1800L * G_;
 
-  while (test_dispatch_i < ts.size() || get_unit_tests_running().size() > 0) {
+  while (test_dispatch_i < ts.size() || !get_unit_tests_running().empty()) {
     if (test_dispatch_i < ts.size()) {
       while (test_dispatch_i < ts.size() &&
              get_unit_tests_running().size() < unit_tests_max_concurrent) {
@@ -231,8 +231,8 @@ inline bool run_unit_tests() {
   }
 
   if (!res_fail.empty()) {
-    LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n", Int(res_succ.size()),
-        Int(res_fail.size()));
+    LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n",
+        static_cast<Int>(res_succ.size()), static_cast<Int>(res_fail.size()));
     for (const auto &name : res_fail) {
       const auto &test = get_unit_tests_terminated().at(name);
       LOG(1, " ===== Failure({}): {}\n", test.ret_desc(), test.desc_.name_);
@@ -245,8 +245,8 @@ inline bool run_unit_tests() {
     }
   }
 
-  LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n", Int(res_succ.size()),
-      Int(res_fail.size()));
+  LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n",
+      static_cast<Int>(res_succ.size()), static_cast<Int>(res_fail.size()));
 
   if (!res_fail.empty()) {
     LOG(0, "Succeeded:");

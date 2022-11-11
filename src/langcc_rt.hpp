@@ -2171,10 +2171,10 @@ struct _T : hash_obj, enable_rc_from_this_poly {
   langcc::PrBufStreamItem::_W w_;
   virtual ~_T();
   _T(langcc::PrBufStreamItem::_W w);
-  bool is_String();
-  bool is_Newline();
-  bool is_Indent();
-  bool is_Dedent();
+  bool is_String() const;
+  bool is_Newline() const;
+  bool is_Indent() const;
+  bool is_Dedent() const;
   langcc::PrBufStreamItem::String_T as_String();
   langcc::PrBufStreamItem::Newline_T as_Newline();
   langcc::PrBufStreamItem::Indent_T as_Indent();
@@ -2334,19 +2334,19 @@ inline langcc::PrBufStreamItem::_T::_T(langcc::PrBufStreamItem::_W w) {
   w_ = w;
 }
 
-inline bool langcc::PrBufStreamItem::_T::is_String() {
+inline bool langcc::PrBufStreamItem::_T::is_String() const {
   return w_ == langcc::PrBufStreamItem::_W::String;
 }
 
-inline bool langcc::PrBufStreamItem::_T::is_Newline() {
+inline bool langcc::PrBufStreamItem::_T::is_Newline() const {
   return w_ == langcc::PrBufStreamItem::_W::Newline;
 }
 
-inline bool langcc::PrBufStreamItem::_T::is_Indent() {
+inline bool langcc::PrBufStreamItem::_T::is_Indent() const {
   return w_ == langcc::PrBufStreamItem::_W::Indent;
 }
 
-inline bool langcc::PrBufStreamItem::_T::is_Dedent() {
+inline bool langcc::PrBufStreamItem::_T::is_Dedent() const {
   return w_ == langcc::PrBufStreamItem::_W::Dedent;
 }
 

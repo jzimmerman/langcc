@@ -708,7 +708,7 @@ xform_parse_expr_normalize(meta::Node::ParseExpr_T e,
     } else if (e->is_Alt()) {
       auto cc = e->as_Alt();
       auto ys = make_rc<Vec<ParseExpr_T>>();
-      for (auto x : *cc->xs_) {
+      for (const auto &x : *cc->xs_) {
         ys->push_back(xform_parse_expr_normalize(x, dst_props, gen,
                                                  parser_aliases_by_ident, ctx));
       }
@@ -719,7 +719,7 @@ xform_parse_expr_normalize(meta::Node::ParseExpr_T e,
     } else if (e->is_Concat()) {
       auto cc = e->as_Concat();
       auto ys = make_rc<Vec<ParseExpr_T>>();
-      for (auto x : *cc->xs_) {
+      for (const auto &x : *cc->xs_) {
         ys->push_back(xform_parse_expr_normalize(x, dst_props, gen,
                                                  parser_aliases_by_ident, ctx));
       }
@@ -852,7 +852,7 @@ meta::Node::Lang_T xform_lang_normalize(Gensym_T gen,
             auto curr = S->back();
             bool pushed = false;
             if (m_alias_refs->contains_key(curr)) {
-              for (auto next : *m_alias_refs->operator[](curr)) {
+              for (const auto &next : *m_alias_refs->operator[](curr)) {
                 if (S_set->contains(next)) {
                   ctx.error(rule, fmt_str("Parser alias cycle on {} -> {} {}",
                                           next, next, m_alias_refs));

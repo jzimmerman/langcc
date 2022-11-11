@@ -10,18 +10,21 @@
 namespace langcc {
 
 LangCompileResult_T compile_lang(lang::meta::Node_T src, Int k,
-                                 Gensym_T gen_meta, std::string src_base_name,
-                                 std::string dst_path, HeaderMode header_mode);
+                                 Gensym_T gen_meta,
+                                 const std::string &src_base_name,
+                                 const std::string &dst_path,
+                                 HeaderMode header_mode);
 
-LangCompileResult_T compile_lang_path(std::string src_path,
-                                      std::string dst_path, Option_T<Int> k,
+LangCompileResult_T compile_lang_path(const std::string &src_path,
+                                      const std::string &dst_path,
+                                      Option_T<Int> k, HeaderMode header_mode);
+
+LangCompileResult_T compile_lang_full(const std::string &src_path,
+                                      const std::string &dst_path,
+                                      RunTests run_tests,
                                       HeaderMode header_mode);
 
-LangCompileResult_T compile_lang_full(std::string src_path,
-                                      std::string dst_path, RunTests run_tests,
-                                      HeaderMode header_mode);
-
-bool test_lang(std::string test_name);
-void test_lang_toplevel(std::string test_name);
+bool test_lang(const std::string &test_name);
+void test_lang_toplevel(const std::string &test_name);
 
 } // namespace langcc
