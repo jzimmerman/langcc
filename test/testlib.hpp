@@ -8,18 +8,6 @@
 
 #include "langcc_util.hpp"
 
-#ifdef WIN32
-#define OPTIONAL
-#include <errno.h>
-#include <process.h> /* for _cwait, WAIT_CHILD */
-#include <stdio.h>
-#include <stdlib.h>
-#include <winnt.h>
-#include <winternl.h>
-#undef OPTIONAL
-
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 // Unit testing
 ////////////////////////////////////////////////////////////////////////////////
@@ -187,7 +175,7 @@ inline bool run_unit_tests() {
              get_unit_tests_running().size() < unit_tests_max_concurrent) {
         dispatch_unit_test(ts[test_dispatch_i]);
         ++test_dispatch_i;
-        usleep(1000);
+        std::this_thread::sleep_for(std::chrono::microseconds(1000));
       }
     }
 
@@ -227,7 +215,7 @@ inline bool run_unit_tests() {
       get_unit_tests_running().clear();
       break;
     }
-    usleep(1000);
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
   }
 
   set<string> res_succ;
