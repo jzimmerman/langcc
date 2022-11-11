@@ -9,8 +9,8 @@ int main(int argc, char **argv) {
   global_init();
   set_log_level(0);
 
-  auto args = make_rc<Vec<string>>();
-  auto params = make_rc<Vec<string>>();
+  auto args = make_rc<Vec<std::string>>();
+  auto params = make_rc<Vec<std::string>>();
   for (Int i = 1; i < argc; i++) {
     if (str_starts_with(argv[i], "-")) {
       params->push(argv[i]);
@@ -49,8 +49,8 @@ int main(int argc, char **argv) {
   }
   set_log_level(log_level);
 
-  string src_path = args->operator[](0);
-  string dst_path = args->operator[](1);
+  std::string src_path = args->operator[](0);
+  std::string dst_path = args->operator[](1);
 
   auto stat = compile_lang_full(src_path, dst_path, tests_mode, header_mode);
   if (stat->is_Error()) {

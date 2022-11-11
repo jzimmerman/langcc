@@ -13,14 +13,14 @@ enum struct HeaderMode {
   Y,
 };
 
-inline void pr(ostream &os, FmtFlags flags, lang::cc::Node_T x) {
+inline void pr(std::ostream &os, FmtFlags flags, lang::cc::Node_T x) {
   x->write(os, flags);
 }
 
-using IdBase = string;
+using IdBase = std::string;
 using GenName = Vec_T<IdBase>;
 
-inline GenName name_lit(const vector<string> &init) {
+inline GenName name_lit(const std::vector<std::string> &init) {
   auto ret = make_rc<Vec<IdBase>>();
   for (const auto &x : init) {
     ret->push(x);
@@ -32,11 +32,11 @@ inline GenName name_ns_cons(const GenName &ns, const IdBase &name_base) {
   return ns->clone_rc()->with_append_rc(name_base);
 }
 
-inline pair<GenName, IdBase> name_ns_decons(const GenName &name) {
+inline std::pair<GenName, IdBase> name_ns_decons(const GenName &name) {
   AT(name->length() > 0);
   auto ret_ns = name->slice(0, name->length() - 1);
   auto ret_base = (*name)[name->length() - 1];
-  return make_pair(ret_ns, ret_base);
+  return std::make_pair(ret_ns, ret_base);
 }
 
 using NodeR = const cc::Node_T &;
@@ -60,7 +60,7 @@ struct CppGenContext {
 
   Set<GenName> all_gen_names_env_;
 
-  inline IdBase gen_id_fresh(GenName ns, string id_hint) {
+  inline IdBase gen_id_fresh(GenName ns, std::string id_hint) {
     auto ret = id_hint;
     Int c = 0;
     while (all_gen_names_env_.contains(ns->with_append_rc(ret))) {
@@ -97,7 +97,7 @@ struct CppGenContext {
 
   template <typename Ret, typename... Args>
   inline cc::Node_T gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, GenName ns,
-                                          Ret ret_ty, string name_hint,
+                                          Ret ret_ty, std::string name_hint,
                                           const Args &...init_args);
 
   inline void gen_cpp_fun_proto_acc(LexOutput_T &dst, NodeV mods, NodeRM ret,
@@ -120,7 +120,8 @@ struct CppGenContext {
 
   template <typename Ty>
   inline cc::Node_T gen_cpp_param_acc(Vec_T<cc::Node_T> &dst, const GenName &ns,
-                                      const Ty &type, const string &name_hint);
+                                      const Ty &type,
+                                      const std::string &name_hint);
 
   inline cc::Node_T gen_cpp_decl_ns_wrap(GenName decl_ns, NodeR decl);
 
@@ -135,16 +136,16 @@ struct CppGenContext {
   }
 
   template <typename... Ts> inline cc::Node_T qq_expr(const Ts &...args) {
-    return Q_->qq_ext(Some<string>("Expr"), args...);
+    return Q_->qq_ext(Some<std::string>("Expr"), args...);
   }
 
   template <typename... Ts>
   inline cc::Node_T qq_switch_case(const Ts &...args) {
-    return Q_->qq_ext(Some<string>("SwitchCase"), args...);
+    return Q_->qq_ext(Some<std::string>("SwitchCase"), args...);
   }
 
   template <typename... Ts> inline cc::Node_T qq_stmt(const Ts &...args) {
-    return Q_->qq_ext(Some<string>("Stmt"), args...);
+    return Q_->qq_ext(Some<std::string>("Stmt"), args...);
   }
 
   template <typename... Ts>
@@ -162,7 +163,7 @@ struct CppGenContext {
     }
   }
 
-  inline pair<Option_T<lang::cc::Node_T>, Option_T<lang::cc::Node_T>>
+  inline std::pair<Option_T<lang::cc::Node_T>, Option_T<lang::cc::Node_T>>
   extract_mods(HeaderMode header_mode) {
 
     if (header_mode == HeaderMode::Y) {
@@ -172,23 +173,23 @@ struct CppGenContext {
       dst_all->extend(dst_defs_);
       if (dst_all->length() > 0) {
         hpp_mod = Some<lang::cc::Node_T>(
-            Q_->qq_ext(Some<string>("Module"), *dst_all));
+            Q_->qq_ext(Some<std::string>("Module"), *dst_all));
       }
       auto cpp_mod = None<lang::cc::Node_T>();
-      return make_pair(hpp_mod, cpp_mod);
+      return std::make_pair(hpp_mod, cpp_mod);
 
     } else {
       auto hpp_mod = None<lang::cc::Node_T>();
       if (dst_decls_->length() > 0) {
         hpp_mod = Some<lang::cc::Node_T>(
-            Q_->qq_ext(Some<string>("Module"), *dst_decls_));
+            Q_->qq_ext(Some<std::string>("Module"), *dst_decls_));
       }
       auto cpp_mod = None<lang::cc::Node_T>();
       if (dst_defs_->length() > 0) {
         cpp_mod = Some<lang::cc::Node_T>(
-            Q_->qq_ext(Some<string>("Module"), *dst_defs_));
+            Q_->qq_ext(Some<std::string>("Module"), *dst_defs_));
       }
-      return make_pair(hpp_mod, cpp_mod);
+      return std::make_pair(hpp_mod, cpp_mod);
     }
   }
 };
@@ -196,16 +197,16 @@ struct CppGenContext {
 inline cc::Node::Expr_T name_to_cpp_direct(const GenName &name,
                                            CppGenContext &ctx) {
   AT(name->length() > 0);
-  auto ret = ctx.Q_->qq_ext(Some<string>("Expr"), (*name)[0]);
+  auto ret = ctx.Q_->qq_ext(Some<std::string>("Expr"), (*name)[0]);
 
   for (Int i = 1; i < name->length(); i++) {
-    ret = ctx.Q_->qq_ext(Some<string>("Expr"), ret, "::", (*name)[i]);
+    ret = ctx.Q_->qq_ext(Some<std::string>("Expr"), ret, "::", (*name)[i]);
   }
   return ret->as_Expr();
 }
 
 inline cc::Node_T cpp_name_with_append(CppGenContext &ctx, cc::Node_T node,
-                                       string name) {
+                                       std::string name) {
   return ctx.Q_->qq("Expr", node, "::", name);
 }
 
@@ -239,7 +240,7 @@ CppGenContext::gen_cpp_decl_struct(GenName decl_name, NodeV cpp_fields,
   }
   Q_->qq_args_acc(lex_args, "};");
 
-  auto decl = Q_->qq_inner(Some<string>("Decl"), lex_args);
+  auto decl = Q_->qq_inner(Some<std::string>("Decl"), lex_args);
   return this->gen_cpp_decl_ns_wrap(decl_ns, decl);
 }
 
@@ -251,7 +252,7 @@ CppGenContext::gen_cpp_decl_struct_fwd(GenName decl_name,
   auto lex_args = Q_->make_lex_builder();
   this->gen_cpp_template_params_acc(lex_args, cpp_template_params);
   Q_->qq_args_acc(lex_args, "struct", decl_name_base, ";");
-  auto decl = Q_->qq_inner(Some<string>("Decl"), lex_args);
+  auto decl = Q_->qq_inner(Some<std::string>("Decl"), lex_args);
   return this->gen_cpp_decl_ns_wrap(decl_ns, decl);
 }
 
@@ -264,7 +265,7 @@ inline cc::Node_T CppGenContext::gen_cpp_decl_using(GenName decl_name,
   this->gen_cpp_template_params_acc(lex_args, cpp_template_params);
   Q_->qq_args_acc(lex_args, "using", decl_name_base, "=", val);
   Q_->qq_args_acc(lex_args, ";");
-  auto decl = Q_->qq_inner(Some<string>("Decl"), lex_args);
+  auto decl = Q_->qq_inner(Some<std::string>("Decl"), lex_args);
   return this->gen_cpp_decl_ns_wrap(decl_ns, decl);
 }
 
@@ -281,19 +282,19 @@ CppGenContext::gen_cpp_decl_enum(GenName decl_name,
     Q_->qq_args_acc(lex_args, ",");
   }
   Q_->qq_args_acc(lex_args, "};");
-  auto decl = Q_->qq_inner(Some<string>("Decl"), lex_args);
+  auto decl = Q_->qq_inner(Some<std::string>("Decl"), lex_args);
   return this->gen_cpp_decl_ns_wrap(decl_ns, decl);
 }
 
 template <typename Ret, typename... Args>
 inline cc::Node_T
 CppGenContext::gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, GenName ns,
-                                     Ret ret_ty, string id_hint,
+                                     Ret ret_ty, std::string id_hint,
                                      const Args &...init_args) {
 
   auto id = this->gen_id_fresh(ns, id_hint);
   auto cpp_id = this->gen_cpp_id_base(id);
-  auto decl = Q_->qq_ext(Some<string>("Stmt"), ret_ty, cpp_id, " = ",
+  auto decl = Q_->qq_ext(Some<std::string>("Stmt"), ret_ty, cpp_id, " = ",
                          init_args..., ";");
   dst->push_back(decl);
   return cpp_id;
@@ -312,8 +313,8 @@ inline cc::Node_T CppGenContext::gen_cpp_fun_call(NodeR f, NodeV args) {
   }
   Q_->qq_args_acc(lex_args, ")");
   try {
-    return Q_->qq_inner(Some<string>("Expr"), lex_args);
-  } catch (const string &err) {
+    return Q_->qq_inner(Some<std::string>("Expr"), lex_args);
+  } catch (const std::string &err) {
     LG("Input sequence: {}", lex_args);
     LG("{}\n", err);
     throw;
@@ -357,7 +358,7 @@ CppGenContext::gen_cpp_fun_proto_entry(NodeV cpp_template_params, NodeV mods,
     Q_->qq_args_acc(lex_args, "const");
   }
   Q_->qq_args_acc(lex_args, ";");
-  return Q_->qq_inner(Some<string>("Entry"), lex_args);
+  return Q_->qq_inner(Some<std::string>("Entry"), lex_args);
 }
 
 inline cc::Node_T
@@ -376,7 +377,7 @@ CppGenContext::gen_cpp_fun_proto_decl(NodeV cpp_template_params, NodeV mods,
   this->gen_cpp_template_params_acc(lex_args, cpp_template_params);
   this->gen_cpp_fun_proto_acc(lex_args, mods, ret, fun_name, params);
   Q_->qq_args_acc(lex_args, ";");
-  auto decl = Q_->qq_inner(Some<string>("Decl"), lex_args);
+  auto decl = Q_->qq_inner(Some<std::string>("Decl"), lex_args);
 
   return this->gen_cpp_decl_ns_wrap(decl_ns, decl);
 }
@@ -423,7 +424,7 @@ CppGenContext::gen_cpp_id_with_template_args_acc(NodeR id,
   auto lex_args = Q_->make_lex_builder();
   Q_->qq_args_acc(lex_args, id);
   this->gen_cpp_template_args_acc(lex_args, cpp_template_params);
-  return Q_->qq_inner(Some<string>("Expr"), lex_args);
+  return Q_->qq_inner(Some<std::string>("Expr"), lex_args);
 }
 
 inline cc::Node_T CppGenContext::gen_cpp_fun_body(NodeV cpp_template_params,
@@ -460,13 +461,13 @@ inline cc::Node_T CppGenContext::gen_cpp_fun_body(NodeV cpp_template_params,
     Q_->qq_args_acc(lex_args, stmt);
   }
   Q_->qq_args_acc(lex_args, "}");
-  return Q_->qq_inner(Some<string>("Decl"), lex_args);
+  return Q_->qq_inner(Some<std::string>("Decl"), lex_args);
 }
 
 template <typename Ty>
 inline cc::Node_T
 CppGenContext::gen_cpp_param_acc(Vec_T<cc::Node_T> &dst, const GenName &ns,
-                                 const Ty &type, const string &name_hint) {
+                                 const Ty &type, const std::string &name_hint) {
 
   auto id_param = this->gen_id_fresh(ns, name_hint);
   auto cpp_param_var = this->gen_cpp_id_base(id_param);
@@ -476,7 +477,7 @@ CppGenContext::gen_cpp_param_acc(Vec_T<cc::Node_T> &dst, const GenName &ns,
 }
 
 inline cc::Node_T CppGenContext::gen_cpp_ret(NodeR x) {
-  return Q_->qq_ext(Some<string>("Stmt"), "return", x, ";");
+  return Q_->qq_ext(Some<std::string>("Stmt"), "return", x, ";");
 }
 
 inline cc::Node_T CppGenContext::gen_cpp_init_list_u16(const Vec_T<Int> &v) {
@@ -491,14 +492,14 @@ inline cc::Node_T CppGenContext::gen_cpp_init_list_u16(const Vec_T<Int> &v) {
     fresh = false;
     AT(vi <= 0xffff);
     AT(vi >= 0);
-    string s = "0x";
+    std::string s = "0x";
     s += hex_byte_display(static_cast<u8>((vi & 0xff00) >> 8));
     s += hex_byte_display(static_cast<u8>(vi & 0xff));
     Q_->qq_args_acc(lex_args, s);
   }
   Q_->qq_args_acc(lex_args, "}");
 
-  return Q_->qq_inner(Some<string>("Expr"), lex_args);
+  return Q_->qq_inner(Some<std::string>("Expr"), lex_args);
 }
 
 inline cc::Node_T CppGenContext::gen_cpp_decl_ns_wrap(GenName decl_ns,
@@ -506,18 +507,18 @@ inline cc::Node_T CppGenContext::gen_cpp_decl_ns_wrap(GenName decl_ns,
   auto ret = decl;
   if (decl_ns->length() > 0) {
     auto cpp_decl_ns = name_to_cpp_direct(decl_ns, *this);
-    ret = Q_->qq_ext(Some<string>("Decl"), "namespace", cpp_decl_ns, " { ",
+    ret = Q_->qq_ext(Some<std::string>("Decl"), "namespace", cpp_decl_ns, " { ",
                      decl, " } ");
   }
   return ret;
 }
 
 inline cc::Node_T CppGenContext::gen_cpp_rc_ptr(const cc::Node_T &val) {
-  return Q_->qq_ext(Some<string>("Expr"), "langcc::rc_ptr<", val, ">");
+  return Q_->qq_ext(Some<std::string>("Expr"), "langcc::rc_ptr<", val, ">");
 }
 
 inline cc::Node_T CppGenContext::gen_cpp_id_base(const IdBase &id_base) {
-  return Q_->qq_ext(Some<string>("Expr"), id_base);
+  return Q_->qq_ext(Some<std::string>("Expr"), id_base);
 }
 
 } // namespace langcc

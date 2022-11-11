@@ -7,7 +7,8 @@ namespace langcc {
 
 LangCompileResult_T compile_lang_inner(lang::meta::Node_T src, Int k,
                                        Gensym_T gen_meta, LexOutput_T lex_res,
-                                       string src_base_name, string dst_path,
+                                       std::string src_base_name,
+                                       std::string dst_path,
                                        HeaderMode header_mode) {
 
   AR_ge(k, 0);
@@ -94,8 +95,8 @@ LangCompileResult_T compile_lang_inner(lang::meta::Node_T src, Int k,
 
 LangCompileResult_T compile_lang(lang::meta::Node_T src, Int k,
                                  Gensym_T gen_meta, LexOutput_T lex_res,
-                                 string src_base_name, string dst_path,
-                                 HeaderMode header_mode) {
+                                 std::string src_base_name,
+                                 std::string dst_path, HeaderMode header_mode) {
 
   try {
     return compile_lang_inner(src, k, gen_meta, lex_res, src_base_name,
@@ -106,7 +107,7 @@ LangCompileResult_T compile_lang(lang::meta::Node_T src, Int k,
 }
 
 tuple<meta::Node::Lang_T, Gensym_T, LexOutput_T>
-load_lang_path(string src_path) {
+load_lang_path(std::string src_path) {
   auto src_str = read_file_shared(src_path);
 
   auto gen_meta = make_rc<Gensym>();
@@ -122,7 +123,7 @@ load_lang_path(string src_path) {
   return make_tuple(src, gen_meta, parse->lex_);
 }
 
-string lang_get_src_base_name(string src_path) {
+string lang_get_src_base_name(std::string src_path) {
   auto src_comps = str_split(src_path, "/");
   auto src_base_comps = str_split(src_comps.at(src_comps.size() - 1), ".");
   if (src_base_comps.size() != 2 || src_base_comps[1] != "lang") {
@@ -133,8 +134,9 @@ string lang_get_src_base_name(string src_path) {
   return src_base_name;
 }
 
-LangCompileResult_T compile_lang_path(string src_path, string dst_path,
-                                      Option_T<Int> k, HeaderMode header_mode) {
+LangCompileResult_T compile_lang_path(std::string src_path,
+                                      std::string dst_path, Option_T<Int> k,
+                                      HeaderMode header_mode) {
 
   auto src_base_name = lang_get_src_base_name(src_path);
   auto [src, gen_meta, lex_res] = load_lang_path(src_path);
@@ -148,8 +150,8 @@ LangCompileResult_T compile_lang_path(string src_path, string dst_path,
                       header_mode);
 }
 
-LangCompileResult_T compile_lang_full(string src_path, string dst_path,
-                                      RunTests run_tests,
+LangCompileResult_T compile_lang_full(std::string src_path,
+                                      std::string dst_path, RunTests run_tests,
                                       HeaderMode header_mode) {
 
   std::filesystem::create_directories(dst_path);
@@ -185,9 +187,9 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
   if (run_tests == RunTests::Y) {
     std::filesystem::create_directories("build/gen_test_bin");
 
-    Vec<string> cmds;
+    Vec<std::string> cmds;
 #ifdef WIN32
-    string cc = STRINGIFY(__CC__);
+    std::string cc = STRINGIFY(__CC__);
     cmds.push("\"" + cc + "\"");
     cmds.push("/std:c++17 /DWIN32 /D_WINDOWS /W3 /GR /EHsc /wd4244 /wd4065 "
               "/wd4996 /wd5051 /wd4311 /wd4302 /wd4018");
@@ -210,7 +212,7 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
                     ".exe";
     cmds.push("/out:" + tgt_path);
 #else
-    string cc = STRINGIFY(__CC__);
+    std::string cc = STRINGIFY(__CC__);
     cmds.push(cc);
     cmds.push("-o");
     auto tgt_path = fmt_str("build/gen_test_bin/{}__gen_test",
@@ -233,7 +235,7 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
     cmds.push(res->as_Ok()->cpp_test_path_);
 #endif
 
-    string cmd;
+    std::string cmd;
     for (auto cmd_i : cmds) {
       cmd += cmd_i + " ";
     }
@@ -259,9 +261,9 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
   return res;
 }
 
-bool test_lang(string test_name) {
-  string src_path = fmt_str("grammars/test/{}.lang", test_name);
-  string dst_path = "build/gen_test_src";
+bool test_lang(std::string test_name) {
+  std::string src_path = fmt_str("grammars/test/{}.lang", test_name);
+  std::string dst_path = "build/gen_test_src";
   auto [src, _, __] = load_lang_path(src_path);
   auto stat = compile_lang_full(src_path, dst_path, RunTests::Y, HeaderMode::N);
   if (stat->is_Error() && !lang_is_expected_fail(src)) {
@@ -277,7 +279,7 @@ bool test_lang(string test_name) {
   return true;
 }
 
-void test_lang_toplevel(string test_name) {
+void test_lang_toplevel(std::string test_name) {
   bool ok = test_lang(test_name);
   if (!ok) {
     AX();

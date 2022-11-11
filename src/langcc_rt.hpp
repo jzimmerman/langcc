@@ -44,8 +44,8 @@ using DFAVertexId = Int;
 using DFALabelId = Int;
 using DFAActionId = Int;
 using DFALabelIdVec = Vec<DFALabelId>;
-using DFALabelIdMap = map<Ch, DFALabelId>;
-using DFAActionWithToken = pair<DFAActionId, TokenId>;
+using DFALabelIdMap = std::map<Ch, DFALabelId>;
+using DFAActionWithToken = std::pair<DFAActionId, TokenId>;
 
 using ParserSymId = Int;
 constexpr ParserSymId NO_SYM = -1;
@@ -85,7 +85,7 @@ struct ParserLookahead {
   }
 };
 
-using ParserSymByName = map<string, Int>;
+using ParserSymByName = std::map<std::string, Int>;
 
 using ParserProdId = Int;
 
@@ -160,7 +160,7 @@ struct SymItem {
 
 using SymItemVec = Vec<SymItem>;
 
-inline void pr(ostream &os, FmtFlags /*flags*/, SymItem item) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, SymItem item) {
   fmt(os, "<SymItem: sym={}, attr={}, tok={}, res={} ({}, {}), first_k={}>",
       item.id_, item.attr_, item.tok_, !!item.res_.v_, item.res_.bounds_.lo_,
       item.res_.bounds_.hi_, item.first_k_);
@@ -209,7 +209,7 @@ struct LexOutput : enable_rc_from_this<LexOutput> {
 
   inline bool allows_quoted_symbols();
 
-  inline string location_fmt_str(TokenBounds bounds);
+  inline std::string location_fmt_str(TokenBounds bounds);
 
   inline bool is_success();
 
@@ -272,7 +272,7 @@ using QuoteEnv_T = rc_ptr<QuoteEnv<Node, FAcc, FStep>>;
 
 struct ParserDesc {
   ParserVertexId start_vertex_;
-  string main_sym_;
+  std::string main_sym_;
   ParserSymByName start_marker_by_name_;
   ParserSymId start_full_sym_;
   ParserSymId right_end_marker_;
@@ -281,8 +281,8 @@ struct ParserDesc {
   Int cps_flat_diff_max_;
   ParserSymId (*sym_to_recur_step_)(ParserSymId);
   ParserProcXforms proc_xform_by_prod_id_;
-  string (*sym_to_debug_string_)(ParserSymId);
-  string (*attr_to_debug_string_)(ParserSymId, Int);
+  std::string (*sym_to_debug_string_)(ParserSymId);
+  std::string (*attr_to_debug_string_)(ParserSymId, Int);
   Int (*sym_to_num_attrs_)(ParserSymId);
 };
 
@@ -299,12 +299,13 @@ struct LangDesc : enable_rc_from_this<LangDesc<Node, FAcc, FStep>> {
 
   template <bool LR_K1, bool NO_QUOTE>
   ParseOutput_T<Node, FAcc, FStep>
-  parse_from_lex_specialized(LexOutput_T lex_out, Option_T<string> sym_target,
-                             Gensym_T gen, Arena *A);
+  parse_from_lex_specialized(LexOutput_T lex_out,
+                             Option_T<std::string> sym_target, Gensym_T gen,
+                             Arena *A);
 
   inline ParseOutput_T<Node, FAcc, FStep>
-  parse_from_lex(LexOutput_T lex_out, Option_T<string> sym_target, Gensym_T gen,
-                 Arena *A) {
+  parse_from_lex(LexOutput_T lex_out, Option_T<std::string> sym_target,
+                 Gensym_T gen, Arena *A) {
 
     if (parser_desc_->lr_k_ == 1 && !lex_out->allows_quoted_symbols()) {
       return this->parse_from_lex_specialized<true, true>(lex_out, sym_target,
@@ -315,9 +316,9 @@ struct LangDesc : enable_rc_from_this<LangDesc<Node, FAcc, FStep>> {
     }
   }
 
-  inline ParseOutput_T<Node, FAcc, FStep> parse_ext(const Str_T &input,
-                                                    Option_T<string> sym_target,
-                                                    Gensym_T gen, Arena *A) {
+  inline ParseOutput_T<Node, FAcc, FStep>
+  parse_ext(const Str_T &input, Option_T<std::string> sym_target, Gensym_T gen,
+            Arena *A) {
 
     auto lex_out = this->lex(input, A);
     auto parse_out = this->parse_from_lex(lex_out, sym_target, gen, A);
@@ -326,19 +327,19 @@ struct LangDesc : enable_rc_from_this<LangDesc<Node, FAcc, FStep>> {
 
   inline ParseOutput_T<Node, FAcc, FStep> parse(const Str_T &input,
                                                 Gensym_T gen) {
-    return this->parse_ext(input, None<string>(), gen, nullptr);
+    return this->parse_ext(input, None<std::string>(), gen, nullptr);
   }
 
-  inline void debug_example(string sym_target, string input);
+  inline void debug_example(std::string sym_target, std::string input);
 
-  inline bool test_example(Option_T<string> sym_target, const Str_T &input,
+  inline bool test_example(Option_T<std::string> sym_target, const Str_T &input,
                            Arena *A, Int error_pos_maybe, bool test_write);
 
-  inline bool test_example(Option_T<string> sym_target, const char *input,
+  inline bool test_example(Option_T<std::string> sym_target, const char *input,
                            Int error_pos_maybe, bool test_write);
 
-  inline QuoteEnv_T<Node, FAcc, FStep> quote_env(const string &sym_id,
-                                                 const string &ns_tok);
+  inline QuoteEnv_T<Node, FAcc, FStep> quote_env(const std::string &sym_id,
+                                                 const std::string &ns_tok);
   inline QuoteEnv_T<Node, FAcc, FStep> quote_env();
 };
 
@@ -347,7 +348,8 @@ struct QuoteEnv {
   LangDesc_T<Node, FAcc, FStep> L_;
   Gensym_T gen_;
 
-  inline rc_ptr<Node> qq_inner(Option_T<string> sym_target, LexOutput_T &lex) {
+  inline rc_ptr<Node> qq_inner(Option_T<std::string> sym_target,
+                               LexOutput_T &lex) {
     AT(lex->quoted_);
 
     Arena *A = nullptr;
@@ -365,7 +367,8 @@ struct QuoteEnv {
   inline void qq_args_acc(LexOutput_T & /*lex*/) {}
 
   template <typename... Args>
-  inline void qq_args_acc(LexOutput_T &lex, string arg, const Args &...args) {
+  inline void qq_args_acc(LexOutput_T &lex, std::string arg,
+                          const Args &...args) {
 
     AT(lex->quoted_);
     Arena *A = nullptr;
@@ -425,7 +428,7 @@ struct QuoteEnv {
   }
 
   template <typename... Args>
-  inline void qq_args_acc(LexOutput_T &lex, const Vec<string> &arg_v,
+  inline void qq_args_acc(LexOutput_T &lex, const Vec<std::string> &arg_v,
                           const Args &...args) {
 
     AT(lex->quoted_);
@@ -439,12 +442,13 @@ struct QuoteEnv {
   inline LexOutput_T make_lex_builder() { return LexOutput::make_quoted(); }
 
   template <typename... Args>
-  inline rc_ptr<Node> qq_ext(Option_T<string> sym_target, const Args &...args) {
+  inline rc_ptr<Node> qq_ext(Option_T<std::string> sym_target,
+                             const Args &...args) {
     auto lex = this->make_lex_builder();
     try {
       this->qq_args_acc(lex, args...);
       return this->qq_inner(sym_target, lex);
-    } catch (const string &err) {
+    } catch (const std::string &err) {
       LG("Input sequence: {}", lex);
       LG("{}\n", err);
       throw;
@@ -452,29 +456,29 @@ struct QuoteEnv {
   }
 
   template <typename... Args>
-  inline rc_ptr<Node> qq(const string &sym_target, const Args &...args) {
-    return this->qq_ext(Some<string>(sym_target), args...);
+  inline rc_ptr<Node> qq(const std::string &sym_target, const Args &...args) {
+    return this->qq_ext(Some<std::string>(sym_target), args...);
   }
 
   template <typename... Args> inline rc_ptr<Node> qq_def(const Args &...args) {
-    return this->qq_ext(None<string>(), args...);
+    return this->qq_ext(None<std::string>(), args...);
   }
 
   inline ParseOutput_T<Node, FAcc, FStep>
-  parse_ext(string input, Option_T<string> sym_target, Arena *A) {
+  parse_ext(std::string input, Option_T<std::string> sym_target, Arena *A) {
 
     return L_->parse_ext(vec_from_std_string(input), sym_target, gen_, A);
   }
 
-  inline ParseOutput_T<Node, FAcc, FStep> parse(string input) {
-    return this->parse_ext(input, None<string>(), nullptr);
+  inline ParseOutput_T<Node, FAcc, FStep> parse(std::string input) {
+    return this->parse_ext(input, None<std::string>(), nullptr);
   }
 };
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 inline QuoteEnv_T<Node, FAcc, FStep>
-LangDesc<Node, FAcc, FStep>::quote_env(const string & /*id_sym*/,
-                                       const string & /*ns_tok*/) {
+LangDesc<Node, FAcc, FStep>::quote_env(const std::string & /*id_sym*/,
+                                       const std::string & /*ns_tok*/) {
 
   auto ret = make_rc<QuoteEnv<Node, FAcc, FStep>>();
   ret->L_ = this->rc_from_this();
@@ -494,21 +498,21 @@ inline QuoteEnv_T<Node, FAcc, FStep> LangDesc<Node, FAcc, FStep>::quote_env() {
 // Lexer
 ////////////////////////////////////////////////////////////////////////////////
 
-inline void pr_debug(ostream &os, FmtFlags flags, TokenBounds x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, TokenBounds x) {
   pr_debug(os, flags, IntPair(x.lo_, x.hi_));
 }
 
 struct CommentMap {
-  Vec_T<pair<StrSlice, Int>> items_;
-  inline CommentMap() : items_(make_rc<Vec<pair<StrSlice, Int>>>()) {}
+  Vec_T<std::pair<StrSlice, Int>> items_;
+  inline CommentMap() : items_(make_rc<Vec<std::pair<StrSlice, Int>>>()) {}
 };
 
 struct LexError : enable_rc_from_this<LexError> {
   LexInput_T in_;
   Int i_;
-  string desc_;
+  std::string desc_;
 
-  inline static LexError_T make(LexInput_T in, Int i, string desc) {
+  inline static LexError_T make(LexInput_T in, Int i, std::string desc) {
     auto ret = make_rc<LexError>();
     ret->in_ = in;
     ret->i_ = i;
@@ -517,7 +521,7 @@ struct LexError : enable_rc_from_this<LexError> {
   }
 };
 
-inline void pr(ostream &os, FmtFlags /*flags*/, LexError_T err) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LexError_T err) {
   fmt(os, "{}", err->desc_);
 }
 
@@ -616,7 +620,7 @@ struct LexInput : enable_rc_from_this<LexInput> {
     if (line_index + 1 < sp.length()) {
       sp_hi = sp[line_index + 1] - 1;
     }
-    return make_pair(sp_lo, sp_hi);
+    return std::make_pair(sp_lo, sp_hi);
   }
 
   Int pos_resolve_line(Int pos) {
@@ -637,12 +641,12 @@ struct LexInput : enable_rc_from_this<LexInput> {
     return i;
   }
 
-  string location_fmt_str(Int pos_lo, Int pos_hi) {
+  std::string location_fmt_str(Int pos_lo, Int pos_hi) {
     auto pos_lo_line = this->pos_resolve_line(pos_lo);
     auto [pos_lo_line_a, _] = this->line_bounds(pos_lo_line);
     auto pos_hi_line = this->pos_resolve_line(pos_hi);
 
-    ostringstream os;
+    std::ostringstream os;
     os << "Line " << (pos_lo_line + 1) << ", column "
        << (pos_lo - pos_lo_line_a + 1) << ":\n\n";
     Int n_non_sp_prev = 0;
@@ -699,13 +703,13 @@ struct LexInput : enable_rc_from_this<LexInput> {
     return StrSlice(input_, ind_lo, ind_hi);
   }
 
-  LexError_T lex_error_val(string desc, Int pos) {
+  LexError_T lex_error_val(std::string desc, Int pos) {
     auto err_str = desc + "\n" + this->location_fmt_str(pos, pos);
     return LexError::make(rc_from_this(), pos, err_str);
   }
 };
 
-inline void pr(ostream &os, FmtFlags /*flags*/, LexInput_T lex) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LexInput_T lex) {
   fmt(os, "LexInput: `{}`", vec_to_std_string(lex->input_));
 }
 
@@ -747,12 +751,12 @@ inline LexOutput_T LexOutput::make_quoted() {
 inline IntPair LexOutput::lookup_pos(Int tok_i) {
   AT(!quoted_, "lookup_pos");
 
-  auto pos = make_pair(in_.as_some()->data_len_, in_.as_some()->data_len_);
+  auto pos = std::make_pair(in_.as_some()->data_len_, in_.as_some()->data_len_);
   if (tok_i == -1) {
-    pos = make_pair(0, 0);
+    pos = std::make_pair(0, 0);
   } else if (tok_i < items_internal_->length()) {
-    pos = make_pair(items_internal_->operator[](tok_i).tok_in_lo_,
-                    items_internal_->operator[](tok_i).tok_in_hi_);
+    pos = std::make_pair(items_internal_->operator[](tok_i).tok_in_lo_,
+                         items_internal_->operator[](tok_i).tok_in_hi_);
   }
   return pos;
 }
@@ -774,9 +778,9 @@ inline StrSlice LexOutput::fetch_token(Int tok_i) {
 
 inline bool LexOutput::allows_quoted_symbols() { return quoted_; }
 
-inline string LexOutput::location_fmt_str(TokenBounds bounds) {
+inline std::string LexOutput::location_fmt_str(TokenBounds bounds) {
   if (quoted_) {
-    string ret;
+    std::string ret;
     Int tok_i_curr = 0;
     bool fresh = true;
     for (auto item : *this->items_internal_) {
@@ -869,7 +873,7 @@ inline void LexOutput::push_item(SymItem item) {
   this->items_internal_->push(item);
 }
 
-inline void pr_debug(ostream &os, FmtFlags /*flags*/, LexOutput_T lex) {
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, LexOutput_T lex) {
   if (lex->quoted_) {
     os << "LexOutput(quoted):[";
     Int tok_i = 0;
@@ -908,7 +912,7 @@ inline void pr_debug(ostream &os, FmtFlags /*flags*/, LexOutput_T lex) {
   fmt(os, "]");
 }
 
-inline void pr(ostream &os, FmtFlags flags, LexOutput_T lex) {
+inline void pr(std::ostream &os, FmtFlags flags, LexOutput_T lex) {
   pr_debug(os, flags, lex);
 }
 
@@ -963,12 +967,12 @@ using LexerStateRef = LexerState_T &;
 
 struct WsSigSpec {
   Option_T<Ch> line_continuation_;
-  Vec_T<pair<Ch, Ch>> delims_;
+  Vec_T<std::pair<Ch, Ch>> delims_;
 
   inline WsSigSpec(Option_T<Ch> line_continuation,
-                   vector<pair<Ch, Ch>> delims) {
+                   std::vector<std::pair<Ch, Ch>> delims) {
     line_continuation_ = line_continuation;
-    delims_ = make_rc<Vec<pair<Ch, Ch>>>();
+    delims_ = make_rc<Vec<std::pair<Ch, Ch>>>();
     for (auto delim : delims) {
       delims_->push(delim);
     }
@@ -1051,7 +1055,7 @@ struct LexerState : enable_rc_from_this<LexerState> {
 
   inline void extract_comment(Int tok_lo, Int tok_hi) {
     auto tok_str = this->in_->fetch_string_site(tok_lo, tok_hi);
-    out_->comment_map_.as_some()->items_->push(make_pair(tok_str, tok_lo));
+    out_->comment_map_.as_some()->items_->push(std::make_pair(tok_str, tok_lo));
   }
 };
 
@@ -1465,11 +1469,11 @@ inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T &input,
 // Parser
 ////////////////////////////////////////////////////////////////////////////////
 
-inline void pr_debug(ostream &os, FmtFlags flags, ParserAttrMask x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, ParserAttrMask x) {
   pr_debug(os, flags, x.v_);
 }
 
-inline void pr_debug(ostream &os, FmtFlags flags, ParserLookahead x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, ParserLookahead x) {
   pr_debug(os, flags, x.v_);
 }
 
@@ -1493,9 +1497,10 @@ struct ParseError : enable_rc_from_this<ParseError> {
   Option_T<LexOutput_T> lex_;
   Option_T<LexError_T> lex_err_;
   Option_T<Int> tok_i_;
-  string desc_;
+  std::string desc_;
 
-  inline static ParseError_T make(LexOutput_T lex, Int tok_i, string desc) {
+  inline static ParseError_T make(LexOutput_T lex, Int tok_i,
+                                  std::string desc) {
     auto ret = make_rc<ParseError>();
     ret->lex_ = Some<LexOutput_T>(lex);
     ret->lex_err_ = None<LexError_T>();
@@ -1514,7 +1519,7 @@ struct ParseError : enable_rc_from_this<ParseError> {
   }
 };
 
-inline void pr(ostream &os, FmtFlags flags, langcc::ParseError_T err) {
+inline void pr(std::ostream &os, FmtFlags flags, langcc::ParseError_T err) {
   if (err->lex_err_.is_some()) {
     pr(os, flags, err->lex_err_.as_some());
     return;
@@ -1591,7 +1596,7 @@ struct ParseOutput;
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 using ParseOutput_T = rc_ptr<ParseOutput<Node, FAcc, FStep>>;
 
-inline void pr(ostream &os, FmtFlags /*flags*/, ParserAttrMask attr) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, ParserAttrMask attr) {
   fmt(os, "{{");
   for (Int i = 0; i < 8; i++) {
     fmt(os, "{},", Int(attr.v_[i]));
@@ -1599,7 +1604,7 @@ inline void pr(ostream &os, FmtFlags /*flags*/, ParserAttrMask attr) {
   fmt(os, "..}}");
 }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, ParserLookahead la) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, ParserLookahead la) {
   fmt(os, "{{");
   for (Int i = 0; i < 8; i++) {
     fmt(os, "{},", Int(la.v_[i]));
@@ -1609,7 +1614,7 @@ inline void pr(ostream &os, FmtFlags /*flags*/, ParserLookahead la) {
 
 [[always_inlines]] inline SymItem
 parser_proc_sym_at(Int j, ParserDesc *desc_raw, SymItem *lex_out_items,
-                   Int n_lex_out_items, const string &sym_target) {
+                   Int n_lex_out_items, const std::string &sym_target) {
 
   if (EXPENSIVE_ASSERT)
     AR_ge(j, -1);
@@ -1628,8 +1633,8 @@ parser_proc_sym_at(Int j, ParserDesc *desc_raw, SymItem *lex_out_items,
   return lex_item;
 }
 
-inline string parser_format_sym(ParserDesc *desc_raw, ParserSymId sym,
-                                ParserAttrMask attr) {
+inline std::string parser_format_sym(ParserDesc *desc_raw, ParserSymId sym,
+                                     ParserAttrMask attr) {
   AT(!!desc_raw, "desc_raw");
   AT(!!desc_raw->sym_to_debug_string_, "desc_raw sym_to_debug_string");
   AT(!!desc_raw->attr_to_debug_string_, "desc_raw attr_to_debug_string");
@@ -1637,7 +1642,7 @@ inline string parser_format_sym(ParserDesc *desc_raw, ParserSymId sym,
 
   auto sym_str = desc_raw->sym_to_debug_string_(sym);
   auto n_attr = desc_raw->sym_to_num_attrs_(sym);
-  auto attr_strs = make_rc<Vec<string>>();
+  auto attr_strs = make_rc<Vec<std::string>>();
   for (Int i = 0; i < n_attr; i++) {
     if (attr.v_[i] == PARSER_ATTR_MASK_SENTINEL) {
       AX();
@@ -1702,7 +1707,7 @@ ParseOutput<Node, FAcc, FStep>::make_error(LexOutput_T lex, ParseError_T err) {
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 [[always_inlines]] inline ParseOutput_T<Node, FAcc, FStep>
-parse_error_output_here(string desc, Int st_i, LexOutput_T lex_) {
+parse_error_output_here(std::string desc, Int st_i, LexOutput_T lex_) {
 
   auto in_i = st_i;
   if (in_i < 0) {
@@ -1734,7 +1739,8 @@ template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 template <bool LR_K1, bool NO_QUOTE>
 inline ParseOutput_T<Node, FAcc, FStep>
 LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
-    LexOutput_T lex_out, Option_T<string> sym_target, Gensym_T gen, Arena *A) {
+    LexOutput_T lex_out, Option_T<std::string> sym_target, Gensym_T gen,
+    Arena *A) {
 
   if (lex_out->err_.is_some()) {
     return ParseOutput<Node, FAcc, FStep>::make_error(
@@ -1758,7 +1764,7 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
   SymItem *lex_out_items_cached = &lex_out->items_internal_->at_unchecked(0);
   Int n_lex_out_items_cached = lex_out->items_internal_->length();
 
-  string st_sym_target = tgt;
+  std::string st_sym_target = tgt;
 
   ParserProcState st_inline;
 
@@ -1845,7 +1851,7 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
       auto acc_ind = ret_inds.first;
       auto arg_ind = ret_inds.second;
 
-      Int pos = max<Int>(0, st_i);
+      Int pos = std::max<Int>(0, st_i);
 
       bool do_shift = acc_ind == static_cast<Int>(ParserActionData_W::SHIFT);
 
@@ -2196,8 +2202,8 @@ make_ext(ArenaPtr arena, Vec_T<langcc::PrBufStreamItem_T> items);
 namespace langcc::PrBufStream {
 struct _T : hash_obj, enable_rc_from_this_poly {
   virtual ~_T() = default;
-  void distill(Ref<ostream> os, FmtFlags flags);
-  void push_string(string x);
+  void distill(Ref<std::ostream> os, FmtFlags flags);
+  void push_string(std::string x);
   void push_newline();
   void push_newlines(Int n);
   void push_indent();
@@ -2216,19 +2222,19 @@ void pr_debug(std::ostream &os, langcc::FmtFlags flags,
 }
 
 namespace langcc::PrBufStreamItem::String {
-[[always_inlines]] langcc::PrBufStreamItem::String_T make(string x);
+[[always_inlines]] langcc::PrBufStreamItem::String_T make(std::string x);
 }
 
 namespace langcc::PrBufStreamItem::String {
 [[always_inlines]] langcc::PrBufStreamItem::String_T make_ext(ArenaPtr arena,
-                                                              string x);
+                                                              std::string x);
 }
 
 namespace langcc::PrBufStreamItem::String {
 struct _T : langcc::PrBufStreamItem::_T {
-  string x_;
+  std::string x_;
   _T();
-  langcc::PrBufStreamItem::String_T with_x(string x);
+  langcc::PrBufStreamItem::String_T with_x(std::string x);
   void hash_ser_acc_langcc_PrBufStreamItem_String(SerBuf &buf) const;
   virtual void hash_ser_acc(SerBuf &buf) const;
 };
@@ -2620,9 +2626,10 @@ inline void langcc::PrBufStream::_T::distill(std::ostream &os,
       }
       AT(num_nl >= 1);
       for (Int k = 0; k < num_nl - 1; k++) {
-        os << endl;
+        os << std::endl;
       }
-      flags.indent_curr_ = max<Int>(0, flags.indent_curr_ + num_indent_net);
+      flags.indent_curr_ =
+          std::max<Int>(0, flags.indent_curr_ + num_indent_net);
       flags.advance_lines(1, os);
       i = j;
 
@@ -2631,7 +2638,7 @@ inline void langcc::PrBufStream::_T::distill(std::ostream &os,
       ++i;
 
     } else if (item->is_Dedent()) {
-      flags.indent_curr_ = max<Int>(0, flags.indent_curr_ - 1);
+      flags.indent_curr_ = std::max<Int>(0, flags.indent_curr_ - 1);
       ++i;
 
     } else {
@@ -2656,7 +2663,7 @@ template <typename UNum>
 }
 
 template <typename Num, typename UNum, typename Buf>
-[[always_inlines]] inline pair<Int, Int>
+[[always_inlines]] inline std::pair<Int, Int>
 table_decode_r1_vec_pair(const UNum tt[], Int x, Buf z) {
 
   tt += 3;
@@ -2665,7 +2672,7 @@ table_decode_r1_vec_pair(const UNum tt[], Int x, Buf z) {
 
   while (true) {
     if (__builtin_expect(tt[0], 0) == 0) {
-      return make_pair(static_cast<Num>(tt[1]), static_cast<Num>(tt[2]));
+      return std::make_pair(static_cast<Num>(tt[1]), static_cast<Num>(tt[2]));
     }
 
     if (DECODE_EXPENSIVE_ASSERT) {
@@ -2791,11 +2798,12 @@ table_u16_array_as_i16_array(const u16 *x) {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
-void LangDesc<Node, FAcc, FStep>::debug_example(string sym_target,
-                                                string input) {
+void LangDesc<Node, FAcc, FStep>::debug_example(std::string sym_target,
+                                                std::string input) {
   auto gen = make_rc<Gensym>();
   auto input_s = vec_from_std_string(input);
-  auto parse = this->parse_ext(input_s, Some<string>(sym_target), gen, nullptr);
+  auto parse =
+      this->parse_ext(input_s, Some<std::string>(sym_target), gen, nullptr);
   if (!parse->is_success()) {
     if (parse->lex_->is_success()) {
       LG_ERR("Lexer output:\n{}\n\n", parse->lex_);
@@ -2810,7 +2818,7 @@ void LangDesc<Node, FAcc, FStep>::debug_example(string sym_target,
 }
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
-bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<string> sym_target,
+bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<std::string> sym_target,
                                                const Str_T &input, Arena *A,
                                                Int error_pos_maybe,
                                                bool test_write) {
@@ -2851,7 +2859,7 @@ bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<string> sym_target,
     auto res = parse->res_.as_some();
 
     if (test_write) {
-      ostringstream os;
+      std::ostringstream os;
       res->write(os, FmtFlags::default_());
       if (os.str() != vec_to_std_string(input)) {
         LG_ERR(
@@ -2866,7 +2874,7 @@ bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<string> sym_target,
 }
 
 template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
-bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<string> sym_target,
+bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<std::string> sym_target,
                                                const char *input,
                                                Int error_pos_maybe,
                                                bool test_write) {

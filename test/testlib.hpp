@@ -52,10 +52,10 @@ private:
 };
 
 struct UnitTest {
-  string name_;
-  function<int()> f_;
+  std::string name_;
+  std::function<int()> f_;
 
-  UnitTest(string name, function<int()> testfunc)
+  UnitTest(std::string name, std::function<int()> testfunc)
       : name_(std::move(name)), f_(std::move(testfunc)) {}
 };
 
@@ -66,13 +66,13 @@ struct UnitTestRun {
   Time end_time_{};
   std::shared_ptr<std::stringstream> stdout_stream_;
   std::shared_ptr<std::stringstream> stderr_stream_;
-  Option_T<Int> ret_;
+  Option_T<Int> ret_{};
 
   inline bool is_success() const {
     return ret_.is_some() && ret_.as_some() == 0;
   }
 
-  inline string ret_desc() const {
+  inline std::string ret_desc() const {
     if (this->is_success()) {
       return "success";
     } else if (ret_.is_none()) {
@@ -91,11 +91,12 @@ struct UnitTestRun {
 };
 
 vector<UnitTest> &get_unit_tests();
-map<std::thread::id, UnitTestRun> &get_unit_tests_running();
-map<string, UnitTestRun> &get_unit_tests_terminated();
+std::map<std::thread::id, UnitTestRun> &get_unit_tests_running();
+std::map<std::string, UnitTestRun> &get_unit_tests_terminated();
 SafeQueue<std::pair<std::thread::id, int>> &get_finished_tests_queue();
 
-inline void register_unit_test(string test_name, function<int()> test_function);
+inline void register_unit_test(std::string test_name,
+                               std::function<int()> test_function);
 
 #define TEST(test_name)                                                        \
   void _test_##test_name();                                                    \
@@ -108,13 +109,13 @@ inline vector<UnitTest> &get_unit_tests() {
   return _unit_tests;
 }
 
-inline map<std::thread::id, UnitTestRun> &get_unit_tests_running() {
-  static map<std::thread::id, UnitTestRun> _unit_tests_running;
+inline std::map<std::thread::id, UnitTestRun> &get_unit_tests_running() {
+  static std::map<std::thread::id, UnitTestRun> _unit_tests_running;
   return _unit_tests_running;
 }
 
-inline map<string, UnitTestRun> &get_unit_tests_terminated() {
-  static map<string, UnitTestRun> _unit_tests_terminated;
+inline std::map<std::string, UnitTestRun> &get_unit_tests_terminated() {
+  static std::map<std::string, UnitTestRun> _unit_tests_terminated;
   return _unit_tests_terminated;
 }
 
@@ -123,8 +124,8 @@ inline SafeQueue<std::pair<std::thread::id, int>> &get_finished_tests_queue() {
   return _finished_tests_queue;
 }
 
-inline void register_unit_test(string test_name,
-                               function<int()> test_function) {
+inline void register_unit_test(std::string test_name,
+                               std::function<int()> test_function) {
   get_unit_tests().emplace_back(std::move(test_name), std::move(test_function));
 }
 
@@ -218,8 +219,8 @@ inline bool run_unit_tests() {
     std::this_thread::sleep_for(std::chrono::microseconds(1000));
   }
 
-  set<string> res_succ;
-  set<string> res_fail;
+  std::set<string> res_succ;
+  std::set<string> res_fail;
   for (const auto &term_test_elem : get_unit_tests_terminated()) {
     const auto &test = term_test_elem.second;
     if (test.is_success()) {

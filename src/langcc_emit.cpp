@@ -5,27 +5,27 @@ namespace langcc {
 
 void lang_emit_preambles(LangCompileContext &ctx) {
   ctx.cc_.dst_decls_->push_back(
-      ctx.cc_.Q_->qq_ext(Some<string>("Decl"), "#pragma once")->as_Decl());
+      ctx.cc_.Q_->qq_ext(Some<std::string>("Decl"), "#pragma once")->as_Decl());
 
   ctx.cc_.dst_decls_->push_back(
-      ctx.cc_.Q_->qq_ext(Some<string>("Decl"), "#include <langcc_rt.hpp>")
+      ctx.cc_.Q_->qq_ext(Some<std::string>("Decl"), "#include <langcc_rt.hpp>")
           ->as_Decl());
 
   ctx.cc_.dst_defs_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"),
+          ->qq_ext(Some<std::string>("Decl"),
                    fmt_str("#include \"{}\"", ctx.hpp_name_))
           ->as_Decl());
 
   ctx.cc_test_.dst_defs_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"),
+          ->qq_ext(Some<std::string>("Decl"),
                    fmt_str("#include \"{}\"", ctx.hpp_name_))
           ->as_Decl());
 
   ctx.cc_debug_.dst_defs_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"),
+          ->qq_ext(Some<std::string>("Decl"),
                    fmt_str("#include \"{}\"", ctx.hpp_name_))
           ->as_Decl());
 }
@@ -104,7 +104,7 @@ Int lexer_instrs_num_emit_match_max(
 }
 
 void lexer_gen_cpp_defs(
-    LangCompileContext &ctx, CppGenContext &cc, string src_base_name,
+    LangCompileContext &ctx, CppGenContext &cc, std::string src_base_name,
     Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_mode_dfas) {
 
   // ===== Label ids =====
@@ -158,8 +158,8 @@ void lexer_gen_cpp_defs(
           "Expr", ind_curr_unicode == -1 ? "langcc::DFATable::NO_LABEL"
                                          : fmt_str("{}", ind_curr_unicode));
       cpp_label_ids_unicode_inits.push_back(ctx.cc_.qq(
-          "Stmt", "ret->insert(std::make_pair(", fmt_str("{}", ch_curr_unicode),
-          ",", cpp_ind_curr_unicode, "));"));
+          "Stmt", "ret->insert(std::std::make_pair(",
+          fmt_str("{}", ch_curr_unicode), ",", cpp_ind_curr_unicode, "));"));
     }
     ch_curr_unicode = p.first;
     ind_curr_unicode = p.second;
@@ -168,8 +168,8 @@ void lexer_gen_cpp_defs(
       "Expr", ind_curr_unicode == -1 ? "langcc::DFATable::NO_LABEL"
                                      : fmt_str("{}", ind_curr_unicode));
   cpp_label_ids_unicode_inits.push_back(ctx.cc_.qq(
-      "Stmt", "ret->insert(std::make_pair(", fmt_str("{}", ch_curr_unicode),
-      ",", cpp_ind_curr_unicode, "));"));
+      "Stmt", "ret->insert(std::std::make_pair(",
+      fmt_str("{}", ch_curr_unicode), ",", cpp_ind_curr_unicode, "));"));
 
   ctx.cc_.dst_defs_->push_back(
       ctx.cc_
@@ -241,12 +241,12 @@ void lexer_gen_cpp_defs(
     // ===== lexer::acc
 
     auto cpp_dfa_acc_switch_cases = make_rc<Vec<cc::Node_T>>();
-    string cpp_acc_action_default = "langcc::DFATable::NO_ACTION";
-    string cpp_acc_token_default = "langcc::NO_TOKEN";
+    std::string cpp_acc_action_default = "langcc::DFATable::NO_ACTION";
+    std::string cpp_acc_token_default = "langcc::NO_TOKEN";
     for (Int i = 0; i < Graph::N(dfa->G_); i++) {
-      string cpp_switch_arg = fmt_str("{}", i);
-      string cpp_acc_action = cpp_acc_action_default;
-      string cpp_acc_token = cpp_acc_token_default;
+      std::string cpp_switch_arg = fmt_str("{}", i);
+      std::string cpp_acc_action = cpp_acc_action_default;
+      std::string cpp_acc_token = cpp_acc_token_default;
       auto acc = dfa->acc_->operator[](i);
       if (acc->length() == 1) {
         cpp_acc_action = fmt_str("{}", acc->only().case_id_);
@@ -259,13 +259,14 @@ void lexer_gen_cpp_defs(
       } else {
         // pass
       }
-      cpp_dfa_acc_switch_cases->push_back(ctx.cc_.qq(
-          "SwitchCase", "case", cpp_switch_arg, ": {", "return std::make_pair(",
-          cpp_acc_action, ",", cpp_acc_token, ");", "}"));
+      cpp_dfa_acc_switch_cases->push_back(
+          ctx.cc_.qq("SwitchCase", "case", cpp_switch_arg, ": {",
+                     "return std::std::make_pair(", cpp_acc_action, ",",
+                     cpp_acc_token, ");", "}"));
     }
 
     cpp_dfa_acc_switch_cases->push_back(ctx.cc_.qq(
-        "SwitchCase", "default: {", "return std::make_pair(",
+        "SwitchCase", "default: {", "return std::std::make_pair(",
         cpp_acc_action_default, ",", cpp_acc_token_default, ");", "}"));
 
     ctx.cc_.dst_defs_->push_back(
@@ -280,7 +281,7 @@ void lexer_gen_cpp_defs(
 
     // ===== lexer::step_exec
 
-    auto fun_ns = make_rc<Vec<string>>();
+    auto fun_ns = make_rc<Vec<std::string>>();
     fun_ns->push_back("lang");
     fun_ns->push_back(src_base_name);
     fun_ns->push_back("lexer");
@@ -323,7 +324,7 @@ void lexer_gen_cpp_defs(
                 "langcc::Int& in_i,", "langcc::Int& tok_lo,",
                 "langcc::Int& tok_hi) {",
 
-                "auto ret = std::make_pair(-1, -1);",
+                "auto ret = std::std::make_pair(-1, -1);",
                 "bool mode_switch = false;", "switch (acc) {",
                 *cpp_step_exec_switch_cases, "}", "return ret;", "}", "}")
             ->as_Decl());
@@ -342,7 +343,7 @@ data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty) {
   } else if (ty->is_Vector()) {
     auto tc = ty->as_Vector();
     auto node_sub = data_gen_type_to_node(data, tc->elem_ty_);
-    return data.Q_->qq_ext(Some<string>("Expr"), "Vec(", node_sub, ")");
+    return data.Q_->qq_ext(Some<std::string>("Expr"), "Vec(", node_sub, ")");
   } else if (ty->is_Datatype()) {
     AX();
   } else if (ty->is_Builtin()) {
@@ -354,7 +355,7 @@ data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty) {
   } else if (ty->is_Optional()) {
     auto tc = ty->as_Optional();
     auto node_sub = data_gen_type_to_node(data, tc->item_ty_);
-    return data.Q_->qq_ext(Some<string>("Expr"), "Option(", node_sub, ")");
+    return data.Q_->qq_ext(Some<std::string>("Expr"), "Option(", node_sub, ")");
   } else {
     AX();
   }
@@ -385,53 +386,54 @@ void data_gen_dtype_acc(DataGenContext data, Ident_T id, GenDatatype_T dt,
 
   if (is_top) {
     data_fields->push_back(
-        data.Q_->qq_ext(Some<string>("Entry"), "id no_hash: Int;"));
+        data.Q_->qq_ext(Some<std::string>("Entry"), "id no_hash: Int;"));
     data_fields->push_back(data.Q_->qq_ext(
-        Some<string>("Entry"), "bounds no_hash: ^langcc::TokenBounds;"));
+        Some<std::string>("Entry"), "bounds no_hash: ^langcc::TokenBounds;"));
     data_fields->push_back(
-        data.Q_->qq_ext(Some<string>("Entry"), "is_top: bool;"));
+        data.Q_->qq_ext(Some<std::string>("Entry"), "is_top: bool;"));
 
     // NOTE: following are undefined if is_top is false
-    data_fields->push_back(
-        data.Q_->qq_ext(Some<string>("Entry"), "sym: ^langcc::ParserSymId;"));
-    data_fields->push_back(data.Q_->qq_ext(Some<string>("Entry"),
+    data_fields->push_back(data.Q_->qq_ext(Some<std::string>("Entry"),
+                                           "sym: ^langcc::ParserSymId;"));
+    data_fields->push_back(data.Q_->qq_ext(Some<std::string>("Entry"),
                                            "attr: ^langcc::ParserAttrMask;"));
     data_fields->push_back(data.Q_->qq_ext(
-        Some<string>("Entry"), "first_k: ^langcc::ParserLookahead;"));
+        Some<std::string>("Entry"), "first_k: ^langcc::ParserLookahead;"));
   }
 
   for (auto [field_id, field_ty] : *dt->fields_) {
     data_fields->push_back(data.Q_->qq_ext(
-        Some<string>("Entry"), data_gen_id_base_to_string(field_id), ":",
+        Some<std::string>("Entry"), data_gen_id_base_to_string(field_id), ":",
         data_gen_type_to_node(data, field_ty), ";"));
   }
 
   data_fields->push_back(data.Q_->qq_ext(
-      Some<string>("Entry"),
+      Some<std::string>("Entry"),
       "method write(os: Ref(^std::ostream), flags: ^langcc::FmtFlags): void;"));
 
   data_fields->push_back(
-      data.Q_->qq_ext(Some<string>("Entry"),
+      data.Q_->qq_ext(Some<std::string>("Entry"),
                       "method write(pb: Ref(^langcc::PrBufStream_T)): void;"));
 
   if (!override_parent) {
     if (is_top) {
       data.dst_->push_back(data.Q_
-                               ->qq_ext(Some<string>("Decl"), "def",
+                               ->qq_ext(Some<std::string>("Decl"), "def",
                                         data_sum_id, "visit xform {",
                                         *data_fields, "}")
                                ->as_Decl());
     } else {
       data.dst_->push_back(data.Q_
-                               ->qq_ext(Some<string>("Decl"), "def",
+                               ->qq_ext(Some<std::string>("Decl"), "def",
                                         data_sum_id, "{", *data_fields, "}")
                                ->as_Decl());
     }
   } else {
     AT(!is_top);
     data.dst_->push_back(data.Q_
-                             ->qq_ext(Some<string>("Decl"), "def", data_sum_id,
-                                      "<: Node {", *data_fields, "}")
+                             ->qq_ext(Some<std::string>("Decl"), "def",
+                                      data_sum_id, "<: Node {", *data_fields,
+                                      "}")
                              ->as_Decl());
   }
 }
@@ -447,13 +449,13 @@ void lang_emit_datatype_defs(LangCompileContext &ctx, HeaderMode header_mode) {
 
   auto data_sym = make_rc<Gensym>();
 
-  auto data_mod = ctx.data_.Q_->qq_ext(Some<string>("Module"),
+  auto data_mod = ctx.data_.Q_->qq_ext(Some<std::string>("Module"),
                                        "namespace lang::", ctx.src_base_name_,
                                        "{", *ctx.data_.dst_, "}");
 
   LOG(2, " === Datatype decl module:\n{}\n\n", data_mod);
 
-  auto data_res = compile_data_defs(data_mod, None<string>(), header_mode);
+  auto data_res = compile_data_defs(data_mod, None<std::string>(), header_mode);
 
   if (data_res.hpp_decls.is_some()) {
     for (auto decl : *data_res.hpp_decls.as_some()->as_Module()->decls_) {
@@ -474,7 +476,7 @@ void lang_emit_writer_defs(LangCompileContext &ctx) {
 
     auto cpp_write_stmts = make_rc<Vec<cc::Node_T>>();
 
-    auto fun_ns = make_rc<Vec<string>>();
+    auto fun_ns = make_rc<Vec<std::string>>();
     fun_ns->push_back("lang");
     fun_ns->push_back(ctx.src_base_name_);
     fun_ns->extend(id_nm);
@@ -487,7 +489,7 @@ void lang_emit_writer_defs(LangCompileContext &ctx) {
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
             ->qq_ext(
-                Some<string>("Decl"), "void lang::", ctx.src_base_name_,
+                Some<std::string>("Decl"), "void lang::", ctx.src_base_name_,
                 "::", *id_nm, "::write(langcc::PrBufStream_T& pb) {",
                 "auto x = this->rc_from_this_poly<lang::", ctx.src_base_name_,
                 "::", *id_nm, ">();", *cpp_write_stmts, "}")
@@ -496,8 +498,9 @@ void lang_emit_writer_defs(LangCompileContext &ctx) {
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
             ->qq_ext(
-                Some<string>("Decl"), "void lang::", ctx.src_base_name_, "::",
-                *id_nm, "::write(std::ostream& os, langcc::FmtFlags flags) {",
+                Some<std::string>("Decl"), "void lang::", ctx.src_base_name_,
+                "::", *id_nm,
+                "::write(std::ostream& os, langcc::FmtFlags flags) {",
                 "auto pb = langcc::PrBufStream::make(",
                 "langcc::make_rc<langcc::Vec<langcc::PrBufStreamItem_T>>());",
                 "this->write(pb);",
@@ -542,11 +545,10 @@ void parser_lr_unwind_impl_gen_cpp_push_res_rev(Vec_T<cc::Node_T> &cpp_dst_proc,
   cc.qq_stmt_acc(cpp_dst_proc, "++sb_len;");
 }
 
-pair<cc::Node_T, cc::Node_T>
-parser_lr_unwind_impl_gen_name_to_cpp_struct(Ident_T id, string src_base_name,
-                                             CppGenContext &cc) {
+pair<cc::Node_T, cc::Node_T> parser_lr_unwind_impl_gen_name_to_cpp_struct(
+    Ident_T id, std::string src_base_name, CppGenContext &cc) {
 
-  auto ret_struct = make_rc<Vec<string>>();
+  auto ret_struct = make_rc<Vec<std::string>>();
   ret_struct->push_back("lang");
   ret_struct->push_back(src_base_name);
   ret_struct->push_back("Node");
@@ -555,12 +557,12 @@ parser_lr_unwind_impl_gen_name_to_cpp_struct(Ident_T id, string src_base_name,
   }
   auto ret_ns = ret_struct->clone_rc();
   ret_struct->push_back("_T");
-  return make_pair(name_to_cpp_direct(ret_ns, cc),
-                   name_to_cpp_direct(ret_struct, cc));
+  return std::make_pair(name_to_cpp_direct(ret_ns, cc),
+                        name_to_cpp_direct(ret_struct, cc));
 }
 
 cc::Node_T parser_lr_unwind_type_to_cpp(CppGenContext &cc, bool is_top,
-                                        GenType_T ty, string src_base_name,
+                                        GenType_T ty, std::string src_base_name,
                                         LangCompileContext &ctx) {
 
   if (ty->is_Named()) {
@@ -594,7 +596,7 @@ cc::Node_T parser_lr_unwind_type_to_cpp(CppGenContext &cc, bool is_top,
 
 cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
     Vec_T<cc::Node_T> &cpp_dst_unwind, cc::Node_T val, bool do_take,
-    GenType_T ty, GenName fun_ns, string src_base_name, CppGenContext &cc,
+    GenType_T ty, GenName fun_ns, std::string src_base_name, CppGenContext &cc,
     LangCompileContext &ctx) {
 
   if (ty->is_Named()) {
@@ -684,7 +686,7 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
 
 void parser_lr_unwind_impl_gen_cpp_acc_type_rec_dummy(
     Vec_T<cc::Node_T> &cpp_dst_unwind, cc::Node_T val, bool do_take,
-    GenType_T ty, GenName fun_ns, string src_base_name, CppGenContext &cc,
+    GenType_T ty, GenName fun_ns, std::string src_base_name, CppGenContext &cc,
     LangCompileContext &ctx) {
 
   if (ty->is_String() || ty->is_Nil()) {
@@ -724,7 +726,8 @@ Vec_T<cc::Node_T> parser_lr_unwind_impl_gen_cpp_make_args(cc::Node_T cpp_bounds,
 void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
                                        CppGenContext &cc, Prod_T prod_cps,
                                        Prod_T prod_flat, UnwindInstr_T instr,
-                                       GenName fun_ns, string src_base_name,
+                                       GenName fun_ns,
+                                       std::string src_base_name,
                                        LangCompileContext &ctx) {
 
   auto nonterm_ind =
@@ -1151,7 +1154,7 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
 cc::Node_T parser_lr_unwind_impl_gen_cpp(CppGenContext &cc, Prod_T prod_cps,
                                          Prod_T prod_flat,
                                          LangCompileContext &ctx,
-                                         string src_base_name) {
+                                         std::string src_base_name) {
 
   auto proc_name = parser_lr_impl_id_gen_cpp(cc, prod_cps->prod_id_, ctx);
 
@@ -1168,7 +1171,7 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp(CppGenContext &cc, Prod_T prod_cps,
     AX();
   }
 
-  auto fun_ns = make_rc<Vec<string>>();
+  auto fun_ns = make_rc<Vec<std::string>>();
   fun_ns->push_back(proc_name);
 
   auto cpp_proc_body = make_rc<Vec<cc::Node_T>>();
@@ -1177,18 +1180,19 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp(CppGenContext &cc, Prod_T prod_cps,
 
   cc.dst_defs_->push_back(
       cc.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", src_base_name,
+          ->qq_ext(Some<std::string>("Decl"), "namespace lang::", src_base_name,
                    "::parser {", "[[noinlines]] langcc::SymItem", proc_name,
                    "(langcc::ParserProcStatePtr st) {", *cpp_proc_body, "}",
                    "}")
           ->as_Decl());
 
-  return cc.Q_->qq_ext(Some<string>("Expr"), proc_name);
+  return cc.Q_->qq_ext(Some<std::string>("Expr"), proc_name);
 }
 
 void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
                                         cc::Node_T curr, GenName fun_ns,
-                                        string src_base_name, CppGenContext &cc,
+                                        std::string src_base_name,
+                                        CppGenContext &cc,
                                         LangCompileContext &ctx) {
 
   if (wr->is_Pass()) {
@@ -1388,14 +1392,14 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
   }
 }
 
-Vec_T<string> lower_name_ident_struct(Ident_T id) {
+Vec_T<std::string> lower_name_ident_struct(Ident_T id) {
   auto name = make_rc<Vec<IdBase>>();
   name->push_back("Node");
   for (auto x : *id->xs_) {
     name->push_back(data_gen_id_base_to_string(x));
   }
   auto v = lower_name(LowerTy::STRUCT, name, None<GenName>());
-  auto ret = make_rc<Vec<string>>();
+  auto ret = make_rc<Vec<std::string>>();
   bool fresh = true;
   for (auto x : *v) {
     if (!fresh) {
@@ -1414,10 +1418,10 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {", "langcc::IntPair action_by_vertex(",
-                   "langcc::ParserVertexId v, langcc::ParserLookahead la);",
-                   "}")
+          ->qq_ext(
+              Some<std::string>("Decl"), "namespace lang::", ctx.src_base_name_,
+              "::parser {", "langcc::IntPair action_by_vertex(",
+              "langcc::ParserVertexId v, langcc::ParserLookahead la);", "}")
           ->as_Decl());
 
   Int n_sym = grammar_all_lr_syms(ctx.Gr_cps_)->length();
@@ -1431,7 +1435,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
-            ->qq_ext(Some<string>("Decl"), "langcc::IntPair lang::",
+            ->qq_ext(Some<std::string>("Decl"), "langcc::IntPair lang::",
                      ctx.src_base_name_, "::parser::action_by_vertex(",
                      "langcc::ParserVertexId v, langcc::ParserLookahead la) {",
                      "static const langcc::u16_array tt = ",
@@ -1451,7 +1455,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
     AR_eq(static_cast<Int>(ParserActionData_W::SHIFT), 4);
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
-            ->qq_ext(Some<string>("Decl"),
+            ->qq_ext(Some<std::string>("Decl"),
                      "langcc::IntPair lang::", ctx.src_base_name_,
                      "::parser::action_by_vertex(langcc::ParserVertexId v,",
                      "langcc::ParserLookahead la) {",
@@ -1465,14 +1469,15 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
                      fmt_str("{}", D->G_->V_->length()), " + v;",
                      "langcc::Int ret_acc = tt_acc[ind];",
                      "langcc::Int ret_arg = tt_arg[ind];",
-                     "return std::make_pair(ret_acc, ret_arg);", "}")
+                     "return std::std::make_pair(ret_acc, ret_arg);", "}")
             ->as_Decl());
   }
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {", "langcc::ParserVertexId vertex_dfa_step(",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "::parser {",
+                   "langcc::ParserVertexId vertex_dfa_step(",
                    "langcc::ParserVertexId v, langcc::ParserSymId sym,",
                    "langcc::ParserAttrMask attr);", "}")
           ->as_Decl());
@@ -1484,7 +1489,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
-            ->qq_ext(Some<string>("Decl"),
+            ->qq_ext(Some<std::string>("Decl"),
                      "langcc::ParserVertexId lang::", ctx.src_base_name_,
                      "::parser::vertex_dfa_step(langcc::ParserVertexId v, "
                      "langcc::ParserSymId sym,",
@@ -1508,7 +1513,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
   for (auto prod_cps : *ctx.Gr_cps_->prods_) {
     auto prod_flat = ctx.cps_prod_map_rev_->operator[](prod_cps);
     auto cps_flat_diff =
-        max<Int>(0, prod_cps->rhs_->length() - prod_flat->rhs_->length());
+        std::max<Int>(0, prod_cps->rhs_->length() - prod_flat->rhs_->length());
     if (cps_flat_diff > ctx.cps_flat_diff_max_) {
       ctx.cps_flat_diff_max_ = cps_flat_diff;
     }
@@ -1521,14 +1526,14 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "::parser {",
                    "langcc::ParserProcXforms proc_xform_by_prod_id();", "}")
           ->as_Decl());
 
   ctx.cc_.dst_defs_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "langcc::ParserProcXforms lang::",
+          ->qq_ext(Some<std::string>("Decl"), "langcc::ParserProcXforms lang::",
                    ctx.src_base_name_, "::parser::proc_xform_by_prod_id() {",
                    "auto ret = "
                    "langcc::make_rc<langcc::Vec<langcc::ParserProcXform>>();",
@@ -1537,8 +1542,8 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "::parser {",
                    "langcc::ParserSymByName start_marker_by_name();", "}")
           ->as_Decl());
 
@@ -1548,14 +1553,14 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
         LRSym::Base::make(Sym::TermStartMarker::make(ident->xs_->only()));
     auto marker_name = ident->xs_->only()->as_User()->name_;
     auto marker_ind = grammar_sym_to_ind_flat(ctx, marker);
-    start_marker_by_name_entries->push_back(
-        ctx.cc_.Q_->qq_ext(Some<string>("Stmt"), "ret.insert(std::make_pair(",
-                           fmt_str("\"{}\"", escape_string(marker_name)), ",",
-                           fmt_str("{}", marker_ind), "));"));
+    start_marker_by_name_entries->push_back(ctx.cc_.Q_->qq_ext(
+        Some<std::string>("Stmt"), "ret.insert(std::std::make_pair(",
+        fmt_str("\"{}\"", escape_string(marker_name)), ",",
+        fmt_str("{}", marker_ind), "));"));
   }
   ctx.cc_.dst_defs_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "langcc::ParserSymByName lang::",
+          ->qq_ext(Some<std::string>("Decl"), "langcc::ParserSymByName lang::",
                    ctx.src_base_name_, "::parser::start_marker_by_name() {",
                    "langcc::ParserSymByName ret;",
                    *start_marker_by_name_entries,
@@ -1565,8 +1570,8 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "::parser {",
                    "langcc::ParserSymId term_tok_to_sym(langcc::TokenId tok);",
                    "}")
           ->as_Decl());
@@ -1580,15 +1585,15 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
       auto tok_ind = ctx.tokens_top_by_id_rev_.operator[](expr_base);
       auto sym_ind = grammar_sym_to_ind_flat(ctx, LRSym::Base::make(sym));
       term_tok_to_sym_cases->push_back(ctx.cc_.Q_->qq_ext(
-          Some<string>("SwitchCase"), "case", fmt_str("{}", tok_ind), ": {",
-          "return", fmt_str("{}", sym_ind), "; }"));
+          Some<std::string>("SwitchCase"), "case", fmt_str("{}", tok_ind),
+          ": {", "return", fmt_str("{}", sym_ind), "; }"));
     } else {
       AX();
     }
   }
   ctx.cc_.dst_defs_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"),
+          ->qq_ext(Some<std::string>("Decl"),
                    "langcc::ParserSymId lang::", ctx.src_base_name_,
                    "::parser::term_tok_to_sym(langcc::TokenId tok) {",
                    "switch (tok) {", *term_tok_to_sym_cases,
@@ -1598,7 +1603,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
           ->qq_ext(
-              Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
+              Some<std::string>("Decl"), "namespace lang::", ctx.src_base_name_,
               "::parser {",
               "langcc::ParserSymId sym_to_recur_step(langcc::ParserSymId sym);",
               "}")
@@ -1610,12 +1615,12 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
       auto sym_ind = grammar_sym_to_ind_flat(ctx, LRSym::Base::make(sym));
       auto rec_ind = grammar_sym_to_ind_flat(ctx, LRSym::RecurStep::make(sym));
       sym_to_recur_step_cases->push_back(ctx.cc_.Q_->qq_ext(
-          Some<string>("SwitchCase"), "case", fmt_str("{}", sym_ind), ": {",
-          "return", fmt_str("{}", rec_ind), "; }"));
+          Some<std::string>("SwitchCase"), "case", fmt_str("{}", sym_ind),
+          ": {", "return", fmt_str("{}", rec_ind), "; }"));
     }
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
-            ->qq_ext(Some<string>("Decl"),
+            ->qq_ext(Some<std::string>("Decl"),
                      "langcc::ParserSymId lang::", ctx.src_base_name_,
                      "::parser::sym_to_recur_step(langcc::ParserSymId sym) {",
                      "switch (sym) {", *sym_to_recur_step_cases,
@@ -1625,8 +1630,8 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "::parser {",
                    "std::string sym_to_debug_string(langcc::ParserSymId sym);",
                    "}")
           ->as_Decl());
@@ -1646,7 +1651,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
-            ->qq_ext(Some<string>("Decl"),
+            ->qq_ext(Some<std::string>("Decl"),
                      "std::string lang::", ctx.src_base_name_,
                      "::parser::sym_to_debug_string(langcc::ParserSymId sym) {",
                      "switch (sym) {", *sym_to_str_cases,
@@ -1656,8 +1661,8 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "::parser {",
                    "langcc::Int sym_to_num_attrs(langcc::ParserSymId sym);",
                    "}")
           ->as_Decl());
@@ -1687,7 +1692,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
-            ->qq_ext(Some<string>("Decl"),
+            ->qq_ext(Some<std::string>("Decl"),
                      "langcc::Int lang::", ctx.src_base_name_,
                      "::parser::sym_to_num_attrs(langcc::ParserSymId sym) {",
                      "switch (sym) {", *sym_to_n_attr_cases,
@@ -1697,8 +1702,8 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "::parser {",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "::parser {",
                    "std::string attr_to_debug_string(langcc::ParserSymId sym,",
                    "langcc::Int attr_ind);", "}")
           ->as_Decl());
@@ -1738,7 +1743,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     ctx.cc_.dst_defs_->push_back(
         ctx.cc_.Q_
-            ->qq_ext(Some<string>("Decl"), "std::string lang::",
+            ->qq_ext(Some<std::string>("Decl"), "std::string lang::",
                      ctx.src_base_name_, "::parser::attr_to_debug_string(",
                      "langcc::ParserSymId sym, langcc::Int attr_ind) {",
                      "switch (sym) {", *attr_to_str_cases,
@@ -1747,7 +1752,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
   }
 }
 
-inline Ch string_extract_lang_char_seq_single(string s_raw,
+inline Ch string_extract_lang_char_seq_single(std::string s_raw,
                                               lang::meta::Node_T e,
                                               LangCompileContext &ctx) {
   auto chs = string_extract_lang_char_seq(s_raw);
@@ -1760,37 +1765,41 @@ inline Ch string_extract_lang_char_seq_single(string s_raw,
 void lang_emit_global_defs(LangCompileContext &ctx) {
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "{", "using LangDesc = langcc::LangDesc<Node::_T,",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "{",
+                   "using LangDesc = langcc::LangDesc<Node::_T,",
                    "parser::action_by_vertex, parser::vertex_dfa_step>;", "}")
           ->as_Decl());
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "{", "using LangDesc_T = langcc::LangDesc_T<Node::_T,",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "{",
+                   "using LangDesc_T = langcc::LangDesc_T<Node::_T,",
                    "parser::action_by_vertex, parser::vertex_dfa_step>;", "}")
           ->as_Decl());
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "{", "using QuoteEnv = langcc::QuoteEnv<Node::_T,",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "{",
+                   "using QuoteEnv = langcc::QuoteEnv<Node::_T,",
                    "parser::action_by_vertex, parser::vertex_dfa_step>;", "}")
           ->as_Decl());
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "{", "using QuoteEnv_T = langcc::QuoteEnv_T<Node::_T,",
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "{",
+                   "using QuoteEnv_T = langcc::QuoteEnv_T<Node::_T,",
                    "parser::action_by_vertex, parser::vertex_dfa_step>;", "}")
           ->as_Decl());
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_.Q_
-          ->qq_ext(Some<string>("Decl"), "namespace lang::", ctx.src_base_name_,
-                   "{", "lang::", ctx.src_base_name_, "::LangDesc_T init();",
-                   "}")
+          ->qq_ext(Some<std::string>("Decl"),
+                   "namespace lang::", ctx.src_base_name_, "{",
+                   "lang::", ctx.src_base_name_, "::LangDesc_T init();", "}")
           ->as_Decl());
 
   auto lexer_mode_descs = make_rc<Vec<cc::Node_T>>();
@@ -1799,16 +1808,16 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
     auto tr_m = lexer_extract_trivial_maybe(mode);
 
     lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
-        Some<string>("Stmt"), "auto", mode->name_.to_std_string(),
+        Some<std::string>("Stmt"), "auto", mode->name_.to_std_string(),
         "= langcc::make_rc<langcc::LexerModeDesc>();"));
     lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
-        Some<string>("Stmt"), mode->name_.to_std_string(),
+        Some<std::string>("Stmt"), mode->name_.to_std_string(),
         "->step_fn_ = lexer::", mode->name_.to_std_string(), "::step;"));
     lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
-        Some<string>("Stmt"), mode->name_.to_std_string(),
+        Some<std::string>("Stmt"), mode->name_.to_std_string(),
         "->acc_fn_ = lexer::", mode->name_.to_std_string(), "::acc;"));
     lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
-        Some<string>("Stmt"), mode->name_.to_std_string(),
+        Some<std::string>("Stmt"), mode->name_.to_std_string(),
         "->step_exec_fn_ = lexer::", mode->name_.to_std_string(),
         "::step_exec;"));
 
@@ -1859,7 +1868,7 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
       cc::Node_T eof_block_final = eof_block.as_some();
 
       auto tr_fun = ctx.cc_.Q_->qq_ext(
-          Some<string>("Decl"),
+          Some<std::string>("Decl"),
           "[[always_inlines]] inline langcc::Int lang::", ctx.src_base_name_,
           "::lexer::", mode->name_.to_std_string(), "::proc_mode_loop_opt(",
           "    langcc::Ptr<langcc::LexerModeDesc> mode, "
@@ -1926,13 +1935,13 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
       ctx.cc_.dst_defs_->push_back(tr_fun->as_Decl());
 
       lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
-          Some<string>("Stmt"), mode->name_.to_std_string(),
+          Some<std::string>("Stmt"), mode->name_.to_std_string(),
           "->proc_mode_loop_opt_fn_ = lexer::", mode->name_.to_std_string(),
           "::proc_mode_loop_opt;"));
 
     } else {
       auto loop_fun = ctx.cc_.Q_->qq_ext(
-          Some<string>("Decl"),
+          Some<std::string>("Decl"),
           "[[always_inlines]] inline langcc::Int lang::", ctx.src_base_name_,
           "::lexer::", mode->name_.to_std_string(), "::proc_mode_loop_opt(",
           "    langcc::Ptr<langcc::LexerModeDesc> mode, "
@@ -2036,13 +2045,13 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
       ctx.cc_.dst_defs_->push_back(loop_fun->as_Decl());
 
       lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
-          Some<string>("Stmt"), mode->name_.to_std_string(),
+          Some<std::string>("Stmt"), mode->name_.to_std_string(),
           "->proc_mode_loop_opt_fn_ = lexer::", mode->name_.to_std_string(),
           "::proc_mode_loop_opt;"));
     }
 
     lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
-        Some<string>("Stmt"), "ret->lexer_mode_descs_->push(",
+        Some<std::string>("Stmt"), "ret->lexer_mode_descs_->push(",
         mode->name_.to_std_string(), ");"));
 
     if (mode->ws_sig__.is_some()) {
@@ -2087,7 +2096,7 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
             ctx.cc_.Q_->qq_args_acc(lex_args, "}");
           }
           ctx.cc_.Q_->qq_args_acc(lex_args, "}");
-          cc_delim = ctx.cc_.Q_->qq_inner(Some<string>("Expr"), lex_args);
+          cc_delim = ctx.cc_.Q_->qq_inner(Some<std::string>("Expr"), lex_args);
         }
       } else {
         cc_lc = ctx.cc_.qq_expr("langcc::Some<langcc::Ch>(",
@@ -2177,7 +2186,7 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
   ctx.cc_.dst_defs_->push_back(
       ctx.cc_.Q_
           ->qq_ext(
-              Some<string>("Decl"), "lang::", ctx.src_base_name_,
+              Some<std::string>("Decl"), "lang::", ctx.src_base_name_,
               "::LangDesc_T", "lang::", ctx.src_base_name_, "::init() {",
               "auto ret = langcc::make_rc<lang::", ctx.src_base_name_,
               "::LangDesc>();",
@@ -2227,11 +2236,11 @@ void lang_emit_test_defs(LangCompileContext &ctx) {
   auto test_stanza = lang_get_test_stanza(ctx.src_);
   if (test_stanza.is_some()) {
     for (auto test_case : *test_stanza.as_some()->items_) {
-      string test_text = test_case->text_.to_std_string();
+      std::string test_text = test_case->text_.to_std_string();
       AT(test_text.length() >= 2 && test_text[0] == '`' &&
          test_text[test_text.length() - 1] == '`');
       auto chs_raw = string_extract_lang_char_seq(test_text).as_some();
-      vector<Ch> chs;
+      std::vector<Ch> chs;
       Option_T<Int> test_error_pos = None<Int>();
       Int i = 0;
       while (i < chs_raw.size()) {
@@ -2248,7 +2257,7 @@ void lang_emit_test_defs(LangCompileContext &ctx) {
           ++i;
         }
       }
-      string test_sym = "langcc::None<std::string>()";
+      std::string test_sym = "langcc::None<std::string>()";
       if (test_case->sym__.is_some()) {
         test_sym =
             fmt_str("langcc::Some<std::string>(\"{}\")",

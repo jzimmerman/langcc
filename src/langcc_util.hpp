@@ -70,7 +70,7 @@ using Ch = char32_t;
 
 struct Unit {};
 
-using IntPair = pair<Int, Int>;
+using IntPair = std::pair<Int, Int>;
 
 template <typename T> using Ptr = T *;
 template <typename T> using Ref = T &;
@@ -82,13 +82,13 @@ inline void cc_nop() {}
 
 template <typename T> inline T *addr_of(T &t) { return &t; }
 
-inline Int len(const string &x) { return static_cast<Int>(x.size()); }
+inline Int len(const std::string &x) { return static_cast<Int>(x.size()); }
 
-template <typename T> inline Int len(const vector<T> &x) {
+template <typename T> inline Int len(const std::vector<T> &x) {
   return static_cast<Int>(x.size());
 }
 
-template <typename T> inline Int len(const deque<T> &x) {
+template <typename T> inline Int len(const std::deque<T> &x) {
   return static_cast<Int>(x.size());
 }
 
@@ -100,12 +100,13 @@ constexpr Int G_ = 1000000000;
 // Forward declarations
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename... Ts> inline void AT(bool cond, const string &s, Ts... ts);
+template <typename... Ts>
+inline void AT(bool cond, const std::string &s, Ts... ts);
 
 inline void AT(bool cond);
 
 template <typename... Ts>
-[[noreturn]] inline void AX(const string &s, Ts... ts);
+[[noreturn]] inline void AX(const std::string &s, Ts... ts);
 
 [[noreturn]] inline void AX();
 
@@ -165,15 +166,15 @@ using Time = Int;
 
 Time now();
 
-inline string str_repeat(const string &s, Int count);
+inline std::string str_repeat(const std::string &s, Int count);
 
 template <typename... Ts>
-void fmt(ostream &os, const string &s, const Ts &...ts);
+void fmt(std::ostream &os, const std::string &s, const Ts &...ts);
 
 template <typename... Ts>
-inline string fmt_str(const string &s, const Ts &...ts);
+inline std::string fmt_str(const std::string &s, const Ts &...ts);
 
-template <typename... Ts> inline string fmt_strs_var(const Ts &...ts);
+template <typename... Ts> inline std::string fmt_strs_var(const Ts &...ts);
 
 void *malloc_ext(Int size, Arena *A);
 
@@ -189,7 +190,7 @@ template <typename T> struct rc_ptr {
   void *v_;
 
   // If rc_ == 0, this is an arena-allocated pointer (not ref-counted).
-  atomic<Int> *rc_;
+  std::atomic<Int> *rc_;
 
   inline T &operator*() { return *reinterpret_cast<T *>(v_); }
 
@@ -208,7 +209,7 @@ template <typename T> struct rc_ptr {
 
   static rc_ptr from_alloc(void *v);
 
-  inline static rc_ptr from_contents(void *v, atomic<Int> *rc) {
+  inline static rc_ptr from_contents(void *v, std::atomic<Int> *rc) {
     rc_ptr ret;
     ret.v_ = v;
     ret.rc_ = rc;
@@ -260,7 +261,7 @@ struct _enable_rc_from_this {};
 
 struct enable_rc_from_this_poly : _enable_rc_from_this {
   void *_rc_contents_v_;
-  atomic<Int> *_rc_contents_rc_;
+  std::atomic<Int> *_rc_contents_rc_;
 
   template <typename U> rc_ptr<U> rc_from_this_poly() {
     return rc_ptr<U>::from_contents(_rc_contents_v_, _rc_contents_rc_);
@@ -273,7 +274,7 @@ struct enable_rc_from_this_poly : _enable_rc_from_this {
 
 template <typename T> struct enable_rc_from_this : _enable_rc_from_this {
   void *_rc_contents_v_;
-  atomic<Int> *_rc_contents_rc_;
+  std::atomic<Int> *_rc_contents_rc_;
 
   rc_ptr<T> rc_from_this() {
     return rc_ptr<T>::from_contents(_rc_contents_v_, _rc_contents_rc_);
@@ -282,13 +283,14 @@ template <typename T> struct enable_rc_from_this : _enable_rc_from_this {
 
 template <typename T> rc_ptr<T> rc_from_ptr_std(T *x) {
   auto xw = reinterpret_cast<Int *>(x);
-  return rc_ptr<T>::from_contents(xw, reinterpret_cast<atomic<Int> *>(xw - 1));
+  return rc_ptr<T>::from_contents(xw,
+                                  reinterpret_cast<std::atomic<Int> *>(xw - 1));
 }
 
 template <typename T> rc_ptr<T> rc_from_ptr_std_dec(void *x) {
   auto xw = reinterpret_cast<Int *>(x);
-  auto ret =
-      rc_ptr<T>::from_contents(xw, reinterpret_cast<atomic<Int> *>(xw - 1));
+  auto ret = rc_ptr<T>::from_contents(
+      xw, reinterpret_cast<std::atomic<Int> *>(xw - 1));
   ret.decref();
   return ret;
 }
@@ -302,22 +304,23 @@ template <typename T> T rc_from_ptr_std_take(T *x) {
 
 template <typename T, typename std::enable_if<std::is_base_of<
                           _enable_rc_from_this, T>::value>::type * = nullptr>
-void init_rc_contents(T *x, void *v, atomic<Int> *rc) {
+void init_rc_contents(T *x, void *v, std::atomic<Int> *rc) {
   x->_rc_contents_v_ = v;
   x->_rc_contents_rc_ = rc;
 }
 
 template <typename T, typename std::enable_if<!std::is_base_of<
                           _enable_rc_from_this, T>::value>::type * = nullptr>
-void init_rc_contents(T * /*x*/, void * /*v*/, atomic<Int> * /*rc*/) {}
+void init_rc_contents(T * /*x*/, void * /*v*/, std::atomic<Int> * /*rc*/) {}
 
 template <typename T, typename... Ts> rc_ptr<T> make_rc(Ts... args) {
   static_assert(sizeof(Int) == 8);
-  static_assert(sizeof(atomic<Int>) == 8);
-  auto mem = reinterpret_cast<Int *>(malloc(sizeof(atomic<Int>) + sizeof(T)));
+  static_assert(sizeof(std::atomic<Int>) == 8);
+  auto mem =
+      reinterpret_cast<Int *>(malloc(sizeof(std::atomic<Int>) + sizeof(T)));
   rc_ptr<T> ret;
-  ret.rc_ = reinterpret_cast<atomic<Int> *>(mem);
-  new (ret.rc_) atomic<Int>(1);
+  ret.rc_ = reinterpret_cast<std::atomic<Int> *>(mem);
+  new (ret.rc_) std::atomic<Int>(1);
   ret.v_ = mem + 1;
   new (ret.v_) T(args...);
   init_rc_contents(reinterpret_cast<T *>(ret.v_), ret.v_, ret.rc_);
@@ -355,29 +358,30 @@ template <typename T> [[always_inlines]] inline void rc_ptr<T>::decref() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// String utilities
+// std::string utilities
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename... Ts>
-inline string cc_sprintf(const char *fmt_str, Ts... ts);
+inline std::string cc_sprintf(const char *fmt_str, Ts... ts);
 
-inline bool str_starts_with(const string &x, const string &prefix) {
+inline bool str_starts_with(const std::string &x, const std::string &prefix) {
   if (len(x) < len(prefix)) {
     return false;
   }
   return x.substr(0, len(prefix)) == prefix;
 }
 
-inline string str_with_replace_all(const string &x, const string &a,
-                                   const string &b) {
+inline std::string str_with_replace_all(const std::string &x,
+                                        const std::string &a,
+                                        const std::string &b) {
 
-  string ret = "";
+  std::string ret = "";
 
   size_t pos_curr = 0;
 
   while (true) {
     size_t pos_next = x.find(a, pos_curr);
-    if (pos_next == string::npos) {
+    if (pos_next == std::string::npos) {
       ret += x.substr(pos_curr, x.length() - pos_curr);
       return ret;
     }
@@ -387,13 +391,14 @@ inline string str_with_replace_all(const string &x, const string &a,
   }
 }
 
-inline string str_reindent_inner(const string &x, const string &delim) {
+inline std::string str_reindent_inner(const std::string &x,
+                                      const std::string &delim) {
   return str_with_replace_all(x, "\n", "\n" + delim);
 }
 
-inline string str_reindent(const string &x, Int count) {
-  string ret = "";
-  string sp = str_repeat(" ", count);
+inline std::string str_reindent(const std::string &x, Int count) {
+  std::string ret = "";
+  std::string sp = str_repeat(" ", count);
   if (!str_starts_with(x, "\n")) {
     ret += sp;
   }
@@ -401,7 +406,7 @@ inline string str_reindent(const string &x, Int count) {
   return ret;
 }
 
-inline string duration_fmt_str(Int t) {
+inline std::string duration_fmt_str(Int t) {
   t += 500;
   t /= 1000;
   Int micros = t % 1000000;
@@ -411,7 +416,7 @@ inline string duration_fmt_str(Int t) {
   Int min = t % 60;
   t /= 60;
   Int hours = t;
-  string ret;
+  std::string ret;
   ret += cc_sprintf("%03d", hours);
   ret += ":";
   ret += cc_sprintf("%02d", min);
@@ -422,8 +427,8 @@ inline string duration_fmt_str(Int t) {
   return ret;
 }
 
-inline string utf8_encode(Ch ch) {
-  string ret = "";
+inline std::string utf8_encode(Ch ch) {
+  std::string ret = "";
   if (ch < 0x80) {
     ret += static_cast<char>(ch);
     return ret;
@@ -477,16 +482,16 @@ inline string utf8_encode(Ch ch) {
   }
 }
 
-inline string utf8_encode(vector<Ch> chs) {
-  string ret;
+inline std::string utf8_encode(std::vector<Ch> chs) {
+  std::string ret;
   for (auto ch : chs) {
     ret += utf8_encode(ch);
   }
   return ret;
 }
 
-inline Option_T<vector<Ch>> utf8_decode(string s) {
-  vector<Ch> ret;
+inline Option_T<std::vector<Ch>> utf8_decode(std::string s) {
+  std::vector<Ch> ret;
   u64 i = 0;
   while (i < s.length()) {
     auto c = static_cast<u8>(s[i]);
@@ -495,7 +500,7 @@ inline Option_T<vector<Ch>> utf8_decode(string s) {
       ++i;
     } else if ((c & 0xe0) == 0xc0) {
       if (i + 1 >= s.length() || (s[i + 1] & 0xc0) != 0x80) {
-        return None<vector<Ch>>();
+        return None<std::vector<Ch>>();
       }
       Ch ch = c & 0x1f;
       ch <<= 6;
@@ -505,7 +510,7 @@ inline Option_T<vector<Ch>> utf8_decode(string s) {
     } else if ((c & 0xf0) == 0xe0) {
       if (i + 2 >= s.length() || (s[i + 1] & 0xc0) != 0x80 ||
           (s[i + 2] & 0xc0) != 0x80) {
-        return None<vector<Ch>>();
+        return None<std::vector<Ch>>();
       }
       Ch ch = c & 0x0f;
       ch <<= 6;
@@ -517,7 +522,7 @@ inline Option_T<vector<Ch>> utf8_decode(string s) {
     } else if ((c & 0xf8) == 0xf0) {
       if (i + 3 >= s.length() || (s[i + 1] & 0xc0) != 0x80 ||
           (s[i + 2] & 0xc0) != 0x80 || (s[i + 3] & 0xc0) != 0x80) {
-        return None<vector<Ch>>();
+        return None<std::vector<Ch>>();
       }
       Ch ch = c & 0x07;
       ch <<= 6;
@@ -529,14 +534,14 @@ inline Option_T<vector<Ch>> utf8_decode(string s) {
       ret.push_back(ch);
       i += 4;
     } else {
-      return None<vector<Ch>>();
+      return None<std::vector<Ch>>();
     }
   }
-  return Some<vector<Ch>>(ret);
+  return Some<std::vector<Ch>>(ret);
 }
 
-inline string hex_nybble_display(u8 c) {
-  string ret;
+inline std::string hex_nybble_display(u8 c) {
+  std::string ret;
   if (c < 10) {
     ret += (static_cast<char>(c) + '0');
   } else if (c < 16) {
@@ -547,34 +552,34 @@ inline string hex_nybble_display(u8 c) {
   return ret;
 }
 
-inline string hex_byte_display(u8 c) {
+inline std::string hex_byte_display(u8 c) {
   return hex_nybble_display(c >> 4) + hex_nybble_display(c & 0xf);
 }
 
-inline string oct_byte_display(u8 c) {
+inline std::string oct_byte_display(u8 c) {
   return hex_nybble_display((c >> 6) & 0x7) +
          hex_nybble_display((c >> 3) & 0x7) +
          hex_nybble_display((c >> 6) & 0x7);
 }
 
-inline string hex_u16_display(u32 c) {
-  string ret;
+inline std::string hex_u16_display(u32 c) {
+  std::string ret;
   for (Int i = 0; i < 4; i++) {
     ret += hex_nybble_display((c >> ((3 - i) * 4)) & 0xf);
   }
   return ret;
 }
 
-inline string hex_u32_display(u32 c) {
-  string ret;
+inline std::string hex_u32_display(u32 c) {
+  std::string ret;
   for (Int i = 0; i < 8; i++) {
     ret += hex_nybble_display((c >> ((7 - i) * 4)) & 0xf);
   }
   return ret;
 }
 
-inline string hex_u64_display(u64 x) {
-  string ret;
+inline std::string hex_u64_display(u64 x) {
+  std::string ret;
   for (Int i = 0; i < 16; i++) {
     ret += hex_nybble_display((x >> ((15 - i) * 4)) & 0xf);
   }
@@ -591,12 +596,12 @@ inline u8 hex_nybble_to_u8(char x) {
   }
 }
 
-inline u8 hex_byte_to_u8(string x) {
+inline u8 hex_byte_to_u8(std::string x) {
   AT(x.length() == 2);
   return (hex_nybble_to_u8(x[0]) << 4) | hex_nybble_to_u8(x[1]);
 }
 
-inline Option_T<Int> string_to_int(string x) {
+inline Option_T<Int> string_to_int(std::string x) {
   Int ret = atoll(x.c_str());
   if (x == fmt_str("{}", ret)) {
     return Some<Int>(ret);
@@ -604,7 +609,7 @@ inline Option_T<Int> string_to_int(string x) {
   return None<Int>();
 }
 
-inline Option_T<Int> string_to_int_hex(string x) {
+inline Option_T<Int> string_to_int_hex(std::string x) {
   u64 ret = 0;
   for (u64 i = 0; i < x.length(); i++) {
     ret <<= 4;
@@ -613,10 +618,10 @@ inline Option_T<Int> string_to_int_hex(string x) {
   return Some<Int>(static_cast<Int>(ret));
 }
 
-inline Option_T<f64> string_to_f64(string x) {
+inline Option_T<f64> string_to_f64(std::string x) {
   f64 ret = strtod(x.data(), nullptr);
   if (ret == 0.0) {
-    string negx = "-" + x;
+    std::string negx = "-" + x;
     if (str_starts_with(x, "-")) {
       negx = x.substr(1);
     }
@@ -628,7 +633,7 @@ inline Option_T<f64> string_to_f64(string x) {
   return Some<f64>(ret);
 }
 
-inline Option_T<f32> string_to_f32(string x) {
+inline Option_T<f32> string_to_f32(std::string x) {
   auto ret = string_to_f64(x);
   if (ret.is_none()) {
     return None<f32>();
@@ -637,7 +642,7 @@ inline Option_T<f32> string_to_f32(string x) {
   }
 }
 
-inline string escape_string_char(Ch ch) {
+inline std::string escape_string_char(Ch ch) {
   if (ch == '\n') {
     return "\\n";
   } else if (ch == '\r') {
@@ -655,7 +660,7 @@ inline string escape_string_char(Ch ch) {
   } else if (ch == ' ') {
     return " ";
   } else if (ch >= 0 && ch < 128 && (isalnum(ch) || ispunct(ch))) {
-    return string("") + static_cast<char>(ch);
+    return std::string("") + static_cast<char>(ch);
   } else if (ch >= 0 && ch < 128) {
     return fmt_str("\\{}", oct_byte_display(static_cast<u8>(ch)));
   } else if (ch >= 0 && ch < 65536) {
@@ -667,20 +672,20 @@ inline string escape_string_char(Ch ch) {
   }
 }
 
-inline string escape_string_chars(vector<Ch> chs) {
-  string ret = "";
+inline std::string escape_string_chars(std::vector<Ch> chs) {
+  std::string ret = "";
   for (auto ch : chs) {
     ret += escape_string_char(ch);
   }
   return ret;
 }
 
-inline string escape_string(string s) {
+inline std::string escape_string(std::string s) {
   auto chs = utf8_decode(s).as_some();
   return escape_string_chars(chs);
 }
 
-inline string u8_char_display(u8 c) {
+inline std::string u8_char_display(u8 c) {
   if (isalnum(c) || ispunct(c) || c == ' ') {
     return fmt_str("`{}`", static_cast<char>(c));
   } else if (c == '\n') {
@@ -694,7 +699,7 @@ inline string u8_char_display(u8 c) {
   }
 }
 
-inline string char_display(Ch c) {
+inline std::string char_display(Ch c) {
   if (c < Ch(256)) {
     return u8_char_display(static_cast<u8>(c));
   } else {
@@ -707,8 +712,8 @@ enum struct Align {
   RIGHT,
 };
 
-inline string str_align_left(const string &x, Int w) {
-  string ret = "";
+inline std::string str_align_left(const std::string &x, Int w) {
+  std::string ret = "";
   ret += x;
   for (Int j = 0; j < w - len(x); j++) {
     ret += ' ';
@@ -716,8 +721,8 @@ inline string str_align_left(const string &x, Int w) {
   return ret;
 }
 
-inline string str_align_right(const string &x, Int w) {
-  string ret = "";
+inline std::string str_align_right(const std::string &x, Int w) {
+  std::string ret = "";
   for (Int j = 0; j < w - len(x); j++) {
     ret += ' ';
   }
@@ -725,7 +730,8 @@ inline string str_align_right(const string &x, Int w) {
   return ret;
 }
 
-inline string str_align(const string &x, Align align, Int w, bool strict) {
+inline std::string str_align(const std::string &x, Align align, Int w,
+                             bool strict) {
   switch (align) {
   case Align::LEFT: {
     if (strict) {
@@ -745,12 +751,13 @@ inline string str_align(const string &x, Align align, Int w, bool strict) {
   }
 }
 
-inline vector<string> str_split(const string &x, const string &delim) {
-  vector<string> ret;
-  string curr = x;
+inline std::vector<std::string> str_split(const std::string &x,
+                                          const std::string &delim) {
+  std::vector<std::string> ret;
+  std::string curr = x;
   while (true) {
     u64 pos = curr.find(delim);
-    if (pos == string::npos) {
+    if (pos == std::string::npos) {
       ret.push_back(curr);
       break;
     }
@@ -760,8 +767,8 @@ inline vector<string> str_split(const string &x, const string &delim) {
   return ret;
 }
 
-inline string str_repeat(const string &s, Int count) {
-  string ret;
+inline std::string str_repeat(const std::string &s, Int count) {
+  std::string ret;
   for (Int i = 0; i < count; i++) {
     ret += s;
   }
@@ -770,7 +777,7 @@ inline string str_repeat(const string &s, Int count) {
 
 inline bool u8_is_ws(u8 x) { return isspace(x); }
 
-inline string string_ws_strip(string x) {
+inline std::string string_ws_strip(std::string x) {
   u64 i;
   for (i = 0; i < x.length(); i++) {
     if (!u8_is_ws(x[i])) {
@@ -788,11 +795,11 @@ inline string string_ws_strip(string x) {
 }
 
 template <typename... Ts>
-inline string cc_sprintf(const char *fmt_str, Ts... ts) {
+inline std::string cc_sprintf(const char *fmt_str, Ts... ts) {
 
   Int n = 64;
   while (true) {
-    vector<char> buf(n);
+    std::vector<char> buf(n);
     auto res = snprintf(buf.data(), n, fmt_str, ts...);
     if (res == n) {
       n *= 2;
@@ -829,19 +836,19 @@ struct FmtFlags {
     return ret;
   }
 
-  inline void indent_single(ostream &os) {
+  inline void indent_single(std::ostream &os) {
     AT(indent_width_ >= 0);
     os << str_repeat(" ", indent_width_);
   }
 
-  inline void write_indent(ostream &os) {
+  inline void write_indent(std::ostream &os) {
     AT(indent_curr_ >= 0);
     AT(indent_width_ >= 0);
     auto k = indent_curr_ * indent_width_;
     os << str_repeat(" ", k);
   }
 
-  inline void advance_lines(Int n, ostream &os) {
+  inline void advance_lines(Int n, std::ostream &os) {
     if (n == 0) {
       return;
     }
@@ -853,75 +860,89 @@ struct FmtFlags {
   }
 };
 
-inline void pr(ostream &os, FmtFlags /*flags*/, const string &x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, const std::string &x) {
+  os << x;
+}
 
-inline void pr_debug(ostream &os, FmtFlags /*flags*/, const string &x) {
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/,
+                     const std::string &x) {
   os << "\"" << x << "\"";
 }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, const char *x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, const char *x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags /*flags*/, const char *x) {
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, const char *x) {
   os << "\"" << x << "\"";
 }
 
-template <typename T> inline void pr(ostream &os, FmtFlags /*flags*/, T *x) {
+template <typename T>
+inline void pr(std::ostream &os, FmtFlags /*flags*/, T *x) {
   os << "0x" << hex_u64_display(reinterpret_cast<u64>(x));
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags /*flags*/, T *x) {
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, T *x) {
   os << "0x" << hex_u64_display(reinterpret_cast<u64>(x));
 }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, Int x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Int x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, Int x) { pr(os, flags, x); }
+inline void pr_debug(std::ostream &os, FmtFlags flags, Int x) {
+  pr(os, flags, x);
+}
 
-inline void pr(ostream &os, FmtFlags /*flags*/, u32 x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, u32 x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, u32 x) { pr(os, flags, x); }
+inline void pr_debug(std::ostream &os, FmtFlags flags, u32 x) {
+  pr(os, flags, x);
+}
 
-inline void pr(ostream &os, FmtFlags /*flags*/, u64 x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, u64 x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, u64 x) { pr(os, flags, x); }
+inline void pr_debug(std::ostream &os, FmtFlags flags, u64 x) {
+  pr(os, flags, x);
+}
 
-inline void pr(ostream &os, FmtFlags /*flags*/, f32 x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, f32 x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, f32 x) { pr(os, flags, x); }
+inline void pr_debug(std::ostream &os, FmtFlags flags, f32 x) {
+  pr(os, flags, x);
+}
 
-inline void pr(ostream &os, FmtFlags /*flags*/, f64 x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, f64 x) { os << x; }
 
-inline void pr_debug(ostream &os, FmtFlags flags, f64 x) { pr(os, flags, x); }
+inline void pr_debug(std::ostream &os, FmtFlags flags, f64 x) {
+  pr(os, flags, x);
+}
 
-inline void pr(ostream &os, FmtFlags /*flags*/, bool x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, bool x) {
   os << (x ? "true" : "false");
 }
 
-inline void pr_debug(ostream &os, FmtFlags /*flags*/, bool x) {
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, bool x) {
   os << (x ? "true" : "false");
 }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, Ch x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Ch x) {
   os << static_cast<uint32_t>(x);
 }
 
-inline void pr_debug(ostream &os, FmtFlags /*flags*/, Ch x) {
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, Ch x) {
   os << "\"" << escape_string_char(x) << "\"";
 }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, i32 x) { os << x; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, i32 x) { os << x; }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, char c) { os << c; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, char c) { os << c; }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, Unit /*x*/) { os << "()"; }
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Unit /*x*/) { os << "()"; }
 
-inline void pr_debug(ostream &os, FmtFlags /*flags*/, Unit /*x*/) {
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, Unit /*x*/) {
   os << "()";
 }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const vector<T> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const std::vector<T> &x) {
   os << "{";
   for (Int i = 0; i < len(x); i++) {
     if (i > 0) {
@@ -933,7 +954,7 @@ inline void pr(ostream &os, FmtFlags flags, const vector<T> &x) {
 }
 
 template <typename K, typename V>
-inline void pr(ostream &os, FmtFlags flags, const map<K, V> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const std::map<K, V> &x) {
   os << "{";
   bool fresh = true;
   for (auto p : x) {
@@ -949,7 +970,7 @@ inline void pr(ostream &os, FmtFlags flags, const map<K, V> &x) {
 }
 
 template <typename T, typename U>
-inline void pr(ostream &os, FmtFlags flags, const pair<T, U> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const std::pair<T, U> &x) {
   os << "(";
   pr(os, flags, x.first);
   os << ", ";
@@ -958,7 +979,8 @@ inline void pr(ostream &os, FmtFlags flags, const pair<T, U> &x) {
 }
 
 template <typename T, typename U>
-inline void pr_debug(ostream &os, FmtFlags flags, const pair<T, U> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags,
+                     const std::pair<T, U> &x) {
   os << "(";
   pr_debug(os, flags, x.first);
   os << ", ";
@@ -967,7 +989,7 @@ inline void pr_debug(ostream &os, FmtFlags flags, const pair<T, U> &x) {
 }
 
 template <typename T, typename U, typename V>
-inline void pr(ostream &os, FmtFlags flags, const tuple<T, U, V> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const std::tuple<T, U, V> &x) {
   os << "(";
   pr(os, flags, std::get<0>(x));
   os << ", ";
@@ -978,7 +1000,8 @@ inline void pr(ostream &os, FmtFlags flags, const tuple<T, U, V> &x) {
 }
 
 template <typename T, typename U, typename V>
-inline void pr_debug(ostream &os, FmtFlags flags, const tuple<T, U, V> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags,
+                     const std::tuple<T, U, V> &x) {
   os << "(";
   pr_debug(os, flags, std::get<0>(x));
   os << ", ";
@@ -989,7 +1012,8 @@ inline void pr_debug(ostream &os, FmtFlags flags, const tuple<T, U, V> &x) {
 }
 
 template <typename T, typename U, typename V, typename W>
-inline void pr(ostream &os, FmtFlags flags, const tuple<T, U, V, W> &x) {
+inline void pr(std::ostream &os, FmtFlags flags,
+               const std::tuple<T, U, V, W> &x) {
   os << "(";
   pr(os, flags, std::get<0>(x));
   os << ", ";
@@ -1002,7 +1026,8 @@ inline void pr(ostream &os, FmtFlags flags, const tuple<T, U, V, W> &x) {
 }
 
 template <typename T, typename U, typename V, typename W>
-inline void pr_debug(ostream &os, FmtFlags flags, const tuple<T, U, V, W> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags,
+                     const std::tuple<T, U, V, W> &x) {
   os << "(";
   pr_debug(os, flags, std::get<0>(x));
   os << ", ";
@@ -1014,13 +1039,14 @@ inline void pr_debug(ostream &os, FmtFlags flags, const tuple<T, U, V, W> &x) {
   os << ")";
 }
 
-template <typename T> inline string pr_str(const T &t) {
-  ostringstream os;
+template <typename T> inline std::string pr_str(const T &t) {
+  std::ostringstream os;
   pr(os, FmtFlags::default_(), t);
   return os.str();
 }
 
-inline void fmt_flat(ostream &os, const string &s, const vector<string> &args) {
+inline void fmt_flat(std::ostream &os, const std::string &s,
+                     const std::vector<std::string> &args) {
   Int a = 0;
   Int i = 0;
   while (i < len(s)) {
@@ -1057,32 +1083,33 @@ inline void fmt_flat(ostream &os, const string &s, const vector<string> &args) {
   }
 }
 
-inline void fmt_acc(vector<string> & /*args_acc*/) {}
+inline void fmt_acc(std::vector<std::string> & /*args_acc*/) {}
 
 template <typename T, typename... Ts>
-inline void fmt_acc(vector<string> &args_acc, const T &t, const Ts &...ts) {
+inline void fmt_acc(std::vector<std::string> &args_acc, const T &t,
+                    const Ts &...ts) {
   args_acc.push_back(pr_str(t));
   fmt_acc(args_acc, ts...);
 }
 
 template <typename... Ts>
-inline void fmt(ostream &os, const string &s, const Ts &...ts) {
-  vector<string> args;
+inline void fmt(std::ostream &os, const std::string &s, const Ts &...ts) {
+  std::vector<std::string> args;
   fmt_acc(args, ts...);
   fmt_flat(os, s, args);
 }
 
 template <typename... Ts>
-inline string fmt_str(const string &s, const Ts &...ts) {
-  ostringstream os;
+inline std::string fmt_str(const std::string &s, const Ts &...ts) {
+  std::ostringstream os;
   fmt(os, s, ts...);
   return os.str();
 }
 
-template <typename... Ts> inline string fmt_strs_var(const Ts &...ts) {
-  vector<string> ret_vs;
+template <typename... Ts> inline std::string fmt_strs_var(const Ts &...ts) {
+  std::vector<std::string> ret_vs;
   fmt_acc(ret_vs, ts...);
-  string ret;
+  std::string ret;
   for (const auto &ret_v : ret_vs) {
     ret += ret_v;
   }
@@ -1144,13 +1171,13 @@ template <typename... Ts> void log_inner(Int level, const Ts &...args) {
   static Int prev_level = -1;
 
   Int tab_len = 4;
-  Int num_sp = tab_len * max<Int>(0L, level - 1);
-  string sp = str_repeat(" ", num_sp);
-  string prefix_prim = " ";
+  Int num_sp = tab_len * std::max<Int>(0L, level - 1);
+  std::string sp = str_repeat(" ", num_sp);
+  std::string prefix_prim = " ";
   if (level > 0) {
     prefix_prim = " -- ";
   }
-  string prefix_prim_sp = str_repeat(" ", len(prefix_prim));
+  std::string prefix_prim_sp = str_repeat(" ", len(prefix_prim));
 
   auto time_since = now() - get_init_time();
   auto time_str_res = duration_fmt_str(time_since);
@@ -1165,7 +1192,7 @@ template <typename... Ts> void log_inner(Int level, const Ts &...args) {
     ret_str = fmt_str("[{}]\n", time_str_res) + ret_str;
   }
 
-  *get_stderr() << ret_str << endl;
+  *get_stderr() << ret_str << std::endl;
 
   prev_level = level;
 }
@@ -1181,7 +1208,8 @@ template <typename... Ts> void LG(const Ts &...args) { LOG(-1, args...); }
 // Assertions
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename... Ts> inline void AT(bool cond, const string &s, Ts... ts) {
+template <typename... Ts>
+inline void AT(bool cond, const std::string &s, Ts... ts) {
   if (__builtin_expect(!cond, 0)) {
     LG("Assertion failed");
     if (len(s) > 0) {
@@ -1205,7 +1233,7 @@ inline void AT(bool cond) {
 }
 
 template <typename... Ts>
-[[noreturn]] inline void AX(const string &s, Ts... ts) {
+[[noreturn]] inline void AX(const std::string &s, Ts... ts) {
   AT(false, s, ts...);
   throw std::runtime_error("Assertion failed");
 }
@@ -1259,7 +1287,7 @@ inline void check_range(Int i, Int n) {
 [[noreturn]] inline void todo() { AX("Not yet implemented"); }
 
 template <typename... Ts>
-[[noreturn]] inline void todo(string msg, const Ts &...ts) {
+[[noreturn]] inline void todo(std::string msg, const Ts &...ts) {
   AX("Not yet implemented: " + msg, ts...);
 }
 
@@ -1333,7 +1361,7 @@ template <typename T> Option_T<T> Some(const T &t) {
 }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const Option_T<T> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const Option_T<T> &x) {
   if (x.is_some()) {
     os << "Some(";
     pr(os, flags, x.as_some());
@@ -1344,7 +1372,7 @@ inline void pr(ostream &os, FmtFlags flags, const Option_T<T> &x) {
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags flags, const Option_T<T> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const Option_T<T> &x) {
   if (x.is_some()) {
     os << "Some(";
     pr_debug(os, flags, x.as_some());
@@ -1655,7 +1683,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
 
 template <typename T> using Vec_T = rc_ptr<Vec<T>>;
 
-inline string vec_to_std_string(const Vec_T<char> &v) {
+inline std::string vec_to_std_string(const Vec_T<char> &v) {
   return string(&v->at_unchecked(0), v->len_);
 }
 
@@ -1664,7 +1692,7 @@ template <typename T> inline Int len(const Vec<T> &v) { return v.length(); }
 template <typename T> inline Int len(const Vec_T<T> &v) { return v->length(); }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const Vec<T> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const Vec<T> &x) {
   os << "[";
   for (Int i = 0; i < len(x); i++) {
     if (i > 0) {
@@ -1676,7 +1704,7 @@ inline void pr(ostream &os, FmtFlags flags, const Vec<T> &x) {
 }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const rc_ptr<Vec<T>> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const rc_ptr<Vec<T>> &x) {
   os << "[";
   for (Int i = 0; i < len(*x); i++) {
     if (i > 0) {
@@ -1688,7 +1716,7 @@ inline void pr(ostream &os, FmtFlags flags, const rc_ptr<Vec<T>> &x) {
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags flags, const Vec<T> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const Vec<T> &x) {
   if (x.length() == 0) {
     os << "[]";
     return;
@@ -1705,7 +1733,8 @@ inline void pr_debug(ostream &os, FmtFlags flags, const Vec<T> &x) {
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags flags, const rc_ptr<Vec<T>> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags,
+                     const rc_ptr<Vec<T>> &x) {
   if (x->length() == 0) {
     os << "[]";
     return;
@@ -1724,7 +1753,7 @@ inline void pr_debug(ostream &os, FmtFlags flags, const rc_ptr<Vec<T>> &x) {
 using Str = Vec<char>;
 using Str_T = Vec_T<char>;
 
-inline Str_T vec_from_std_string(const string &x) {
+inline Str_T vec_from_std_string(const std::string &x) {
   auto ret = make_rc<Str>(len(x), len(x), _Vec_constr_internal{});
   memcpy(ret->begin(), x.c_str(), len(x));
   return ret;
@@ -1741,30 +1770,30 @@ struct StrSlice {
   // StrSlice instance.
   StrSlice() : base_(nullptr), lo_(0), hi_(0) {}
 
-  static inline StrSlice from_std_string(string x) {
+  static inline StrSlice from_std_string(std::string x) {
     Int lo = 0;
     Int hi = x.length();
     Str_T xb = vec_from_std_string(x);
     return StrSlice(xb, lo, hi);
   }
 
-  inline string to_std_string() const {
+  inline std::string to_std_string() const {
     return string(&base_->at_unchecked(lo_), hi_ - lo_);
   }
 };
 
-inline void pr_debug(ostream &os, FmtFlags flags, StrSlice x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, StrSlice x) {
   pr_debug(os, flags, x.to_std_string());
 }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, StrSlice x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, StrSlice x) {
   auto base_ptr = x.base_->begin();
   for (Int i = x.lo_; i < x.hi_; i++) {
     os << base_ptr[i];
   }
 }
 
-inline Vec_T<u8> byte_vec_from_string(string x) {
+inline Vec_T<u8> byte_vec_from_string(std::string x) {
   auto ret = make_rc<Vec<u8>>();
   for (auto c : x) {
     ret->push(static_cast<u8>(c));
@@ -1772,8 +1801,8 @@ inline Vec_T<u8> byte_vec_from_string(string x) {
   return ret;
 }
 
-inline string string_from_byte_vec(Vec_T<u8> x) {
-  string ret = "";
+inline std::string string_from_byte_vec(Vec_T<u8> x) {
+  std::string ret = "";
   for (auto xi : *x) {
     ret += static_cast<char>(xi);
   }
@@ -1856,7 +1885,7 @@ struct Arena : enable_rc_from_this<Arena> {
 
   inline void *alloc(Int size) {
     if (__builtin_expect(curr_offset_ + size > page_size_default_, 0)) {
-      pages_.push(Page::make_alloc(max<Int>(size, page_size_default_)));
+      pages_.push(Page::make_alloc(std::max<Int>(size, page_size_default_)));
       curr_page_ = pages_[pages_.length() - 1];
       curr_offset_ = 0;
     }
@@ -2363,8 +2392,9 @@ inline void ser(SerBuf &buf, const HashVal &x) { ser_bytes(buf, 32, x.v_); }
 inline HashVal hash_data(const u8 *data, Int len) {
   HashVal ret;
   AR_eq(Int(picosha2::k_digest_size), 32);
-  vector<char> dst(32, 0);
-  picosha2::hash256(string(reinterpret_cast<const char *>(data), len), dst);
+  std::vector<char> dst(32, 0);
+  picosha2::hash256(std::string(reinterpret_cast<const char *>(data), len),
+                    dst);
   memcpy(&ret.v_[0], dst.data(), 32);
   return ret;
 }
@@ -2440,17 +2470,18 @@ template <typename T> inline HashVal val_hash(const Option_T<T> &v) {
 }
 
 template <typename T, typename U>
-inline void hash_ser(SerBuf &buf, const pair<T, U> &v) {
+inline void hash_ser(SerBuf &buf, const std::pair<T, U> &v) {
   hash_ser(buf, v.first);
   hash_ser(buf, v.second);
 }
 
-template <typename T, typename U> inline HashVal val_hash(const pair<T, U> &v) {
+template <typename T, typename U>
+inline HashVal val_hash(const std::pair<T, U> &v) {
   return val_hash_base(v);
 }
 
 template <typename T, typename U, typename V>
-inline void hash_ser(SerBuf &buf, const tuple<T, U, V> &x) {
+inline void hash_ser(SerBuf &buf, const std::tuple<T, U, V> &x) {
 
   auto [t, u, v] = x;
   hash_ser(buf, t);
@@ -2459,12 +2490,12 @@ inline void hash_ser(SerBuf &buf, const tuple<T, U, V> &x) {
 }
 
 template <typename T, typename U, typename V>
-inline HashVal val_hash(const tuple<T, U, V> &x) {
+inline HashVal val_hash(const std::tuple<T, U, V> &x) {
   return val_hash_base(x);
 }
 
 template <typename T, typename U, typename V, typename W>
-inline void hash_ser(SerBuf &buf, const tuple<T, U, V, W> &x) {
+inline void hash_ser(SerBuf &buf, const std::tuple<T, U, V, W> &x) {
 
   auto [t, u, v, w] = x;
   hash_ser(buf, t);
@@ -2474,13 +2505,13 @@ inline void hash_ser(SerBuf &buf, const tuple<T, U, V, W> &x) {
 }
 
 template <typename T, typename U, typename V, typename W>
-inline HashVal val_hash(const tuple<T, U, V, W> &x) {
+inline HashVal val_hash(const std::tuple<T, U, V, W> &x) {
 
   return val_hash_base(x);
 }
 
 template <typename T, typename U, typename V, typename W, typename X>
-inline void hash_ser(SerBuf &buf, const tuple<T, U, V, W, X> &a) {
+inline void hash_ser(SerBuf &buf, const std::tuple<T, U, V, W, X> &a) {
 
   auto [t, u, v, w, x] = a;
   hash_ser(buf, t);
@@ -2491,14 +2522,14 @@ inline void hash_ser(SerBuf &buf, const tuple<T, U, V, W, X> &a) {
 }
 
 template <typename T, typename U, typename V, typename W, typename X>
-inline HashVal val_hash(const tuple<T, U, V, W, X> &a) {
+inline HashVal val_hash(const std::tuple<T, U, V, W, X> &a) {
 
   return val_hash_base(a);
 }
 
 template <typename T, typename U, typename V, typename W, typename X,
           typename Y>
-inline void hash_ser(SerBuf &buf, const tuple<T, U, V, W, X, Y> &a) {
+inline void hash_ser(SerBuf &buf, const std::tuple<T, U, V, W, X, Y> &a) {
 
   auto [t, u, v, w, x, y] = a;
   hash_ser(buf, t);
@@ -2511,17 +2542,17 @@ inline void hash_ser(SerBuf &buf, const tuple<T, U, V, W, X, Y> &a) {
 
 template <typename T, typename U, typename V, typename W, typename X,
           typename Y>
-inline HashVal val_hash(const tuple<T, U, V, W, X, Y> &a) {
+inline HashVal val_hash(const std::tuple<T, U, V, W, X, Y> &a) {
 
   return val_hash_base(a);
 }
 
-inline void hash_ser(SerBuf &buf, const string &s) {
+inline void hash_ser(SerBuf &buf, const std::string &s) {
   ser_int(buf, s.length());
   ser_bytes(buf, s.length(), reinterpret_cast<const u8 *>(s.c_str()));
 }
 
-inline HashVal val_hash(const string &s) { return val_hash_base(s); }
+inline HashVal val_hash(const std::string &s) { return val_hash_base(s); }
 
 inline void hash_ser(SerBuf &buf, const StrSlice &s) {
   hash_ser(buf, s.to_std_string());
@@ -2529,7 +2560,7 @@ inline void hash_ser(SerBuf &buf, const StrSlice &s) {
 
 inline HashVal val_hash(const StrSlice &s) { return val_hash_base(s); }
 
-inline void pr(ostream &os, FmtFlags /*flags*/, HashVal hv) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, HashVal hv) {
   for (Int i = 0; i < 32; i++) {
     os << hex_byte_display(hv.v_[i]);
   }
@@ -2551,9 +2582,9 @@ template <typename K, typename V> struct MapIterator {
   inline bool operator==(const MapIterator<K, V> &x);
   inline bool operator!=(const MapIterator<K, V> &x) { return !(*this == x); }
 
-  inline pair<K, V> &operator*() { return m_->vs_[i_]; }
+  inline std::pair<K, V> &operator*() { return m_->vs_[i_]; }
 
-  inline const pair<K, V> &operator*() const { return m_->vs_[i_]; }
+  inline const std::pair<K, V> &operator*() const { return m_->vs_[i_]; }
 };
 
 template <typename K, typename V> struct Map;
@@ -2562,14 +2593,14 @@ template <typename K, typename V> using Map_T = rc_ptr<Map<K, V>>;
 template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
   unordered_map<HashVal, Int> m_;
   Vec<bool> live_;
-  Vec<pair<K, V>> vs_;
+  Vec<std::pair<K, V>> vs_;
 
   inline void insert(const K &k, const V &v) {
     auto hk = val_hash(k);
     auto n = vs_.length();
     auto k2 = K(k);
     auto v2 = V(v);
-    vs_.push(make_pair<K, V>(std::move(k2), std::move(v2)));
+    vs_.push(std::make_pair<K, V>(std::move(k2), std::move(v2)));
     live_.push(true);
     if (m_.find(hk) != m_.end()) {
       auto i = m_[hk];
@@ -2668,10 +2699,10 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
     return ret;
   }
 
-  inline Vec_T<pair<K, V>> items_to_vec() const {
-    auto ret = make_rc<Vec<pair<K, V>>>();
+  inline Vec_T<std::pair<K, V>> items_to_vec() const {
+    auto ret = make_rc<Vec<std::pair<K, V>>>();
     for (auto [k, v] : *this) {
-      ret->push_back(make_pair(k, v));
+      ret->push_back(std::make_pair(k, v));
     }
     return ret;
   }
@@ -2729,7 +2760,7 @@ inline HashVal val_hash(const Map_T<K, V> &m) {
 }
 
 template <typename K, typename V>
-inline void pr_debug(ostream &os, FmtFlags flags, const Map<K, V> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const Map<K, V> &x) {
   if (x.length() == 0) {
     os << "{}";
     return;
@@ -2748,12 +2779,12 @@ inline void pr_debug(ostream &os, FmtFlags flags, const Map<K, V> &x) {
 }
 
 template <typename K, typename V>
-inline void pr_debug(ostream &os, FmtFlags flags, const Map_T<K, V> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const Map_T<K, V> &x) {
   pr_debug(os, flags, *x);
 }
 
 template <typename K, typename V>
-inline void pr(ostream &os, FmtFlags flags, const Map<K, V> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const Map<K, V> &x) {
   if (x.length() == 0) {
     os << "{}";
     return;
@@ -2772,7 +2803,7 @@ inline void pr(ostream &os, FmtFlags flags, const Map<K, V> &x) {
 }
 
 template <typename K, typename V>
-inline void pr(ostream &os, FmtFlags flags, const Map_T<K, V> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const Map_T<K, V> &x) {
   pr(os, flags, *x);
 }
 
@@ -2936,7 +2967,7 @@ template <typename T> inline void SetIterator<T>::catchup() {
 }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const Set<T> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const Set<T> &x) {
   if (x.length() == 0) {
     os << "{}";
     return;
@@ -2952,12 +2983,12 @@ inline void pr(ostream &os, FmtFlags flags, const Set<T> &x) {
 }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const Set_T<T> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const Set_T<T> &x) {
   pr(os, flags, *x);
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags flags, const Set<T> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const Set<T> &x) {
   if (x.length() == 0) {
     os << "{}";
     return;
@@ -2973,7 +3004,7 @@ inline void pr_debug(ostream &os, FmtFlags flags, const Set<T> &x) {
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags flags, const Set_T<T> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const Set_T<T> &x) {
   pr_debug(os, flags, *x);
 }
 
@@ -3082,7 +3113,7 @@ template <typename T> inline void hash_ser(SerBuf &buf, const VecUniq_T<T> &x) {
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags flags, const VecUniq<T> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const VecUniq<T> &x) {
   if (x.length() == 0) {
     os << "[]";
     return;
@@ -3099,12 +3130,12 @@ inline void pr_debug(ostream &os, FmtFlags flags, const VecUniq<T> &x) {
 }
 
 template <typename T>
-inline void pr_debug(ostream &os, FmtFlags flags, const VecUniq_T<T> &x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const VecUniq_T<T> &x) {
   pr_debug(os, flags, *x);
 }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const VecUniq<T> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const VecUniq<T> &x) {
   if (x.length() == 0) {
     os << "[]";
     return;
@@ -3121,7 +3152,7 @@ inline void pr(ostream &os, FmtFlags flags, const VecUniq<T> &x) {
 }
 
 template <typename T>
-inline void pr(ostream &os, FmtFlags flags, const VecUniq_T<T> &x) {
+inline void pr(std::ostream &os, FmtFlags flags, const VecUniq_T<T> &x) {
   pr(os, flags, *x);
 }
 
@@ -3129,12 +3160,12 @@ inline void pr(ostream &os, FmtFlags flags, const VecUniq_T<T> &x) {
 // Miscellaneous utilities
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T> vector<T> vec_repeat(T t, Int n) {
-  return vector<T>(n, t);
+template <typename T> std::vector<T> vec_repeat(T t, Int n) {
+  return std::vector<T>(n, t);
 }
 
-template <typename T> vector<T> vec_reversed(const vector<T> &v) {
-  vector<T> w;
+template <typename T> std::vector<T> vec_reversed(const std::vector<T> &v) {
+  std::vector<T> w;
   for (Int i = len(v) - 1; i >= 0; i--) {
     w.push_back(v[i]);
   }
@@ -3166,25 +3197,26 @@ struct Gensym {
   inline Gensym() : next_(0) {}
 };
 
-using PrintTableRow = vector<string>;
+using PrintTableRow = std::vector<std::string>;
 
 struct PrintTable;
 using PrintTable_T = rc_ptr<PrintTable>;
 
 struct PrintTable {
-  vector<tuple<string, Align>> col_;
-  vector<vector<PrintTableRow>> items_;
-  vector<deque<string>> buffer_;
+  std::vector<std::tuple<std::string, Align>> col_;
+  std::vector<std::vector<PrintTableRow>> items_;
+  std::vector<std::deque<std::string>> buffer_;
   Int buffer_cursor_;
   bool buffer_active_;
-  vector<Int> widths_;
+  std::vector<Int> widths_;
 
-  inline static PrintTable_T make_ext(vector<tuple<string, Align>> col) {
+  inline static PrintTable_T
+  make_ext(std::vector<std::tuple<std::string, Align>> col) {
     auto ret = make_rc<PrintTable>();
     AT(len(col) > 0);
     ret->col_ = col;
     for (Int i = 0; i < len(col); i++) {
-      ret->buffer_.push_back(deque<string>());
+      ret->buffer_.push_back(std::deque<std::string>());
     }
     ret->buffer_cursor_ = 0;
     ret->buffer_active_ = false;
@@ -3192,8 +3224,8 @@ struct PrintTable {
     return ret;
   }
 
-  inline static PrintTable_T make(vector<tuple<Int, Align>> col) {
-    vector<tuple<string, Align>> col_ext;
+  inline static PrintTable_T make(std::vector<std::tuple<Int, Align>> col) {
+    std::vector<std::tuple<std::string, Align>> col_ext;
     for (auto [count_, align] : col) {
       col_ext.push_back({str_repeat(" ", count_), align});
     }
@@ -3201,7 +3233,7 @@ struct PrintTable {
   }
 
   inline static PrintTable_T new_var(Int n_col, Align align, Int spacing) {
-    tuple<Int, Align> p = {spacing, align};
+    std::tuple<Int, Align> p = {spacing, align};
     auto cols = vec_repeat(p, n_col);
     return make(cols);
   }
@@ -3223,10 +3255,10 @@ struct PrintTable {
       return;
     }
 
-    vector<vector<string>> curr_item;
+    std::vector<std::vector<std::string>> curr_item;
 
     while (true) {
-      vector<string> curr_row;
+      std::vector<std::string> curr_row;
       bool trivial = true;
       for (Int j = 0; j < this->num_col(); j++) {
         if (len(buffer_[j]) == 0) {
@@ -3288,7 +3320,7 @@ struct PrintTable {
     }
   }
 
-  inline void write_row(ostream &os, Int i) {
+  inline void write_row(std::ostream &os, Int i) {
     check_range(i, len(items_));
     for (auto row : items_[i]) {
       for (Int j = 0; j < this->num_col(); j++) {
@@ -3302,7 +3334,7 @@ struct PrintTable {
   }
 };
 
-inline void pr(ostream &os, FmtFlags /*flags*/, PrintTable_T td) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, PrintTable_T td) {
   AT(!td->buffer_active_, "buffer active");
   for (Int i = 0; i < td->num_rows(); i++) {
     td->write_row(os, i);
@@ -3313,13 +3345,13 @@ inline void pr(ostream &os, FmtFlags /*flags*/, PrintTable_T td) {
 // System utilities
 ////////////////////////////////////////////////////////////////////////////////
 
-inline Option_T<string> stdin_readline() {
-  string ret;
+inline Option_T<std::string> stdin_readline() {
+  std::string ret;
   std::getline(cin, ret);
   if (!cin.good()) {
-    return None<string>();
+    return None<std::string>();
   }
-  return Some<string>(ret + "\n");
+  return Some<std::string>(ret + "\n");
 }
 
 inline Time now() {
@@ -3328,7 +3360,7 @@ inline Time now() {
   return ret;
 }
 
-inline i32 sys_chk(i32 ret, string desc) {
+inline i32 sys_chk(i32 ret, std::string desc) {
   if (ret == 0) {
     return ret;
   }
@@ -3337,7 +3369,7 @@ inline i32 sys_chk(i32 ret, string desc) {
   AX();
 }
 
-inline i32 sys_chk_nonneg(i32 ret, string desc) {
+inline i32 sys_chk_nonneg(i32 ret, std::string desc) {
   if (ret >= 0) {
     return ret;
   }
@@ -3346,7 +3378,7 @@ inline i32 sys_chk_nonneg(i32 ret, string desc) {
   AX();
 }
 
-inline string read_file(string filename) {
+inline std::string read_file(std::string filename) {
   std::ifstream inFile(filename);
   if (!inFile.good()) {
     LG_ERR("Error opening for reading: {}", filename);
@@ -3357,7 +3389,7 @@ inline string read_file(string filename) {
   return strStream.str();
 }
 
-inline Str_T read_file_shared(string filename, Arena *A = nullptr) {
+inline Str_T read_file_shared(std::string filename, Arena *A = nullptr) {
   Int len = std::filesystem::file_size(filename);
   std::ifstream inFile(filename);
   if (!inFile.good()) {
@@ -3371,7 +3403,8 @@ inline Str_T read_file_shared(string filename, Arena *A = nullptr) {
   return ret;
 }
 
-inline void write_file(const string &filename_dst, const string &contents) {
+inline void write_file(const std::string &filename_dst,
+                       const std::string &contents) {
   ofstream fout(filename_dst);
   if (!fout.good()) {
     LG_ERR("Error opening for writing: {}", filename_dst);
