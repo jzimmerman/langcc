@@ -25,6 +25,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+    - name: Setup unix line endings
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
     - uses: actions/checkout@v3
     - uses: ilammy/msvc-dev-cmd@v1
       if: runner.os == 'Windows'
@@ -44,7 +48,7 @@ jobs:
     - name: single_test3
       if: runner.os != 'Windows'
       run: build/unittest_lang xfail_lexer_cycle
-    
+
     - name: win-single_test1
       if: runner.os == 'Windows'
       run: build/${{env.BUILD_TYPE}}/unittest_lang.exe golang_if_func_assoc2
