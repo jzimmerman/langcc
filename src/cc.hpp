@@ -102,7 +102,7 @@ struct CppGenContext {
   template <typename Ret, typename... Args>
   inline cc::Node_T
   gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, const GenName &ns, Ret ret_ty,
-                        std::string id_hint, const Args &...init_args);
+                        const std::string &id_hint, const Args &...init_args);
 
   inline void gen_cpp_fun_proto_acc(LexOutput_T &lex_args, NodeV mods,
                                     NodeRM ret, NodeR fun_name, NodeV params);
@@ -294,7 +294,7 @@ CppGenContext::gen_cpp_decl_enum(const GenName &decl_name,
 template <typename Ret, typename... Args>
 inline cc::Node_T
 CppGenContext::gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, const GenName &ns,
-                                     Ret ret_ty, std::string id_hint,
+                                     Ret ret_ty, const std::string &id_hint,
                                      const Args &...init_args) {
 
   auto id = this->gen_id_fresh(ns, std::move(id_hint));
@@ -330,7 +330,7 @@ inline void CppGenContext::gen_cpp_fun_proto_acc(LexOutput_T &lex_args,
                                                  NodeV mods, NodeRM ret,
                                                  NodeR fun_name, NodeV params) {
 
-  for (auto mod : *mods) {
+  for (const auto &mod : *mods) {
     Q_->qq_args_acc(lex_args, mod);
   }
   if (ret.is_some()) {
@@ -394,7 +394,7 @@ CppGenContext::gen_cpp_template_params_acc(LexOutput_T &dst,
   if (cpp_template_params->length() > 0) {
     Q_->qq_args_acc(dst, "template <");
     bool fresh = true;
-    for (auto param : *cpp_template_params) {
+    for (const auto &param : *cpp_template_params) {
       if (!fresh) {
         Q_->qq_args_acc(dst, ",");
       }
@@ -411,7 +411,7 @@ CppGenContext::gen_cpp_template_args_acc(LexOutput_T &dst,
   if (cpp_template_params->length() > 0) {
     Q_->qq_args_acc(dst, "<");
     bool fresh = true;
-    for (auto param : *cpp_template_params) {
+    for (const auto &param : *cpp_template_params) {
       if (!fresh) {
         Q_->qq_args_acc(dst, ",");
       }

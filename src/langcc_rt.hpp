@@ -56,7 +56,7 @@ using ParserVertexId = Int;
 
 struct NodeAllocDecrefInterface {
   virtual void decref_contents() = 0;
-  virtual inline ~NodeAllocDecrefInterface() {}
+  virtual ~NodeAllocDecrefInterface() = default;
 };
 
 constexpr Int PARSER_ATTR_MASK_MAX = 16;
@@ -68,7 +68,7 @@ constexpr i16 PARSER_LOOKAHEAD_SENTINEL = -1;
 using TermTokToSymFn = ParserSymId (*)(TokenId);
 
 struct ParserAttrMask {
-  u8 v_[PARSER_ATTR_MASK_MAX];
+  u8 v_[PARSER_ATTR_MASK_MAX]{};
   ParserAttrMask() {
     for (Int j = 0; j < PARSER_ATTR_MASK_MAX; j++) {
       v_[j] = PARSER_ATTR_MASK_SENTINEL;
@@ -79,7 +79,7 @@ struct ParserAttrMask {
 ParserAttrMask attr_mask_trivial();
 
 struct ParserLookahead {
-  i16 v_[PARSER_LOOKAHEAD_LEN_MAX];
+  i16 v_[PARSER_LOOKAHEAD_LEN_MAX]{};
   ParserLookahead() {
     for (Int j = 0; j < PARSER_LOOKAHEAD_LEN_MAX; j++) {
       v_[j] = PARSER_LOOKAHEAD_SENTINEL;
@@ -118,10 +118,10 @@ struct SymItem {
   ParserSymId id_;
   ParserAttrMask attr_;
   Int start_pos_; // lexer output index
-  Int tok_in_lo_;
+  Int tok_in_lo_{};
   // lexer input index (or -1 if quoted or non-lexer item). NOTE: in char, not
   // u8
-  Int tok_in_hi_;
+  Int tok_in_hi_{};
   // lexer input index (or -1 if quoted or non-lexer item). NOTE: in char, not
   // u8
   Result_T res_;
@@ -187,7 +187,7 @@ using ParserProcStep = ParserVertexId (*)(ParserVertexId, ParserSymId,
                                           ParserAttrMask);
 
 struct LexOutput : enable_rc_from_this<LexOutput> {
-  bool quoted_;
+  bool quoted_{};
 
   Vec_T<SymItem> items_internal_;
   Option_T<LexError_T> err_;
@@ -209,11 +209,11 @@ struct LexOutput : enable_rc_from_this<LexOutput> {
 
   inline StrSlice fetch_token(Int tok_i);
 
-  inline bool allows_quoted_symbols();
+  inline bool allows_quoted_symbols() const;
 
   inline std::string location_fmt_str(TokenBounds bounds);
 
-  inline bool is_success();
+  inline bool is_success() const;
 
   inline ParserLookahead first_k(Int lr_k);
 
@@ -233,7 +233,7 @@ struct ParseOutput : enable_rc_from_this<ParseOutput<Node, FAcc, FStep>> {
   ParserSymId sym_final_ = NO_SYM;
   ParserAttrMask attr_final_ = attr_mask_trivial();
   Option_T<ParseError_T> err_;
-  Int num_steps_;
+  Int num_steps_{};
 
   inline bool is_success() { return err_.is_none(); }
 
@@ -251,8 +251,8 @@ template <typename Node, ParserProcAcc FAcc, ParserProcStep FStep>
 struct NodeAllocDecrefObj : NodeAllocDecrefInterface {
   Node *x_;
 
-  inline NodeAllocDecrefObj(Node *x) : x_(x) {}
-  virtual inline void decref_contents() override {
+  inline explicit NodeAllocDecrefObj(Node *x) : x_(x) {}
+  inline void decref_contents() override {
     Arena *A = nullptr;
     rc_from_ptr_ext<Node>(x_, A).decref();
   }
@@ -293,7 +293,7 @@ struct LangDesc : enable_rc_from_this<LangDesc<Node, FAcc, FStep>> {
   Vec_T<LexerModeDesc_T> lexer_mode_descs_;
   rc_ptr<DFALabelIdVec> label_ids_ascii_;
   rc_ptr<DFALabelIdMap> label_ids_unicode_;
-  LexerModeId lexer_main_mode_;
+  LexerModeId lexer_main_mode_{};
 
   ParserDesc_T parser_desc_;
 
@@ -513,7 +513,7 @@ struct CommentMap {
 
 struct LexError : enable_rc_from_this<LexError> {
   LexInput_T in_;
-  Int i_;
+  Int i_{};
   std::string desc_;
 
   inline static LexError_T make(const LexInput_T &in, Int i, std::string desc) {
@@ -532,17 +532,17 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, LexError_T err) {
 struct LineMap : enable_rc_from_this<LineMap> {
   Vec<Int> lines_start_pos_;
 
-  inline Int num_lines() { return len(lines_start_pos_); }
+  inline Int num_lines() const { return len(lines_start_pos_); }
 };
 using LineMap_T = rc_ptr<LineMap>;
 
-static constexpr Ch NO_CHAR = Ch(-1);
+static constexpr Ch NO_CHAR = static_cast<Ch>(-1);
 
 struct LexInput : enable_rc_from_this<LexInput> {
   Str_T input_;
   Vec<Ch> data_;
   Vec<i32> char_pos_;
-  Int data_len_;
+  Int data_len_{};
   LineMap_T line_map_;
   Option_T<LexError_T> err_;
 
@@ -561,8 +561,8 @@ struct LexInput : enable_rc_from_this<LexInput> {
     ret->data_.adjust_len_inplace_unchecked(n + 1);
     ret->char_pos_.adjust_len_inplace_unchecked(n + 1);
 
-    auto ret_data_buf = &ret->data_.at_unchecked(0);
-    auto ret_char_pos_buf = &ret->char_pos_.at_unchecked(0);
+    auto *ret_data_buf = &ret->data_.at_unchecked(0);
+    auto *ret_char_pos_buf = &ret->char_pos_.at_unchecked(0);
 
     const char *x_str = x->begin();
 
@@ -632,7 +632,7 @@ struct LexInput : enable_rc_from_this<LexInput> {
     AR_le(pos, data_.length());
 
     const auto &sp = line_map_->lines_start_pos_;
-    Int i;
+    Int i = 0;
     for (i = 1; i < sp.length(); i++) {
       if (sp[i] > pos) {
         break;
@@ -703,7 +703,7 @@ struct LexInput : enable_rc_from_this<LexInput> {
   }
 
   // NOTE: u8 offsets as input
-  inline StrSlice fetch_string_site(Int ind_lo, Int ind_hi) {
+  inline StrSlice fetch_string_site(Int ind_lo, Int ind_hi) const {
     return StrSlice(input_, ind_lo, ind_hi);
   }
 
@@ -780,7 +780,7 @@ inline StrSlice LexOutput::fetch_token(Int tok_i) {
   return in_.as_some()->fetch_string_site(u8_lo, u8_hi);
 }
 
-inline bool LexOutput::allows_quoted_symbols() { return quoted_; }
+inline bool LexOutput::allows_quoted_symbols() const { return quoted_; }
 
 inline std::string LexOutput::location_fmt_str(TokenBounds bounds) {
   if (quoted_) {
@@ -811,7 +811,7 @@ inline std::string LexOutput::location_fmt_str(TokenBounds bounds) {
   return in_.as_some()->location_fmt_str(pos_lo, pos_hi);
 }
 
-inline bool LexOutput::is_success() { return err_.is_none(); }
+inline bool LexOutput::is_success() const { return err_.is_none(); }
 
 inline ParserLookahead LexOutput::first_k(Int lr_k) {
   if (__builtin_expect(quoted_, 0)) {
@@ -974,8 +974,8 @@ struct WsSigSpec {
   Vec_T<std::pair<Ch, Ch>> delims_;
 
   inline WsSigSpec(const Option_T<Ch> &line_continuation,
-                   const std::vector<std::pair<Ch, Ch>> &delims) {
-    line_continuation_ = line_continuation;
+                   const std::vector<std::pair<Ch, Ch>> &delims)
+      : line_continuation_(line_continuation) {
     delims_ = make_rc<Vec<std::pair<Ch, Ch>>>();
     for (auto delim : delims) {
       delims_->push(delim);
@@ -1006,13 +1006,13 @@ struct LexerState : enable_rc_from_this<LexerState> {
   rc_ptr<DFALabelIdVec> label_ids_ascii_;
   rc_ptr<DFALabelIdMap> label_ids_unicode_;
 
-  LexerModeId main_mode_;
+  LexerModeId main_mode_{};
   LexInput_T in_;
   LexOutput_T out_;
 
-  TermTokToSymFn tok_to_sym_;
+  TermTokToSymFn tok_to_sym_{};
 
-  bool consumed_;
+  bool consumed_{};
 
   inline static LexerState_T
   make(TermTokToSymFn tok_to_sym, const rc_ptr<DFALabelIdVec> &label_ids_ascii,
@@ -1093,31 +1093,19 @@ struct LexWhitespaceState {
                             TokenId tok_id_err_text_after_lc,
                             TokenId tok_id_err_delim_mismatch,
                             const WsSigSpec &ws_sig_spec)
-      : ws_sig_spec_(ws_sig_spec) {
-
-    st_ = st;
-
-    tok_to_sym_ = tok_to_sym;
-
-    scan_i_ = buf_pos;
-    input_data_ = input_data;
-    ws_buf_is_line_start_ = true;
-    ws_buf_is_lc_curr_ = false;
-
-    ws_sig_spec_ = ws_sig_spec;
-
-    tok_id_newline_ = tok_id_newline;
-    tok_id_indent_ = tok_id_indent;
-    tok_id_dedent_ = tok_id_dedent;
-    tok_id_err_incons_ = tok_id_err_incons;
-    tok_id_err_text_after_lc_ = tok_id_err_text_after_lc;
-    tok_id_err_delim_mismatch_ = tok_id_err_delim_mismatch;
+      : st_(st), tok_to_sym_(tok_to_sym), scan_i_(buf_pos),
+        input_data_(input_data), ws_buf_is_line_start_(true),
+        ws_buf_is_lc_curr_(false), ws_sig_spec_(ws_sig_spec),
+        tok_id_newline_(tok_id_newline), tok_id_indent_(tok_id_indent),
+        tok_id_dedent_(tok_id_dedent), tok_id_err_incons_(tok_id_err_incons),
+        tok_id_err_text_after_lc_(tok_id_err_text_after_lc),
+        tok_id_err_delim_mismatch_(tok_id_err_delim_mismatch) {
 
     ws_buf_curr_ = make_rc<Vec<Ch>>();
     ws_buf_stack_.push(make_rc<Vec<Ch>>());
   }
 
-  inline void dst_gen_push_item(SymItemVec *dst, SymItem item) {
+  inline void dst_gen_push_item(SymItemVec *dst, SymItem item) const {
     if (!!dst) {
       dst->push(item);
     } else {
@@ -1127,7 +1115,7 @@ struct LexWhitespaceState {
 
   inline void jump_update(Int i) { scan_i_ = i; }
 
-  inline bool active() { return delim_stack_.length() == 0; }
+  inline bool active() const { return delim_stack_.length() == 0; }
 
   inline void flush_buf(Int pos, SymItemVec *dst) {
     bool dedented = false;
@@ -1325,7 +1313,7 @@ lexer_char_to_label(Ch *in_data, Int in_i, Int /*in_data_len*/,
 
   Ch c = in_data[in_i];
 
-  DFALabelId cl;
+  DFALabelId cl = 0;
   if (__builtin_expect(c <= Ch(0x7f), 1)) {
     cl = label_ids_ascii[static_cast<Int>(c)];
   } else {
@@ -1537,26 +1525,26 @@ inline void pr(std::ostream &os, FmtFlags flags, langcc::ParseError_T err) {
 struct ParserProcState {
   LexOutput_T lex_res_;
 
-  ParserProcXform *desc_proc_xform_;
+  ParserProcXform *desc_proc_xform_{};
 
-  ParserVertexStackItem *Sv_addr_;
-  Int Sv_len_;
+  ParserVertexStackItem *Sv_addr_{};
+  Int Sv_len_{};
 
-  SymItem *Ss_addr_;
-  Int Ss_len_;
+  SymItem *Ss_addr_{};
+  Int Ss_len_{};
 
-  Result_T *Sr_addr_;
-  Int Sr_len_;
+  Result_T *Sr_addr_{};
+  Int Sr_len_{};
 
-  Result_T *Sb_addr_;
-  Int Sb_len_;
+  Result_T *Sb_addr_{};
+  Int Sb_len_{};
 
   SymItem sym_final_;
 
-  Gensym *unw_gen_;
-  Arena *unw_arena_;
+  Gensym *unw_gen_{};
+  Arena *unw_arena_{};
 
-  [[always_inlines]] inline void destroy_arrays() {
+  [[always_inlines]] inline void destroy_arrays() const {
     free_ext(this->Sv_addr_, this->unw_arena_);
     free_ext(this->Ss_addr_, this->unw_arena_);
     free_ext(this->Sr_addr_, this->unw_arena_);
@@ -1567,15 +1555,15 @@ struct ParserProcState {
     return lex_res_->fetch_token(tok_i);
   }
 
-  [[always_inlines]] inline Gensym *gen() { return unw_gen_; }
+  [[always_inlines]] inline Gensym *gen() const { return unw_gen_; }
 
-  [[always_inlines]] inline Arena *arena() { return unw_arena_; }
+  [[always_inlines]] inline Arena *arena() const { return unw_arena_; }
 
   [[always_inlines]] inline void enroll_final_sym(SymItem sym) {
     sym_final_ = sym;
   }
 
-  [[always_inlines]] inline ParserProcXform *desc_proc_xform() {
+  [[always_inlines]] inline ParserProcXform *desc_proc_xform() const {
     return desc_proc_xform_;
   }
 };
@@ -1669,7 +1657,7 @@ inline std::string parser_format_sym(ParserDesc *desc_raw, ParserSymId sym,
   }
   ret += "[";
   bool fresh = true;
-  for (auto attr_str : *attr_strs) {
+  for (const auto &attr_str : *attr_strs) {
     if (!fresh) {
       ret += ",";
     }
@@ -1757,11 +1745,11 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
     tgt = sym_target.as_some();
   }
 
-  ParserVertexStackItem start_item;
+  ParserVertexStackItem start_item{};
   start_item.v_ = parser_desc_->start_vertex_;
   start_item.pos_ = 0;
 
-  auto desc_raw = parser_desc_.get();
+  auto *desc_raw = parser_desc_.get();
 
   ParserProcXform *st_desc_proc_xform_cached =
       parser_desc_->proc_xform_by_prod_id_->begin();
@@ -1900,7 +1888,7 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
               st_i, lex_out);
         }
 
-        ParserVertexStackItem new_item;
+        ParserVertexStackItem new_item{};
         new_item.v_ = next;
         new_item.pos_ = pos;
 
@@ -1960,7 +1948,7 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
               st_i, lex_out);
         }
 
-        ParserVertexStackItem next_item;
+        ParserVertexStackItem next_item{};
         next_item.v_ = next;
         next_item.pos_ = pos;
 
@@ -1989,7 +1977,7 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
           AX("Recur step failed: v={} sym={}\n", v, step_sym);
         }
 
-        ParserVertexStackItem next_item;
+        ParserVertexStackItem next_item{};
         next_item.v_ = next;
         next_item.pos_ = pos;
 
@@ -2050,7 +2038,7 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
               fmt_str("Unexpected symbol: {}", buf_item), st_i, lex_out);
         }
 
-        ParserVertexStackItem next_item;
+        ParserVertexStackItem next_item{};
         next_item.v_ = next;
         next_item.pos_ = pos;
 
@@ -2175,7 +2163,7 @@ namespace langcc::PrBufStreamItem {
 struct _T : hash_obj, enable_rc_from_this_poly {
   langcc::PrBufStreamItem::_W w_;
   virtual ~_T();
-  _T(langcc::PrBufStreamItem::_W w);
+  explicit _T(langcc::PrBufStreamItem::_W w);
   bool is_String() const;
   bool is_Newline() const;
   bool is_Indent() const;
@@ -2242,7 +2230,7 @@ struct _T : langcc::PrBufStreamItem::_T {
   _T();
   langcc::PrBufStreamItem::String_T with_x(std::string x);
   void hash_ser_acc_langcc_PrBufStreamItem_String(SerBuf &buf) const;
-  virtual void hash_ser_acc(SerBuf &buf) const;
+  void hash_ser_acc(SerBuf &buf) const override;
 };
 } // namespace langcc::PrBufStreamItem::String
 
@@ -2263,7 +2251,7 @@ namespace langcc::PrBufStreamItem::Newline {
 struct _T : langcc::PrBufStreamItem::_T {
   _T();
   void hash_ser_acc_langcc_PrBufStreamItem_Newline(SerBuf &buf) const;
-  virtual void hash_ser_acc(SerBuf &buf) const;
+  void hash_ser_acc(SerBuf &buf) const override;
 };
 } // namespace langcc::PrBufStreamItem::Newline
 
@@ -2284,7 +2272,7 @@ namespace langcc::PrBufStreamItem::Indent {
 struct _T : langcc::PrBufStreamItem::_T {
   _T();
   void hash_ser_acc_langcc_PrBufStreamItem_Indent(SerBuf &buf) const;
-  virtual void hash_ser_acc(SerBuf &buf) const;
+  void hash_ser_acc(SerBuf &buf) const override;
 };
 } // namespace langcc::PrBufStreamItem::Indent
 
@@ -2305,7 +2293,7 @@ namespace langcc::PrBufStreamItem::Dedent {
 struct _T : langcc::PrBufStreamItem::_T {
   _T();
   void hash_ser_acc_langcc_PrBufStreamItem_Dedent(SerBuf &buf) const;
-  virtual void hash_ser_acc(SerBuf &buf) const;
+  void hash_ser_acc(SerBuf &buf) const override;
 };
 } // namespace langcc::PrBufStreamItem::Dedent
 
@@ -2336,7 +2324,8 @@ inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
 
 inline langcc::PrBufStreamItem::_T::~_T() {}
 
-inline langcc::PrBufStreamItem::_T::_T(langcc::PrBufStreamItem::_W w) {
+inline langcc::PrBufStreamItem::_T::_T(langcc::PrBufStreamItem::_W w)
+    : enable_rc_from_this_poly() {
   w_ = w;
 }
 
@@ -2396,7 +2385,7 @@ inline void langcc::pr_debug(std::ostream &os, langcc::FmtFlags flags,
   os << "}";
 }
 
-inline langcc::PrBufStream::_T::_T() {}
+inline langcc::PrBufStream::_T::_T() : enable_rc_from_this_poly() {}
 
 [[always_inlines]] inline langcc::PrBufStream_T
 langcc::PrBufStream::make(const Vec_T<langcc::PrBufStreamItem_T> &items) {

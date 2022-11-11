@@ -473,7 +473,7 @@ cc::Node_T data_type_expr_to_cpp(data::Node::Expr_T x, const GenName &ns,
     auto cpp_f = data_type_expr_to_cpp(xc->f_, ns, ctx);
     ctx.cc_.Q_->qq_args_acc(lex_args, cpp_f, "<");
     bool fresh = true;
-    for (auto arg : *xc->args_) {
+    for (const auto &arg : *xc->args_) {
       if (!fresh) {
         ctx.cc_.Q_->qq_args_acc(lex_args, ",");
       }
@@ -528,7 +528,7 @@ dt_extract_def_fields_full(const GenName &curr, DataCompileContext &ctx) {
 }
 
 Vec_T<std::pair<IdBase, data::Node::Entry::Method_T>>
-dt_extract_def_methods(GenName curr, DataCompileContext &ctx) {
+dt_extract_def_methods(const GenName &curr, DataCompileContext &ctx) {
   auto dt = ctx.data_leaves_->operator[](curr);
   auto methods = make_rc<Vec<std::pair<IdBase, data::Node::Entry::Method_T>>>();
   for (auto data_entry : *dt->entries_) {
@@ -903,7 +903,7 @@ void data_gen_xform_id_fn(const GenName &star, const GenName &curr,
   auto sel_m = ctx.resolve_ancestor_sel(star, curr);
   AT(sel_m.is_some());
   auto sel = sel_m.as_some();
-  for (auto sel_i : *sel) {
+  for (const auto &sel_i : *sel) {
     ret = ctx.cc_.qq_expr(ret, "->", fmt_str("as_{}", sel_i), "()");
   }
 
@@ -933,7 +933,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
   DataCompileContext ctx;
 
   auto ns_top = make_rc<Vec<IdBase>>();
-  for (auto src_decl : *src->as_Module()->decls_) {
+  for (const auto &src_decl : *src->as_Module()->decls_) {
     tabulate_data_decl_acc(src_decl, ns_top, ctx);
   }
 
@@ -945,7 +945,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
           ->qq_ext(Some<std::string>("Decl"), "#include <langcc_util.hpp>")
           ->as_Decl());
 
-  for (auto path : *ctx.includes_) {
+  for (const auto &path : *ctx.includes_) {
     ctx.cc_.dst_decls_->push_back(
         ctx.cc_.Q_
             ->qq_ext(Some<std::string>("Decl"), fmt_str("#include {}", path))
@@ -1192,7 +1192,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     Map<IdBase, Vec_T<cc::Node_T>> cpp_with_param_vars;
     Map<IdBase, Vec_T<cc::Node_T>> cpp_with_body;
     Map<IdBase, cc::Node_T> cpp_with_ret;
-    for (auto q : *fields_full) {
+    for (const auto &q : *fields_full) {
       auto field_name = q.first;
       cpp_with_name_full.insert(field_name,
                                 lower_name(LowerTy::WITH_FULL, name_full,
@@ -1570,7 +1570,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
       }
     }
 
-    for (auto q : *fields_proper) {
+    for (const auto &q : *fields_proper) {
       auto data_field_name = q.first;
       auto data_field_type = q.second;
       auto def_ns = name_full;
@@ -1620,7 +1620,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
                                                cpp_type, cpp_with_param_var);
       cpp_with_param_vars[data_field_name]->push_back(cpp_with_param_var);
       cpp_with_params[data_field_name]->push_back(cpp_with_param);
-      for (auto data_field_with_rem : *fields_full) {
+      for (const auto &data_field_with_rem : *fields_full) {
         auto data_field_with_rem_name = data_field_with_rem.first;
         auto cpp_field_with_rem_name =
             ctx.cc_.gen_cpp_id_base(data_field_with_rem_name + "_");
@@ -1691,7 +1691,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
               ->as_Decl());
 
       // with_X()
-      for (auto data_field : *fields_full) {
+      for (const auto &data_field : *fields_full) {
         auto data_field_name = data_field.first;
         cpp_fields->push_back(ctx.cc_.gen_cpp_fun_proto_entry(
             NodeV_empty(), NodeV_empty(),
@@ -1876,7 +1876,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
               ->as_Decl());
 
       // with_X()
-      for (auto data_field : *fields_full) {
+      for (const auto &data_field : *fields_full) {
         auto data_field_name = data_field.first;
         ctx.cc_.push_def(
             cpp_template_params->length() > 0,
@@ -2051,7 +2051,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
       data_gen_xform_fn(XformTy::Xform, p.first, p.first, vis, header_mode,
                         ctx);
 
-      for (auto vis_i : *vis) {
+      for (const auto &vis_i : *vis) {
         if (ctx.is_ancestor(p.first, vis_i)) {
           data_gen_xform_id_fn(p.first, vis_i, header_mode, ctx);
         }
