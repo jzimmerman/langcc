@@ -29,25 +29,13 @@
 #include <unordered_set>
 #include <vector>
 
-#ifdef __APPLE__
-#include <signal.h>
-#endif
-
-#include <fcntl.h>
-#include <sys/types.h>
 #ifdef WIN32
 #define always_inlines msvc::forceinline
 #define noinlines msvc::noinline
 #define __builtin_expect(expr, x) (expr)
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <io.h>
-#undef OPTIONAL
 #else
 #define always_inlines gnu::always_inline
 #define noinlines gnu::noinline
-#include <sys/wait.h>
-#include <unistd.h>
 #endif
 
 namespace langcc {
@@ -1177,7 +1165,7 @@ template <typename... Ts> void log_inner(Int level, const Ts &...args) {
     ret_str = fmt_str("[{}]\n", time_str_res) + ret_str;
   }
 
-  *get_stdout() << ret_str << endl;
+  *get_stderr() << ret_str << endl;
 
   prev_level = level;
 }
@@ -3358,46 +3346,27 @@ inline i32 sys_chk_nonneg(i32 ret, string desc) {
   AX();
 }
 
-using fd = i32;
-
-inline string read_fd(fd fin) {
-  string ret;
-  constexpr Int N = 65536;
-  char buf[N];
-  while (true) {
-    Int n_read = sys_chk_nonneg(read(fin, buf, N), "read");
-    if (n_read == 0) {
-      break;
-    } else {
-      ret += string(buf, n_read);
-    }
-  }
-  return ret;
-}
-
 inline string read_file(string filename) {
-  fd fin = open(filename.c_str(), O_RDONLY);
-  if (fin < 0) {
+  std::ifstream inFile(filename);
+  if (!inFile.good()) {
     LG_ERR("Error opening for reading: {}", filename);
     AX();
   }
-  auto ret = read_fd(fin);
-  close(fin);
-  return ret;
+  std::stringstream strStream;
+  strStream << inFile.rdbuf();
+  return strStream.str();
 }
 
 inline Str_T read_file_shared(string filename, Arena *A = nullptr) {
-  fd fin = open(filename.c_str(), O_RDONLY);
-  if (fin < 0) {
+  Int len = std::filesystem::file_size(filename);
+  std::ifstream inFile(filename);
+  if (!inFile.good()) {
     LG_ERR("Error opening for reading: {}", filename);
     AX();
   }
-  Int len = lseek(fin, 0, SEEK_END);
-  lseek(fin, 0, SEEK_SET);
   auto ret = make_rc<Str>(A, 0, len * 2, _Vec_constr_internal{});
-  Int n_read = sys_chk_nonneg(read(fin, &ret->at_unchecked(0), len), "read");
-  AR_eq(n_read, len);
-  close(fin);
+  inFile.read(&ret->at_unchecked(0), len);
+  AR_eq(static_cast<Int>(inFile.gcount()), len);
   ret->adjust_len_inplace_unchecked(len);
   return ret;
 }

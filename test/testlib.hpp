@@ -133,7 +133,7 @@ inline void dispatch_unit_test(UnitTest &test) {
       std::make_shared<std::stringstream>();
   std::shared_ptr<std::stringstream> new_stderr =
       std::make_shared<std::stringstream>();
-  std::thread testthread = std::thread([&] {
+  std::thread testthread = std::thread([=] {
     set_stdout(new_stdout.get());
     set_stderr(new_stderr.get());
     int status = test.f_();
