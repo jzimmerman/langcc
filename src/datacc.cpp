@@ -26,10 +26,11 @@ struct DataCompileContext {
     param_src_ = make_rc<Map<GenName, GenName>>();
     includes_ = make_rc<Vec<std::string>>();
   }
-
+  virtual ~DataCompileContext() = default;
   DataCompileContext(const DataCompileContext &) = delete;
   DataCompileContext(DataCompileContext &&) = delete;
   DataCompileContext &operator=(const DataCompileContext &) = delete;
+  DataCompileContext &operator=(DataCompileContext &&) = delete;
 
   inline Vec_T<cc::Node_T>
   cpp_tabulate_template_params(lang::data::Node::Decl::Data_T ty);
@@ -57,7 +58,8 @@ struct DataCompileContext {
     return ret;
   }
 
-  inline Option_T<Vec_T<IdBase>> resolve_ancestor_sel(GenName a, GenName x) {
+  inline Option_T<Vec_T<IdBase>> resolve_ancestor_sel(const GenName &a,
+                                                      const GenName &x) {
     auto ret = make_rc<Vec<IdBase>>();
     bool active = false;
     auto anc = this->dt_ancestors(x);
@@ -75,18 +77,18 @@ struct DataCompileContext {
     return None<Vec_T<IdBase>>();
   }
 
-  inline bool is_ancestor(GenName a, GenName x) {
+  inline bool is_ancestor(const GenName &a, const GenName &x) {
     return resolve_ancestor_sel(a, x).is_some();
   }
 };
 
 cc::Node_T lower_name_cpp(LowerTy lt, const GenName &name,
                           DataCompileContext &ctx,
-                          Option_T<GenName> name_aux = None<GenName>(),
+                          const Option_T<GenName> &name_aux = None<GenName>(),
                           Option_T<Vec_T<cc::Node_T>> cpp_template_params =
                               None<Vec_T<cc::Node_T>>());
 
-inline Vec_T<cc::Node_T> cpp_tabulate_template_params(GenName curr,
+inline Vec_T<cc::Node_T> cpp_tabulate_template_params(const GenName &curr,
                                                       DataCompileContext &ctx) {
   auto ret = make_rc<Vec<cc::Node_T>>();
   auto dt = ctx.data_leaves_->operator[](curr);
@@ -115,7 +117,7 @@ inline Vec_T<cc::Node_T> cpp_tabulate_template_params(GenName curr,
   return ret;
 }
 
-inline cc::Node_T cpp_get_templated_name(GenName curr, LowerTy ty,
+inline cc::Node_T cpp_get_templated_name(const GenName &curr, LowerTy ty,
                                          DataCompileContext &ctx) {
   auto cpp_template_params = cpp_tabulate_template_params(curr, ctx);
   auto cpp_struct_decl_name = lower_name_cpp(ty, curr, ctx);
@@ -138,7 +140,7 @@ inline Vec_T<cc::Node_T> DataCompileContext::cpp_tabulate_template_params(
 
 GenName data_id_to_name(const Vec_T<StrSlice> &items) {
   auto ret = make_rc<Vec<IdBase>>();
-  for (auto id_base : *items) {
+  for (const auto &id_base : *items) {
     ret->push(id_base.to_std_string());
   }
   return ret;
@@ -190,7 +192,7 @@ void tabulate_data_decl_acc(data::Node_T src, const GenName &ns,
   } else if (decl->is_Namespace()) {
     auto ns_new =
         ns->with_extend(data_id_to_name(decl->as_Namespace()->name_->items_));
-    for (auto decl : *decl->as_Namespace()->body_) {
+    for (const auto &decl : *decl->as_Namespace()->body_) {
       tabulate_data_decl_acc(decl, ns_new, ctx);
     }
 
@@ -382,7 +384,8 @@ GenName lower_name(LowerTy lt, const GenName &name,
 }
 
 cc::Node_T lower_name_cpp(LowerTy lt, const GenName &name,
-                          DataCompileContext &ctx, Option_T<GenName> name_aux,
+                          DataCompileContext &ctx,
+                          const Option_T<GenName> &name_aux,
                           Option_T<Vec_T<cc::Node_T>> cpp_template_params) {
 
   auto name_low = lower_name(lt, name, name_aux);
@@ -488,7 +491,7 @@ cc::Node_T data_type_expr_to_cpp(data::Node::Expr_T x, const GenName &ns,
 
 std::pair<Vec_T<std::pair<IdBase, data::Node::Entry::Field_T>>,
           Vec_T<std::pair<IdBase, data::Node::Entry::Field_T>>>
-dt_extract_def_fields_full(GenName curr, DataCompileContext &ctx) {
+dt_extract_def_fields_full(const GenName &curr, DataCompileContext &ctx) {
 
   auto dt = ctx.data_leaves_->operator[](curr);
   auto fields_full =
@@ -543,7 +546,8 @@ enum struct XformTy {
   Visit,
 };
 
-IdBase xform_ty_gen_cpp_fn_name(XformTy xform_ty, GenName star, bool top_ty) {
+IdBase xform_ty_gen_cpp_fn_name(XformTy xform_ty, const GenName &star,
+                                bool top_ty) {
   if (xform_ty == XformTy::Xform) {
     if (top_ty) {
       return fmt_str("xformT_{}", name_sep_to_underscores(star));
@@ -557,16 +561,15 @@ IdBase xform_ty_gen_cpp_fn_name(XformTy xform_ty, GenName star, bool top_ty) {
   }
 }
 
-void data_gen_xform_fn(XformTy xform_ty, GenName star, GenName curr,
-                       Set_T<GenName> &vis, HeaderMode header_mode,
-                       DataCompileContext &ctx);
+void data_gen_xform_fn(XformTy xform_ty, const GenName &star,
+                       const GenName &curr, Set_T<GenName> &vis,
+                       HeaderMode header_mode, DataCompileContext &ctx);
 
-Option_T<cc::Node_T>
-lower_xform_field_entry(XformTy xform_ty, GenName star, GenName curr,
-                        Set_T<GenName> vis, Vec_T<cc::Node_T> &dst,
-                        cc::Node_T src, cc::Node_T src_f, data::Node::Expr_T ty,
-                        const GenName &src_ns, const GenName &gen_ns,
-                        HeaderMode header_mode, DataCompileContext &ctx) {
+Option_T<cc::Node_T> lower_xform_field_entry(
+    XformTy xform_ty, const GenName &star, const GenName &curr,
+    Set_T<GenName> vis, Vec_T<cc::Node_T> &dst, const cc::Node_T &src,
+    const cc::Node_T &src_f, data::Node::Expr_T ty, const GenName &src_ns,
+    const GenName &gen_ns, HeaderMode header_mode, DataCompileContext &ctx) {
 
   if (ty->is_Id()) {
     auto xc = ty->as_Id()->x_;
@@ -696,9 +699,9 @@ inline Vec_T<cc::Node_T> inline_maybe_mods(HeaderMode header_mode,
   return mods;
 }
 
-void data_gen_xform_fn(XformTy xform_ty, GenName star, GenName curr,
-                       Set_T<GenName> &vis, HeaderMode header_mode,
-                       DataCompileContext &ctx) {
+void data_gen_xform_fn(XformTy xform_ty, const GenName &star,
+                       const GenName &curr, Set_T<GenName> &vis,
+                       HeaderMode header_mode, DataCompileContext &ctx) {
 
   if (vis->contains(curr)) {
     return;
@@ -856,8 +859,8 @@ void data_gen_xform_fn(XformTy xform_ty, GenName star, GenName curr,
                        ->as_Decl());
 }
 
-void data_gen_xform_id_fn(GenName star, GenName curr, HeaderMode header_mode,
-                          DataCompileContext &ctx) {
+void data_gen_xform_id_fn(const GenName &star, const GenName &curr,
+                          HeaderMode header_mode, DataCompileContext &ctx) {
 
   auto star_dt = ctx.data_leaves_->operator[](star);
   auto curr_dt = ctx.data_leaves_->operator[](curr);

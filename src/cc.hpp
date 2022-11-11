@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "langcc_util.hpp"
 
 #include "cc__gen.hpp"
@@ -60,7 +62,7 @@ struct CppGenContext {
 
   Set<GenName> all_gen_names_env_;
 
-  inline IdBase gen_id_fresh(GenName ns, std::string id_hint) {
+  inline IdBase gen_id_fresh(GenName ns, const std::string &id_hint) {
     auto ret = id_hint;
     Int c = 0;
     while (all_gen_names_env_.contains(ns->with_append_rc(ret))) {
@@ -86,22 +88,24 @@ struct CppGenContext {
   inline cc::Node_T
   gen_cpp_id_with_template_args_acc(NodeR id, NodeV cpp_template_params);
 
-  inline cc::Node_T gen_cpp_decl_struct(GenName decl_name, NodeV cpp_fields,
+  inline cc::Node_T gen_cpp_decl_struct(const GenName &decl_name,
+                                        NodeV cpp_fields,
                                         NodeV cpp_base_classes,
                                         NodeV cpp_template_params);
-  inline cc::Node_T gen_cpp_decl_struct_fwd(GenName decl_name,
+  inline cc::Node_T gen_cpp_decl_struct_fwd(const GenName &decl_name,
                                             NodeV cpp_template_params);
-  inline cc::Node_T gen_cpp_decl_using(GenName decl_name, NodeR val,
+  inline cc::Node_T gen_cpp_decl_using(const GenName &decl_name, NodeR val,
                                        NodeV cpp_template_params);
-  inline cc::Node_T gen_cpp_decl_enum(GenName decl_name, NodeV cpp_cases);
+  inline cc::Node_T gen_cpp_decl_enum(const GenName &decl_name,
+                                      NodeV cpp_cases);
 
   template <typename Ret, typename... Args>
-  inline cc::Node_T gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, GenName ns,
-                                          Ret ret_ty, std::string name_hint,
-                                          const Args &...init_args);
+  inline cc::Node_T
+  gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, const GenName &ns, Ret ret_ty,
+                        std::string id_hint, const Args &...init_args);
 
-  inline void gen_cpp_fun_proto_acc(LexOutput_T &dst, NodeV mods, NodeRM ret,
-                                    NodeR fun_name, NodeV params);
+  inline void gen_cpp_fun_proto_acc(LexOutput_T &lex_args, NodeV mods,
+                                    NodeRM ret, NodeR fun_name, NodeV params);
   inline cc::Node_T gen_cpp_fun_proto_decl(NodeV cpp_template_params,
                                            NodeV mods, NodeRM ret,
                                            const GenName &decl_name,
@@ -155,7 +159,7 @@ struct CppGenContext {
     return ret;
   }
 
-  inline void push_def(bool has_tmpl, cc::Node::Decl_T def) {
+  inline void push_def(bool has_tmpl, const cc::Node::Decl_T &def) {
     if (has_tmpl) {
       dst_decls_->push_back(def);
     } else {
@@ -205,13 +209,14 @@ inline cc::Node::Expr_T name_to_cpp_direct(const GenName &name,
   return ret->as_Expr();
 }
 
-inline cc::Node_T cpp_name_with_append(CppGenContext &ctx, cc::Node_T node,
-                                       std::string name) {
+inline cc::Node_T cpp_name_with_append(CppGenContext &ctx,
+                                       const cc::Node_T &node,
+                                       const std::string &name) {
   return ctx.Q_->qq("Expr", node, "::", name);
 }
 
 inline cc::Node_T
-CppGenContext::gen_cpp_decl_struct(GenName decl_name, NodeV cpp_fields,
+CppGenContext::gen_cpp_decl_struct(const GenName &decl_name, NodeV cpp_fields,
                                    NodeV cpp_base_classes,
                                    NodeV cpp_template_params) {
   auto [decl_ns, decl_name_base] = name_ns_decons(decl_name);
@@ -245,7 +250,7 @@ CppGenContext::gen_cpp_decl_struct(GenName decl_name, NodeV cpp_fields,
 }
 
 inline cc::Node_T
-CppGenContext::gen_cpp_decl_struct_fwd(GenName decl_name,
+CppGenContext::gen_cpp_decl_struct_fwd(const GenName &decl_name,
                                        NodeV cpp_template_params) {
 
   auto [decl_ns, decl_name_base] = name_ns_decons(decl_name);
@@ -256,7 +261,7 @@ CppGenContext::gen_cpp_decl_struct_fwd(GenName decl_name,
   return this->gen_cpp_decl_ns_wrap(decl_ns, decl);
 }
 
-inline cc::Node_T CppGenContext::gen_cpp_decl_using(GenName decl_name,
+inline cc::Node_T CppGenContext::gen_cpp_decl_using(const GenName &decl_name,
                                                     const cc::Node_T &val,
                                                     NodeV cpp_template_params) {
 
@@ -270,7 +275,7 @@ inline cc::Node_T CppGenContext::gen_cpp_decl_using(GenName decl_name,
 }
 
 inline cc::Node_T
-CppGenContext::gen_cpp_decl_enum(GenName decl_name,
+CppGenContext::gen_cpp_decl_enum(const GenName &decl_name,
                                  const Vec_T<cc::Node_T> &cpp_cases) {
 
   auto [decl_ns, decl_name_base] = name_ns_decons(decl_name);
@@ -288,11 +293,11 @@ CppGenContext::gen_cpp_decl_enum(GenName decl_name,
 
 template <typename Ret, typename... Args>
 inline cc::Node_T
-CppGenContext::gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, GenName ns,
+CppGenContext::gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, const GenName &ns,
                                      Ret ret_ty, std::string id_hint,
                                      const Args &...init_args) {
 
-  auto id = this->gen_id_fresh(ns, id_hint);
+  auto id = this->gen_id_fresh(ns, std::move(id_hint));
   auto cpp_id = this->gen_cpp_id_base(id);
   auto decl = Q_->qq_ext(Some<std::string>("Stmt"), ret_ty, cpp_id, " = ",
                          init_args..., ";");

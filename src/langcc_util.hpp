@@ -27,6 +27,7 @@
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #ifdef WIN32
@@ -480,7 +481,7 @@ inline std::string utf8_encode(Ch ch) {
   }
 }
 
-inline std::string utf8_encode(std::vector<Ch> chs) {
+inline std::string utf8_encode(const std::vector<Ch> &chs) {
   std::string ret;
   for (auto ch : chs) {
     ret += utf8_encode(ch);
@@ -599,7 +600,7 @@ inline u8 hex_byte_to_u8(std::string x) {
   return (hex_nybble_to_u8(x[0]) << 4) | hex_nybble_to_u8(x[1]);
 }
 
-inline Option_T<Int> string_to_int(std::string x) {
+inline Option_T<Int> string_to_int(const std::string &x) {
   Int ret = atoll(x.c_str());
   if (x == fmt_str("{}", ret)) {
     return Some<Int>(ret);
@@ -632,7 +633,7 @@ inline Option_T<f64> string_to_f64(std::string x) {
 }
 
 inline Option_T<f32> string_to_f32(std::string x) {
-  auto ret = string_to_f64(x);
+  auto ret = string_to_f64(std::move(x));
   if (ret.is_none()) {
     return None<f32>();
   } else {
@@ -670,7 +671,7 @@ inline std::string escape_string_char(Ch ch) {
   }
 }
 
-inline std::string escape_string_chars(std::vector<Ch> chs) {
+inline std::string escape_string_chars(const std::vector<Ch> &chs) {
   std::string ret = "";
   for (auto ch : chs) {
     ret += escape_string_char(ch);
@@ -679,7 +680,7 @@ inline std::string escape_string_chars(std::vector<Ch> chs) {
 }
 
 inline std::string escape_string(std::string s) {
-  auto chs = utf8_decode(s).as_some();
+  auto chs = utf8_decode(std::move(s)).as_some();
   return escape_string_chars(chs);
 }
 
@@ -1285,7 +1286,7 @@ inline void check_range(Int i, Int n) {
 [[noreturn]] inline void todo() { AX("Not yet implemented"); }
 
 template <typename... Ts>
-[[noreturn]] inline void todo(std::string msg, const Ts &...ts) {
+[[noreturn]] inline void todo(const std::string &msg, const Ts &...ts) {
   AX("Not yet implemented: " + msg, ts...);
 }
 
@@ -1768,7 +1769,7 @@ struct StrSlice {
   // StrSlice instance.
   StrSlice() : base_(nullptr), lo_(0), hi_(0) {}
 
-  static inline StrSlice from_std_string(std::string x) {
+  static inline StrSlice from_std_string(const std::string &x) {
     Int lo = 0;
     Int hi = x.length();
     Str_T xb = vec_from_std_string(x);
@@ -1780,7 +1781,7 @@ struct StrSlice {
   }
 };
 
-inline void pr_debug(std::ostream &os, FmtFlags flags, StrSlice x) {
+inline void pr_debug(std::ostream &os, FmtFlags flags, const StrSlice &x) {
   pr_debug(os, flags, x.to_std_string());
 }
 
@@ -1791,7 +1792,7 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, StrSlice x) {
   }
 }
 
-inline Vec_T<u8> byte_vec_from_string(std::string x) {
+inline Vec_T<u8> byte_vec_from_string(const std::string &x) {
   auto ret = make_rc<Vec<u8>>();
   for (auto c : x) {
     ret->push(static_cast<u8>(c));
@@ -3209,7 +3210,7 @@ struct PrintTable {
   std::vector<Int> widths_;
 
   inline static PrintTable_T
-  make_ext(std::vector<std::tuple<std::string, Align>> col) {
+  make_ext(const std::vector<std::tuple<std::string, Align>> &col) {
     auto ret = make_rc<PrintTable>();
     AT(len(col) > 0);
     ret->col_ = col;
@@ -3222,7 +3223,8 @@ struct PrintTable {
     return ret;
   }
 
-  inline static PrintTable_T make(std::vector<std::tuple<Int, Align>> col) {
+  inline static PrintTable_T
+  make(const std::vector<std::tuple<Int, Align>> &col) {
     std::vector<std::tuple<std::string, Align>> col_ext;
     for (auto [count_, align] : col) {
       col_ext.push_back({str_repeat(" ", count_), align});
@@ -3359,7 +3361,7 @@ inline Time now() {
   return ret;
 }
 
-inline i32 sys_chk(i32 ret, std::string desc) {
+inline i32 sys_chk(i32 ret, const std::string &desc) {
   if (ret == 0) {
     return ret;
   }
@@ -3368,7 +3370,7 @@ inline i32 sys_chk(i32 ret, std::string desc) {
   AX();
 }
 
-inline i32 sys_chk_nonneg(i32 ret, std::string desc) {
+inline i32 sys_chk_nonneg(i32 ret, const std::string &desc) {
   if (ret >= 0) {
     return ret;
   }
@@ -3377,7 +3379,7 @@ inline i32 sys_chk_nonneg(i32 ret, std::string desc) {
   AX();
 }
 
-inline std::string read_file(std::string filename) {
+inline std::string read_file(const std::string &filename) {
   std::ifstream inFile(filename);
   if (!inFile.good()) {
     LG_ERR("Error opening for reading: {}", filename);
@@ -3388,7 +3390,7 @@ inline std::string read_file(std::string filename) {
   return strStream.str();
 }
 
-inline Str_T read_file_shared(std::string filename, Arena *A = nullptr) {
+inline Str_T read_file_shared(const std::string &filename, Arena *A = nullptr) {
   Int len = std::filesystem::file_size(filename);
   std::ifstream inFile(filename);
   if (!inFile.good()) {
