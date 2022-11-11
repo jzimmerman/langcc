@@ -1135,19 +1135,22 @@ inline void set_log_level(Int log_level_new) {
   get_log_level() = log_level_new;
 }
 
-#define LOG(level, ...)                                                        \
-  if ((level) <= (get_log_level())) {                                          \
-    log_inner(level, __VA_ARGS__);                                             \
-  }
+inline std::ostream *&get_stdout() {
+  static thread_local std::ostream *local_stdout = &std::cout;
+  return local_stdout;
+}
+inline void set_stdout(std::ostream *stdout_new) { get_stdout() = stdout_new; }
+inline std::ostream *&get_stderr() {
+  static thread_local std::ostream *local_stderr = &std::cerr;
+  return local_stderr;
+}
+inline void set_stderr(std::ostream *stderr_new) { get_stderr() = stderr_new; }
 // -1: Error messages user must see
 //  0: Messages user should see
 //  1: Progress updates
 //  2: High-level result data
 //  3: Intermediate result data
 //  4: Unwieldy intermediate results/debug prints
-
-#define LG_ERR(...) LOG(-1, __VA_ARGS__)
-#define LG(...) LOG(-1, __VA_ARGS__)
 
 template <typename... Ts> void log_inner(Int level, const Ts &...args) {
   static Int prev_level = -1;
@@ -1174,23 +1177,30 @@ template <typename... Ts> void log_inner(Int level, const Ts &...args) {
     ret_str = fmt_str("[{}]\n", time_str_res) + ret_str;
   }
 
-  cerr << ret_str << endl;
+  *get_stdout() << ret_str << endl;
 
   prev_level = level;
 }
 
+template <typename... Ts> void LOG(Int level, const Ts &...args) {
+  if ((level) <= (get_log_level())) {
+    log_inner(level, args...);
+  }
+}
+template <typename... Ts> void LG_ERR(const Ts &...args) { LOG(-1, args...); }
+template <typename... Ts> void LG(const Ts &...args) { LOG(-1, args...); }
 ////////////////////////////////////////////////////////////////////////////////
 // Assertions
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename... Ts> inline void AT(bool cond, const string &s, Ts... ts) {
   if (__builtin_expect(!cond, 0)) {
-    fmt(cerr, "Assertion failed");
+    LG("Assertion failed");
     if (len(s) > 0) {
-      fmt(cerr, ": ");
-      fmt(cerr, s, ts...);
+      LG(": ");
+      LG(s, ts...);
     }
-    fmt(cerr, "\n");
+    LG("\n");
     if (!cond) {
       throw std::runtime_error("Assertion failed");
     }
@@ -1199,7 +1209,7 @@ template <typename... Ts> inline void AT(bool cond, const string &s, Ts... ts) {
 
 inline void AT(bool cond) {
   if (__builtin_expect(!cond, 0)) {
-    fmt(cerr, "Assertion failed\n");
+    LG("Assertion failed\n");
     if (!cond) {
       throw std::runtime_error("Assertion failed");
     }
@@ -2852,7 +2862,7 @@ template <typename T> struct Set : enable_rc_from_this<Set<T>> {
 
   inline void insert_strict(const T &x) {
     if (this->contains(x)) {
-      fmt(cerr, "Element already present in set: {}\n", x);
+      LG("Element already present in set: {}\n", x);
       AX();
     }
     this->insert(x);
@@ -3334,7 +3344,7 @@ inline i32 sys_chk(i32 ret, string desc) {
   if (ret == 0) {
     return ret;
   }
-  fmt(cerr, " *** Return code: {}: {}\n", desc, ret);
+  LG(" *** Return code: {}: {}\n", desc, ret);
   perror(desc.c_str());
   AX();
 }
@@ -3343,7 +3353,7 @@ inline i32 sys_chk_nonneg(i32 ret, string desc) {
   if (ret >= 0) {
     return ret;
   }
-  fmt(cerr, " *** Return code: {}: {}\n", desc, ret);
+  LG(" *** Return code: {}: {}\n", desc, ret);
   perror(desc.c_str());
   AX();
 }

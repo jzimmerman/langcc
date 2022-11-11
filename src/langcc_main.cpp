@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
   }
 
   if (args->length() != 2) {
-    fmt(cerr, "Usage: langcc [options] src.lang dst_dir\n");
+    LG("Usage: langcc [options] src.lang dst_dir\n");
     return 1;
   }
 

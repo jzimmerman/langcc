@@ -338,7 +338,7 @@ We mention a number of additional features of the parser stanza:
   and an attribute mentioned in the left-hand side
   is a declaration that the attribute is satisfied.
   Further details can be found in [[Zim22, Section 3.5]](https://arxiv.org/pdf/2209.08383.pdf).
-    
+
 - Many other features are available in parser BNF expressions, e.g.:
 
   - A literal string may be _passed over_ in the parser, written ``@(`contents`)``.
@@ -348,47 +348,47 @@ We mention a number of additional features of the parser stanza:
     or ``@(`\n`)`` (a newline);
     in fact, the former is so common that we have the special notation `_`
     (as used in the example above) to denote ``@(` `)``.
-  
+
   - The special expression `eps` may be used to denote the empty concatenation.
-  
+
   - The special expression `#Alt[e]` may be used to denote
     the singleton alternation. To the parser, this is equivalent to the
     expression `e`,
     but it may be important semantically for the generated AST.
-  
+
   - The expression `e*` may be used to denote a repeated expression `e`.
     In the generated AST, this automatically produces a vector.
-  
+
   - The expression `e+` may be used to denote a nonzero-repeated expression `e`.
     In the generated AST, this automatically produces a vector.
-  
+
   - The expression `#L[e::delim]` may be used to denote a list of `e`,
     delimited by `delim`.
     In the generated AST, this automatically produces a vector.
     In addition, there are several variants of the list expression:
-    
+
     - `#L[e::delim::]`, a list with a trailing delimiter.
-    
+
     - `#L[e::delim:?]`, a list with an optional trailing delimiter.
-    
+
     - `#L[e::+delim]`, a list with at least one element.
-    
+
     - `#L[e::++delim]`, a list with at least two elements.
-    
+
     - `#B[e::delim]`, a list which renders as an indented block in the pretty-printer.
-    
+
     - `#B2[e::delim]`, a list which renders as an indented double-spaced block
       in the pretty-printer.
-    
+
     - `#T[e::delim]`, a list which renders as a top-level block in the pretty-printer.
-    
+
     - `#T2[e::delim]`, a list which renders as a top-level double-spaced block
       in the pretty-printer.
 
   - The expression `e?` may be used to denote an optional expression `e`;
     in the generated AST, this automatically produces an option type or a boolean,
     as appropriate.
-  
+
   - The expression `~X` may be used to indicate that the nonterminal `X`
     should be _unfolded_, i.e., that its beginning does not need to be predicted
     in recursive-descent style.
@@ -439,16 +439,16 @@ on a simple arithmetic expression language, without using the appropriate preced
 ```
 ===== LR conflict 1 of 2
 
-            &Expr                           &Expr    
-                                  RecurStep(Expr)    
-             Expr                              id    
-   X0=(`+` | `-`)                             `+`    
-             Expr                              id    
-                                                     
+            &Expr                           &Expr
+                                  RecurStep(Expr)
+             Expr                              id
+   X0=(`+` | `-`)                             `+`
+             Expr                              id
+
                      Reduce(Expr -> Expr X0 Expr)    Shift
-                                                     
+
                                               `+`    `+`
-                                               id    id    
+                                               id    id
 ```
 
 On the left side, we see the expression that produced the conflicting prefix
@@ -498,7 +498,7 @@ while (true) {
 
     auto stmt = parse->res_.as_some()->as_Stmt();
     try {
-        fmt(cerr, "{}\n", stmt_eval(stmt, env));
+        LG("{}\n", stmt_eval(stmt, env));
     } catch (const CalcError& err) {
         LG_ERR("\nError: {}\n{}",
             err.desc_,
@@ -519,7 +519,7 @@ Parse error: Unexpected token: `/`
 Line 1, column 10:
 
   7 + (5 + / 3)
-           ^   
+           ^
 ```
 
 If, on the other hand, parsing succeeds, then the resulting AST element
@@ -566,7 +566,7 @@ Error: Division by zero
 Line 1, column 3:
 
   4 / (3 - (15 / 5))
-    ^                
+    ^
 ```
 
 indicating precisely which division triggered the error.
@@ -610,4 +610,3 @@ The following is a brief excerpt:
 
 We note that the syntax is very compact,
 and corresponds to little more than one would write on the whiteboard for an informal BNF grammar.
-

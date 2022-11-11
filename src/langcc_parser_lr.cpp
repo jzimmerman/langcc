@@ -1800,7 +1800,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
         LOG(1, "LR NFA: {} vertices, {} edges", N->G_->V_->length(), N->G_->num_edges_);
         LOG(1, "LR DFA: {} vertices, {} edges", D->G_->V_->length(), D->G_->num_edges_);
     } else {
-        LOG(1, "Compiling parser: detected LR conflicts; searching for traces")
+        LOG(1, "Compiling parser: detected LR conflicts; searching for traces");
     }
 
     using DFAVertex_T = Set_T<LRVertex_T>;

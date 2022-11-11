@@ -1,3 +1,5 @@
+#pragma once
+
 #include <condition_variable>
 #include <mutex>
 #include <optional>
@@ -8,7 +10,6 @@
 
 #ifdef WIN32
 #define OPTIONAL
-#include <assert.h>
 #include <errno.h>
 #include <process.h> /* for _cwait, WAIT_CHILD */
 #include <stdio.h>
@@ -20,118 +21,6 @@
 #define STDIN_FILENO _fileno(stdin)
 #define STDOUT_FILENO _fileno(stdout)
 #define STDERR_FILENO _fileno(stderr)
-
-typedef struct _SECTION_IMAGE_INFORMATION {
-  PVOID EntryPoint;
-  ULONG StackZeroBits;
-  ULONG StackReserved;
-  ULONG StackCommit;
-  ULONG ImageSubsystem;
-  WORD SubSystemVersionLow;
-  WORD SubSystemVersionHigh;
-  ULONG Unknown1;
-  ULONG ImageCharacteristics;
-  ULONG ImageMachineType;
-  ULONG Unknown2[3];
-} SECTION_IMAGE_INFORMATION, *PSECTION_IMAGE_INFORMATION;
-
-typedef struct _RTL_USER_PROCESS_INFORMATION {
-  ULONG Size;
-  HANDLE Process;
-  HANDLE Thread;
-  CLIENT_ID ClientId;
-  SECTION_IMAGE_INFORMATION ImageInformation;
-} RTL_USER_PROCESS_INFORMATION, *PRTL_USER_PROCESS_INFORMATION;
-
-#define RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED 0x00000001
-#define RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES 0x00000002
-#define RTL_CLONE_PROCESS_FLAGS_NO_SYNCHRONIZE 0x00000004
-
-#define RTL_CLONE_PARENT 0
-#define RTL_CLONE_CHILD 297
-
-typedef intptr_t pid_t;
-typedef NTSTATUS (*RtlCloneUserProcess_f)(
-    ULONG ProcessFlags,
-    PSECURITY_DESCRIPTOR ProcessSecurityDescriptor /* optional */,
-    PSECURITY_DESCRIPTOR ThreadSecurityDescriptor /* optional */,
-    HANDLE DebugPort /* optional */,
-    PRTL_USER_PROCESS_INFORMATION ProcessInformation);
-
-inline pid_t fork(void) {
-  HMODULE mod;
-  RtlCloneUserProcess_f clone_p;
-  RTL_USER_PROCESS_INFORMATION process_info;
-  NTSTATUS result;
-
-  mod = GetModuleHandle("ntdll.dll");
-  if (!mod)
-    return -ENOSYS;
-
-  clone_p = (RtlCloneUserProcess_f)GetProcAddress(mod, "RtlCloneUserProcess");
-  if (clone_p == NULL)
-    return -ENOSYS;
-
-  /* lets do this */
-  result = clone_p(RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED |
-                       RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES,
-                   NULL, NULL, NULL, &process_info);
-
-  if (result == RTL_CLONE_PARENT) {
-    HANDLE me = 0;
-    HANDLE hp = 0;
-    HANDLE ht = 0;
-    HANDLE hcp = 0;
-    DWORD pi = 0;
-    DWORD ti = 0;
-    me = GetCurrentProcess();
-    pi = (DWORD)process_info.ClientId.UniqueProcess;
-    ti = (DWORD)process_info.ClientId.UniqueThread;
-
-    assert(hp = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pi));
-    assert(ht = OpenThread(THREAD_ALL_ACCESS, FALSE, ti));
-
-    ResumeThread(ht);
-    CloseHandle(ht);
-    CloseHandle(hp);
-    return (pid_t)pi;
-  } else if (result == RTL_CLONE_CHILD) {
-    /* fix stdio */
-    AllocConsole();
-    return 0;
-  } else {
-    return -1;
-  }
-
-  /* NOTREACHED */
-  return -1;
-}
-#define SIGKILL 0
-#define SIGQUIT 0
-inline int kill(pid_t pid, int sig) {
-  const auto process = OpenProcess(PROCESS_TERMINATE, false, pid);
-  TerminateProcess(process, 1);
-  CloseHandle(process);
-  return 0;
-}
-inline void usleep(__int64 usec) {
-  HANDLE timer;
-  LARGE_INTEGER ft;
-
-  ft.QuadPart = -(10 * usec); // Convert to 100 nanosecond interval, negative
-                              // value indicates relative time
-
-  timer = CreateWaitableTimer(NULL, TRUE, NULL);
-  SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
-  WaitForSingleObject(timer, INFINITE);
-  CloseHandle(timer);
-}
-
-// kill
-#define WNOHANG WAIT_CHILD
-inline pid_t waitpid(pid_t pid, int *statusp, int options) {
-  return _cwait(statusp, pid, options);
-}
 
 /* Generate a temporary file name based on TMPL.  TMPL must match the
    rules for mk[s]temp (i.e. end in "XXXXXX").  The name constructed
@@ -228,7 +117,7 @@ namespace langcc {
 inline void kill_child_proc(pid_t pid) {
   kill(pid, SIGQUIT);
   usleep(1000);
-  i32 status_unused;
+  i32 status_unused = 0;
   pid_t pid_res = waitpid(pid, &status_unused, WNOHANG);
   if (pid_res <= 0) {
     kill(pid, SIGKILL);
@@ -245,9 +134,9 @@ inline void kill_child_proc(pid_t pid) {
 template <class T> class SafeQueue {
 public:
   // Add an element to the queue.
-  void enqueue(T t) {
+  void enqueue(T elem) {
     std::lock_guard<std::mutex> lock(m);
-    q.push(t);
+    q.push(elem);
     c.notify_one();
   }
 
@@ -281,26 +170,28 @@ private:
 
 struct UnitTest {
   string name_;
-  function<void()> f_;
+  function<int()> f_;
 
-  UnitTest(string name, function<void()> f)
-      : name_(std::move(name)), f_(std::move(f)) {}
+  UnitTest(string name, function<int()> testfunc)
+      : name_(std::move(name)), f_(std::move(testfunc)) {}
 };
 
 struct UnitTestRun {
   UnitTest desc_;
   std::thread testthread_;
   Time start_time_;
-  Time end_time_;
+  Time end_time_{};
   string stdout_filename_;
   string stderr_filename_;
   string stdout_;
   string stderr_;
   Option_T<Int> ret_;
 
-  inline bool is_success() { return ret_.is_some() && ret_.as_some() == 0; }
+  inline bool is_success() const {
+    return ret_.is_some() && ret_.as_some() == 0;
+  }
 
-  inline string ret_desc() {
+  inline string ret_desc() const {
     if (this->is_success()) {
       return "success";
     } else if (ret_.is_none()) {
@@ -312,17 +203,17 @@ struct UnitTestRun {
 
   UnitTestRun(UnitTest desc, std::thread testthread, string stdout_filename,
               string stderr_filename)
-      : desc_(desc), testthread_(std::move(testthread)), start_time_(now()),
-        stdout_filename_(stdout_filename), stderr_filename_(stderr_filename) {}
+      : desc_(std::move(desc)), testthread_(std::move(testthread)),
+        start_time_(now()), stdout_filename_(std::move(stdout_filename)),
+        stderr_filename_(std::move(stderr_filename)) {}
 };
 
 vector<UnitTest> &get_unit_tests();
 map<std::thread::id, UnitTestRun> &get_unit_tests_running();
 map<string, UnitTestRun> &get_unit_tests_terminated();
-SafeQueue<std::thread::id> &get_finished_tests_queue();
+SafeQueue<std::pair<std::thread::id, int>> &get_finished_tests_queue();
 
-inline void register_unit_test(string test_name,
-                               function<void()> test_function);
+inline void register_unit_test(string test_name, function<int()> test_function);
 
 #define TEST(test_name)                                                        \
   void _test_##test_name();                                                    \
@@ -345,14 +236,14 @@ inline map<string, UnitTestRun> &get_unit_tests_terminated() {
   return _unit_tests_terminated;
 }
 
-inline SafeQueue<std::thread::id> &get_finished_tests_queue() {
-  static SafeQueue<std::thread::id> _finished_tests_queue;
+inline SafeQueue<std::pair<std::thread::id, int>> &get_finished_tests_queue() {
+  static SafeQueue<std::pair<std::thread::id, int>> _finished_tests_queue;
   return _finished_tests_queue;
 }
 
 inline void register_unit_test(string test_name,
-                               function<void()> test_function) {
-  get_unit_tests().push_back(UnitTest(test_name, test_function));
+                               function<int()> test_function) {
+  get_unit_tests().emplace_back(std::move(test_name), std::move(test_function));
 }
 
 inline void dispatch_unit_test(UnitTest &test) {
@@ -377,22 +268,23 @@ inline void dispatch_unit_test(UnitTest &test) {
     { sys_chk_nonneg(dup2(stderr_file, STDERR_FILENO), "dup2 stderr"); }
     close(stdout_file);
     close(stderr_file);
-    test.f_();
-    get_finished_tests_queue().enqueue(std::this_thread::get_id());
+    int status = test.f_();
+    get_finished_tests_queue().enqueue(
+        std::make_pair(std::this_thread::get_id(), status));
   });
-
-  get_unit_tests_running().insert(make_pair(
-      testthread.get_id(), UnitTestRun(test, std::move(testthread),
-                                       stdout_filename, stderr_filename)));
+  auto testthread_id = testthread.get_id();
+  get_unit_tests_running().insert(
+      make_pair(testthread_id, UnitTestRun(test, std::move(testthread),
+                                           stdout_filename, stderr_filename)));
 }
 
 inline bool run_unit_tests() {
-  fmt(cerr, "Running {} unit test(s).\n", len(get_unit_tests()));
+  LG("Running {} unit test(s).\n", len(get_unit_tests()));
 
   set<string> test_names;
   for (auto &test : get_unit_tests()) {
     if (test_names.find(test.name_) != test_names.end()) {
-      fmt(cerr, " *** Duplicate test name: {}\n", test.name_);
+      LG(" *** Duplicate test name: {}\n", test.name_);
       AX();
     }
     test_names.insert(test.name_);
@@ -419,54 +311,54 @@ inline bool run_unit_tests() {
       }
     }
 
-    auto finished_thread_id = get_finished_tests_queue().dequeue_nowait();
-    if (!finished_thread_id.has_value()) {
-      usleep(1);
-      continue;
-    }
-    UnitTestRun test = get_unit_tests_running().at(finished_thread_id.value());
-    test.ret_ = Some<Int>(static_cast<Int>(status));
-    AT(test.ret_.is_some());
-    test.end_time_ = now();
-    test.stdout_ = read_file(test.stdout_filename_);
-    test.stderr_ = read_file(test.stderr_filename_);
-    std::filesystem::remove(test.stdout_filename_);
-    std::filesystem::remove(test.stderr_filename_);
-    AT(test.ret_.is_some());
-    get_unit_tests_terminated().insert(make_pair(test.desc_.name_, test));
-    AT(test.ret_.is_some());
-    auto &m = get_unit_tests_running();
-    auto it = m.find(test.pid_);
-    AT(it != m.end());
-    m.erase(it);
-    AT(test.ret_.is_some());
-    if (test.is_success()) {
-      LOG(0, "\033[32m[success]\033[0m {}", test.desc_.name_);
-    } else {
-      LOG(0, "\033[31m[FAILURE]\033[0m [{}] {}", test.ret_desc(),
-          test.desc_.name_);
+    auto finished_test = get_finished_tests_queue().dequeue_nowait();
+    if (finished_test.has_value()) {
+      auto [finished_thread_id, status] = finished_test.value();
+      auto test_elem = get_unit_tests_running().extract(finished_thread_id);
+      UnitTestRun test = std::move(test_elem.mapped());
+      test.ret_ = Some<Int>(static_cast<Int>(status));
+      test.end_time_ = now();
+      test.stdout_ = read_file(test.stdout_filename_);
+      test.stderr_ = read_file(test.stderr_filename_);
+      std::filesystem::remove(test.stdout_filename_);
+      std::filesystem::remove(test.stderr_filename_);
+      if (test.is_success()) {
+        LOG(0, "\033[32m[success]\033[0m {}", test.desc_.name_);
+      } else {
+        LOG(0, "\033[31m[FAILURE]\033[0m [{}] {}", test.ret_desc(),
+            test.desc_.name_);
+      }
+      get_unit_tests_terminated().insert(
+          make_pair(test.desc_.name_, std::move(test)));
     }
 
     if (now() - monitor_start > timeout) {
-      for (auto &p : get_unit_tests_running()) {
-        auto test = p.second;
-        fmt(cerr, "[TIMEOUT] {}", test.desc_.name_);
-        kill_child_proc(test.pid_);
+      std::vector<std::thread::id> keys;
+      for (const auto &map_elem : get_unit_tests_running()) {
+        keys.push_back(map_elem.first);
+      }
+      for (const auto &key : keys) {
+        auto test_elem = get_unit_tests_running().extract(key);
+        UnitTestRun test = std::move(test_elem.mapped());
+        LG("[TIMEOUT] {}", test.desc_.name_);
+        // kill_child_proc(test.pid_);
         test.ret_ = None<Int>();
         test.end_time_ = now();
         test.stdout_ = read_file(test.stdout_filename_);
         test.stderr_ = read_file(test.stderr_filename_);
-        get_unit_tests_terminated().insert(make_pair(test.desc_.name_, test));
+        get_unit_tests_terminated().insert(
+            make_pair(test.desc_.name_, std::move(test)));
       }
       get_unit_tests_running().clear();
       break;
     }
+    usleep(1000);
   }
 
   set<string> res_succ;
   set<string> res_fail;
-  for (auto p : get_unit_tests_terminated()) {
-    auto test = p.second;
+  for (const auto &term_test_elem : get_unit_tests_terminated()) {
+    const auto &test = term_test_elem.second;
     if (test.is_success()) {
       res_succ.insert(test.desc_.name_);
     } else {
@@ -474,11 +366,11 @@ inline bool run_unit_tests() {
     }
   }
 
-  if (res_fail.size() > 0) {
+  if (!res_fail.empty()) {
     LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n", Int(res_succ.size()),
         Int(res_fail.size()));
-    for (auto name : res_fail) {
-      auto test = get_unit_tests_terminated().at(name);
+    for (const auto &name : res_fail) {
+      const auto &test = get_unit_tests_terminated().at(name);
       LOG(1, " ===== Failure({}): {}\n", test.ret_desc(), test.desc_.name_);
       LOG(1, " ===== Begin stdout[{}]\n{}", test.desc_.name_, test.stdout_);
       LOG(1, " ===== End stdout[{}]", test.desc_.name_);
@@ -490,17 +382,17 @@ inline bool run_unit_tests() {
   LOG(0, "\n ===== Summary: {} succeeded, {} failed.\n", Int(res_succ.size()),
       Int(res_fail.size()));
 
-  if (res_fail.size() > 0) {
+  if (!res_fail.empty()) {
     LOG(0, "Succeeded:");
-    for (auto x : res_succ) {
-      LOG(0, "  {}", x);
+    for (const auto &success : res_succ) {
+      LOG(0, "  {}", success);
     }
     LOG(0, "\nFailed:");
-    for (auto x : res_fail) {
-      LOG(0, "  {}", x);
+    for (const auto &fail : res_fail) {
+      LOG(0, "  {}", fail);
     }
   }
 
-  return res_fail.size() == 0;
+  return res_fail.empty();
 }
 } // namespace langcc

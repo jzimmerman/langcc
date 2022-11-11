@@ -26,7 +26,7 @@ int main(i32 argc, char **argv) {
       auto v = str_split(path, "/");
       auto path_last = v.operator[](v.size() - 1);
       auto w = str_split(path_last, ".lang");
-      AR_eq(Int(w.size()), 2);
+      AR_eq(static_cast<Int>(w.size()), 2);
       string s = w[0];
       ss.push_back(s);
     }
@@ -35,8 +35,11 @@ int main(i32 argc, char **argv) {
     AX();
   }
 
-  for (auto s : ss) {
-    register_unit_test(s, [s]() { test_lang_toplevel(s); });
+  for (const auto &s : ss) {
+    register_unit_test(s, [s]() {
+      bool ok = test_lang(s);
+      return ok ? 0 : 1;
+    });
   }
 
   bool success = run_unit_tests();

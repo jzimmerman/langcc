@@ -353,8 +353,8 @@ struct QuoteEnv {
     Arena *A = nullptr;
     auto parse_out = L_->parse_from_lex(lex, sym_target, gen_, A);
     if (!parse_out->is_success()) {
-      fmt(cerr, "Input sequence: {}", lex);
-      fmt(cerr, "{}\n", parse_out->err_.as_some());
+      LG("Input sequence: {}", lex);
+      LG("{}\n", parse_out->err_.as_some());
       lex->clear_alloc();
       throw parse_out->err_.as_some();
     }
@@ -445,8 +445,8 @@ struct QuoteEnv {
       this->qq_args_acc(lex, args...);
       return this->qq_inner(sym_target, lex);
     } catch (const string &err) {
-      fmt(cerr, "Input sequence: {}", lex);
-      fmt(cerr, "{}\n", err);
+      LG("Input sequence: {}", lex);
+      LG("{}\n", err);
       throw;
     }
   }
@@ -2832,7 +2832,7 @@ bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<string> sym_target,
 
   if (error_pos_maybe != -1 && !parse->is_success()) {
     auto err = parse->err_.as_some();
-    Int error_pos_actual;
+    Int error_pos_actual = 0;
     if (parse->lex_->err_.is_none()) {
       auto tok_i = err->tok_i_.as_some();
       error_pos_actual = parse->lex_->lookup_pos(tok_i).first;
@@ -2840,10 +2840,9 @@ bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<string> sym_target,
       error_pos_actual = parse->lex_->err_.as_some()->i_;
     }
     if (error_pos_actual != error_pos_maybe) {
-      fmt(cerr,
-          " === Parse error at incorrect position (expected {}, received "
-          "{})\n{}\n\n",
-          error_pos_maybe, error_pos_actual, parse->err_.as_some());
+      LG_ERR(" === Parse error at incorrect position (expected {}, received "
+             "{})\n{}\n\n",
+             error_pos_maybe, error_pos_actual, parse->err_.as_some());
       return false;
     }
   }
@@ -2855,7 +2854,7 @@ bool LangDesc<Node, FAcc, FStep>::test_example(Option_T<string> sym_target,
       ostringstream os;
       res->write(os, FmtFlags::default_());
       if (os.str() != vec_to_std_string(input)) {
-        fmt(cerr,
+        LG_ERR(
             " === Mismatch on write:\n    Expected: `{}`\n    Received: `{}`\n",
             vec_to_std_string(input), os.str());
         return false;
