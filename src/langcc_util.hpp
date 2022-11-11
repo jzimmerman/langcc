@@ -1984,8 +1984,8 @@ THE SOFTWARE.
 constexpr int PICOSHA2_BUFFER_SIZE_FOR_INPUT_ITERATOR = 1048576;
 
 namespace picosha2 {
-typedef unsigned long word_t;
-typedef unsigned char byte_t;
+using word_t = unsigned long;
+using byte_t = unsigned char;
 
 static const size_t k_digest_size = 32;
 
