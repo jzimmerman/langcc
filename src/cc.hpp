@@ -1,7 +1,5 @@
 #pragma once
 
-#include <utility>
-
 #include "langcc_util.hpp"
 
 #include "cc__gen.hpp"
