@@ -3399,6 +3399,7 @@ inline Str_T read_file_shared(const std::string &filename, Arena *A = nullptr) {
   }
   auto ret = make_rc<Str>(A, 0, len * 2, _Vec_constr_internal{});
   inFile.read(&ret->at_unchecked(0), len);
+  AR_eq(static_cast<Int>(inFile.gcount()), len);
   ret->adjust_len_inplace_unchecked(len);
   return ret;
 }
