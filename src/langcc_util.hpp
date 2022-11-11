@@ -624,7 +624,7 @@ inline Option_T<f64> string_to_f64(std::string x) {
       negx = x.substr(1);
     }
     f64 ret_alt = stod(negx, nullptr);
-    if (signbit(ret_alt) == signbit(ret)) {
+    if (std::signbit(ret_alt) == std::signbit(ret)) {
       return None<f64>();
     }
   }
