@@ -16,15 +16,15 @@ namespace Graph {
 struct _T_inner {
   std::vector<std::vector<Int>> EL_;
   std::vector<std::vector<std::vector<Int>>> EV_;
-  std::vector<unordered_map<Int, Int>> ELI_;
-  std::vector<unordered_map<Int, unordered_set<Int>>> ES_;
+  std::vector<std::unordered_map<Int, Int>> ELI_;
+  std::vector<std::unordered_map<Int, std::unordered_set<Int>>> ES_;
 
   inline Int add_vertex() {
     Int ret = EL_.size();
     EL_.push_back(std::vector<Int>());
     EV_.push_back(std::vector<std::vector<Int>>());
-    ELI_.push_back(unordered_map<Int, Int>());
-    ES_.push_back(unordered_map<Int, unordered_set<Int>>());
+    ELI_.push_back(std::unordered_map<Int, Int>());
+    ES_.push_back(std::unordered_map<Int, std::unordered_set<Int>>());
     return ret;
   }
 
@@ -36,7 +36,7 @@ struct _T_inner {
       EV_[i].push_back(std::vector<Int>());
     }
     if (ES_[i].find(l) == ES_[i].end()) {
-      ES_[i].insert(std::make_pair(l, unordered_set<Int>()));
+      ES_[i].insert(std::make_pair(l, std::unordered_set<Int>()));
     }
     if (ES_[i][l].find(j) == ES_[i][l].end()) {
       ret = true;

@@ -526,7 +526,7 @@ void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
         "Stmt", "if (!mode_switch) { ws_state->non_ws_token(emit_dst); }");
   }
   auto cpp_pop_instr = cc.qq(
-      "Stmt", "ret = std::std::make_pair(langcc::DFATable::NEW_MODE_POP, -1);");
+      "Stmt", "ret = std::make_pair(langcc::DFATable::NEW_MODE_POP, -1);");
   auto cpp_mode_switch_instr = cc.qq("Stmt", "mode_switch = true;");
 
   if (instr->is_Emit()) {
@@ -557,7 +557,7 @@ void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
     auto ic = instr->as_Push();
     auto mode_name = ic->name_.to_std_string();
     auto mode_ind = ctx.lexer_modes_ind_[mode_name];
-    dst->push_back(cc.qq("Stmt", "ret = std::std::make_pair(",
+    dst->push_back(cc.qq("Stmt", "ret = std::make_pair(",
                          fmt_str("{}", mode_ind), ", in_i);"));
     dst->push_back(cpp_mode_switch_instr);
 
@@ -567,19 +567,17 @@ void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
 
   } else if (instr->is_PopExtract()) {
     dst->push_back(cc.qq(
-        "Stmt",
-        "ret = std::std::make_pair(langcc::DFATable::NEW_MODE_POP_EXTRACT, "
-        "-1);"));
+        "Stmt", "ret = std::make_pair(langcc::DFATable::NEW_MODE_POP_EXTRACT, "
+                "-1);"));
     dst->push_back(cpp_mode_switch_instr);
 
   } else if (instr->is_PopEmit()) {
     auto ic = instr->as_PopEmit();
     auto arg = parse_expr_to_base_maybe(ic->arg_).as_some();
     Int arg_id = ctx.tokens_top_by_id_rev_[arg];
-    dst->push_back(
-        cc.qq("Stmt",
-              "ret = std::std::make_pair(langcc::DFATable::NEW_MODE_POP_EMIT,",
-              fmt_str("{}", arg_id), ");"));
+    dst->push_back(cc.qq(
+        "Stmt", "ret = std::make_pair(langcc::DFATable::NEW_MODE_POP_EMIT,",
+        fmt_str("{}", arg_id), ");"));
     dst->push_back(cpp_mode_switch_instr);
 
   } else if (instr->is_MatchHistory()) {

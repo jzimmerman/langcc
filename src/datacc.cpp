@@ -220,7 +220,7 @@ void tabulate_data_decl_acc(data::Node_T src, const GenName &ns,
           AX();
         }
       }
-      auto base_str = string("");
+      auto base_str = std::string("");
       bool fresh = true;
       for (Int i = dd_name_full_sum->length(); i < dd_name_full->length();
            i++) {
@@ -486,8 +486,8 @@ cc::Node_T data_type_expr_to_cpp(data::Node::Expr_T x, const GenName &ns,
   }
 }
 
-pair<Vec_T<std::pair<IdBase, data::Node::Entry::Field_T>>,
-     Vec_T<std::pair<IdBase, data::Node::Entry::Field_T>>>
+std::pair<Vec_T<std::pair<IdBase, data::Node::Entry::Field_T>>,
+          Vec_T<std::pair<IdBase, data::Node::Entry::Field_T>>>
 dt_extract_def_fields_full(GenName curr, DataCompileContext &ctx) {
 
   auto dt = ctx.data_leaves_->operator[](curr);
@@ -1299,7 +1299,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     auto cpp_pr_debug_params = make_rc<Vec<cc::Node_T>>();
     auto cpp_pr_debug_body = make_rc<Vec<cc::Node_T>>();
     auto cpp_pr_debug_param_os_var = ctx.cc_.gen_cpp_param_acc<std::string>(
-        cpp_pr_debug_params, id_pr_debug_fun_ns, "ostream&", "os");
+        cpp_pr_debug_params, id_pr_debug_fun_ns, "std::ostream&", "os");
     auto cpp_pr_debug_param_flags_var = ctx.cc_.gen_cpp_param_acc<std::string>(
         cpp_pr_debug_params, id_pr_debug_fun_ns, "FmtFlags", "flags");
     auto cpp_pr_debug_param_x_var = ctx.cc_.gen_cpp_param_acc<cc::Node_T>(

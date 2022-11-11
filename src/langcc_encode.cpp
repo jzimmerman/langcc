@@ -10,7 +10,7 @@ Int trunc_u16_s2u(Int x) {
   return static_cast<u16>(x & 0xffff);
 }
 
-pair<Int, Int> trunc_u16_s2u_x2(Int x) {
+std::pair<Int, Int> trunc_u16_s2u_x2(Int x) {
   AT(x < 0x7fffffffL); // Leave one for sentinel
   AT(x > -0x7fffffffL);
   return std::make_pair(static_cast<u16>(x & 0xffff),
@@ -129,7 +129,7 @@ K table_keys_select_branch(Set_T<K> ks, Map_T<Map_T<K, V>, W> tt) {
 }
 
 template <typename K, typename V, typename W>
-pair<Set_T<K>, Map_T<Map_T<K, V>, W>>
+std::pair<Set_T<K>, Map_T<Map_T<K, V>, W>>
 table_keys_minimal_partition(Map_T<Map_T<K, V>, W> table) {
 
   auto ks = make_rc<Set<K>>();
@@ -466,7 +466,7 @@ parser_lr_action_by_vertex_impl_table_basic(LangCompileContext &ctx, LR_DFA_T D,
   return table;
 }
 
-pair<Vec_T<Int>, Vec_T<Int>>
+std::pair<Vec_T<Int>, Vec_T<Int>>
 parser_lr_action_by_vertex_impl_table_opt(LangCompileContext &ctx, LR_NFA_T N,
                                           LR_DFA_T D, Int k) {
 

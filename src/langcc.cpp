@@ -106,7 +106,7 @@ LangCompileResult_T compile_lang(lang::meta::Node_T src, Int k,
   }
 }
 
-tuple<meta::Node::Lang_T, Gensym_T, LexOutput_T>
+std::tuple<meta::Node::Lang_T, Gensym_T, LexOutput_T>
 load_lang_path(std::string src_path) {
   auto src_str = read_file_shared(src_path);
 
@@ -120,10 +120,10 @@ load_lang_path(std::string src_path) {
 
   auto src = parse->res_.as_some()->as_Lang();
 
-  return make_tuple(src, gen_meta, parse->lex_);
+  return std::make_tuple(src, gen_meta, parse->lex_);
 }
 
-string lang_get_src_base_name(std::string src_path) {
+std::string lang_get_src_base_name(std::string src_path) {
   auto src_comps = str_split(src_path, "/");
   auto src_base_comps = str_split(src_comps.at(src_comps.size() - 1), ".");
   if (src_base_comps.size() != 2 || src_base_comps[1] != "lang") {

@@ -99,7 +99,7 @@ Int add_vertex(NFA_T<Vertex, Label, Acc> &N, Vertex v) {
 }
 
 template <typename Vertex, typename Label, typename Acc>
-pair<Int, bool> ensure_vertex(NFA_T<Vertex, Label, Acc> &N, Vertex v) {
+std::pair<Int, bool> ensure_vertex(NFA_T<Vertex, Label, Acc> &N, Vertex v) {
   auto ret = N->G_->V_->index_of_maybe(v);
   if (ret.is_some()) {
     return std::make_pair(ret.as_some(), false);

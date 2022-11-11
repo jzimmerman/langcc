@@ -158,8 +158,8 @@ void lexer_gen_cpp_defs(
           "Expr", ind_curr_unicode == -1 ? "langcc::DFATable::NO_LABEL"
                                          : fmt_str("{}", ind_curr_unicode));
       cpp_label_ids_unicode_inits.push_back(ctx.cc_.qq(
-          "Stmt", "ret->insert(std::std::make_pair(",
-          fmt_str("{}", ch_curr_unicode), ",", cpp_ind_curr_unicode, "));"));
+          "Stmt", "ret->insert(std::make_pair(", fmt_str("{}", ch_curr_unicode),
+          ",", cpp_ind_curr_unicode, "));"));
     }
     ch_curr_unicode = p.first;
     ind_curr_unicode = p.second;
@@ -168,8 +168,8 @@ void lexer_gen_cpp_defs(
       "Expr", ind_curr_unicode == -1 ? "langcc::DFATable::NO_LABEL"
                                      : fmt_str("{}", ind_curr_unicode));
   cpp_label_ids_unicode_inits.push_back(ctx.cc_.qq(
-      "Stmt", "ret->insert(std::std::make_pair(",
-      fmt_str("{}", ch_curr_unicode), ",", cpp_ind_curr_unicode, "));"));
+      "Stmt", "ret->insert(std::make_pair(", fmt_str("{}", ch_curr_unicode),
+      ",", cpp_ind_curr_unicode, "));"));
 
   ctx.cc_.dst_defs_->push_back(
       ctx.cc_
@@ -259,14 +259,13 @@ void lexer_gen_cpp_defs(
       } else {
         // pass
       }
-      cpp_dfa_acc_switch_cases->push_back(
-          ctx.cc_.qq("SwitchCase", "case", cpp_switch_arg, ": {",
-                     "return std::std::make_pair(", cpp_acc_action, ",",
-                     cpp_acc_token, ");", "}"));
+      cpp_dfa_acc_switch_cases->push_back(ctx.cc_.qq(
+          "SwitchCase", "case", cpp_switch_arg, ": {", "return std::make_pair(",
+          cpp_acc_action, ",", cpp_acc_token, ");", "}"));
     }
 
     cpp_dfa_acc_switch_cases->push_back(ctx.cc_.qq(
-        "SwitchCase", "default: {", "return std::std::make_pair(",
+        "SwitchCase", "default: {", "return std::make_pair(",
         cpp_acc_action_default, ",", cpp_acc_token_default, ");", "}"));
 
     ctx.cc_.dst_defs_->push_back(
@@ -324,7 +323,7 @@ void lexer_gen_cpp_defs(
                 "langcc::Int& in_i,", "langcc::Int& tok_lo,",
                 "langcc::Int& tok_hi) {",
 
-                "auto ret = std::std::make_pair(-1, -1);",
+                "auto ret = std::make_pair(-1, -1);",
                 "bool mode_switch = false;", "switch (acc) {",
                 *cpp_step_exec_switch_cases, "}", "return ret;", "}", "}")
             ->as_Decl());
@@ -510,8 +509,8 @@ void lang_emit_writer_defs(LangCompileContext &ctx) {
   }
 }
 
-string parser_lr_impl_id_gen_cpp(CppGenContext &cc, ProdId_T prod_id,
-                                 LangCompileContext &ctx) {
+std::string parser_lr_impl_id_gen_cpp(CppGenContext &cc, ProdId_T prod_id,
+                                      LangCompileContext &ctx) {
 
   if (prod_id->is_Start()) {
     auto lr_sym = LRSym::Base::make(prod_id->as_Start()->sym_);
@@ -545,7 +544,7 @@ void parser_lr_unwind_impl_gen_cpp_push_res_rev(Vec_T<cc::Node_T> &cpp_dst_proc,
   cc.qq_stmt_acc(cpp_dst_proc, "++sb_len;");
 }
 
-pair<cc::Node_T, cc::Node_T> parser_lr_unwind_impl_gen_name_to_cpp_struct(
+std::pair<cc::Node_T, cc::Node_T> parser_lr_unwind_impl_gen_name_to_cpp_struct(
     Ident_T id, std::string src_base_name, CppGenContext &cc) {
 
   auto ret_struct = make_rc<Vec<std::string>>();
@@ -1469,7 +1468,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
                      fmt_str("{}", D->G_->V_->length()), " + v;",
                      "langcc::Int ret_acc = tt_acc[ind];",
                      "langcc::Int ret_arg = tt_arg[ind];",
-                     "return std::std::make_pair(ret_acc, ret_arg);", "}")
+                     "return std::make_pair(ret_acc, ret_arg);", "}")
             ->as_Decl());
   }
 
@@ -1554,7 +1553,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
     auto marker_name = ident->xs_->only()->as_User()->name_;
     auto marker_ind = grammar_sym_to_ind_flat(ctx, marker);
     start_marker_by_name_entries->push_back(ctx.cc_.Q_->qq_ext(
-        Some<std::string>("Stmt"), "ret.insert(std::std::make_pair(",
+        Some<std::string>("Stmt"), "ret.insert(std::make_pair(",
         fmt_str("\"{}\"", escape_string(marker_name)), ",",
         fmt_str("{}", marker_ind), "));"));
   }

@@ -1238,17 +1238,17 @@ Int lr_conflict_nfa_search_post_buffer_len_heuristic(
   return ret;
 }
 
-template <typename T, typename U> std::pair<T, U> pair_neg(pair<T, U> x) {
+template <typename T, typename U> std::pair<T, U> pair_neg(std::pair<T, U> x) {
   return std::make_pair(-x.first, -x.second);
 }
 
 template <typename T, typename U>
-std::pair<T, U> pair_fst_add(pair<T, U> x, T inc) {
+std::pair<T, U> pair_fst_add(std::pair<T, U> x, T inc) {
   return std::make_pair(x.first + inc, x.second);
 }
 
 template <typename T, typename U>
-std::pair<T, U> pair_snd_add(pair<T, U> x, U inc) {
+std::pair<T, U> pair_snd_add(std::pair<T, U> x, U inc) {
   return std::make_pair(x.first, x.second + inc);
 }
 
@@ -1266,7 +1266,7 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
                                     Vec_T<LRStringExemplarBounded_T>>;
   auto tail_init =
       lr_conflict_extract_exemplars_tail(w, false, G_gen, G_constrs);
-  SearchVertex_T v0 = make_tuple(w, pre->length(), 0, tail_init);
+  SearchVertex_T v0 = std::make_tuple(w, pre->length(), 0, tail_init);
   auto vis_len = make_rc<Map<SearchVertex_T, Len>>();
   using BackEdge_T = std::pair<Option_T<LRStringExemplar_T>, SearchVertex_T>;
   auto vis_pred = make_rc<Map<SearchVertex_T, Option_T<BackEdge_T>>>();
@@ -1274,7 +1274,7 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
   vis_pred->insert(v0, None<BackEdge_T>());
   auto vs = make_rc<VecUniq<SearchVertex_T>>();
   Int vi0 = vs->insert(v0);
-  priority_queue<std::pair<Len, Int>> Q;
+  std::priority_queue<std::pair<Len, Int>> Q;
   Len len0 = std::make_pair(
       lr_conflict_nfa_search_post_buffer_len_heuristic(tail_init, G_gen), 0);
   Q.push(std::make_pair(pair_neg(len0), vi0));
@@ -1288,8 +1288,8 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
     }
     --k_tgt;
   }
-  SearchVertex_T v_tgt =
-      make_tuple(N_start, 0, k_tgt, make_rc<Vec<LRStringExemplarBounded_T>>());
+  SearchVertex_T v_tgt = std::make_tuple(
+      N_start, 0, k_tgt, make_rc<Vec<LRStringExemplarBounded_T>>());
 
   while (!Q.empty()) {
     auto [len_bound_curr, vi_curr] = Q.top();
@@ -1318,7 +1318,7 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
 
         for (auto [_, qss_str] : *qss->items_) {
           bool ok = true;
-          Int match_len = min<Int>(k - la_ind, qss_str->v_->length());
+          Int match_len = std::min<Int>(k - la_ind, qss_str->v_->length());
           for (Int j = 0; j < match_len; j++) {
             if (val_hash(qss_str->v_->operator[](j)) !=
                 val_hash(la->v_->operator[](la_ind + j))) {
@@ -1331,7 +1331,7 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
           }
 
           auto buf_nbr = buf->slice(1, buf->length());
-          auto x_nbr = make_tuple(x, pre_ind, la_ind + match_len, buf_nbr);
+          auto x_nbr = std::make_tuple(x, pre_ind, la_ind + match_len, buf_nbr);
           auto vi_nbr = vs->insert(x_nbr);
           auto len_nbr = std::make_pair(len_curr.first + qss_str->v_->length(),
                                         len_curr.second);
@@ -1369,8 +1369,8 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
 
             auto buf_nbr =
                 lr_conflict_extract_exemplars_tail(y, true, G_gen, G_constrs);
-            auto x_nbr = make_tuple(y, pre_ind - (is_recurstep ? 1 : 0), la_ind,
-                                    buf_nbr);
+            auto x_nbr = std::make_tuple(y, pre_ind - (is_recurstep ? 1 : 0),
+                                         la_ind, buf_nbr);
             auto vi_nbr = vs->insert(x_nbr);
             auto len_nbr = pair_snd_add(len_curr, Int(1));
             BackEdge_T v_curr_be =
@@ -1396,7 +1396,7 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
             }
 
             auto buf_nbr = make_rc<Vec<LRStringExemplarBounded_T>>();
-            auto x_nbr = make_tuple(y, pre_ind - 1, la_ind, buf_nbr);
+            auto x_nbr = std::make_tuple(y, pre_ind - 1, la_ind, buf_nbr);
             auto vi_nbr = vs->insert(x_nbr);
             auto len_nbr = len_curr;
             BackEdge_T v_curr_be =
@@ -1745,7 +1745,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
     auto mm = lr_tabulate_nfa_acc(N, vs);
     for (auto [la, ma] : *mm) {
       if (ma->length() > 1) {
-        lr_conflict_vs->insert(make_tuple(vs, la, ma));
+        lr_conflict_vs->insert(std::make_tuple(vs, la, ma));
       }
     }
   }
@@ -1765,7 +1765,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
   auto m_pred =
       make_rc<Map<DFAVertex_T, std::pair<Int, Option_T<BackEdge_T>>>>();
   {
-    priority_queue<IntPair> Q;
+    std::priority_queue<IntPair> Q;
     auto hit = make_rc<Set<Int>>();
     auto vsi_start = D->start_.as_some();
     auto vs_start = D->G_->V_->operator[](vsi_start);

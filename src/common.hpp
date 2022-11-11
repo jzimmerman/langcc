@@ -713,7 +713,7 @@ void pr(std::ostream &os, FmtFlags flags, LRConflict_T conf);
 
 inline SymStr_T sym_str_trunc(SymStr_T s, Int k) {
   auto v = make_rc<Vec<LRSym_T>>();
-  for (Int i = 0; i < min(k, s->v_->length()); i++) {
+  for (Int i = 0; i < std::min(k, s->v_->length()); i++) {
     v->push_back(s->v_->operator[](i));
   }
   return SymStr::make(v);
@@ -845,7 +845,7 @@ inline AttrVal_T attr_val_minimum(AttrVal_T x, AttrVal_T y) {
   } else if (x->is_Int_()) {
     auto vx = x->as_Int_()->v_;
     auto vy = y->as_Int_()->v_;
-    return AttrVal::Int_::make(x->ty_, min(vx, vy));
+    return AttrVal::Int_::make(x->ty_, std::min(vx, vy));
   } else {
     AX();
   }
@@ -859,7 +859,7 @@ inline AttrVal_T attr_val_maximum(AttrVal_T x, AttrVal_T y) {
   } else if (x->is_Int_()) {
     auto vx = x->as_Int_()->v_;
     auto vy = y->as_Int_()->v_;
-    return AttrVal::Int_::make(x->ty_, max(vx, vy));
+    return AttrVal::Int_::make(x->ty_, std::max(vx, vy));
   } else {
     AX();
   }

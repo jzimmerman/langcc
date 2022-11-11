@@ -40,7 +40,7 @@
 
 namespace langcc {
 
-using namespace std;
+// using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Common definitions
@@ -807,7 +807,7 @@ inline std::string cc_sprintf(const char *fmt_str, Ts... ts) {
     }
     AR_ge(res, 0);
     AR_lt(res, n);
-    return string(buf.data(), res);
+    return std::string(buf.data(), res);
   }
 }
 
@@ -1684,7 +1684,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
 template <typename T> using Vec_T = rc_ptr<Vec<T>>;
 
 inline std::string vec_to_std_string(const Vec_T<char> &v) {
-  return string(&v->at_unchecked(0), v->len_);
+  return std::string(&v->at_unchecked(0), v->len_);
 }
 
 template <typename T> inline Int len(const Vec<T> &v) { return v.length(); }
@@ -1778,7 +1778,7 @@ struct StrSlice {
   }
 
   inline std::string to_std_string() const {
-    return string(&base_->at_unchecked(lo_), hi_ - lo_);
+    return std::string(&base_->at_unchecked(lo_), hi_ - lo_);
   }
 };
 
@@ -2591,7 +2591,7 @@ template <typename K, typename V> struct Map;
 template <typename K, typename V> using Map_T = rc_ptr<Map<K, V>>;
 
 template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
-  unordered_map<HashVal, Int> m_;
+  std::unordered_map<HashVal, Int> m_;
   Vec<bool> live_;
   Vec<std::pair<K, V>> vs_;
 
@@ -2739,7 +2739,7 @@ inline void hash_ser(SerBuf &buf, const Map<K, V> &m) {
   for (const auto &p : m) {
     vv.push(val_hash(p));
   }
-  sort(vv.begin(), vv.end());
+  std::sort(vv.begin(), vv.end());
   for (const auto &vh : vv) {
     ser(buf, vh);
   }
@@ -2817,7 +2817,7 @@ template <typename T> inline void hash_ser(SerBuf &buf, const Set<T> &v) {
   for (const auto &vi : v) {
     vv.push(val_hash(vi));
   }
-  sort(vv.begin(), vv.end());
+  std::sort(vv.begin(), vv.end());
   for (const auto &vh : vv) {
     ser(buf, vh);
   }
@@ -2853,7 +2853,7 @@ template <typename T> struct SetIterator {
 };
 
 template <typename T> struct Set : enable_rc_from_this<Set<T>> {
-  unordered_map<HashVal, Int> m_;
+  std::unordered_map<HashVal, Int> m_;
   Vec<bool> live_;
   Vec<T> vs_;
 
@@ -3347,16 +3347,17 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, PrintTable_T td) {
 
 inline Option_T<std::string> stdin_readline() {
   std::string ret;
-  std::getline(cin, ret);
-  if (!cin.good()) {
+  std::getline(std::cin, ret);
+  if (!std::cin.good()) {
     return None<std::string>();
   }
   return Some<std::string>(ret + "\n");
 }
 
 inline Time now() {
-  auto ret_duration = chrono::steady_clock::now().time_since_epoch();
-  Time ret = chrono::duration_cast<chrono::nanoseconds>(ret_duration).count();
+  auto ret_duration = std::chrono::steady_clock::now().time_since_epoch();
+  Time ret = std::chrono::duration_cast<std::chrono::nanoseconds>(ret_duration)
+                 .count();
   return ret;
 }
 
@@ -3405,7 +3406,7 @@ inline Str_T read_file_shared(std::string filename, Arena *A = nullptr) {
 
 inline void write_file(const std::string &filename_dst,
                        const std::string &contents) {
-  ofstream fout(filename_dst);
+  std::ofstream fout(filename_dst);
   if (!fout.good()) {
     LG_ERR("Error opening for writing: {}", filename_dst);
     AX();

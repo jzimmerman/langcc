@@ -284,7 +284,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   LOG(2, "Top-level lexer tokens: {}", ctx.tokens_top_by_id_);
 
   // Tabulate char thresholds
-  set<Int> char_thresholds_s;
+  std::set<Int> char_thresholds_s;
   Vec<IntPair> char_ranges;
   Vec<meta::Node::ParseExpr_T> Q_tabulate_chars;
   for (auto decl : *ctx.tokens_->decls_) {

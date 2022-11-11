@@ -66,7 +66,7 @@ inline Ident_T force(NameMaybe_T nm, LangCompileContext &ctx) {
 }
 } // namespace NameMaybe
 
-pair<Vec_T<Sym_T>, Vec_T<bool>>
+std::pair<Vec_T<Sym_T>, Vec_T<bool>>
 sym_flatten_result_extract_vec(Vec_T<SymFlattenResult_T> rhs) {
 
   auto ret_sym = make_rc<Vec<Sym_T>>();
@@ -78,7 +78,7 @@ sym_flatten_result_extract_vec(Vec_T<SymFlattenResult_T> rhs) {
   return std::make_pair(ret_sym, ret_unfold);
 }
 
-pair<Vec_T<Sym_T>, Vec_T<bool>>
+std::pair<Vec_T<Sym_T>, Vec_T<bool>>
 sym_flatten_result_extract_vec(Vec_T<SymFlattenResultCPS_T> rhs) {
 
   auto ret_sym = make_rc<Vec<Sym_T>>();
@@ -90,7 +90,7 @@ sym_flatten_result_extract_vec(Vec_T<SymFlattenResultCPS_T> rhs) {
   return std::make_pair(ret_sym, ret_unfold);
 }
 
-pair<Sym_T, SymFlattenResult_T>
+std::pair<Sym_T, SymFlattenResult_T>
 parser_flatten_gen_nonterm(LangCompileContext &ctx, Sym_T sym, Rule_T rule_ctx,
                            bool unfold, Option_T<ParseExpr_T> src) {
 
@@ -215,16 +215,16 @@ parser_flatten_expr_base_new(ParseExpr_Base_T xb, NameMaybe_T id,
         x_ty = GenType::Nil::make();
         auto x_str = parse_expr_extract_write_phase_const(xb->src_.as_some());
         ret_wr = WriteInstr::String::make(x_str);
-        return make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
+        return std::make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
       } else {
         x_ty = GenType::String::make();
         ret_wr = WriteInstr::Prim::make();
-        return make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
+        return std::make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
       }
     } else {
       x_ty = GenType::Named::make(id);
       ret_wr = WriteInstr::Rec::make(id);
-      return make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
+      return std::make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
     }
   } else if (xb->tok_->is_LitStr()) {
     auto xc = xb->tok_->as_LitStr();
@@ -234,7 +234,7 @@ parser_flatten_expr_base_new(ParseExpr_Base_T xb, NameMaybe_T id,
     }
     ret_wr = WriteInstr::String::make(s);
     x_ty = GenType::Nil::make();
-    return make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
+    return std::make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
   } else if (xb->tok_->is_Special()) {
     auto xc = xb->tok_->as_Special();
     if (xb->tok_->as_Special()->w_ == TokenBaseSpecial::Newline) {
@@ -247,7 +247,7 @@ parser_flatten_expr_base_new(ParseExpr_Base_T xb, NameMaybe_T id,
       ret_wr = WriteInstr::Pass::make();
     }
     x_ty = GenType::Nil::make();
-    return make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
+    return std::make_tuple(ret_fl, ret_wr, x_ty, IsOwnDatatype::N);
   } else {
     AX();
   }
@@ -275,7 +275,7 @@ parser_flatten_expr_new(ParseExpr_T x, NameMaybe_T id, bool owns_id,
                                    rule_ctx, true, Some<ParseExpr_T>(x));
     auto [r_wr, r_ty, is_dt] = parser_flatten_expr_acc_new(
         x, r_sym, None<AttrLeaf_T>(), id, owns_id, rule_ctx, ctx);
-    return make_tuple(r_fl, r_wr, r_ty, is_dt);
+    return std::make_tuple(r_fl, r_wr, r_ty, is_dt);
   }
 }
 
@@ -462,7 +462,7 @@ parser_flatten_expr_alt_acc_new(ParseExpr_T x, Sym_T dst,
     ret_wr = WriteInstr::Rec::make(id_f);
   }
 
-  return make_tuple(ret_wr, ret_ty, IsOwnDatatype::Y);
+  return std::make_tuple(ret_wr, ret_ty, IsOwnDatatype::Y);
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
@@ -522,7 +522,7 @@ parser_flatten_expr_optional_acc_new(ParseExpr_T x, Sym_T dst,
     parser_Gr_flat_add_prod(ctx, dst, lhs_leaf, y_fl_v, rule_ctx, rd_instr_0);
   }
 
-  return make_tuple(ret_wr, ret_ty, IsOwnDatatype::N);
+  return std::make_tuple(ret_wr, ret_ty, IsOwnDatatype::N);
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
@@ -653,7 +653,7 @@ parser_flatten_expr_concat_acc_new(Vec_T<ParseExpr_T> ys, Sym_T dst,
     ret_wr = WriteInstr::Rec::make(id_f);
   }
 
-  return make_tuple(ret_wr, ret_ty, is_own_dt);
+  return std::make_tuple(ret_wr, ret_ty, is_own_dt);
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
@@ -927,7 +927,7 @@ parser_flatten_expr_iter_acc_new(ParseExpr_T x, Sym_T dst,
   AT(!!ret_wr.v_);
   AT(!!ret_ty.v_);
 
-  return make_tuple(ret_wr, ret_ty, IsOwnDatatype::N);
+  return std::make_tuple(ret_wr, ret_ty, IsOwnDatatype::N);
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
@@ -965,7 +965,7 @@ parser_flatten_expr_acc_new(ParseExpr_T x, Sym_T dst,
                             rd_instr);
     auto e_sub_str = parse_expr_extract_write_phase_const(x);
     auto e_sub_wr = WriteInstr::String::make(e_sub_str);
-    return make_tuple(e_sub_wr, GenType::Nil::make(), IsOwnDatatype::N);
+    return std::make_tuple(e_sub_wr, GenType::Nil::make(), IsOwnDatatype::N);
 
   } else if (parse_expr_to_base_maybe(x).is_some()) {
     auto xb = parse_expr_to_base_maybe(x).as_some();
@@ -977,7 +977,7 @@ parser_flatten_expr_acc_new(ParseExpr_T x, Sym_T dst,
     rhs_fl->push_back(x_fl);
     auto rd_instr = UnwindInstr::Identity::make();
     parser_Gr_flat_add_prod(ctx, dst, lhs_leaf, rhs_fl, rule_ctx, rd_instr);
-    return make_tuple(x_wr, x_ty, x_is_dt);
+    return std::make_tuple(x_wr, x_ty, x_is_dt);
 
   } else {
     LG_ERR("{}", x);

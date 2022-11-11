@@ -206,11 +206,11 @@ Option_T<LangCompileResult::Error::LexUnreach_T>
 lexer_check_all_reach(LangCompileContext &ctx);
 
 // Flattening
-pair<Vec_T<Sym_T>, Vec_T<bool>>
+std::pair<Vec_T<Sym_T>, Vec_T<bool>>
 sym_flatten_result_extract_vec(Vec_T<SymFlattenResult_T> rhs);
-pair<Vec_T<Sym_T>, Vec_T<bool>>
+std::pair<Vec_T<Sym_T>, Vec_T<bool>>
 sym_flatten_result_extract_vec(Vec_T<SymFlattenResultCPS_T> rhs);
-pair<Sym_T, SymFlattenResult_T>
+std::pair<Sym_T, SymFlattenResult_T>
 parser_flatten_gen_nonterm(LangCompileContext &ctx, Sym_T sym, Rule_T rule_ctx,
                            bool unfold, Option_T<ParseExpr_T> src);
 void parser_Gr_flat_add_prod(LangCompileContext &ctx, Sym_T lhs,
@@ -268,7 +268,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx);
 
 // Encoding
 Int trunc_u16_s2u(Int x);
-pair<Int, Int> trunc_u16_s2u_x2(Int x);
+std::pair<Int, Int> trunc_u16_s2u_x2(Int x);
 void switch_table_encode_acc_u16(Vec_T<Int> &dst, SwitchTable_T &tt);
 Vec_T<Int> switch_table_encode_u16(SwitchTable_T &tt);
 SwitchTable_T lexer_dfa_to_switch_table(const LexerNFA_T &D,
@@ -290,7 +290,7 @@ Int grammar_sym_to_ind_flat(LangCompileContext &ctx, LRSym_T sym);
 SwitchTable_T
 parser_lr_action_by_vertex_impl_table_basic(LangCompileContext &ctx, LR_DFA_T D,
                                             Int k);
-pair<Vec_T<Int>, Vec_T<Int>>
+std::pair<Vec_T<Int>, Vec_T<Int>>
 parser_lr_action_by_vertex_impl_table_opt(LangCompileContext &ctx, LR_NFA_T N,
                                           LR_DFA_T D, Int k);
 
