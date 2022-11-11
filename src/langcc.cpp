@@ -152,7 +152,7 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
                                       RunTests run_tests,
                                       HeaderMode header_mode) {
 
-  makedirs(dst_path);
+  std::filesystem::create_directories(dst_path);
 
   auto [src, _, __] = load_lang_path(src_path);
   auto compile_tests = lang_get_compile_test_stanza(src);
@@ -183,7 +183,7 @@ LangCompileResult_T compile_lang_full(string src_path, string dst_path,
   }
 
   if (run_tests == RunTests::Y) {
-    makedirs("build/gen_test_bin");
+    std::filesystem::create_directories("build/gen_test_bin");
 
     Vec<string> cmds;
 #ifdef WIN32

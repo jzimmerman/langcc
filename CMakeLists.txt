@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 #
 # Set include directories
 #
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/gen)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/test ${CMAKE_CURRENT_SOURCE_DIR}/gen)
 add_compile_definitions(__CC__=${CMAKE_CXX_COMPILER})
 if (MSVC)
   add_compile_options(/wd4244 /wd4065 /wd4996 /wd5051 /wd4311 /wd4302 /wd4018)

@@ -1,13 +1,13 @@
 
 #include "common.hpp"
-
+#include "testlib.hpp"
 #include "util_test.hpp"
 
 using namespace langcc;
 
 int main() {
-    global_init();
-    set_log_level(1);
-    bool success = run_unit_tests();
-    return success ? 0 : 1;
+  global_init();
+  set_log_level(1);
+  bool success = run_unit_tests();
+  return success ? 0 : 1;
 }
