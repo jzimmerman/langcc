@@ -22,10 +22,8 @@ int main(i32 argc, char **argv) {
       if (!entry.is_regular_file()) {
         continue;
       }
-      string path = entry.path().string();
-      auto v = str_split(path, "/");
-      auto path_last = v.operator[](v.size() - 1);
-      auto w = str_split(path_last, ".lang");
+      auto filename = entry.path().filename().string();
+      auto w = str_split(filename, ".lang");
       AR_eq(static_cast<Int>(w.size()), 2);
       string s = w[0];
       ss.push_back(s);
@@ -37,8 +35,13 @@ int main(i32 argc, char **argv) {
 
   for (const auto &s : ss) {
     register_unit_test(s, [s]() {
-      bool ok = test_lang(s);
-      return ok ? 0 : 1;
+      try {
+        bool ok = test_lang(s);
+        return ok ? 0 : 1;
+      } catch (const std::exception &ex) {
+        LG_ERR("Test raised exception: {}", ex.what());
+        return 1;
+      }
     });
   }
 
