@@ -201,7 +201,7 @@ namespace lang::data {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node_T x);
 }
 
 namespace lang::data::Node {
@@ -302,7 +302,7 @@ template<typename RetT> RetT lang::data::Node::_T::match_expr(std::function<RetT
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Module_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Module_T x);
 }
 
 namespace lang::data::Node::Module {
@@ -332,7 +332,7 @@ namespace lang::data::Node::Module {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Param_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Param_T x);
 }
 
 namespace lang::data::Node::Param {
@@ -364,7 +364,7 @@ namespace lang::data::Node::Param {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::SumId_T x);
 }
 
 namespace lang::data::Node::SumId {
@@ -394,7 +394,7 @@ namespace lang::data::Node::SumId {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Id_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Id_T x);
 }
 
 namespace lang::data::Node::Id {
@@ -424,7 +424,7 @@ namespace lang::data::Node::Id {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl_T x);
 }
 
 namespace lang::data::Node::Decl {
@@ -487,7 +487,7 @@ template<typename RetT> RetT lang::data::Node::Decl::_T::match_expr(std::functio
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod_T x);
 }
 
 namespace lang::data::Node::Mod {
@@ -542,7 +542,7 @@ template<typename RetT> RetT lang::data::Node::Mod::_T::match_expr(std::function
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Entry_T x);
 }
 
 namespace lang::data::Node::Entry {
@@ -589,7 +589,7 @@ template<typename RetT> RetT lang::data::Node::Entry::_T::match_expr(std::functi
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr_T x);
 }
 
 namespace lang::data::Node::Expr {
@@ -644,7 +644,7 @@ template<typename RetT> RetT lang::data::Node::Expr::_T::match_expr(std::functio
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x);
 }
 
 namespace lang::data::Node::Decl::Include {
@@ -674,7 +674,7 @@ namespace lang::data::Node::Decl::Include {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Namespace_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Namespace_T x);
 }
 
 namespace lang::data::Node::Decl::Namespace {
@@ -706,7 +706,7 @@ namespace lang::data::Node::Decl::Namespace {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x);
 }
 
 namespace lang::data::Node::Decl::Data {
@@ -744,7 +744,7 @@ namespace lang::data::Node::Decl::Data {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Enum_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Enum_T x);
 }
 
 namespace lang::data::Node::Decl::Enum {
@@ -776,7 +776,7 @@ namespace lang::data::Node::Decl::Enum {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Mut_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod::Mut_T x);
 }
 
 namespace lang::data::Node::Mod::Mut {
@@ -804,7 +804,7 @@ namespace lang::data::Node::Mod::Mut {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Xform_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod::Xform_T x);
 }
 
 namespace lang::data::Node::Mod::Xform {
@@ -832,7 +832,7 @@ namespace lang::data::Node::Mod::Xform {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Visit_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod::Visit_T x);
 }
 
 namespace lang::data::Node::Mod::Visit {
@@ -860,7 +860,7 @@ namespace lang::data::Node::Mod::Visit {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x);
 }
 
 namespace lang::data::Node::Entry::Field {
@@ -894,7 +894,7 @@ namespace lang::data::Node::Entry::Field {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x);
 }
 
 namespace lang::data::Node::Entry::Method {
@@ -932,7 +932,7 @@ namespace lang::data::Node::Entry::Method {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Id_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr::Id_T x);
 }
 
 namespace lang::data::Node::Expr::Id {
@@ -964,7 +964,7 @@ namespace lang::data::Node::Expr::Id {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::App_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr::App_T x);
 }
 
 namespace lang::data::Node::Expr::App {
@@ -996,7 +996,7 @@ namespace lang::data::Node::Expr::App {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Type__T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr::Type__T x);
 }
 
 namespace lang::data::Node::Expr::Type_ {

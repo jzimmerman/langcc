@@ -1025,7 +1025,7 @@ namespace lang::cc {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node_T x);
 }
 
 namespace lang::cc::Node {
@@ -1334,7 +1334,7 @@ template<typename RetT> RetT lang::cc::Node::_T::match_expr(std::function<RetT(l
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Module_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Module_T x);
 }
 
 namespace lang::cc::Node::Module {
@@ -1364,7 +1364,7 @@ namespace lang::cc::Node::Module {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Param_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Param_T x);
 }
 
 namespace lang::cc::Node::Param {
@@ -1400,7 +1400,7 @@ namespace lang::cc::Node::Param {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Block_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Block_T x);
 }
 
 namespace lang::cc::Node::Block {
@@ -1430,7 +1430,7 @@ namespace lang::cc::Node::Block {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl_T x);
 }
 
 namespace lang::cc::Node::TypedDecl {
@@ -1464,7 +1464,7 @@ namespace lang::cc::Node::TypedDecl {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl_T x);
 }
 
 namespace lang::cc::Node::Decl {
@@ -1559,7 +1559,7 @@ template<typename RetT> RetT lang::cc::Node::Decl::_T::match_expr(std::function<
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef_T x);
 }
 
 namespace lang::cc::Node::StructDeclDef {
@@ -1606,7 +1606,7 @@ template<typename RetT> RetT lang::cc::Node::StructDeclDef::_T::match_expr(std::
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Entry_T x);
 }
 
 namespace lang::cc::Node::Entry {
@@ -1653,7 +1653,7 @@ template<typename RetT> RetT lang::cc::Node::Entry::_T::match_expr(std::function
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef_T x);
 }
 
 namespace lang::cc::Node::FunDeclDef {
@@ -1716,7 +1716,7 @@ template<typename RetT> RetT lang::cc::Node::FunDeclDef::_T::match_expr(std::fun
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod_T x);
 }
 
 namespace lang::cc::Node::Mod {
@@ -1803,7 +1803,7 @@ template<typename RetT> RetT lang::cc::Node::Mod::_T::match_expr(std::function<R
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Attribute_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Attribute_T x);
 }
 
 namespace lang::cc::Node::Attribute {
@@ -1850,7 +1850,7 @@ template<typename RetT> RetT lang::cc::Node::Attribute::_T::match_expr(std::func
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt_T x);
 }
 
 namespace lang::cc::Node::Stmt {
@@ -1961,7 +1961,7 @@ template<typename RetT> RetT lang::cc::Node::Stmt::_T::match_expr(std::function<
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::ExprExt_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::ExprExt_T x);
 }
 
 namespace lang::cc::Node::ExprExt {
@@ -2008,7 +2008,7 @@ template<typename RetT> RetT lang::cc::Node::ExprExt::_T::match_expr(std::functi
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase_T x);
 }
 
 namespace lang::cc::Node::SwitchCase {
@@ -2055,7 +2055,7 @@ template<typename RetT> RetT lang::cc::Node::SwitchCase::_T::match_expr(std::fun
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr_T x);
 }
 
 namespace lang::cc::Node::Expr {
@@ -2302,7 +2302,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::_T::match_expr(std::function<
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct_T x);
 }
 
 namespace lang::cc::Node::Decl::Struct {
@@ -2336,7 +2336,7 @@ namespace lang::cc::Node::Decl::Struct {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef::Decl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef::Decl_T x);
 }
 
 namespace lang::cc::Node::StructDeclDef::Decl {
@@ -2364,7 +2364,7 @@ namespace lang::cc::Node::StructDeclDef::Decl {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef::Def_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::StructDeclDef::Def_T x);
 }
 
 namespace lang::cc::Node::StructDeclDef::Def {
@@ -2396,7 +2396,7 @@ namespace lang::cc::Node::StructDeclDef::Def {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Field_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Entry::Field_T x);
 }
 
 namespace lang::cc::Node::Entry::Field {
@@ -2428,7 +2428,7 @@ namespace lang::cc::Node::Entry::Field {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun_T x);
 }
 
 namespace lang::cc::Node::Entry::Fun {
@@ -2470,7 +2470,7 @@ namespace lang::cc::Node::Entry::Fun {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Param::val_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Param::val_T x);
 }
 
 namespace lang::cc::Node::Param::val {
@@ -2500,7 +2500,7 @@ namespace lang::cc::Node::Param::val {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Decl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Decl_T x);
 }
 
 namespace lang::cc::Node::FunDeclDef::Decl {
@@ -2528,7 +2528,7 @@ namespace lang::cc::Node::FunDeclDef::Decl {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Def_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Def_T x);
 }
 
 namespace lang::cc::Node::FunDeclDef::Def {
@@ -2560,7 +2560,7 @@ namespace lang::cc::Node::FunDeclDef::Def {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Del_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Del_T x);
 }
 
 namespace lang::cc::Node::FunDeclDef::Del {
@@ -2588,7 +2588,7 @@ namespace lang::cc::Node::FunDeclDef::Del {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Zero_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::FunDeclDef::Zero_T x);
 }
 
 namespace lang::cc::Node::FunDeclDef::Zero {
@@ -2618,7 +2618,7 @@ namespace lang::cc::Node::FunDeclDef::Zero {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::EnumStruct_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::EnumStruct_T x);
 }
 
 namespace lang::cc::Node::Decl::EnumStruct {
@@ -2650,7 +2650,7 @@ namespace lang::cc::Node::Decl::EnumStruct {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun_T x);
 }
 
 namespace lang::cc::Node::Decl::Fun {
@@ -2692,7 +2692,7 @@ namespace lang::cc::Node::Decl::Fun {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Const_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod::Const_T x);
 }
 
 namespace lang::cc::Node::Mod::Const {
@@ -2720,7 +2720,7 @@ namespace lang::cc::Node::Mod::Const {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Inline_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod::Inline_T x);
 }
 
 namespace lang::cc::Node::Mod::Inline {
@@ -2748,7 +2748,7 @@ namespace lang::cc::Node::Mod::Inline {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Static_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod::Static_T x);
 }
 
 namespace lang::cc::Node::Mod::Static {
@@ -2776,7 +2776,7 @@ namespace lang::cc::Node::Mod::Static {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Virtual_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod::Virtual_T x);
 }
 
 namespace lang::cc::Node::Mod::Virtual {
@@ -2804,7 +2804,7 @@ namespace lang::cc::Node::Mod::Virtual {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::NoInline_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod::NoInline_T x);
 }
 
 namespace lang::cc::Node::Mod::NoInline {
@@ -2832,7 +2832,7 @@ namespace lang::cc::Node::Mod::NoInline {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::AlwaysInline_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod::AlwaysInline_T x);
 }
 
 namespace lang::cc::Node::Mod::AlwaysInline {
@@ -2860,7 +2860,7 @@ namespace lang::cc::Node::Mod::AlwaysInline {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Mod::Attribute_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Mod::Attribute_T x);
 }
 
 namespace lang::cc::Node::Mod::Attribute {
@@ -2890,7 +2890,7 @@ namespace lang::cc::Node::Mod::Attribute {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Attribute::Simple_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Attribute::Simple_T x);
 }
 
 namespace lang::cc::Node::Attribute::Simple {
@@ -2920,7 +2920,7 @@ namespace lang::cc::Node::Attribute::Simple {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Attribute::Namespaced_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Attribute::Namespaced_T x);
 }
 
 namespace lang::cc::Node::Attribute::Namespaced {
@@ -2952,7 +2952,7 @@ namespace lang::cc::Node::Attribute::Namespaced {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Namespace_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Namespace_T x);
 }
 
 namespace lang::cc::Node::Decl::Namespace {
@@ -2984,7 +2984,7 @@ namespace lang::cc::Node::Decl::Namespace {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias_T x);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias {
@@ -3018,7 +3018,7 @@ namespace lang::cc::Node::Decl::UsingAlias {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingNamespace_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingNamespace_T x);
 }
 
 namespace lang::cc::Node::Decl::UsingNamespace {
@@ -3048,7 +3048,7 @@ namespace lang::cc::Node::Decl::UsingNamespace {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Include_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Include_T x);
 }
 
 namespace lang::cc::Node::Decl::Include {
@@ -3078,7 +3078,7 @@ namespace lang::cc::Node::Decl::Include {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::PragmaOnce_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::PragmaOnce_T x);
 }
 
 namespace lang::cc::Node::Decl::PragmaOnce {
@@ -3108,7 +3108,7 @@ namespace lang::cc::Node::Decl::PragmaOnce {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Decl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Decl_T x);
 }
 
 namespace lang::cc::Node::Stmt::Decl {
@@ -3138,7 +3138,7 @@ namespace lang::cc::Node::Stmt::Decl {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Expr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Expr_T x);
 }
 
 namespace lang::cc::Node::Stmt::Expr {
@@ -3168,7 +3168,7 @@ namespace lang::cc::Node::Stmt::Expr {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Block_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Block_T x);
 }
 
 namespace lang::cc::Node::Stmt::Block {
@@ -3198,7 +3198,7 @@ namespace lang::cc::Node::Stmt::Block {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::If_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::If_T x);
 }
 
 namespace lang::cc::Node::Stmt::If {
@@ -3230,7 +3230,7 @@ namespace lang::cc::Node::Stmt::If {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::IfElse_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::IfElse_T x);
 }
 
 namespace lang::cc::Node::Stmt::IfElse {
@@ -3264,7 +3264,7 @@ namespace lang::cc::Node::Stmt::IfElse {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::For_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::For_T x);
 }
 
 namespace lang::cc::Node::Stmt::For {
@@ -3300,7 +3300,7 @@ namespace lang::cc::Node::Stmt::For {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::ExprExt::Expr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::ExprExt::Expr_T x);
 }
 
 namespace lang::cc::Node::ExprExt::Expr {
@@ -3330,7 +3330,7 @@ namespace lang::cc::Node::ExprExt::Expr {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::ExprExt::Decl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::ExprExt::Decl_T x);
 }
 
 namespace lang::cc::Node::ExprExt::Decl {
@@ -3360,7 +3360,7 @@ namespace lang::cc::Node::ExprExt::Decl {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Switch_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Switch_T x);
 }
 
 namespace lang::cc::Node::Stmt::Switch {
@@ -3392,7 +3392,7 @@ namespace lang::cc::Node::Stmt::Switch {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase::Case_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase::Case_T x);
 }
 
 namespace lang::cc::Node::SwitchCase::Case {
@@ -3424,7 +3424,7 @@ namespace lang::cc::Node::SwitchCase::Case {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase::Default_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::SwitchCase::Default_T x);
 }
 
 namespace lang::cc::Node::SwitchCase::Default {
@@ -3454,7 +3454,7 @@ namespace lang::cc::Node::SwitchCase::Default {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Break_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Break_T x);
 }
 
 namespace lang::cc::Node::Stmt::Break {
@@ -3482,7 +3482,7 @@ namespace lang::cc::Node::Stmt::Break {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Continue_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Continue_T x);
 }
 
 namespace lang::cc::Node::Stmt::Continue {
@@ -3510,7 +3510,7 @@ namespace lang::cc::Node::Stmt::Continue {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Return_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Stmt::Return_T x);
 }
 
 namespace lang::cc::Node::Stmt::Return {
@@ -3540,7 +3540,7 @@ namespace lang::cc::Node::Stmt::Return {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Paren_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Paren_T x);
 }
 
 namespace lang::cc::Node::Expr::Paren {
@@ -3570,7 +3570,7 @@ namespace lang::cc::Node::Expr::Paren {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Call_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Call_T x);
 }
 
 namespace lang::cc::Node::Expr::Call {
@@ -3602,7 +3602,7 @@ namespace lang::cc::Node::Expr::Call {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Index_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Index_T x);
 }
 
 namespace lang::cc::Node::Expr::Index {
@@ -3634,7 +3634,7 @@ namespace lang::cc::Node::Expr::Index {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IndexEmpty_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IndexEmpty_T x);
 }
 
 namespace lang::cc::Node::Expr::IndexEmpty {
@@ -3664,7 +3664,7 @@ namespace lang::cc::Node::Expr::IndexEmpty {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Dot_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Dot_T x);
 }
 
 namespace lang::cc::Node::Expr::Dot {
@@ -3696,7 +3696,7 @@ namespace lang::cc::Node::Expr::Dot {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Arrow_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Arrow_T x);
 }
 
 namespace lang::cc::Node::Expr::Arrow {
@@ -3728,7 +3728,7 @@ namespace lang::cc::Node::Expr::Arrow {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ref__T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ref__T x);
 }
 
 namespace lang::cc::Node::Expr::Ref_ {
@@ -3758,7 +3758,7 @@ namespace lang::cc::Node::Expr::Ref_ {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::AddrOf_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::AddrOf_T x);
 }
 
 namespace lang::cc::Node::Expr::AddrOf {
@@ -3788,7 +3788,7 @@ namespace lang::cc::Node::Expr::AddrOf {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Deref_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Deref_T x);
 }
 
 namespace lang::cc::Node::Expr::Deref {
@@ -3818,7 +3818,7 @@ namespace lang::cc::Node::Expr::Deref {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre_T x);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre {
@@ -3850,7 +3850,7 @@ namespace lang::cc::Node::Expr::UnaryPre {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre {
@@ -3882,7 +3882,7 @@ namespace lang::cc::Node::Expr::IncDecPre {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost {
@@ -3914,7 +3914,7 @@ namespace lang::cc::Node::Expr::IncDecPost {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Assign_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Assign_T x);
 }
 
 namespace lang::cc::Node::Expr::Assign {
@@ -3946,7 +3946,7 @@ namespace lang::cc::Node::Expr::Assign {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin1 {
@@ -3980,7 +3980,7 @@ namespace lang::cc::Node::Expr::Bin1 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin2 {
@@ -4014,7 +4014,7 @@ namespace lang::cc::Node::Expr::Bin2 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3 {
@@ -4048,7 +4048,7 @@ namespace lang::cc::Node::Expr::Bin3 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin4 {
@@ -4082,7 +4082,7 @@ namespace lang::cc::Node::Expr::Bin4 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin5 {
@@ -4116,7 +4116,7 @@ namespace lang::cc::Node::Expr::Bin5 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin6 {
@@ -4150,7 +4150,7 @@ namespace lang::cc::Node::Expr::Bin6 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Template_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Template_T x);
 }
 
 namespace lang::cc::Node::Expr::Template {
@@ -4182,7 +4182,7 @@ namespace lang::cc::Node::Expr::Template {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::New_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::New_T x);
 }
 
 namespace lang::cc::Node::Expr::New {
@@ -4212,7 +4212,7 @@ namespace lang::cc::Node::Expr::New {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Delete_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Delete_T x);
 }
 
 namespace lang::cc::Node::Expr::Delete {
@@ -4242,7 +4242,7 @@ namespace lang::cc::Node::Expr::Delete {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ellipsis_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Ellipsis_T x);
 }
 
 namespace lang::cc::Node::Expr::Ellipsis {
@@ -4272,7 +4272,7 @@ namespace lang::cc::Node::Expr::Ellipsis {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Tilde_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Tilde_T x);
 }
 
 namespace lang::cc::Node::Expr::Tilde {
@@ -4302,7 +4302,7 @@ namespace lang::cc::Node::Expr::Tilde {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Namespace_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Namespace_T x);
 }
 
 namespace lang::cc::Node::Expr::Namespace {
@@ -4336,7 +4336,7 @@ namespace lang::cc::Node::Expr::Namespace {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Id_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Id_T x);
 }
 
 namespace lang::cc::Node::Expr::Id {
@@ -4366,7 +4366,7 @@ namespace lang::cc::Node::Expr::Id {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit_T x);
 }
 
 namespace lang::cc::Node::Expr::Lit {
@@ -4421,7 +4421,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::Lit::_T::match_expr(std::func
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl::vars::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl::vars::item_T x);
 }
 
 namespace lang::cc::Node::TypedDecl::vars::item {
@@ -4453,7 +4453,7 @@ namespace lang::cc::Node::TypedDecl::vars::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op_T x);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre::op {
@@ -4500,7 +4500,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::UnaryPre::op::_T::match_expr(
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op {
@@ -4547,7 +4547,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::IncDecPre::op::_T::match_expr
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op {
@@ -4594,7 +4594,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::IncDecPost::op::_T::match_exp
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1::op_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin1::op {
@@ -4633,7 +4633,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::Bin1::op::_T::match_expr(std:
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2::op_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin2::op {
@@ -4672,7 +4672,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::Bin2::op::_T::match_expr(std:
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op {
@@ -4751,7 +4751,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::Bin3::op::_T::match_expr(std:
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4::op_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin4::op {
@@ -4790,7 +4790,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::Bin4::op::_T::match_expr(std:
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin5::op {
@@ -4837,7 +4837,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::Bin5::op::_T::match_expr(std:
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op {
@@ -4892,7 +4892,7 @@ template<typename RetT> RetT lang::cc::Node::Expr::Bin6::op::_T::match_expr(std:
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Integer_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Integer_T x);
 }
 
 namespace lang::cc::Node::Expr::Lit::Integer {
@@ -4922,7 +4922,7 @@ namespace lang::cc::Node::Expr::Lit::Integer {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Str__T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Str__T x);
 }
 
 namespace lang::cc::Node::Expr::Lit::Str_ {
@@ -4952,7 +4952,7 @@ namespace lang::cc::Node::Expr::Lit::Str_ {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Array_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Lit::Array_T x);
 }
 
 namespace lang::cc::Node::Expr::Lit::Array {
@@ -4982,7 +4982,7 @@ namespace lang::cc::Node::Expr::Lit::Array {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::item_T x);
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl::item {
@@ -5012,7 +5012,7 @@ namespace lang::cc::Node::Decl::Struct::tmpl::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::item_T x);
 }
 
 namespace lang::cc::Node::Entry::Fun::tmpl::item {
@@ -5042,7 +5042,7 @@ namespace lang::cc::Node::Entry::Fun::tmpl::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::item_T x);
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl::item {
@@ -5072,7 +5072,7 @@ namespace lang::cc::Node::Decl::Fun::tmpl::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::item_T x);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl::item {
@@ -5102,7 +5102,7 @@ namespace lang::cc::Node::Decl::UsingAlias::tmpl::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl::vars::item::val_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl::vars::item::val_T x);
 }
 
 namespace lang::cc::Node::TypedDecl::vars::item::val {
@@ -5132,7 +5132,7 @@ namespace lang::cc::Node::TypedDecl::vars::item::val {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op::NOT_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op::NOT_T x);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
@@ -5160,7 +5160,7 @@ namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op::NEG_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::UnaryPre::op::NEG_T x);
 }
 
 namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
@@ -5188,7 +5188,7 @@ namespace lang::cc::Node::Expr::UnaryPre::op::NEG {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op::INC_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op::INC_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op::INC {
@@ -5216,7 +5216,7 @@ namespace lang::cc::Node::Expr::IncDecPre::op::INC {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op::DEC_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPre::op::DEC_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
@@ -5244,7 +5244,7 @@ namespace lang::cc::Node::Expr::IncDecPre::op::DEC {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op::INC_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op::INC_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op::INC {
@@ -5272,7 +5272,7 @@ namespace lang::cc::Node::Expr::IncDecPost::op::INC {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op::DEC_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::IncDecPost::op::DEC_T x);
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
@@ -5300,7 +5300,7 @@ namespace lang::cc::Node::Expr::IncDecPost::op::DEC {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1::op::LOR_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin1::op::LOR_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin1::op::LOR {
@@ -5328,7 +5328,7 @@ namespace lang::cc::Node::Expr::Bin1::op::LOR {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2::op::LAND_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin2::op::LAND_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin2::op::LAND {
@@ -5356,7 +5356,7 @@ namespace lang::cc::Node::Expr::Bin2::op::LAND {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::EQ_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::EQ_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::EQ {
@@ -5384,7 +5384,7 @@ namespace lang::cc::Node::Expr::Bin3::op::EQ {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::NE_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::NE_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::NE {
@@ -5412,7 +5412,7 @@ namespace lang::cc::Node::Expr::Bin3::op::NE {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::LE_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::LE_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::LE {
@@ -5440,7 +5440,7 @@ namespace lang::cc::Node::Expr::Bin3::op::LE {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::GE_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::GE_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::GE {
@@ -5468,7 +5468,7 @@ namespace lang::cc::Node::Expr::Bin3::op::GE {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::LT_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::LT_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::LT {
@@ -5496,7 +5496,7 @@ namespace lang::cc::Node::Expr::Bin3::op::LT {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::GT_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin3::op::GT_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::GT {
@@ -5524,7 +5524,7 @@ namespace lang::cc::Node::Expr::Bin3::op::GT {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4::op::SHL_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin4::op::SHL_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin4::op::SHL {
@@ -5552,7 +5552,7 @@ namespace lang::cc::Node::Expr::Bin4::op::SHL {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op::PLUS_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op::PLUS_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin5::op::PLUS {
@@ -5580,7 +5580,7 @@ namespace lang::cc::Node::Expr::Bin5::op::PLUS {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op::MINUS_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin5::op::MINUS_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin5::op::MINUS {
@@ -5608,7 +5608,7 @@ namespace lang::cc::Node::Expr::Bin5::op::MINUS {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::TIMES_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::TIMES_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::TIMES {
@@ -5636,7 +5636,7 @@ namespace lang::cc::Node::Expr::Bin6::op::TIMES {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::DIVIDE_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::DIVIDE_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
@@ -5664,7 +5664,7 @@ namespace lang::cc::Node::Expr::Bin6::op::DIVIDE {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::MODULO_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Expr::Bin6::op::MODULO_T x);
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::MODULO {
@@ -5692,7 +5692,7 @@ namespace lang::cc::Node::Expr::Bin6::op::MODULO {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::item::args::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Struct::tmpl::item::args::item_T x);
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
@@ -5724,7 +5724,7 @@ namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::item::args::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Entry::Fun::tmpl::item::args::item_T x);
 }
 
 namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
@@ -5756,7 +5756,7 @@ namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::item::args::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::Fun::tmpl::item::args::item_T x);
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
@@ -5788,7 +5788,7 @@ namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T x);
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item {

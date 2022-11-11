@@ -4,8 +4,8 @@
 namespace langcc {
 
 TEST(str_split1) {
-  string input = "ABC\nDEF\n\nG\n";
-  vector<string> output_exp = {
+  std::string input = "ABC\nDEF\n\nG\n";
+  std::vector<std::string> output_exp = {
       "ABC", "DEF", "", "G", "",
   };
   auto output_act = str_split(input, "\n");
@@ -13,10 +13,11 @@ TEST(str_split1) {
 }
 
 TEST(print_table1) {
-  vector<tuple<Int, Align>> aligns = {{2, Align::RIGHT}, {1, Align::LEFT}};
+  std::vector<std::tuple<Int, Align>> aligns = {{2, Align::RIGHT},
+                                                {1, Align::LEFT}};
 
-  string output_exp;
-  string output_act;
+  std::string output_exp;
+  std::string output_act;
 
   auto td = PrintTable::make(aligns);
 
@@ -29,8 +30,8 @@ TEST(print_table1) {
 
   LG("table rc: {}\n", *td.rc_);
 
-  output_exp = string("") + "    A G\n" + "  BCD \n" + "      \n" + "   EF \n" +
-               "   HI JKL\n";
+  output_exp = std::string("") + "    A G\n" + "  BCD \n" + "      \n" +
+               "   EF \n" + "   HI JKL\n";
   output_act = fmt_str("{}", td);
 
   AR_eq(output_exp, output_act);
@@ -76,9 +77,9 @@ TEST(vec2) {
 }
 
 TEST(utf8_encode1) {
-  vector<Ch> v = {0x12,     0x34, 0x56,     0x123, 0x5678,
-                  0x101234, 0x12, 0x10ffff, 0x34};
-  string s = utf8_encode(v);
+  std::vector<Ch> v = {0x12,     0x34, 0x56,     0x123, 0x5678,
+                       0x101234, 0x12, 0x10ffff, 0x34};
+  std::string s = utf8_encode(v);
 
   for (auto c : s) {
     LG("{} ", hex_byte_display(static_cast<u8>(c)));

@@ -80,6 +80,9 @@ add_executable(unittest_lang
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/meta__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/common__data_gen.cpp
 )
+find_package(Threads REQUIRED)
+target_link_libraries(unittest_lib PRIVATE Threads::Threads)
+target_link_libraries(unittest_lang PRIVATE Threads::Threads)
 
 # go_standalone_test
 add_custom_command(

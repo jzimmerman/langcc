@@ -90,7 +90,7 @@ struct UnitTestRun {
         stderr_stream_(std::move(stderr_stream)) {}
 };
 
-vector<UnitTest> &get_unit_tests();
+std::vector<UnitTest> &get_unit_tests();
 std::map<std::thread::id, UnitTestRun> &get_unit_tests_running();
 std::map<std::string, UnitTestRun> &get_unit_tests_terminated();
 SafeQueue<std::pair<std::thread::id, int>> &get_finished_tests_queue();
@@ -104,8 +104,8 @@ inline void register_unit_test(std::string test_name,
       (register_unit_test(#test_name, _test_##test_name), 0);                  \
   void _test_##test_name()
 
-inline vector<UnitTest> &get_unit_tests() {
-  static vector<UnitTest> _unit_tests;
+inline std::vector<UnitTest> &get_unit_tests() {
+  static std::vector<UnitTest> _unit_tests;
   return _unit_tests;
 }
 
@@ -150,7 +150,7 @@ inline void dispatch_unit_test(UnitTest &test) {
 inline bool run_unit_tests() {
   LG("Running {} unit test(s).\n", len(get_unit_tests()));
 
-  set<string> test_names;
+  std::set<std::string> test_names;
   for (auto &test : get_unit_tests()) {
     if (test_names.find(test.name_) != test_names.end()) {
       LG(" *** Duplicate test name: {}\n", test.name_);
@@ -219,8 +219,8 @@ inline bool run_unit_tests() {
     std::this_thread::sleep_for(std::chrono::microseconds(1000));
   }
 
-  std::set<string> res_succ;
-  std::set<string> res_fail;
+  std::set<std::string> res_succ;
+  std::set<std::string> res_fail;
   for (const auto &term_test_elem : get_unit_tests_terminated()) {
     const auto &test = term_test_elem.second;
     if (test.is_success()) {

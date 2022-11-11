@@ -10,12 +10,12 @@ int main(i32 argc, char **argv) {
 
   if (argc > 1) {
     AT(argc == 2);
-    string test_name = argv[1];
+    std::string test_name = argv[1];
     bool ok = test_lang(test_name);
     return ok ? 0 : 1;
   }
 
-  vector<string> ss;
+  std::vector<std::string> ss;
   try {
     for (const auto &entry :
          std::filesystem::directory_iterator("grammars/test")) {
@@ -25,7 +25,7 @@ int main(i32 argc, char **argv) {
       auto filename = entry.path().filename().string();
       auto w = str_split(filename, ".lang");
       AR_eq(static_cast<Int>(w.size()), 2);
-      string s = w[0];
+      std::string s = w[0];
       ss.push_back(s);
     }
   } catch (std::exception &exn) {

@@ -518,7 +518,7 @@ lang::data::Node::_T::_T(lang::data::Node::_W w) {
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node_T x) {
     switch (x->w_) {
         case lang::data::Node::_W::Module: {
             langcc::pr_debug(os, flags, x->as_Module());
@@ -724,7 +724,7 @@ void lang::data::Node::_T::hash_ser_acc_lang_data_Node(langcc::SerBuf& buf) cons
 lang::data::Node::Module::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::Module) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Module_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Module_T x) {
     os << "lang::data::Node::Module {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -882,7 +882,7 @@ void lang::data::Node::Module::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Param::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::Param) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Param_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Param_T x) {
     os << "lang::data::Node::Param {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -1067,7 +1067,7 @@ void lang::data::Node::Param::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::SumId::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::SumId) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::SumId_T x) {
     os << "lang::data::Node::SumId {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -1225,7 +1225,7 @@ void lang::data::Node::SumId::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Id::_T::_T() : lang::data::Node::_T(lang::data::Node::_W::Id) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Id_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Id_T x) {
     os << "lang::data::Node::Id {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -1384,7 +1384,7 @@ lang::data::Node::Decl::_T::_T(lang::data::Node::Decl::_W w) : lang::data::Node:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl_T x) {
     switch (x->w_) {
         case lang::data::Node::Decl::_W::Include: {
             langcc::pr_debug(os, flags, x->as_Include());
@@ -1504,7 +1504,7 @@ lang::data::Node::Mod::_T::_T(lang::data::Node::Mod::_W w) : lang::data::Node::_
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod_T x) {
     switch (x->w_) {
         case lang::data::Node::Mod::_W::Mut: {
             langcc::pr_debug(os, flags, x->as_Mut());
@@ -1602,7 +1602,7 @@ lang::data::Node::Entry::_T::_T(lang::data::Node::Entry::_W w) : lang::data::Nod
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Entry_T x) {
     switch (x->w_) {
         case lang::data::Node::Entry::_W::Field: {
             langcc::pr_debug(os, flags, x->as_Field());
@@ -1678,7 +1678,7 @@ lang::data::Node::Expr::_T::_T(lang::data::Node::Expr::_W w) : lang::data::Node:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr_T x) {
     switch (x->w_) {
         case lang::data::Node::Expr::_W::Id: {
             langcc::pr_debug(os, flags, x->as_Id());
@@ -1775,7 +1775,7 @@ void lang::data::Node::Expr::_T::hash_ser_acc_lang_data_Node_Expr(langcc::SerBuf
 lang::data::Node::Decl::Include::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Include) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Include_T x) {
     os << "lang::data::Node::Decl::Include {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -1933,7 +1933,7 @@ void lang::data::Node::Decl::Include::_T::hash_ser_acc(langcc::SerBuf& buf) cons
 lang::data::Node::Decl::Namespace::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Namespace) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Namespace_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Namespace_T x) {
     os << "lang::data::Node::Decl::Namespace {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2118,7 +2118,7 @@ void lang::data::Node::Decl::Namespace::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::data::Node::Decl::Data::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Data) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Data_T x) {
     os << "lang::data::Node::Decl::Data {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2396,7 +2396,7 @@ void lang::data::Node::Decl::Data::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Decl::Enum::_T::_T() : lang::data::Node::Decl::_T(lang::data::Node::Decl::_W::Enum) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl::Enum_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Decl::Enum_T x) {
     os << "lang::data::Node::Decl::Enum {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2581,7 +2581,7 @@ void lang::data::Node::Decl::Enum::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Mod::Mut::_T::_T() : lang::data::Node::Mod::_T(lang::data::Node::Mod::_W::Mut) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Mut_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod::Mut_T x) {
     os << "lang::data::Node::Mod::Mut {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2714,7 +2714,7 @@ void lang::data::Node::Mod::Mut::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Mod::Xform::_T::_T() : lang::data::Node::Mod::_T(lang::data::Node::Mod::_W::Xform) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Xform_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod::Xform_T x) {
     os << "lang::data::Node::Mod::Xform {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2847,7 +2847,7 @@ void lang::data::Node::Mod::Xform::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Mod::Visit::_T::_T() : lang::data::Node::Mod::_T(lang::data::Node::Mod::_W::Visit) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Mod::Visit_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Mod::Visit_T x) {
     os << "lang::data::Node::Mod::Visit {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2980,7 +2980,7 @@ void lang::data::Node::Mod::Visit::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Entry::Field::_T::_T() : lang::data::Node::Entry::_T(lang::data::Node::Entry::_W::Field) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Entry::Field_T x) {
     os << "lang::data::Node::Entry::Field {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -3194,7 +3194,7 @@ void lang::data::Node::Entry::Field::_T::hash_ser_acc(langcc::SerBuf& buf) const
 lang::data::Node::Entry::Method::_T::_T() : lang::data::Node::Entry::_T(lang::data::Node::Entry::_W::Method) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Entry::Method_T x) {
     os << "lang::data::Node::Entry::Method {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -3472,7 +3472,7 @@ void lang::data::Node::Entry::Method::_T::hash_ser_acc(langcc::SerBuf& buf) cons
 lang::data::Node::Expr::Id::_T::_T() : lang::data::Node::Expr::_T(lang::data::Node::Expr::_W::Id) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Id_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr::Id_T x) {
     os << "lang::data::Node::Expr::Id {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -3657,7 +3657,7 @@ void lang::data::Node::Expr::Id::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Expr::App::_T::_T() : lang::data::Node::Expr::_T(lang::data::Node::Expr::_W::App) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::App_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr::App_T x) {
     os << "lang::data::Node::Expr::App {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -3842,7 +3842,7 @@ void lang::data::Node::Expr::App::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::data::Node::Expr::Type_::_T::_T() : lang::data::Node::Expr::_T(lang::data::Node::Expr::_W::Type_) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Type__T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::data::Node::Expr::Type__T x) {
     os << "lang::data::Node::Expr::Type_ {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";

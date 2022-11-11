@@ -1077,7 +1077,7 @@ lang::meta::Node::_T::_T(lang::meta::Node::_W w) {
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node_T x) {
     switch (x->w_) {
         case lang::meta::Node::_W::Lang: {
             langcc::pr_debug(os, flags, x->as_Lang());
@@ -1701,7 +1701,7 @@ void lang::meta::Node::_T::hash_ser_acc_lang_meta_Node(langcc::SerBuf& buf) cons
 lang::meta::Node::Lang::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::Lang) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Lang_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Lang_T x) {
     os << "lang::meta::Node::Lang {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -1859,7 +1859,7 @@ void lang::meta::Node::Lang::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::meta::Node::TokenDecl::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::TokenDecl) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl_T x) {
     os << "lang::meta::Node::TokenDecl {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2073,7 +2073,7 @@ void lang::meta::Node::TokenDecl::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::meta::Node::LexerModeCase::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::LexerModeCase) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerModeCase_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerModeCase_T x) {
     os << "lang::meta::Node::LexerModeCase {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2258,7 +2258,7 @@ void lang::meta::Node::LexerModeCase::_T::hash_ser_acc(langcc::SerBuf& buf) cons
 lang::meta::Node::PrecItem::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::PrecItem) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecItem_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecItem_T x) {
     os << "lang::meta::Node::PrecItem {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2443,7 +2443,7 @@ void lang::meta::Node::PrecItem::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::meta::Node::AttrMatchCase::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::AttrMatchCase) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCase_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCase_T x) {
     os << "lang::meta::Node::AttrMatchCase {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2628,7 +2628,7 @@ void lang::meta::Node::AttrMatchCase::_T::hash_ser_acc(langcc::SerBuf& buf) cons
 lang::meta::Node::TestCase::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::TestCase) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TestCase_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TestCase_T x) {
     os << "lang::meta::Node::TestCase {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -2842,7 +2842,7 @@ void lang::meta::Node::TestCase::_T::hash_ser_acc(langcc::SerBuf& buf) const {
 lang::meta::Node::CompileTestCase::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::CompileTestCase) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::CompileTestCase_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::CompileTestCase_T x) {
     os << "lang::meta::Node::CompileTestCase {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -3027,7 +3027,7 @@ void lang::meta::Node::CompileTestCase::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::Id::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::Id) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Id_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Id_T x) {
     os << "lang::meta::Node::Id {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -3186,7 +3186,7 @@ lang::meta::Node::Stanza::_T::_T(lang::meta::Node::Stanza::_W w) : lang::meta::N
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza_T x) {
     switch (x->w_) {
         case lang::meta::Node::Stanza::_W::Tokens: {
             langcc::pr_debug(os, flags, x->as_Tokens());
@@ -3328,7 +3328,7 @@ lang::meta::Node::LexerDecl::_T::_T(lang::meta::Node::LexerDecl::_W w) : lang::m
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T x) {
     switch (x->w_) {
         case lang::meta::Node::LexerDecl::_W::Main: {
             langcc::pr_debug(os, flags, x->as_Main());
@@ -3404,7 +3404,7 @@ lang::meta::Node::LexerInstr::_T::_T(lang::meta::Node::LexerInstr::_W w) : lang:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr_T x) {
     switch (x->w_) {
         case lang::meta::Node::LexerInstr::_W::Emit: {
             langcc::pr_debug(os, flags, x->as_Emit());
@@ -3590,7 +3590,7 @@ lang::meta::Node::ParserDecl::_T::_T(lang::meta::Node::ParserDecl::_W w) : lang:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl_T x) {
     switch (x->w_) {
         case lang::meta::Node::ParserDecl::_W::Main: {
             langcc::pr_debug(os, flags, x->as_Main());
@@ -3732,7 +3732,7 @@ lang::meta::Node::ParserProp::_T::_T(lang::meta::Node::ParserProp::_W w) : lang:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp_T x) {
     switch (x->w_) {
         case lang::meta::Node::ParserProp::_W::NameStrict: {
             langcc::pr_debug(os, flags, x->as_NameStrict());
@@ -3852,7 +3852,7 @@ lang::meta::Node::PrecAssoc::_T::_T(lang::meta::Node::PrecAssoc::_W w) : lang::m
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc_T x) {
     switch (x->w_) {
         case lang::meta::Node::PrecAssoc::_W::Left: {
             langcc::pr_debug(os, flags, x->as_Left());
@@ -3972,7 +3972,7 @@ lang::meta::Node::AttrClause::_T::_T(lang::meta::Node::AttrClause::_W w) : lang:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause_T x) {
     switch (x->w_) {
         case lang::meta::Node::AttrClause::_W::Expr: {
             langcc::pr_debug(os, flags, x->as_Expr());
@@ -4070,7 +4070,7 @@ lang::meta::Node::AttrMatchCasePattern::_T::_T(lang::meta::Node::AttrMatchCasePa
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern_T x) {
     switch (x->w_) {
         case lang::meta::Node::AttrMatchCasePattern::_W::Alt: {
             langcc::pr_debug(os, flags, x->as_Alt());
@@ -4146,7 +4146,7 @@ lang::meta::Node::AttrClauseExpr::_T::_T(lang::meta::Node::AttrClauseExpr::_W w)
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr_T x) {
     switch (x->w_) {
         case lang::meta::Node::AttrClauseExpr::_W::LhsGeq: {
             langcc::pr_debug(os, flags, x->as_LhsGeq());
@@ -4244,7 +4244,7 @@ lang::meta::Node::AttrClauseExprRhsLoc::_T::_T(lang::meta::Node::AttrClauseExprR
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc_T x) {
     switch (x->w_) {
         case lang::meta::Node::AttrClauseExprRhsLoc::_W::All: {
             langcc::pr_debug(os, flags, x->as_All());
@@ -4364,7 +4364,7 @@ lang::meta::Node::ParseExpr::_T::_T(lang::meta::Node::ParseExpr::_W w) : lang::m
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr_T x) {
     switch (x->w_) {
         case lang::meta::Node::ParseExpr::_W::Id: {
             langcc::pr_debug(os, flags, x->as_Id());
@@ -4968,7 +4968,7 @@ lang::meta::Node::AttrReq::_T::_T(lang::meta::Node::AttrReq::_W w) : lang::meta:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrReq_T x) {
     switch (x->w_) {
         case lang::meta::Node::AttrReq::_W::Base: {
             langcc::pr_debug(os, flags, x->as_Base());
@@ -5044,7 +5044,7 @@ lang::meta::Node::ParseExprListType::_T::_T(lang::meta::Node::ParseExprListType:
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType_T x) {
     switch (x->w_) {
         case lang::meta::Node::ParseExprListType::_W::List: {
             langcc::pr_debug(os, flags, x->as_List());
@@ -5186,7 +5186,7 @@ lang::meta::Node::ParseExprListNum::_T::_T(lang::meta::Node::ParseExprListNum::_
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum_T x) {
     switch (x->w_) {
         case lang::meta::Node::ParseExprListNum::_W::Ge0: {
             langcc::pr_debug(os, flags, x->as_Ge0());
@@ -5283,7 +5283,7 @@ void lang::meta::Node::ParseExprListNum::_T::hash_ser_acc_lang_meta_Node_ParseEx
 lang::meta::Node::Stanza::Tokens::_T::_T() : lang::meta::Node::Stanza::_T(lang::meta::Node::Stanza::_W::Tokens) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Tokens_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Tokens_T x) {
     os << "lang::meta::Node::Stanza::Tokens {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -5441,7 +5441,7 @@ void lang::meta::Node::Stanza::Tokens::_T::hash_ser_acc(langcc::SerBuf& buf) con
 lang::meta::Node::Stanza::Lexer::_T::_T() : lang::meta::Node::Stanza::_T(lang::meta::Node::Stanza::_W::Lexer) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Lexer_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Lexer_T x) {
     os << "lang::meta::Node::Stanza::Lexer {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -5599,7 +5599,7 @@ void lang::meta::Node::Stanza::Lexer::_T::hash_ser_acc(langcc::SerBuf& buf) cons
 lang::meta::Node::Stanza::Parser::_T::_T() : lang::meta::Node::Stanza::_T(lang::meta::Node::Stanza::_W::Parser) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Parser_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Parser_T x) {
     os << "lang::meta::Node::Stanza::Parser {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -5757,7 +5757,7 @@ void lang::meta::Node::Stanza::Parser::_T::hash_ser_acc(langcc::SerBuf& buf) con
 lang::meta::Node::Stanza::Test::_T::_T() : lang::meta::Node::Stanza::_T(lang::meta::Node::Stanza::_W::Test) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Test_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Test_T x) {
     os << "lang::meta::Node::Stanza::Test {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -5915,7 +5915,7 @@ void lang::meta::Node::Stanza::Test::_T::hash_ser_acc(langcc::SerBuf& buf) const
 lang::meta::Node::Stanza::CompileTest::_T::_T() : lang::meta::Node::Stanza::_T(lang::meta::Node::Stanza::_W::CompileTest) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::CompileTest_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::CompileTest_T x) {
     os << "lang::meta::Node::Stanza::CompileTest {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -6074,7 +6074,7 @@ lang::meta::Node::TokenDecl::op::_T::_T(lang::meta::Node::TokenDecl::op::_W w) :
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op_T x) {
     switch (x->w_) {
         case lang::meta::Node::TokenDecl::op::_W::DEF: {
             langcc::pr_debug(os, flags, x->as_DEF());
@@ -6149,7 +6149,7 @@ void lang::meta::Node::TokenDecl::op::_T::hash_ser_acc_lang_meta_Node_TokenDecl_
 lang::meta::Node::LexerDecl::Main::_T::_T() : lang::meta::Node::LexerDecl::_T(lang::meta::Node::LexerDecl::_W::Main) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Main_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Main_T x) {
     os << "lang::meta::Node::LexerDecl::Main {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -6307,7 +6307,7 @@ void lang::meta::Node::LexerDecl::Main::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::LexerDecl::Mode::_T::_T() : lang::meta::Node::LexerDecl::_T(lang::meta::Node::LexerDecl::_W::Mode) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode_T x) {
     os << "lang::meta::Node::LexerDecl::Mode {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -6521,7 +6521,7 @@ void lang::meta::Node::LexerDecl::Mode::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::LexerInstr::Emit::_T::_T() : lang::meta::Node::LexerInstr::_T(lang::meta::Node::LexerInstr::_W::Emit) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Emit_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Emit_T x) {
     os << "lang::meta::Node::LexerInstr::Emit {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -6679,7 +6679,7 @@ void lang::meta::Node::LexerInstr::Emit::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::LexerInstr::Pass::_T::_T() : lang::meta::Node::LexerInstr::_T(lang::meta::Node::LexerInstr::_W::Pass) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pass_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pass_T x) {
     os << "lang::meta::Node::LexerInstr::Pass {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -6812,7 +6812,7 @@ void lang::meta::Node::LexerInstr::Pass::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::LexerInstr::Push::_T::_T() : lang::meta::Node::LexerInstr::_T(lang::meta::Node::LexerInstr::_W::Push) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Push_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Push_T x) {
     os << "lang::meta::Node::LexerInstr::Push {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -6970,7 +6970,7 @@ void lang::meta::Node::LexerInstr::Push::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::LexerInstr::Pop::_T::_T() : lang::meta::Node::LexerInstr::_T(lang::meta::Node::LexerInstr::_W::Pop) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pop_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pop_T x) {
     os << "lang::meta::Node::LexerInstr::Pop {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -7103,7 +7103,7 @@ void lang::meta::Node::LexerInstr::Pop::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::LexerInstr::PopExtract::_T::_T() : lang::meta::Node::LexerInstr::_T(lang::meta::Node::LexerInstr::_W::PopExtract) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopExtract_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopExtract_T x) {
     os << "lang::meta::Node::LexerInstr::PopExtract {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -7236,7 +7236,7 @@ void lang::meta::Node::LexerInstr::PopExtract::_T::hash_ser_acc(langcc::SerBuf& 
 lang::meta::Node::LexerInstr::PopEmit::_T::_T() : lang::meta::Node::LexerInstr::_T(lang::meta::Node::LexerInstr::_W::PopEmit) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopEmit_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopEmit_T x) {
     os << "lang::meta::Node::LexerInstr::PopEmit {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -7394,7 +7394,7 @@ void lang::meta::Node::LexerInstr::PopEmit::_T::hash_ser_acc(langcc::SerBuf& buf
 lang::meta::Node::LexerInstr::MatchHistory::_T::_T() : lang::meta::Node::LexerInstr::_T(lang::meta::Node::LexerInstr::_W::MatchHistory) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::MatchHistory_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::MatchHistory_T x) {
     os << "lang::meta::Node::LexerInstr::MatchHistory {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -7552,7 +7552,7 @@ void lang::meta::Node::LexerInstr::MatchHistory::_T::hash_ser_acc(langcc::SerBuf
 lang::meta::Node::ParserDecl::Main::_T::_T() : lang::meta::Node::ParserDecl::_T(lang::meta::Node::ParserDecl::_W::Main) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Main_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Main_T x) {
     os << "lang::meta::Node::ParserDecl::Main {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -7710,7 +7710,7 @@ void lang::meta::Node::ParserDecl::Main::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParserDecl::Prop::_T::_T() : lang::meta::Node::ParserDecl::_T(lang::meta::Node::ParserDecl::_W::Prop) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prop_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prop_T x) {
     os << "lang::meta::Node::ParserDecl::Prop {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -7868,7 +7868,7 @@ void lang::meta::Node::ParserDecl::Prop::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParserDecl::Prec::_T::_T() : lang::meta::Node::ParserDecl::_T(lang::meta::Node::ParserDecl::_W::Prec) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prec_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prec_T x) {
     os << "lang::meta::Node::ParserDecl::Prec {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -8026,7 +8026,7 @@ void lang::meta::Node::ParserDecl::Prec::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParserDecl::Attr::_T::_T() : lang::meta::Node::ParserDecl::_T(lang::meta::Node::ParserDecl::_W::Attr) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Attr_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Attr_T x) {
     os << "lang::meta::Node::ParserDecl::Attr {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -8184,7 +8184,7 @@ void lang::meta::Node::ParserDecl::Attr::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParserDecl::Rule::_T::_T() : lang::meta::Node::ParserDecl::_T(lang::meta::Node::ParserDecl::_W::Rule) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule_T x) {
     os << "lang::meta::Node::ParserDecl::Rule {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -8429,7 +8429,7 @@ void lang::meta::Node::ParserDecl::Rule::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParserProp::NameStrict::_T::_T() : lang::meta::Node::ParserProp::_T(lang::meta::Node::ParserProp::_W::NameStrict) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::NameStrict_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::NameStrict_T x) {
     os << "lang::meta::Node::ParserProp::NameStrict {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -8562,7 +8562,7 @@ void lang::meta::Node::ParserProp::NameStrict::_T::hash_ser_acc(langcc::SerBuf& 
 lang::meta::Node::ParserProp::AllowUnreach::_T::_T() : lang::meta::Node::ParserProp::_T(lang::meta::Node::ParserProp::_W::AllowUnreach) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::AllowUnreach_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::AllowUnreach_T x) {
     os << "lang::meta::Node::ParserProp::AllowUnreach {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -8695,7 +8695,7 @@ void lang::meta::Node::ParserProp::AllowUnreach::_T::hash_ser_acc(langcc::SerBuf
 lang::meta::Node::ParserProp::LRSpec::_T::_T() : lang::meta::Node::ParserProp::_T(lang::meta::Node::ParserProp::_W::LRSpec) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::LRSpec_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::LRSpec_T x) {
     os << "lang::meta::Node::ParserProp::LRSpec {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -8853,7 +8853,7 @@ void lang::meta::Node::ParserProp::LRSpec::_T::hash_ser_acc(langcc::SerBuf& buf)
 lang::meta::Node::ParserProp::Err_::_T::_T() : lang::meta::Node::ParserProp::_T(lang::meta::Node::ParserProp::_W::Err_) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::Err__T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::Err__T x) {
     os << "lang::meta::Node::ParserProp::Err_ {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -8986,7 +8986,7 @@ void lang::meta::Node::ParserProp::Err_::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::PrecAssoc::Left::_T::_T() : lang::meta::Node::PrecAssoc::_T(lang::meta::Node::PrecAssoc::_W::Left) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Left_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Left_T x) {
     os << "lang::meta::Node::PrecAssoc::Left {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -9119,7 +9119,7 @@ void lang::meta::Node::PrecAssoc::Left::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::PrecAssoc::Right::_T::_T() : lang::meta::Node::PrecAssoc::_T(lang::meta::Node::PrecAssoc::_W::Right) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Right_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Right_T x) {
     os << "lang::meta::Node::PrecAssoc::Right {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -9252,7 +9252,7 @@ void lang::meta::Node::PrecAssoc::Right::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::PrecAssoc::Prefix::_T::_T() : lang::meta::Node::PrecAssoc::_T(lang::meta::Node::PrecAssoc::_W::Prefix) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Prefix_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Prefix_T x) {
     os << "lang::meta::Node::PrecAssoc::Prefix {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -9385,7 +9385,7 @@ void lang::meta::Node::PrecAssoc::Prefix::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::PrecAssoc::Postfix::_T::_T() : lang::meta::Node::PrecAssoc::_T(lang::meta::Node::PrecAssoc::_W::Postfix) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Postfix_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Postfix_T x) {
     os << "lang::meta::Node::PrecAssoc::Postfix {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -9518,7 +9518,7 @@ void lang::meta::Node::PrecAssoc::Postfix::_T::hash_ser_acc(langcc::SerBuf& buf)
 lang::meta::Node::AttrClause::Expr::_T::_T() : lang::meta::Node::AttrClause::_T(lang::meta::Node::AttrClause::_W::Expr) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Expr_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Expr_T x) {
     os << "lang::meta::Node::AttrClause::Expr {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -9676,7 +9676,7 @@ void lang::meta::Node::AttrClause::Expr::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::AttrClause::Block::_T::_T() : lang::meta::Node::AttrClause::_T(lang::meta::Node::AttrClause::_W::Block) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Block_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Block_T x) {
     os << "lang::meta::Node::AttrClause::Block {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -9834,7 +9834,7 @@ void lang::meta::Node::AttrClause::Block::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::AttrClause::Match::_T::_T() : lang::meta::Node::AttrClause::_T(lang::meta::Node::AttrClause::_W::Match) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Match_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Match_T x) {
     os << "lang::meta::Node::AttrClause::Match {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -9992,7 +9992,7 @@ void lang::meta::Node::AttrClause::Match::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::AttrMatchCasePattern::Alt::_T::_T() : lang::meta::Node::AttrMatchCasePattern::_T(lang::meta::Node::AttrMatchCasePattern::_W::Alt) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Alt_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Alt_T x) {
     os << "lang::meta::Node::AttrMatchCasePattern::Alt {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -10150,7 +10150,7 @@ void lang::meta::Node::AttrMatchCasePattern::Alt::_T::hash_ser_acc(langcc::SerBu
 lang::meta::Node::AttrMatchCasePattern::Wildcard::_T::_T() : lang::meta::Node::AttrMatchCasePattern::_T(lang::meta::Node::AttrMatchCasePattern::_W::Wildcard) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Wildcard_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Wildcard_T x) {
     os << "lang::meta::Node::AttrMatchCasePattern::Wildcard {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -10283,7 +10283,7 @@ void lang::meta::Node::AttrMatchCasePattern::Wildcard::_T::hash_ser_acc(langcc::
 lang::meta::Node::AttrClauseExpr::LhsGeq::_T::_T() : lang::meta::Node::AttrClauseExpr::_T(lang::meta::Node::AttrClauseExpr::_W::LhsGeq) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::LhsGeq_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::LhsGeq_T x) {
     os << "lang::meta::Node::AttrClauseExpr::LhsGeq {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -10441,7 +10441,7 @@ void lang::meta::Node::AttrClauseExpr::LhsGeq::_T::hash_ser_acc(langcc::SerBuf& 
 lang::meta::Node::AttrClauseExpr::RhsGeq::_T::_T() : lang::meta::Node::AttrClauseExpr::_T(lang::meta::Node::AttrClauseExpr::_W::RhsGeq) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::RhsGeq_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::RhsGeq_T x) {
     os << "lang::meta::Node::AttrClauseExpr::RhsGeq {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -10626,7 +10626,7 @@ void lang::meta::Node::AttrClauseExpr::RhsGeq::_T::hash_ser_acc(langcc::SerBuf& 
 lang::meta::Node::AttrClauseExpr::Implies::_T::_T() : lang::meta::Node::AttrClauseExpr::_T(lang::meta::Node::AttrClauseExpr::_W::Implies) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::Implies_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::Implies_T x) {
     os << "lang::meta::Node::AttrClauseExpr::Implies {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -10840,7 +10840,7 @@ void lang::meta::Node::AttrClauseExpr::Implies::_T::hash_ser_acc(langcc::SerBuf&
 lang::meta::Node::AttrClauseExprRhsLoc::All::_T::_T() : lang::meta::Node::AttrClauseExprRhsLoc::_T(lang::meta::Node::AttrClauseExprRhsLoc::_W::All) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::All_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::All_T x) {
     os << "lang::meta::Node::AttrClauseExprRhsLoc::All {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -10973,7 +10973,7 @@ void lang::meta::Node::AttrClauseExprRhsLoc::All::_T::hash_ser_acc(langcc::SerBu
 lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T::_T() : lang::meta::Node::AttrClauseExprRhsLoc::_T(lang::meta::Node::AttrClauseExprRhsLoc::_W::Begin) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Begin_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Begin_T x) {
     os << "lang::meta::Node::AttrClauseExprRhsLoc::Begin {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -11106,7 +11106,7 @@ void lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T::hash_ser_acc(langcc::Ser
 lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T::_T() : lang::meta::Node::AttrClauseExprRhsLoc::_T(lang::meta::Node::AttrClauseExprRhsLoc::_W::Mid) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Mid_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Mid_T x) {
     os << "lang::meta::Node::AttrClauseExprRhsLoc::Mid {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -11239,7 +11239,7 @@ void lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T::hash_ser_acc(langcc::SerBu
 lang::meta::Node::AttrClauseExprRhsLoc::End::_T::_T() : lang::meta::Node::AttrClauseExprRhsLoc::_T(lang::meta::Node::AttrClauseExprRhsLoc::_W::End) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::End_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::End_T x) {
     os << "lang::meta::Node::AttrClauseExprRhsLoc::End {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -11372,7 +11372,7 @@ void lang::meta::Node::AttrClauseExprRhsLoc::End::_T::hash_ser_acc(langcc::SerBu
 lang::meta::Node::ParseExpr::Id::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Id) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Id_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Id_T x) {
     os << "lang::meta::Node::ParseExpr::Id {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -11530,7 +11530,7 @@ void lang::meta::Node::ParseExpr::Id::_T::hash_ser_acc(langcc::SerBuf& buf) cons
 lang::meta::Node::ParseExpr::Eof::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Eof) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eof_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eof_T x) {
     os << "lang::meta::Node::ParseExpr::Eof {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -11663,7 +11663,7 @@ void lang::meta::Node::ParseExpr::Eof::_T::hash_ser_acc(langcc::SerBuf& buf) con
 lang::meta::Node::ParseExpr::False::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::False) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::False_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::False_T x) {
     os << "lang::meta::Node::ParseExpr::False {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -11796,7 +11796,7 @@ void lang::meta::Node::ParseExpr::False::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParseExpr::Eps::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Eps) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eps_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eps_T x) {
     os << "lang::meta::Node::ParseExpr::Eps {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -11929,7 +11929,7 @@ void lang::meta::Node::ParseExpr::Eps::_T::hash_ser_acc(langcc::SerBuf& buf) con
 lang::meta::Node::ParseExpr::Indent::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Indent) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Indent_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Indent_T x) {
     os << "lang::meta::Node::ParseExpr::Indent {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -12062,7 +12062,7 @@ void lang::meta::Node::ParseExpr::Indent::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::ParseExpr::Dedent::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Dedent) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Dedent_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Dedent_T x) {
     os << "lang::meta::Node::ParseExpr::Dedent {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -12195,7 +12195,7 @@ void lang::meta::Node::ParseExpr::Dedent::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::ParseExpr::Newline::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Newline) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Newline_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Newline_T x) {
     os << "lang::meta::Node::ParseExpr::Newline {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -12328,7 +12328,7 @@ void lang::meta::Node::ParseExpr::Newline::_T::hash_ser_acc(langcc::SerBuf& buf)
 lang::meta::Node::ParseExpr::UnicodeAny::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::UnicodeAny) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::UnicodeAny_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::UnicodeAny_T x) {
     os << "lang::meta::Node::ParseExpr::UnicodeAny {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -12461,7 +12461,7 @@ void lang::meta::Node::ParseExpr::UnicodeAny::_T::hash_ser_acc(langcc::SerBuf& b
 lang::meta::Node::ParseExpr::AsciiBaseAny::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::AsciiBaseAny) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AsciiBaseAny_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AsciiBaseAny_T x) {
     os << "lang::meta::Node::ParseExpr::AsciiBaseAny {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -12594,7 +12594,7 @@ void lang::meta::Node::ParseExpr::AsciiBaseAny::_T::hash_ser_acc(langcc::SerBuf&
 lang::meta::Node::ParseExpr::Alt::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Alt) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Alt_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Alt_T x) {
     os << "lang::meta::Node::ParseExpr::Alt {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -12752,7 +12752,7 @@ void lang::meta::Node::ParseExpr::Alt::_T::hash_ser_acc(langcc::SerBuf& buf) con
 lang::meta::Node::ParseExpr::AltExplicit::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::AltExplicit) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AltExplicit_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AltExplicit_T x) {
     os << "lang::meta::Node::ParseExpr::AltExplicit {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -12910,7 +12910,7 @@ void lang::meta::Node::ParseExpr::AltExplicit::_T::hash_ser_acc(langcc::SerBuf& 
 lang::meta::Node::ParseExpr::Minus::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Minus) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Minus_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Minus_T x) {
     os << "lang::meta::Node::ParseExpr::Minus {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -13095,7 +13095,7 @@ void lang::meta::Node::ParseExpr::Minus::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParseExpr::Concat::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Concat) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Concat_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Concat_T x) {
     os << "lang::meta::Node::ParseExpr::Concat {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -13253,7 +13253,7 @@ void lang::meta::Node::ParseExpr::Concat::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::ParseExpr::Optional::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Optional) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Optional_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Optional_T x) {
     os << "lang::meta::Node::ParseExpr::Optional {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -13411,7 +13411,7 @@ void lang::meta::Node::ParseExpr::Optional::_T::hash_ser_acc(langcc::SerBuf& buf
 lang::meta::Node::ParseExpr::Rep::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Rep) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Rep_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Rep_T x) {
     os << "lang::meta::Node::ParseExpr::Rep {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -13569,7 +13569,7 @@ void lang::meta::Node::ParseExpr::Rep::_T::hash_ser_acc(langcc::SerBuf& buf) con
 lang::meta::Node::ParseExpr::RepNonzero::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::RepNonzero) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepNonzero_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepNonzero_T x) {
     os << "lang::meta::Node::ParseExpr::RepNonzero {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -13727,7 +13727,7 @@ void lang::meta::Node::ParseExpr::RepNonzero::_T::hash_ser_acc(langcc::SerBuf& b
 lang::meta::Node::ParseExpr::RepCount::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::RepCount) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepCount_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepCount_T x) {
     os << "lang::meta::Node::ParseExpr::RepCount {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -13912,7 +13912,7 @@ void lang::meta::Node::ParseExpr::RepCount::_T::hash_ser_acc(langcc::SerBuf& buf
 lang::meta::Node::ParseExpr::CharRange::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::CharRange) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::CharRange_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::CharRange_T x) {
     os << "lang::meta::Node::ParseExpr::CharRange {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -14097,7 +14097,7 @@ void lang::meta::Node::ParseExpr::CharRange::_T::hash_ser_acc(langcc::SerBuf& bu
 lang::meta::Node::ParseExpr::StrLit::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::StrLit) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::StrLit_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::StrLit_T x) {
     os << "lang::meta::Node::ParseExpr::StrLit {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -14255,7 +14255,7 @@ void lang::meta::Node::ParseExpr::StrLit::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::ParseExpr::Underscore::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Underscore) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Underscore_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Underscore_T x) {
     os << "lang::meta::Node::ParseExpr::Underscore {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -14388,7 +14388,7 @@ void lang::meta::Node::ParseExpr::Underscore::_T::hash_ser_acc(langcc::SerBuf& b
 lang::meta::Node::ParseExpr::Pass::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Pass) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Pass_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Pass_T x) {
     os << "lang::meta::Node::ParseExpr::Pass {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -14546,7 +14546,7 @@ void lang::meta::Node::ParseExpr::Pass::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::ParseExpr::Paren::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Paren) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Paren_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Paren_T x) {
     os << "lang::meta::Node::ParseExpr::Paren {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -14704,7 +14704,7 @@ void lang::meta::Node::ParseExpr::Paren::_T::hash_ser_acc(langcc::SerBuf& buf) c
 lang::meta::Node::ParseExpr::Name::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Name) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Name_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Name_T x) {
     os << "lang::meta::Node::ParseExpr::Name {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -14889,7 +14889,7 @@ void lang::meta::Node::ParseExpr::Name::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::ParseExpr::List::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::List) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List_T x) {
     os << "lang::meta::Node::ParseExpr::List {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -15167,7 +15167,7 @@ void lang::meta::Node::ParseExpr::List::_T::hash_ser_acc(langcc::SerBuf& buf) co
 lang::meta::Node::ParseExpr::Unfold::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::Unfold) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Unfold_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Unfold_T x) {
     os << "lang::meta::Node::ParseExpr::Unfold {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -15325,7 +15325,7 @@ void lang::meta::Node::ParseExpr::Unfold::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::ParseExpr::AttrReq::_T::_T() : lang::meta::Node::ParseExpr::_T(lang::meta::Node::ParseExpr::_W::AttrReq) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AttrReq_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AttrReq_T x) {
     os << "lang::meta::Node::ParseExpr::AttrReq {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -15510,7 +15510,7 @@ void lang::meta::Node::ParseExpr::AttrReq::_T::hash_ser_acc(langcc::SerBuf& buf)
 lang::meta::Node::AttrReq::Base::_T::_T() : lang::meta::Node::AttrReq::_T(lang::meta::Node::AttrReq::_W::Base) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::Base_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::Base_T x) {
     os << "lang::meta::Node::AttrReq::Base {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -15668,7 +15668,7 @@ void lang::meta::Node::AttrReq::Base::_T::hash_ser_acc(langcc::SerBuf& buf) cons
 lang::meta::Node::AttrReq::PrecStar::_T::_T() : lang::meta::Node::AttrReq::_T(lang::meta::Node::AttrReq::_W::PrecStar) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::PrecStar_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::PrecStar_T x) {
     os << "lang::meta::Node::AttrReq::PrecStar {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -15801,7 +15801,7 @@ void lang::meta::Node::AttrReq::PrecStar::_T::hash_ser_acc(langcc::SerBuf& buf) 
 lang::meta::Node::ParseExprListType::List::_T::_T() : lang::meta::Node::ParseExprListType::_T(lang::meta::Node::ParseExprListType::_W::List) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::List_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::List_T x) {
     os << "lang::meta::Node::ParseExprListType::List {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -15934,7 +15934,7 @@ void lang::meta::Node::ParseExprListType::List::_T::hash_ser_acc(langcc::SerBuf&
 lang::meta::Node::ParseExprListType::Block::_T::_T() : lang::meta::Node::ParseExprListType::_T(lang::meta::Node::ParseExprListType::_W::Block) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block_T x) {
     os << "lang::meta::Node::ParseExprListType::Block {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16067,7 +16067,7 @@ void lang::meta::Node::ParseExprListType::Block::_T::hash_ser_acc(langcc::SerBuf
 lang::meta::Node::ParseExprListType::Block2::_T::_T() : lang::meta::Node::ParseExprListType::_T(lang::meta::Node::ParseExprListType::_W::Block2) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block2_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block2_T x) {
     os << "lang::meta::Node::ParseExprListType::Block2 {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16200,7 +16200,7 @@ void lang::meta::Node::ParseExprListType::Block2::_T::hash_ser_acc(langcc::SerBu
 lang::meta::Node::ParseExprListType::Top::_T::_T() : lang::meta::Node::ParseExprListType::_T(lang::meta::Node::ParseExprListType::_W::Top) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top_T x) {
     os << "lang::meta::Node::ParseExprListType::Top {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16333,7 +16333,7 @@ void lang::meta::Node::ParseExprListType::Top::_T::hash_ser_acc(langcc::SerBuf& 
 lang::meta::Node::ParseExprListType::Top2::_T::_T() : lang::meta::Node::ParseExprListType::_T(lang::meta::Node::ParseExprListType::_W::Top2) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top2_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top2_T x) {
     os << "lang::meta::Node::ParseExprListType::Top2 {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16466,7 +16466,7 @@ void lang::meta::Node::ParseExprListType::Top2::_T::hash_ser_acc(langcc::SerBuf&
 lang::meta::Node::ParseExprListNum::Ge0::_T::_T() : lang::meta::Node::ParseExprListNum::_T(lang::meta::Node::ParseExprListNum::_W::Ge0) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge0_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge0_T x) {
     os << "lang::meta::Node::ParseExprListNum::Ge0 {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16599,7 +16599,7 @@ void lang::meta::Node::ParseExprListNum::Ge0::_T::hash_ser_acc(langcc::SerBuf& b
 lang::meta::Node::ParseExprListNum::Ge1::_T::_T() : lang::meta::Node::ParseExprListNum::_T(lang::meta::Node::ParseExprListNum::_W::Ge1) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge1_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge1_T x) {
     os << "lang::meta::Node::ParseExprListNum::Ge1 {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16732,7 +16732,7 @@ void lang::meta::Node::ParseExprListNum::Ge1::_T::hash_ser_acc(langcc::SerBuf& b
 lang::meta::Node::ParseExprListNum::Ge2::_T::_T() : lang::meta::Node::ParseExprListNum::_T(lang::meta::Node::ParseExprListNum::_W::Ge2) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge2_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge2_T x) {
     os << "lang::meta::Node::ParseExprListNum::Ge2 {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16865,7 +16865,7 @@ void lang::meta::Node::ParseExprListNum::Ge2::_T::hash_ser_acc(langcc::SerBuf& b
 lang::meta::Node::TokenDecl::op::DEF::_T::_T() : lang::meta::Node::TokenDecl::op::_T(lang::meta::Node::TokenDecl::op::_W::DEF) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_T x) {
     os << "lang::meta::Node::TokenDecl::op::DEF {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -16998,7 +16998,7 @@ void lang::meta::Node::TokenDecl::op::DEF::_T::hash_ser_acc(langcc::SerBuf& buf)
 lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T::_T() : lang::meta::Node::TokenDecl::op::_T(lang::meta::Node::TokenDecl::op::_W::DEF_ALIAS) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_ALIAS_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_ALIAS_T x) {
     os << "lang::meta::Node::TokenDecl::op::DEF_ALIAS {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -17131,7 +17131,7 @@ void lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T::hash_ser_acc(langcc::SerBuf
 lang::meta::Node::LexerDecl::Mode::ws_sig_::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::LexerDecl__Mode__ws_sig_) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig__T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig__T x) {
     os << "lang::meta::Node::LexerDecl::Mode::ws_sig_ {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -17290,7 +17290,7 @@ lang::meta::Node::ParserDecl::Rule::op::_T::_T(lang::meta::Node::ParserDecl::Rul
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op_T x) {
     switch (x->w_) {
         case lang::meta::Node::ParserDecl::Rule::op::_W::DEF: {
             langcc::pr_debug(os, flags, x->as_DEF());
@@ -17366,7 +17366,7 @@ lang::meta::Node::ParseExpr::List::end_delim::_T::_T(lang::meta::Node::ParseExpr
     w_ = w;
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim_T x) {
     switch (x->w_) {
         case lang::meta::Node::ParseExpr::List::end_delim::_W::NONE: {
             langcc::pr_debug(os, flags, x->as_NONE());
@@ -17463,7 +17463,7 @@ void lang::meta::Node::ParseExpr::List::end_delim::_T::hash_ser_acc_lang_meta_No
 lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T::_T() : lang::meta::Node::_T(lang::meta::Node::_W::LexerDecl__Mode__ws_sig___spec) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x) {
     os << "lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -17648,7 +17648,7 @@ void lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T::hash_ser_acc(langcc::
 lang::meta::Node::ParserDecl::Rule::op::DEF::_T::_T() : lang::meta::Node::ParserDecl::Rule::op::_T(lang::meta::Node::ParserDecl::Rule::op::_W::DEF) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_T x) {
     os << "lang::meta::Node::ParserDecl::Rule::op::DEF {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -17781,7 +17781,7 @@ void lang::meta::Node::ParserDecl::Rule::op::DEF::_T::hash_ser_acc(langcc::SerBu
 lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T::_T() : lang::meta::Node::ParserDecl::Rule::op::_T(lang::meta::Node::ParserDecl::Rule::op::_W::DEF_ALIAS) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T x) {
     os << "lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -17914,7 +17914,7 @@ void lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T::hash_ser_acc(langcc:
 lang::meta::Node::ParseExpr::List::end_delim::NONE::_T::_T() : lang::meta::Node::ParseExpr::List::end_delim::_T(lang::meta::Node::ParseExpr::List::end_delim::_W::NONE) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::NONE_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::NONE_T x) {
     os << "lang::meta::Node::ParseExpr::List::end_delim::NONE {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -18047,7 +18047,7 @@ void lang::meta::Node::ParseExpr::List::end_delim::NONE::_T::hash_ser_acc(langcc
 lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T::_T() : lang::meta::Node::ParseExpr::List::end_delim::_T(lang::meta::Node::ParseExpr::List::end_delim::_W::OPTIONAL) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T x) {
     os << "lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";
@@ -18180,7 +18180,7 @@ void lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T::hash_ser_acc(la
 lang::meta::Node::ParseExpr::List::end_delim::SOME::_T::_T() : lang::meta::Node::ParseExpr::List::end_delim::_T(lang::meta::Node::ParseExpr::List::end_delim::_W::SOME) {
 }
 
-void langcc::pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::SOME_T x) {
+void langcc::pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::SOME_T x) {
     os << "lang::meta::Node::ParseExpr::List::end_delim::SOME {";
     flags.sub_lo().advance_lines(1, os);
     os << "id: ";

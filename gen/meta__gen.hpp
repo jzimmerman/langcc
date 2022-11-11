@@ -913,7 +913,7 @@ namespace lang::meta {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node_T x);
 }
 
 namespace lang::meta::Node {
@@ -1166,7 +1166,7 @@ template<typename RetT> RetT lang::meta::Node::_T::match_expr(std::function<RetT
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Lang_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Lang_T x);
 }
 
 namespace lang::meta::Node::Lang {
@@ -1196,7 +1196,7 @@ namespace lang::meta::Node::Lang {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl_T x);
 }
 
 namespace lang::meta::Node::TokenDecl {
@@ -1230,7 +1230,7 @@ namespace lang::meta::Node::TokenDecl {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerModeCase_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerModeCase_T x);
 }
 
 namespace lang::meta::Node::LexerModeCase {
@@ -1262,7 +1262,7 @@ namespace lang::meta::Node::LexerModeCase {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecItem_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecItem_T x);
 }
 
 namespace lang::meta::Node::PrecItem {
@@ -1294,7 +1294,7 @@ namespace lang::meta::Node::PrecItem {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCase_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCase_T x);
 }
 
 namespace lang::meta::Node::AttrMatchCase {
@@ -1326,7 +1326,7 @@ namespace lang::meta::Node::AttrMatchCase {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TestCase_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TestCase_T x);
 }
 
 namespace lang::meta::Node::TestCase {
@@ -1360,7 +1360,7 @@ namespace lang::meta::Node::TestCase {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::CompileTestCase_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::CompileTestCase_T x);
 }
 
 namespace lang::meta::Node::CompileTestCase {
@@ -1392,7 +1392,7 @@ namespace lang::meta::Node::CompileTestCase {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Id_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Id_T x);
 }
 
 namespace lang::meta::Node::Id {
@@ -1422,7 +1422,7 @@ namespace lang::meta::Node::Id {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza_T x);
 }
 
 namespace lang::meta::Node::Stanza {
@@ -1493,7 +1493,7 @@ template<typename RetT> RetT lang::meta::Node::Stanza::_T::match_expr(std::funct
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T x);
 }
 
 namespace lang::meta::Node::LexerDecl {
@@ -1540,7 +1540,7 @@ template<typename RetT> RetT lang::meta::Node::LexerDecl::_T::match_expr(std::fu
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr_T x);
 }
 
 namespace lang::meta::Node::LexerInstr {
@@ -1627,7 +1627,7 @@ template<typename RetT> RetT lang::meta::Node::LexerInstr::_T::match_expr(std::f
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl_T x);
 }
 
 namespace lang::meta::Node::ParserDecl {
@@ -1698,7 +1698,7 @@ template<typename RetT> RetT lang::meta::Node::ParserDecl::_T::match_expr(std::f
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp_T x);
 }
 
 namespace lang::meta::Node::ParserProp {
@@ -1761,7 +1761,7 @@ template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(std::f
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc_T x);
 }
 
 namespace lang::meta::Node::PrecAssoc {
@@ -1824,7 +1824,7 @@ template<typename RetT> RetT lang::meta::Node::PrecAssoc::_T::match_expr(std::fu
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause_T x);
 }
 
 namespace lang::meta::Node::AttrClause {
@@ -1879,7 +1879,7 @@ template<typename RetT> RetT lang::meta::Node::AttrClause::_T::match_expr(std::f
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern_T x);
 }
 
 namespace lang::meta::Node::AttrMatchCasePattern {
@@ -1926,7 +1926,7 @@ template<typename RetT> RetT lang::meta::Node::AttrMatchCasePattern::_T::match_e
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExpr {
@@ -1981,7 +1981,7 @@ template<typename RetT> RetT lang::meta::Node::AttrClauseExpr::_T::match_expr(st
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc {
@@ -2044,7 +2044,7 @@ template<typename RetT> RetT lang::meta::Node::AttrClauseExprRhsLoc::_T::match_e
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr_T x);
 }
 
 namespace lang::meta::Node::ParseExpr {
@@ -2283,7 +2283,7 @@ template<typename RetT> RetT lang::meta::Node::ParseExpr::_T::match_expr(std::fu
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrReq_T x);
 }
 
 namespace lang::meta::Node::AttrReq {
@@ -2330,7 +2330,7 @@ template<typename RetT> RetT lang::meta::Node::AttrReq::_T::match_expr(std::func
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType_T x);
 }
 
 namespace lang::meta::Node::ParseExprListType {
@@ -2401,7 +2401,7 @@ template<typename RetT> RetT lang::meta::Node::ParseExprListType::_T::match_expr
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum_T x);
 }
 
 namespace lang::meta::Node::ParseExprListNum {
@@ -2456,7 +2456,7 @@ template<typename RetT> RetT lang::meta::Node::ParseExprListNum::_T::match_expr(
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Tokens_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Tokens_T x);
 }
 
 namespace lang::meta::Node::Stanza::Tokens {
@@ -2486,7 +2486,7 @@ namespace lang::meta::Node::Stanza::Tokens {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Lexer_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Lexer_T x);
 }
 
 namespace lang::meta::Node::Stanza::Lexer {
@@ -2516,7 +2516,7 @@ namespace lang::meta::Node::Stanza::Lexer {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Parser_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Parser_T x);
 }
 
 namespace lang::meta::Node::Stanza::Parser {
@@ -2546,7 +2546,7 @@ namespace lang::meta::Node::Stanza::Parser {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Test_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::Test_T x);
 }
 
 namespace lang::meta::Node::Stanza::Test {
@@ -2576,7 +2576,7 @@ namespace lang::meta::Node::Stanza::Test {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza::CompileTest_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::Stanza::CompileTest_T x);
 }
 
 namespace lang::meta::Node::Stanza::CompileTest {
@@ -2606,7 +2606,7 @@ namespace lang::meta::Node::Stanza::CompileTest {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op_T x);
 }
 
 namespace lang::meta::Node::TokenDecl::op {
@@ -2653,7 +2653,7 @@ template<typename RetT> RetT lang::meta::Node::TokenDecl::op::_T::match_expr(std
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Main_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Main_T x);
 }
 
 namespace lang::meta::Node::LexerDecl::Main {
@@ -2683,7 +2683,7 @@ namespace lang::meta::Node::LexerDecl::Main {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode_T x);
 }
 
 namespace lang::meta::Node::LexerDecl::Mode {
@@ -2717,7 +2717,7 @@ namespace lang::meta::Node::LexerDecl::Mode {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Emit_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Emit_T x);
 }
 
 namespace lang::meta::Node::LexerInstr::Emit {
@@ -2747,7 +2747,7 @@ namespace lang::meta::Node::LexerInstr::Emit {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pass_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pass_T x);
 }
 
 namespace lang::meta::Node::LexerInstr::Pass {
@@ -2775,7 +2775,7 @@ namespace lang::meta::Node::LexerInstr::Pass {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Push_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Push_T x);
 }
 
 namespace lang::meta::Node::LexerInstr::Push {
@@ -2805,7 +2805,7 @@ namespace lang::meta::Node::LexerInstr::Push {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pop_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::Pop_T x);
 }
 
 namespace lang::meta::Node::LexerInstr::Pop {
@@ -2833,7 +2833,7 @@ namespace lang::meta::Node::LexerInstr::Pop {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopExtract_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopExtract_T x);
 }
 
 namespace lang::meta::Node::LexerInstr::PopExtract {
@@ -2861,7 +2861,7 @@ namespace lang::meta::Node::LexerInstr::PopExtract {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopEmit_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::PopEmit_T x);
 }
 
 namespace lang::meta::Node::LexerInstr::PopEmit {
@@ -2891,7 +2891,7 @@ namespace lang::meta::Node::LexerInstr::PopEmit {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::MatchHistory_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerInstr::MatchHistory_T x);
 }
 
 namespace lang::meta::Node::LexerInstr::MatchHistory {
@@ -2921,7 +2921,7 @@ namespace lang::meta::Node::LexerInstr::MatchHistory {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Main_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Main_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Main {
@@ -2951,7 +2951,7 @@ namespace lang::meta::Node::ParserDecl::Main {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prop_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prop_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Prop {
@@ -2981,7 +2981,7 @@ namespace lang::meta::Node::ParserDecl::Prop {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prec_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Prec_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Prec {
@@ -3011,7 +3011,7 @@ namespace lang::meta::Node::ParserDecl::Prec {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Attr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Attr_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Attr {
@@ -3041,7 +3041,7 @@ namespace lang::meta::Node::ParserDecl::Attr {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Rule {
@@ -3077,7 +3077,7 @@ namespace lang::meta::Node::ParserDecl::Rule {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::NameStrict_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::NameStrict_T x);
 }
 
 namespace lang::meta::Node::ParserProp::NameStrict {
@@ -3105,7 +3105,7 @@ namespace lang::meta::Node::ParserProp::NameStrict {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::AllowUnreach_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::AllowUnreach_T x);
 }
 
 namespace lang::meta::Node::ParserProp::AllowUnreach {
@@ -3133,7 +3133,7 @@ namespace lang::meta::Node::ParserProp::AllowUnreach {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::LRSpec_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::LRSpec_T x);
 }
 
 namespace lang::meta::Node::ParserProp::LRSpec {
@@ -3163,7 +3163,7 @@ namespace lang::meta::Node::ParserProp::LRSpec {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::Err__T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::Err__T x);
 }
 
 namespace lang::meta::Node::ParserProp::Err_ {
@@ -3191,7 +3191,7 @@ namespace lang::meta::Node::ParserProp::Err_ {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Left_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Left_T x);
 }
 
 namespace lang::meta::Node::PrecAssoc::Left {
@@ -3219,7 +3219,7 @@ namespace lang::meta::Node::PrecAssoc::Left {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Right_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Right_T x);
 }
 
 namespace lang::meta::Node::PrecAssoc::Right {
@@ -3247,7 +3247,7 @@ namespace lang::meta::Node::PrecAssoc::Right {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Prefix_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Prefix_T x);
 }
 
 namespace lang::meta::Node::PrecAssoc::Prefix {
@@ -3275,7 +3275,7 @@ namespace lang::meta::Node::PrecAssoc::Prefix {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Postfix_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::PrecAssoc::Postfix_T x);
 }
 
 namespace lang::meta::Node::PrecAssoc::Postfix {
@@ -3303,7 +3303,7 @@ namespace lang::meta::Node::PrecAssoc::Postfix {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Expr_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Expr_T x);
 }
 
 namespace lang::meta::Node::AttrClause::Expr {
@@ -3333,7 +3333,7 @@ namespace lang::meta::Node::AttrClause::Expr {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Block_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Block_T x);
 }
 
 namespace lang::meta::Node::AttrClause::Block {
@@ -3363,7 +3363,7 @@ namespace lang::meta::Node::AttrClause::Block {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Match_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClause::Match_T x);
 }
 
 namespace lang::meta::Node::AttrClause::Match {
@@ -3393,7 +3393,7 @@ namespace lang::meta::Node::AttrClause::Match {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Alt_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Alt_T x);
 }
 
 namespace lang::meta::Node::AttrMatchCasePattern::Alt {
@@ -3423,7 +3423,7 @@ namespace lang::meta::Node::AttrMatchCasePattern::Alt {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Wildcard_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern::Wildcard_T x);
 }
 
 namespace lang::meta::Node::AttrMatchCasePattern::Wildcard {
@@ -3451,7 +3451,7 @@ namespace lang::meta::Node::AttrMatchCasePattern::Wildcard {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::LhsGeq_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::LhsGeq_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExpr::LhsGeq {
@@ -3481,7 +3481,7 @@ namespace lang::meta::Node::AttrClauseExpr::LhsGeq {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::RhsGeq_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::RhsGeq_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExpr::RhsGeq {
@@ -3513,7 +3513,7 @@ namespace lang::meta::Node::AttrClauseExpr::RhsGeq {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::Implies_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExpr::Implies_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExpr::Implies {
@@ -3547,7 +3547,7 @@ namespace lang::meta::Node::AttrClauseExpr::Implies {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::All_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::All_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::All {
@@ -3575,7 +3575,7 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::All {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Begin_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Begin_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::Begin {
@@ -3603,7 +3603,7 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::Begin {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Mid_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::Mid_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::Mid {
@@ -3631,7 +3631,7 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::Mid {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::End_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrClauseExprRhsLoc::End_T x);
 }
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::End {
@@ -3659,7 +3659,7 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc::End {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Id_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Id_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Id {
@@ -3689,7 +3689,7 @@ namespace lang::meta::Node::ParseExpr::Id {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eof_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eof_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Eof {
@@ -3717,7 +3717,7 @@ namespace lang::meta::Node::ParseExpr::Eof {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::False_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::False_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::False {
@@ -3745,7 +3745,7 @@ namespace lang::meta::Node::ParseExpr::False {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eps_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Eps_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Eps {
@@ -3773,7 +3773,7 @@ namespace lang::meta::Node::ParseExpr::Eps {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Indent_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Indent_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Indent {
@@ -3801,7 +3801,7 @@ namespace lang::meta::Node::ParseExpr::Indent {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Dedent_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Dedent_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Dedent {
@@ -3829,7 +3829,7 @@ namespace lang::meta::Node::ParseExpr::Dedent {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Newline_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Newline_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Newline {
@@ -3857,7 +3857,7 @@ namespace lang::meta::Node::ParseExpr::Newline {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::UnicodeAny_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::UnicodeAny_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::UnicodeAny {
@@ -3885,7 +3885,7 @@ namespace lang::meta::Node::ParseExpr::UnicodeAny {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AsciiBaseAny_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AsciiBaseAny_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::AsciiBaseAny {
@@ -3913,7 +3913,7 @@ namespace lang::meta::Node::ParseExpr::AsciiBaseAny {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Alt_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Alt_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Alt {
@@ -3943,7 +3943,7 @@ namespace lang::meta::Node::ParseExpr::Alt {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AltExplicit_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AltExplicit_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::AltExplicit {
@@ -3973,7 +3973,7 @@ namespace lang::meta::Node::ParseExpr::AltExplicit {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Minus_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Minus_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Minus {
@@ -4005,7 +4005,7 @@ namespace lang::meta::Node::ParseExpr::Minus {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Concat_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Concat_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Concat {
@@ -4035,7 +4035,7 @@ namespace lang::meta::Node::ParseExpr::Concat {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Optional_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Optional_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Optional {
@@ -4065,7 +4065,7 @@ namespace lang::meta::Node::ParseExpr::Optional {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Rep_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Rep_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Rep {
@@ -4095,7 +4095,7 @@ namespace lang::meta::Node::ParseExpr::Rep {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepNonzero_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepNonzero_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::RepNonzero {
@@ -4125,7 +4125,7 @@ namespace lang::meta::Node::ParseExpr::RepNonzero {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepCount_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::RepCount_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::RepCount {
@@ -4157,7 +4157,7 @@ namespace lang::meta::Node::ParseExpr::RepCount {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::CharRange_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::CharRange_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::CharRange {
@@ -4189,7 +4189,7 @@ namespace lang::meta::Node::ParseExpr::CharRange {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::StrLit_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::StrLit_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::StrLit {
@@ -4219,7 +4219,7 @@ namespace lang::meta::Node::ParseExpr::StrLit {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Underscore_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Underscore_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Underscore {
@@ -4247,7 +4247,7 @@ namespace lang::meta::Node::ParseExpr::Underscore {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Pass_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Pass_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Pass {
@@ -4277,7 +4277,7 @@ namespace lang::meta::Node::ParseExpr::Pass {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Paren_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Paren_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Paren {
@@ -4307,7 +4307,7 @@ namespace lang::meta::Node::ParseExpr::Paren {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Name_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Name_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Name {
@@ -4339,7 +4339,7 @@ namespace lang::meta::Node::ParseExpr::Name {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::List {
@@ -4377,7 +4377,7 @@ namespace lang::meta::Node::ParseExpr::List {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Unfold_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::Unfold_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::Unfold {
@@ -4407,7 +4407,7 @@ namespace lang::meta::Node::ParseExpr::Unfold {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AttrReq_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::AttrReq_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::AttrReq {
@@ -4439,7 +4439,7 @@ namespace lang::meta::Node::ParseExpr::AttrReq {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::Base_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::Base_T x);
 }
 
 namespace lang::meta::Node::AttrReq::Base {
@@ -4469,7 +4469,7 @@ namespace lang::meta::Node::AttrReq::Base {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::PrecStar_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::AttrReq::PrecStar_T x);
 }
 
 namespace lang::meta::Node::AttrReq::PrecStar {
@@ -4497,7 +4497,7 @@ namespace lang::meta::Node::AttrReq::PrecStar {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::List_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::List_T x);
 }
 
 namespace lang::meta::Node::ParseExprListType::List {
@@ -4525,7 +4525,7 @@ namespace lang::meta::Node::ParseExprListType::List {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block_T x);
 }
 
 namespace lang::meta::Node::ParseExprListType::Block {
@@ -4553,7 +4553,7 @@ namespace lang::meta::Node::ParseExprListType::Block {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block2_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Block2_T x);
 }
 
 namespace lang::meta::Node::ParseExprListType::Block2 {
@@ -4581,7 +4581,7 @@ namespace lang::meta::Node::ParseExprListType::Block2 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top_T x);
 }
 
 namespace lang::meta::Node::ParseExprListType::Top {
@@ -4609,7 +4609,7 @@ namespace lang::meta::Node::ParseExprListType::Top {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top2_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListType::Top2_T x);
 }
 
 namespace lang::meta::Node::ParseExprListType::Top2 {
@@ -4637,7 +4637,7 @@ namespace lang::meta::Node::ParseExprListType::Top2 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge0_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge0_T x);
 }
 
 namespace lang::meta::Node::ParseExprListNum::Ge0 {
@@ -4665,7 +4665,7 @@ namespace lang::meta::Node::ParseExprListNum::Ge0 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge1_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge1_T x);
 }
 
 namespace lang::meta::Node::ParseExprListNum::Ge1 {
@@ -4693,7 +4693,7 @@ namespace lang::meta::Node::ParseExprListNum::Ge1 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge2_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExprListNum::Ge2_T x);
 }
 
 namespace lang::meta::Node::ParseExprListNum::Ge2 {
@@ -4721,7 +4721,7 @@ namespace lang::meta::Node::ParseExprListNum::Ge2 {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_T x);
 }
 
 namespace lang::meta::Node::TokenDecl::op::DEF {
@@ -4749,7 +4749,7 @@ namespace lang::meta::Node::TokenDecl::op::DEF {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_ALIAS_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::TokenDecl::op::DEF_ALIAS_T x);
 }
 
 namespace lang::meta::Node::TokenDecl::op::DEF_ALIAS {
@@ -4777,7 +4777,7 @@ namespace lang::meta::Node::TokenDecl::op::DEF_ALIAS {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig__T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig__T x);
 }
 
 namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
@@ -4807,7 +4807,7 @@ namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Rule::op {
@@ -4854,7 +4854,7 @@ template<typename RetT> RetT lang::meta::Node::ParserDecl::Rule::op::_T::match_e
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::List::end_delim {
@@ -4909,7 +4909,7 @@ template<typename RetT> RetT lang::meta::Node::ParseExpr::List::end_delim::_T::m
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T x);
 }
 
 namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
@@ -4941,7 +4941,7 @@ namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Rule::op::DEF {
@@ -4969,7 +4969,7 @@ namespace lang::meta::Node::ParserDecl::Rule::op::DEF {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T x);
 }
 
 namespace lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS {
@@ -4997,7 +4997,7 @@ namespace lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::NONE_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::NONE_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::List::end_delim::NONE {
@@ -5025,7 +5025,7 @@ namespace lang::meta::Node::ParseExpr::List::end_delim::NONE {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL {
@@ -5053,7 +5053,7 @@ namespace lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::SOME_T x);
+    void pr_debug(std::ostream& os, FmtFlags flags, lang::meta::Node::ParseExpr::List::end_delim::SOME_T x);
 }
 
 namespace lang::meta::Node::ParseExpr::List::end_delim::SOME {
