@@ -3714,19 +3714,18 @@ inline void register_unit_test(string test_name,
 }
 
 inline void dispatch_unit_test(UnitTest &test) {
-  constexpr Int buf_n = 64;
-  char name_out[buf_n], name_err[buf_n];
-  strncpy(name_out, "/tmp/stdout_XXXXXX.txt", buf_n);
-  strncpy(name_err, "/tmp/stderr_XXXXXX.txt", buf_n);
-
+  string stdout_filename =
+      (std::filesystem::temp_directory_path() / "stdout_XXXXXX.txt").string();
+  string stderr_filename =
+      (std::filesystem::temp_directory_path() / "stderr_XXXXXX.txt").string();
   {
-    auto stdout_file = sys_chk_nonneg(mkstemps(name_out, 4), "mkstemps stdout");
-    auto stderr_file = sys_chk_nonneg(mkstemps(name_err, 4), "mkstemps stderr");
+    auto stdout_file =
+        sys_chk_nonneg(mkstemps(stdout_filename.data(), 4), "mkstemps stdout");
+    auto stderr_file =
+        sys_chk_nonneg(mkstemps(stderr_filename.data(), 4), "mkstemps stderr");
     close(stdout_file);
     close(stderr_file);
   }
-  string stdout_filename = name_out;
-  string stderr_filename = name_err;
 
   pid_t pid = fork();
 
