@@ -3380,7 +3380,7 @@ inline i32 sys_chk_nonneg(i32 ret, const std::string &desc) {
 }
 
 inline std::string read_file(const std::string &filename) {
-  std::ifstream inFile(filename);
+  std::ifstream inFile(filename, std::ios_base::binary);
   if (!inFile.good()) {
     LG_ERR("Error opening for reading: {}", filename);
     AX();
@@ -3392,7 +3392,7 @@ inline std::string read_file(const std::string &filename) {
 
 inline Str_T read_file_shared(const std::string &filename, Arena *A = nullptr) {
   Int len = std::filesystem::file_size(filename);
-  std::ifstream inFile(filename);
+  std::ifstream inFile(filename, std::ios_base::binary);
   if (!inFile.good()) {
     LG_ERR("Error opening for reading: {}", filename);
     AX();
