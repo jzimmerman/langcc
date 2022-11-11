@@ -35,6 +35,7 @@ add_custom_command(
 # Create langcc target
 #
 add_executable(langcc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_main.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_lexer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_parser_flatten.cpp
@@ -44,12 +45,11 @@ add_executable(langcc
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_encode.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_normalize.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_emit.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/cc__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/data__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/meta__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/common__data_gen.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_main.cpp
 )
 
 
@@ -60,11 +60,11 @@ add_executable(langcc
 # Unittests:
 add_executable(unittest_lib
   EXCLUDE_FROM_ALL
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/unittest_lib_main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/unittest_lib_main.cpp
 )
 add_executable(unittest_lang
   EXCLUDE_FROM_ALL
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/unittest_lang_main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/unittest_lang_main.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_lexer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_parser_flatten.cpp
@@ -74,11 +74,11 @@ add_executable(unittest_lang
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_encode.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_normalize.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_emit.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/cc__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/data__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/meta__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/common__data_gen.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
 )
 
 # go_standalone_test
@@ -90,12 +90,12 @@ add_custom_command(
 )
 add_executable(go_standalone_test
   EXCLUDE_FROM_ALL
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/go_standalone_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/go_standalone_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/go__gen.cpp
 )
 add_executable(go_standalone_bidir_test
   EXCLUDE_FROM_ALL
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/go_standalone_bidir_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/go_standalone_bidir_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/go__gen.cpp
 )
 
@@ -108,11 +108,11 @@ add_custom_command(
 )
 add_executable(py_standalone_test
   EXCLUDE_FROM_ALL
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/py_standalone_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/py_standalone_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/py__gen.cpp
 )
 add_executable(py_standalone_bidir_test
   EXCLUDE_FROM_ALL
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/py_standalone_bidir_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/py_standalone_bidir_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/py__gen.cpp
 )
