@@ -20,24 +20,11 @@
 
 #endif
 
-namespace langcc {
-
-// inline void kill_child_proc(pid_t pid) {
-//   kill(pid, SIGQUIT);
-//   usleep(1000);
-//   i32 status_unused = 0;
-//   pid_t pid_res = waitpid(pid, &status_unused, WNOHANG);
-//   if (pid_res <= 0) {
-//     kill(pid, SIGKILL);
-//     usleep(1000);
-//     waitpid(pid, &status_unused, WNOHANG);
-//   }
-// }
-
 ////////////////////////////////////////////////////////////////////////////////
 // Unit testing
 ////////////////////////////////////////////////////////////////////////////////
 
+namespace langcc {
 // A threadsafe-queue.
 template <class T> class SafeQueue {
 public:
@@ -91,8 +78,6 @@ struct UnitTestRun {
   Time end_time_{};
   std::shared_ptr<std::stringstream> stdout_stream_;
   std::shared_ptr<std::stringstream> stderr_stream_;
-  string stdout_;
-  string stderr_;
   Option_T<Int> ret_;
 
   inline bool is_success() const {
@@ -211,10 +196,9 @@ inline bool run_unit_tests() {
       auto [finished_thread_id, status] = finished_test.value();
       auto test_elem = get_unit_tests_running().extract(finished_thread_id);
       UnitTestRun test = std::move(test_elem.mapped());
+      test.testthread_.join();
       test.ret_ = Some<Int>(static_cast<Int>(status));
       test.end_time_ = now();
-      test.stdout_ = test.stdout_stream_->str();
-      test.stderr_ = test.stderr_stream_->str();
       if (test.is_success()) {
         LOG(0, "\033[32m[success]\033[0m {}", test.desc_.name_);
       } else {
@@ -237,8 +221,6 @@ inline bool run_unit_tests() {
         // kill_child_proc(test.pid_);
         test.ret_ = None<Int>();
         test.end_time_ = now();
-        test.stdout_ = test.stdout_stream_->str();
-        test.stderr_ = test.stderr_stream_->str();
         get_unit_tests_terminated().insert(
             make_pair(test.desc_.name_, std::move(test)));
       }
@@ -265,9 +247,11 @@ inline bool run_unit_tests() {
     for (const auto &name : res_fail) {
       const auto &test = get_unit_tests_terminated().at(name);
       LOG(1, " ===== Failure({}): {}\n", test.ret_desc(), test.desc_.name_);
-      LOG(1, " ===== Begin stdout[{}]\n{}", test.desc_.name_, test.stdout_);
+      LOG(1, " ===== Begin stdout[{}]\n{}", test.desc_.name_,
+          test.stdout_stream_->str());
       LOG(1, " ===== End stdout[{}]", test.desc_.name_);
-      LOG(1, " ===== Begin stderr[{}]\n{}", test.desc_.name_, test.stderr_);
+      LOG(1, " ===== Begin stderr[{}]\n{}", test.desc_.name_,
+          test.stderr_stream_->str());
       LOG(1, " ===== End stderr[{}]", test.desc_.name_);
     }
   }
