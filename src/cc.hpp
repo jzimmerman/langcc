@@ -295,7 +295,7 @@ CppGenContext::gen_cpp_decl_var_init(Vec_T<cc::Node_T> &dst, const GenName &ns,
                                      Ret ret_ty, const std::string &id_hint,
                                      const Args &...init_args) {
 
-  auto id = this->gen_id_fresh(ns, std::move(id_hint));
+  auto id = this->gen_id_fresh(ns, id_hint);
   auto cpp_id = this->gen_cpp_id_base(id);
   auto decl = Q_->qq_ext(Some<std::string>("Stmt"), ret_ty, cpp_id, " = ",
                          init_args..., ";");

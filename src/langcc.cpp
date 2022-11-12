@@ -5,11 +5,10 @@
 
 namespace langcc {
 
-LangCompileResult_T compile_lang_inner(lang::meta::Node_T src, Int k,
-                                       Gensym_T gen_meta, LexOutput_T lex_res,
-                                       const std::string &src_base_name,
-                                       const std::string &dst_path,
-                                       HeaderMode header_mode) {
+LangCompileResult_T
+compile_lang_inner(lang::meta::Node_T src, Int k, const Gensym_T &gen_meta,
+                   const LexOutput_T &lex_res, const std::string &src_base_name,
+                   const std::string &dst_path, HeaderMode header_mode) {
 
   AR_ge(k, 0);
 
@@ -93,11 +92,10 @@ LangCompileResult_T compile_lang_inner(lang::meta::Node_T src, Int k,
                                      ctx.cpp_test_path_, ctx.cpp_debug_path_);
 }
 
-LangCompileResult_T compile_lang(lang::meta::Node_T src, Int k,
-                                 Gensym_T gen_meta, LexOutput_T lex_res,
-                                 const std::string &src_base_name,
-                                 const std::string &dst_path,
-                                 HeaderMode header_mode) {
+LangCompileResult_T
+compile_lang(const lang::meta::Node_T &src, Int k, const Gensym_T &gen_meta,
+             const LexOutput_T &lex_res, const std::string &src_base_name,
+             const std::string &dst_path, HeaderMode header_mode) {
 
   try {
     return compile_lang_inner(src, k, gen_meta, lex_res, src_base_name,
@@ -238,7 +236,7 @@ LangCompileResult_T compile_lang_full(const std::string &src_path,
 #endif
 
     std::string cmd;
-    for (auto cmd_i : cmds) {
+    for (const auto &cmd_i : cmds) {
       cmd += cmd_i + " ";
     }
     LOG(1, "Running: {}", cmd);

@@ -42,7 +42,7 @@ Int lexer_instr_num_stack_changes_max(lang::meta::Node::LexerInstr_T instr) {
   } else if (instr->is_MatchHistory()) {
     auto cc = instr->as_MatchHistory();
     Int ret = 0;
-    for (auto case_ : *cc->cases_) {
+    for (const auto &case_ : *cc->cases_) {
       auto ret_i = lexer_instrs_num_stack_changes_max(case_->instrs_);
       if (ret_i > ret) {
         ret = ret_i;
@@ -104,7 +104,8 @@ Int lexer_instrs_num_emit_match_max(
 }
 
 void lexer_gen_cpp_defs(
-    LangCompileContext &ctx, CppGenContext &cc, std::string src_base_name,
+    LangCompileContext &ctx, CppGenContext &cc,
+    const std::string &src_base_name,
     Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_mode_dfas) {
 
   // ===== Label ids =====
@@ -343,9 +344,7 @@ data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty) {
     auto tc = ty->as_Vector();
     auto node_sub = data_gen_type_to_node(data, tc->elem_ty_);
     return data.Q_->qq_ext(Some<std::string>("Expr"), "Vec(", node_sub, ")");
-  } else if (ty->is_Datatype()) {
-    AX();
-  } else if (ty->is_Builtin()) {
+  } else if (ty->is_Datatype() || ty->is_Builtin()) {
     AX();
   } else if (ty->is_Named()) {
     auto id =
@@ -531,7 +530,7 @@ std::string parser_lr_impl_id_gen_cpp(CppGenContext &cc, ProdId_T prod_id,
 }
 
 void parser_lr_unwind_impl_gen_cpp_push_res_fwd(Vec_T<cc::Node_T> &cpp_dst_proc,
-                                                cc::Node_T v_res,
+                                                const cc::Node_T &v_res,
                                                 CppGenContext &cc) {
 
   cc.qq_stmt_acc(cpp_dst_proc, "st->Sr_addr_[sr_len] = ", v_res, ";");
@@ -539,7 +538,7 @@ void parser_lr_unwind_impl_gen_cpp_push_res_fwd(Vec_T<cc::Node_T> &cpp_dst_proc,
 }
 
 void parser_lr_unwind_impl_gen_cpp_push_res_rev(Vec_T<cc::Node_T> &cpp_dst_proc,
-                                                cc::Node_T v_res,
+                                                const cc::Node_T &v_res,
                                                 CppGenContext &cc) {
 
   cc.qq_stmt_acc(cpp_dst_proc, "st->Sb_addr_[sb_len] = ", v_res, ";");
@@ -547,7 +546,7 @@ void parser_lr_unwind_impl_gen_cpp_push_res_rev(Vec_T<cc::Node_T> &cpp_dst_proc,
 }
 
 std::pair<cc::Node_T, cc::Node_T> parser_lr_unwind_impl_gen_name_to_cpp_struct(
-    Ident_T id, std::string src_base_name, CppGenContext &cc) {
+    Ident_T id, const std::string &src_base_name, CppGenContext &cc) {
 
   auto ret_struct = make_rc<Vec<std::string>>();
   ret_struct->push_back("lang");
@@ -563,7 +562,8 @@ std::pair<cc::Node_T, cc::Node_T> parser_lr_unwind_impl_gen_name_to_cpp_struct(
 }
 
 cc::Node_T parser_lr_unwind_type_to_cpp(CppGenContext &cc, bool is_top,
-                                        GenType_T ty, std::string src_base_name,
+                                        GenType_T ty,
+                                        const std::string &src_base_name,
                                         LangCompileContext &ctx) {
 
   if (ty->is_Named()) {
@@ -596,9 +596,9 @@ cc::Node_T parser_lr_unwind_type_to_cpp(CppGenContext &cc, bool is_top,
 }
 
 cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
-    Vec_T<cc::Node_T> &cpp_dst_unwind, cc::Node_T val, bool do_take,
-    GenType_T ty, GenName fun_ns, std::string src_base_name, CppGenContext &cc,
-    LangCompileContext &ctx) {
+    Vec_T<cc::Node_T> &cpp_dst_unwind, const cc::Node_T &val, bool do_take,
+    GenType_T ty, const GenName &fun_ns, const std::string &src_base_name,
+    CppGenContext &cc, LangCompileContext &ctx) {
 
   if (ty->is_Named()) {
     auto [_, cpp_prod_struct_ty] = parser_lr_unwind_impl_gen_name_to_cpp_struct(
@@ -686,21 +686,22 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
 }
 
 void parser_lr_unwind_impl_gen_cpp_acc_type_rec_dummy(
-    Vec_T<cc::Node_T> &cpp_dst_unwind, cc::Node_T val, bool do_take,
-    GenType_T ty, GenName fun_ns, std::string src_base_name, CppGenContext &cc,
-    LangCompileContext &ctx) {
+    Vec_T<cc::Node_T> &cpp_dst_unwind, const cc::Node_T &val, bool do_take,
+    GenType_T ty, const GenName &fun_ns, std::string src_base_name,
+    CppGenContext &cc, LangCompileContext &ctx) {
 
   if (ty->is_String() || ty->is_Nil()) {
     // pass (not allocated on the heap)
   } else {
     parser_lr_unwind_impl_gen_cpp_acc_type_rec(cpp_dst_unwind, val, do_take, ty,
-                                               fun_ns, src_base_name, cc, ctx);
+                                               fun_ns, std::move(src_base_name),
+                                               cc, ctx);
   }
 }
 
 void parser_lr_unwind_impl_gen_cpp_push_res_cons_fwd(
-    Vec_T<cc::Node_T> &cpp_dst_unwind, cc::Node_T ret, cc::Node_T bounds,
-    CppGenContext &cc) {
+    Vec_T<cc::Node_T> &cpp_dst_unwind, const cc::Node_T &ret,
+    const cc::Node_T &bounds, CppGenContext &cc) {
 
   auto res_item = cc.qq_expr("res_item");
   cc.qq_stmt_acc(cpp_dst_unwind, "auto res_item = langcc::Result_T(", ret, ",",
@@ -710,8 +711,9 @@ void parser_lr_unwind_impl_gen_cpp_push_res_cons_fwd(
   cc.qq_stmt_acc(cpp_dst_unwind, "++sr_len;");
 }
 
-Vec_T<cc::Node_T> parser_lr_unwind_impl_gen_cpp_make_args(cc::Node_T cpp_bounds,
-                                                          CppGenContext &cc) {
+Vec_T<cc::Node_T>
+parser_lr_unwind_impl_gen_cpp_make_args(const cc::Node_T &cpp_bounds,
+                                        CppGenContext &cc) {
 
   auto ret = make_rc<Vec<cc::Node_T>>();
   ret->push_back(cc.qq_expr("st->unw_arena_"));
@@ -727,8 +729,8 @@ Vec_T<cc::Node_T> parser_lr_unwind_impl_gen_cpp_make_args(cc::Node_T cpp_bounds,
 void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
                                        CppGenContext &cc, Prod_T prod_cps,
                                        Prod_T prod_flat, UnwindInstr_T instr,
-                                       GenName fun_ns,
-                                       std::string src_base_name,
+                                       const GenName &fun_ns,
+                                       const std::string &src_base_name,
                                        LangCompileContext &ctx) {
 
   auto nonterm_ind =
@@ -1155,7 +1157,7 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
 cc::Node_T parser_lr_unwind_impl_gen_cpp(CppGenContext &cc, Prod_T prod_cps,
                                          Prod_T prod_flat,
                                          LangCompileContext &ctx,
-                                         std::string src_base_name) {
+                                         const std::string &src_base_name) {
 
   auto proc_name = parser_lr_impl_id_gen_cpp(cc, prod_cps->prod_id_, ctx);
 
@@ -1191,8 +1193,9 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp(CppGenContext &cc, Prod_T prod_cps,
 }
 
 void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
-                                        cc::Node_T curr, GenName fun_ns,
-                                        std::string src_base_name,
+                                        const cc::Node_T &curr,
+                                        const GenName &fun_ns,
+                                        const std::string &src_base_name,
                                         CppGenContext &cc,
                                         LangCompileContext &ctx) {
 
@@ -1754,9 +1757,9 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 }
 
 inline Ch string_extract_lang_char_seq_single(std::string s_raw,
-                                              lang::meta::Node_T e,
+                                              const lang::meta::Node_T &e,
                                               LangCompileContext &ctx) {
-  auto chs = string_extract_lang_char_seq(s_raw);
+  auto chs = string_extract_lang_char_seq(std::move(s_raw));
   if (chs.is_none() || chs.as_some().size() != 1) {
     ctx.error(e, "Invalid character range");
   }

@@ -281,13 +281,13 @@ template <typename T> struct enable_rc_from_this : _enable_rc_from_this {
 };
 
 template <typename T> rc_ptr<T> rc_from_ptr_std(T *x) {
-  auto xw = reinterpret_cast<Int *>(x);
+  auto *xw = reinterpret_cast<Int *>(x);
   return rc_ptr<T>::from_contents(xw,
                                   reinterpret_cast<std::atomic<Int> *>(xw - 1));
 }
 
 template <typename T> rc_ptr<T> rc_from_ptr_std_dec(void *x) {
-  auto xw = reinterpret_cast<Int *>(x);
+  auto *xw = reinterpret_cast<Int *>(x);
   auto ret = rc_ptr<T>::from_contents(
       xw, reinterpret_cast<std::atomic<Int> *>(xw - 1));
   ret.decref();
@@ -315,7 +315,7 @@ void init_rc_contents(T * /*x*/, void * /*v*/, std::atomic<Int> * /*rc*/) {}
 template <typename T, typename... Ts> rc_ptr<T> make_rc(Ts... args) {
   static_assert(sizeof(Int) == 8);
   static_assert(sizeof(std::atomic<Int>) == 8);
-  auto mem =
+  auto *mem =
       reinterpret_cast<Int *>(malloc(sizeof(std::atomic<Int>) + sizeof(T)));
   rc_ptr<T> ret;
   ret.rc_ = reinterpret_cast<std::atomic<Int> *>(mem);
@@ -374,7 +374,7 @@ inline std::string str_with_replace_all(const std::string &x,
                                         const std::string &a,
                                         const std::string &b) {
 
-  std::string ret = "";
+  std::string ret;
 
   size_t pos_curr = 0;
 
@@ -396,7 +396,7 @@ inline std::string str_reindent_inner(const std::string &x,
 }
 
 inline std::string str_reindent(const std::string &x, Int count) {
-  std::string ret = "";
+  std::string ret;
   std::string sp = str_repeat(" ", count);
   if (!str_starts_with(x, "\n")) {
     ret += sp;
@@ -427,7 +427,7 @@ inline std::string duration_fmt_str(Int t) {
 }
 
 inline std::string utf8_encode(Ch ch) {
-  std::string ret = "";
+  std::string ret;
   if (ch < 0x80) {
     ret += static_cast<char>(ch);
     return ret;
@@ -608,11 +608,11 @@ inline Option_T<Int> string_to_int(const std::string &x) {
   return None<Int>();
 }
 
-inline Option_T<Int> string_to_int_hex(std::string x) {
+inline Option_T<Int> string_to_int_hex(const std::string &x) {
   u64 ret = 0;
-  for (u64 i = 0; i < x.length(); i++) {
+  for (const auto &c : x) {
     ret <<= 4;
-    ret |= hex_nybble_to_u8(x[i]);
+    ret |= hex_nybble_to_u8(c);
   }
   return Some<Int>(static_cast<Int>(ret));
 }
@@ -672,7 +672,7 @@ inline std::string escape_string_char(Ch ch) {
 }
 
 inline std::string escape_string_chars(const std::vector<Ch> &chs) {
-  std::string ret = "";
+  std::string ret;
   for (auto ch : chs) {
     ret += escape_string_char(ch);
   }
@@ -712,7 +712,7 @@ enum struct Align {
 };
 
 inline std::string str_align_left(const std::string &x, Int w) {
-  std::string ret = "";
+  std::string ret;
   ret += x;
   for (Int j = 0; j < w - len(x); j++) {
     ret += ' ';
@@ -721,7 +721,7 @@ inline std::string str_align_left(const std::string &x, Int w) {
 }
 
 inline std::string str_align_right(const std::string &x, Int w) {
-  std::string ret = "";
+  std::string ret;
   for (Int j = 0; j < w - len(x); j++) {
     ret += ' ';
   }
@@ -1801,7 +1801,7 @@ inline Vec_T<u8> byte_vec_from_string(const std::string &x) {
 }
 
 inline std::string string_from_byte_vec(Vec_T<u8> x) {
-  std::string ret = "";
+  std::string ret;
   for (auto xi : *x) {
     ret += static_cast<char>(xi);
   }
@@ -3205,8 +3205,8 @@ struct PrintTable {
   std::vector<std::tuple<std::string, Align>> col_;
   std::vector<std::vector<PrintTableRow>> items_;
   std::vector<std::deque<std::string>> buffer_;
-  Int buffer_cursor_;
-  bool buffer_active_;
+  Int buffer_cursor_{};
+  bool buffer_active_{};
   std::vector<Int> widths_;
 
   inline static PrintTable_T

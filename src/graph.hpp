@@ -53,7 +53,7 @@ template <typename Vertex, typename Label> struct _T {
   VecUniq_T<Label> L_;
   _T_inner fwd_;
   _T_inner rev_;
-  Int num_edges_;
+  Int num_edges_{};
 };
 
 template <typename Vertex, typename Label> Graph_T<Vertex, Label> empty() {

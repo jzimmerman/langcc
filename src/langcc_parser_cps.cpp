@@ -17,10 +17,10 @@ void ctx_Gr_cps_init(LangCompileContext &ctx) {
       make_rc<Map<Prod_T, Vec_T<Option_T<AttrLeaf_T>>>>();
 }
 
-void parser_Gr_cps_add_prod(LangCompileContext &ctx, Sym_T lhs,
-                            Option_T<AttrLeaf_T> lhs_leaf,
-                            Vec_T<SymFlattenResultCPS_T> rhs,
-                            Vec_T<Option_T<AttrLeaf_T>> rhs_leaves,
+void parser_Gr_cps_add_prod(LangCompileContext &ctx, const Sym_T &lhs,
+                            const Option_T<AttrLeaf_T> &lhs_leaf,
+                            const Vec_T<SymFlattenResultCPS_T> &rhs,
+                            const Vec_T<Option_T<AttrLeaf_T>> &rhs_leaves,
                             Prod_T orig_flat) {
 
   auto [rhs_sym, rhs_unfold] = sym_flatten_result_extract_vec(rhs);
@@ -47,25 +47,25 @@ void parser_Gr_cps_add_prod(LangCompileContext &ctx, Sym_T lhs,
 }
 
 bool parser_grammar_sym_triggers_cps(Sym_T sym, LangCompileContext &ctx) {
-  if (sym->is_Defined() || sym->is_Start()) {
+  if (sym->is_Defined() || sym->is_Start() || sym->is_TermStartMarker() ||
+      sym->is_Term()) {
     return false;
   } else if (sym->is_Direct() || sym->is_Iter()) {
     return ctx.cps_triggers_filter_.is_none() ||
            ctx.cps_triggers_filter_.as_some()->contains(sym);
-  } else if (sym->is_TermStartMarker() || sym->is_Term()) {
-    return false;
   } else {
     LG_ERR("{}", sym);
     AX();
   }
 }
 
-Sym_T parser_grammar_sym_to_cps(Sym_T sym, Vec_T<SymFlattenResultCPS_T> tail,
-                                Vec_T<Option_T<AttrLeaf_T>> tail_leaves,
+Sym_T parser_grammar_sym_to_cps(const Sym_T &sym,
+                                const Vec_T<SymFlattenResultCPS_T> &tail,
+                                const Vec_T<Option_T<AttrLeaf_T>> &tail_leaves,
                                 LangCompileContext &ctx);
 
-void parser_grammar_prod_to_cps(Sym_T lhs_cps, DottedProd_T prod,
-                                Option_T<AttrLeaf_T> lhs_leaf,
+void parser_grammar_prod_to_cps(const Sym_T &lhs_cps, DottedProd_T prod,
+                                const Option_T<AttrLeaf_T> &lhs_leaf,
                                 Vec_T<SymFlattenResultCPS_T> tail,
                                 Vec_T<Option_T<AttrLeaf_T>> tail_leaves,
                                 LangCompileContext &ctx) {
@@ -92,13 +92,13 @@ void parser_grammar_prod_to_cps(Sym_T lhs_cps, DottedProd_T prod,
   if (!parser_grammar_sym_triggers_cps(rhs_curr, ctx)) {
     auto tail_new = make_rc<Vec<SymFlattenResultCPS_T>>();
     tail_new->push_back(SymFlattenResultCPS::make(rhs_curr, unfold_curr));
-    for (auto x : *tail) {
+    for (const auto &x : *tail) {
       tail_new->push_back(x);
     }
 
     auto tail_leaves_new = make_rc<Vec<Option_T<AttrLeaf_T>>>();
     tail_leaves_new->push_back(leaf_curr);
-    for (auto x : *tail_leaves) {
+    for (const auto &x : *tail_leaves) {
       tail_leaves_new->push_back(x);
     }
 
@@ -129,16 +129,17 @@ void parser_grammar_prod_to_cps(Sym_T lhs_cps, DottedProd_T prod,
   }
 }
 
-void pr(std::ostream &os, FmtFlags flags, SymFlattenResultCPS_T x) {
-  std::string prefix = "";
+void pr(std::ostream &os, FmtFlags /*flags*/, SymFlattenResultCPS_T x) {
+  std::string prefix;
   if (x->unfold_) {
     prefix = "~";
   }
   fmt(os, "{}{}", prefix, x->sym_);
 }
 
-Sym_T parser_grammar_sym_to_cps(Sym_T sym, Vec_T<SymFlattenResultCPS_T> tail,
-                                Vec_T<Option_T<AttrLeaf_T>> tail_leaves,
+Sym_T parser_grammar_sym_to_cps(const Sym_T &sym,
+                                const Vec_T<SymFlattenResultCPS_T> &tail,
+                                const Vec_T<Option_T<AttrLeaf_T>> &tail_leaves,
                                 LangCompileContext &ctx) {
 
   Sym_T lhs_cps = sym;
@@ -179,11 +180,11 @@ Sym_T parser_grammar_sym_to_cps(Sym_T sym, Vec_T<SymFlattenResultCPS_T> tail,
 }
 
 void parser_grammar_to_cps(LangCompileContext &ctx) {
-  for (auto sym : *ctx.Gr_flat_->term_) {
+  for (const auto &sym : *ctx.Gr_flat_->term_) {
     ctx.Gr_cps_->term_->insert_strict(sym);
   }
 
-  for (auto sym : *ctx.Gr_flat_->nonterm_) {
+  for (const auto &sym : *ctx.Gr_flat_->nonterm_) {
     auto sym_triggers = parser_grammar_sym_triggers_cps(sym, ctx);
     if (!sym_triggers) {
       parser_grammar_sym_to_cps(sym, make_rc<Vec<SymFlattenResultCPS_T>>(),

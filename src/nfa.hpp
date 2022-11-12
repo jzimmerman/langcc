@@ -13,7 +13,7 @@ template <typename Vertex, typename Label, typename Acc> struct _T {
   Graph_T<Vertex, Label> G_;
   Option_T<Int> start_;
   Vec_T<Set_T<Acc>> acc_;
-  bool finalized_;
+  bool finalized_{};
 };
 } // namespace NFA
 
@@ -21,7 +21,7 @@ template <typename Vertex, typename Label, typename Acc>
 using NFA_T = rc_ptr<NFA::_T<Vertex, Label, Acc>>;
 
 template <typename Vertex, typename Label, typename Acc>
-inline void pr(std::ostream &os, FmtFlags flags,
+inline void pr(std::ostream &os, FmtFlags /*flags*/,
                const NFA_T<Vertex, Label, Acc> &N) {
   std::vector<std::tuple<Int, Align>> aligns = {
       {2, Align::RIGHT}, {2, Align::RIGHT}, {2, Align::LEFT}};
@@ -37,7 +37,7 @@ inline void pr(std::ostream &os, FmtFlags flags,
     } else {
       std::string s;
       bool fresh = true;
-      for (auto acc : *N->acc_->operator[](i)) {
+      for (const auto &acc : *N->acc_->operator[](i)) {
         if (!fresh) {
           s += ", ";
         }
@@ -274,7 +274,7 @@ nfa_subset_constr(NFA_T<Vertex, Label, Acc> &N) {
       }
     }
 
-    for (auto lbl_iter : all_labels) {
+    for (const auto &lbl_iter : all_labels) {
       auto ns = make_rc<Set<Int>>();
 
       for (auto v : *vs) {
@@ -320,7 +320,7 @@ nfa_subset_constr(NFA_T<Vertex, Label, Acc> &N) {
 
   Dv->start_ = D->start_;
   Dv->acc_ = D->acc_;
-  for (auto s : *D->G_->V_) {
+  for (const auto &s : *D->G_->V_) {
     auto sv = NFA::vertex_set_lookup(N, s);
     AT(Dv->G_->V_->index_of_maybe(sv).is_none());
     Dv->G_->V_->insert(sv);

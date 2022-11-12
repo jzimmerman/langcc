@@ -49,7 +49,7 @@ inline void pr(std::ostream &os, FmtFlags flags, const Grammar_T &G) {
     for (auto prod : *G->prods_) {
       td->push(fmt_str("{}:", prod->prod_id_));
       td->push(fmt_str("{} ->", str_short(prod->lhs_)));
-      std::string rhs_str = "";
+      std::string rhs_str;
       for (Int j = 0; j < prod->rhs_->length(); j++) {
         if (j > 0) {
           rhs_str += " ";
@@ -87,7 +87,7 @@ inline bool sym_is_term(Sym_T sym) {
   }
 }
 
-inline bool sym_is_nonterm(Sym_T sym) { return !sym_is_term(sym); }
+inline bool sym_is_nonterm(const Sym_T &sym) { return !sym_is_term(sym); }
 
 inline bool sym_is_nonterm_gen(Sym_T sym) {
   if (sym->is_Direct() || sym->is_GenCPS() || sym->is_Iter()) {
@@ -114,25 +114,26 @@ inline bool sym_is_cps_eligible(Sym_T sym) {
   }
 }
 
-inline void add_term(Grammar_T &G, Sym_T sym) {
+inline void add_term(Grammar_T &G, const Sym_T &sym) {
   AT(sym_is_term(sym));
   G->term_->insert(sym);
   G->prods_by_nonterm_rhs_->at_create_shared<Set<DottedProd_T>>(sym);
 }
 
-inline void add_nonterm(Grammar_T &G, Sym_T sym) {
+inline void add_nonterm(Grammar_T &G, const Sym_T &sym) {
   AT(sym_is_nonterm(sym));
   G->nonterm_->insert(sym);
   G->prods_by_nonterm_rhs_->at_create_shared<Set<DottedProd_T>>(sym);
 }
 
-inline void check_sym_present(Grammar_T &G, Sym_T sym) {
+inline void check_sym_present(Grammar_T &G, const Sym_T &sym) {
   AT(G->term_->contains(sym) ^ G->nonterm_->contains(sym));
 }
 
-inline std::pair<Prod_T, bool> add_prod(Grammar_T &G, Sym_T lhs,
-                                        Vec_T<Sym_T> rhs, ProdId_T prod_id,
-                                        Vec_T<bool> unfold_mask) {
+inline std::pair<Prod_T, bool> add_prod(Grammar_T &G, const Sym_T &lhs,
+                                        Vec_T<Sym_T> rhs,
+                                        const ProdId_T &prod_id,
+                                        const Vec_T<bool> &unfold_mask) {
 
   check_sym_present(G, lhs);
   auto prod = Prod::make(lhs, rhs, prod_id, unfold_mask);

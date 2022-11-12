@@ -49,7 +49,7 @@ struct LangCompileContext {
   // Lexer metadata
   Vec<meta::Node::LexerDecl::Mode_T> lexer_modes_;
   Map<std::string, Int> lexer_modes_ind_;
-  Int lexer_main_mode_ind_;
+  Int lexer_main_mode_ind_{};
   Map<Ident_T, meta::Node::TokenDecl_T> tokens_def_;
   Map_T<ParseExpr_Base_T, Vec_T<meta::Node::LexerInstr_T>> tokens_top_init_src_;
   Map<ParseExpr_Base_T, ParseExpr_Base_T> tokens_top_traversal_alias_parent_;
@@ -68,7 +68,7 @@ struct LangCompileContext {
   Map_T<Ident_T, Int> parser_rule_inds_;
   Vec_T<AttrClause_T> parser_attr_clauses_;
   Option_T<lang::meta::Node::ParserDecl::Prec_T> parser_prec_;
-  Int parser_prec_n_;
+  Int parser_prec_n_{};
   Map_T<Sym_T, Map_T<AttrKey_T, AttrType_T>> parser_attr_domains_;
   Map_T<Ident_T, Vec_T<ProdConstr_T>> parser_attr_constr_by_rule_;
   Set_T<Ident_T> parser_rule_explicit_def_ids_;
@@ -89,7 +89,7 @@ struct LangCompileContext {
   Map_T<ProdId_T, Int> parser_prod_id_to_cps_uniq_inds_;
   Map_T<Prod_T, Option_T<AttrLeaf_T>> Gr_cps_lhs_flatten_leaves_;
   Map_T<Prod_T, Vec_T<Option_T<AttrLeaf_T>>> Gr_cps_rhs_flatten_leaves_;
-  Int cps_flat_diff_max_;
+  Int cps_flat_diff_max_{};
 
   LR_NFA_T parser_nfa_final_;
   LR_DFA_T parser_dfa_final_;
@@ -110,9 +110,11 @@ struct LangCompileContext {
   LangCompileContext(LangCompileContext &&) = delete;
   LangCompileContext &operator=(LangCompileContext &) = delete;
 
-  inline LangCompileContext(lang::meta::Node::Lang_T src, Gensym_T gen_meta,
-                            LexOutput_T lex_res, std::string src_base_name,
-                            std::string dst_path, Int k)
+  inline LangCompileContext(const lang::meta::Node::Lang_T &src,
+                            const Gensym_T &gen_meta,
+                            const LexOutput_T &lex_res,
+                            const std::string &src_base_name,
+                            const std::string &dst_path, Int k)
       : src_(src), gen_meta_(gen_meta), lex_res_(lex_res),
         src_base_name_(src_base_name), dst_path_(dst_path), lr_k_(k) {
 
@@ -123,7 +125,7 @@ struct LangCompileContext {
     cpp_debug_path_ = fmt_str("{}/{}__gen_debug.cpp", dst_path, src_base_name);
   }
 
-  inline void error(meta::Node_T x, std::string msg) {
+  inline void error(meta::Node_T x, const std::string &msg) {
     auto err_desc = fmt_str("Error: {}\nExpression: {}\n\n{}", msg, x,
                             this->lex_res_->location_fmt_str(x->bounds_));
     auto err = LangCompileResult::Error::Other::make(err_desc);
@@ -162,10 +164,10 @@ Option_T<LexerModeTrivial_T>
 lexer_extract_trivial_maybe(meta::Node::LexerDecl::Mode_T mode);
 using Lexer_NFAVertex = Int;
 struct Lexer_TopTokenInd {
-  Int ind_;
+  Int ind_{};
   ParseExpr_Base_T src_;
 
-  static inline Lexer_TopTokenInd make(Int ind, ParseExpr_Base_T src) {
+  static inline Lexer_TopTokenInd make(Int ind, const ParseExpr_Base_T &src) {
     Lexer_TopTokenInd ret;
     ret.ind_ = ind;
     ret.src_ = src;
@@ -173,7 +175,7 @@ struct Lexer_TopTokenInd {
   }
 };
 struct Lexer_NFAAcc {
-  Int case_id_;
+  Int case_id_{};
   Option_T<Lexer_TopTokenInd> arg_top_id_;
 
   static inline Lexer_NFAAcc no_emit_match(Int case_id) {
@@ -184,7 +186,7 @@ struct Lexer_NFAAcc {
   }
 
   static inline Lexer_NFAAcc emit_match(Int case_id,
-                                        Lexer_TopTokenInd arg_top_id) {
+                                        const Lexer_TopTokenInd &arg_top_id) {
     Lexer_NFAAcc ret;
     ret.case_id_ = case_id;
     ret.arg_top_id_ = Some<Lexer_TopTokenInd>(arg_top_id);
@@ -229,10 +231,10 @@ void parser_infer_attrs_top(LangCompileContext &ctx);
 // CPS
 void ctx_Gr_cps_init(LangCompileContext &ctx);
 void parser_grammar_to_cps(LangCompileContext &ctx);
-void parser_Gr_cps_add_prod(LangCompileContext &ctx, Sym_T lhs,
-                            Option_T<AttrLeaf_T> lhs_leaf,
-                            Vec_T<SymFlattenResultCPS_T> rhs,
-                            Vec_T<Option_T<AttrLeaf_T>> rhs_leaves,
+void parser_Gr_cps_add_prod(LangCompileContext &ctx, const Sym_T &lhs,
+                            const Option_T<AttrLeaf_T> &lhs_leaf,
+                            const Vec_T<SymFlattenResultCPS_T> &rhs,
+                            const Vec_T<Option_T<AttrLeaf_T>> &rhs_leaves,
                             Prod_T orig_flat);
 
 // LR analysis
@@ -308,16 +310,18 @@ void data_gen_dtype_acc(DataGenContext data, Ident_T id, GenDatatype_T dt,
                         Ident_T parent);
 Vec_T<std::string> lower_name_ident_struct(Ident_T id);
 void lexer_gen_cpp_defs(
-    LangCompileContext &ctx, CppGenContext &cc, std::string src_base_name,
+    LangCompileContext &ctx, CppGenContext &cc,
+    const std::string &src_base_name,
     Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_mode_dfas);
 void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
-                                        cc::Node_T curr, GenName fun_ns,
-                                        std::string src_base_name,
+                                        const cc::Node_T &curr,
+                                        const GenName &fun_ns,
+                                        const std::string &src_base_name,
                                         CppGenContext &cc,
                                         LangCompileContext &ctx);
 cc::Node_T parser_lr_unwind_impl_gen_cpp(CppGenContext &cc, Prod_T prod_cps,
                                          Prod_T prod_flat,
                                          LangCompileContext &ctx,
-                                         std::string src_base_name);
+                                         const std::string &src_base_name);
 
 } // namespace langcc

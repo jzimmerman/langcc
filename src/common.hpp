@@ -25,12 +25,12 @@ inline Ident_T trunc_to_base(Ident_T x) {
   return Ident::make(xs_new);
 }
 
-inline IdentBase_T extract_base(Ident_T x) {
+inline IdentBase_T extract_base(const Ident_T &x) {
   AT(x->xs_->length() >= 1);
   return x->xs_->operator[](0);
 }
 
-inline IdentBase_T extract_base_strict(Ident_T x) {
+inline IdentBase_T extract_base_strict(const Ident_T &x) {
   AT(is_base(x));
   return extract_base(x);
 }
@@ -59,7 +59,7 @@ inline IdentBase_T last(Ident_T x) {
   return x->xs_->operator[](x->xs_->length() - 1);
 }
 
-inline Ident_T with_sub(Ident_T x, IdentBase_T x_sub) {
+inline Ident_T with_sub(Ident_T x, const IdentBase_T &x_sub) {
   auto xs_new = make_rc<Vec<IdentBase_T>>();
   for (const auto &xi : *x->xs_) {
     xs_new->push_back(xi);
@@ -95,7 +95,7 @@ inline bool starts_with(Ident_T x, Ident_T prefix) {
 inline Ident_T empty() { return Ident::make(make_rc<Vec<IdentBase_T>>()); }
 } // namespace Ident
 
-inline Ident_T ident_with_prepend(Ident_T id, IdentBase_T x) {
+inline Ident_T ident_with_prepend(Ident_T id, const IdentBase_T &x) {
   auto ret_items = make_rc<Vec<IdentBase_T>>();
   ret_items->push_back(x);
   for (const auto &y : *id->xs_) {
@@ -104,7 +104,7 @@ inline Ident_T ident_with_prepend(Ident_T id, IdentBase_T x) {
   return Ident::make(ret_items);
 }
 
-inline Ident_T ident_with_append(Ident_T id, IdentBase_T x) {
+inline Ident_T ident_with_append(Ident_T id, const IdentBase_T &x) {
   auto ret_items = make_rc<Vec<IdentBase_T>>();
   for (const auto &y : *id->xs_) {
     ret_items->push_back(y);
@@ -114,12 +114,12 @@ inline Ident_T ident_with_append(Ident_T id, IdentBase_T x) {
 }
 
 inline IdentBase_T ident_base_from_string(std::string s) {
-  return IdentBase::User::make(s);
+  return IdentBase::User::make(std::move(s));
 }
 
 inline Ident_T ident_singleton_from_string(std::string s) {
   auto xs = make_rc<Vec<IdentBase_T>>();
-  xs->push_back(ident_base_from_string(s));
+  xs->push_back(ident_base_from_string(std::move(s)));
   return Ident::make(xs);
 }
 
@@ -199,15 +199,15 @@ inline void pr(std::ostream &os, FmtFlags flags, Ident_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, GenType_T x) {
+inline void pr(std::ostream &os, FmtFlags flags, const GenType_T &x) {
   pr_debug(os, flags, x);
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, WriteInstr_T x) {
+inline void pr(std::ostream &os, FmtFlags flags, const WriteInstr_T &x) {
   pr_debug(os, flags, x);
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, UnwindInstr_T x) {
+inline void pr(std::ostream &os, FmtFlags flags, const UnwindInstr_T &x) {
   pr_debug(os, flags, x);
 }
 
@@ -247,7 +247,7 @@ inline std::string str_short(Sym_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, Sym_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Sym_T x) {
   if (x->is_Term()) {
     fmt(os, "{}", x->as_Term()->tok_);
   } else if (x->is_Start()) {
@@ -267,7 +267,7 @@ inline void pr(std::ostream &os, FmtFlags flags, Sym_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, ProdId_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, ProdId_T x) {
   if (x->is_Start()) {
     fmt(os, "ProdId(&&.{})", x->as_Start()->sym_);
   } else if (x->is_Explicit()) {
@@ -285,7 +285,7 @@ inline void pr(std::ostream &os, FmtFlags flags, ProdId_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, Prod_T prod) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Prod_T prod) {
   std::string ret = fmt_str("{} -> ", str_short(prod->lhs_));
   if (prod->rhs_->length() == 0) {
     ret += "eps";
@@ -301,7 +301,7 @@ inline void pr(std::ostream &os, FmtFlags flags, Prod_T prod) {
   fmt(os, "{}", ret);
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, DottedProd_T prod) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, DottedProd_T prod) {
   std::string ret = fmt_str("{} -> ", str_short(prod->prod_->lhs_));
   for (Int j = 0; j < prod->prod_->rhs_->length(); j++) {
     if (j > 0) {
@@ -321,8 +321,8 @@ inline void pr(std::ostream &os, FmtFlags flags, DottedProd_T prod) {
   fmt(os, "{}", ret);
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, AttrKey_T x) {
-  std::string suffix = "";
+inline void pr(std::ostream &os, FmtFlags /*flags*/, AttrKey_T x) {
+  std::string suffix;
   if (x->loc_.is_some()) {
     auto loc = x->loc_.as_some();
     if (loc == ProdConstrRhsLoc::All) {
@@ -355,7 +355,7 @@ inline void pr(std::ostream &os, FmtFlags flags, AttrKey_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, AttrType_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, AttrType_T x) {
   if (x->is_Bool()) {
     fmt(os, "bool");
   } else if (x->is_Range()) {
@@ -365,7 +365,7 @@ inline void pr(std::ostream &os, FmtFlags flags, AttrType_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, ProdConstrRhsLoc loc) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, ProdConstrRhsLoc loc) {
   if (loc == ProdConstrRhsLoc::All) {
     fmt(os, "rhs");
   } else if (loc == ProdConstrRhsLoc::Begin) {
@@ -379,7 +379,7 @@ inline void pr(std::ostream &os, FmtFlags flags, ProdConstrRhsLoc loc) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, ProdConstr_T ce) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, ProdConstr_T ce) {
   if (ce->is_LhsLeq()) {
     if (ce->as_LhsLeq()->v_->is_Bool()) {
       fmt(os, "!lhs[{}]", ce->as_LhsLeq()->k_);
@@ -412,7 +412,7 @@ inline void pr(std::ostream &os, FmtFlags flags, ProdConstr_T ce) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, ProdConstrFlat_T ce) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, ProdConstrFlat_T ce) {
   if (ce->is_LhsLeq()) {
     if (ce->as_LhsLeq()->v_->is_Bool()) {
       fmt(os, "!lhs[{}]", ce->as_LhsLeq()->k_);
@@ -445,7 +445,7 @@ inline void pr(std::ostream &os, FmtFlags flags, ProdConstrFlat_T ce) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LRSym_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LRSym_T x) {
   if (x->is_Base()) {
     fmt(os, "{}", x->as_Base()->sym_);
   } else if (x->is_EndMarker()) {
@@ -457,7 +457,7 @@ inline void pr(std::ostream &os, FmtFlags flags, LRSym_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, SymStr_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, SymStr_T x) {
   if (x->v_->length() == 0) {
     fmt(os, "eps");
     return;
@@ -473,7 +473,7 @@ inline void pr(std::ostream &os, FmtFlags flags, SymStr_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, StringSet_T<SymStr_T> x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, StringSet_T<SymStr_T> x) {
   fmt(os, "{{");
   bool fresh = true;
   for (const auto &si : *x->items_) {
@@ -486,7 +486,7 @@ inline void pr(std::ostream &os, FmtFlags flags, StringSet_T<SymStr_T> x) {
   fmt(os, "}}");
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, StringSet_T<Unit> x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, StringSet_T<Unit> x) {
   fmt(os, "{{");
   bool fresh = true;
   for (const auto &si : *x->items_) {
@@ -499,11 +499,11 @@ inline void pr(std::ostream &os, FmtFlags flags, StringSet_T<Unit> x) {
   fmt(os, "}}");
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LRLabel_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LRLabel_T x) {
   if (x->is_Eps()) {
     fmt(os, "eps");
   } else if (x->is_Sym_()) {
-    std::string attr_str = "";
+    std::string attr_str;
     if (x->as_Sym_()->attr_->m_->length() > 0) {
       attr_str = fmt_str("[{}]", x->as_Sym_()->attr_);
     }
@@ -513,7 +513,7 @@ inline void pr(std::ostream &os, FmtFlags flags, LRLabel_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LRAction_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LRAction_T x) {
   if (x->is_Shift()) {
     fmt(os, "Shift");
   } else if (x->is_Reduce()) {
@@ -527,11 +527,11 @@ inline void pr(std::ostream &os, FmtFlags flags, LRAction_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LRLookAction_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LRLookAction_T x) {
   fmt(os, "{} -> {}", x->la_, x->acc_);
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LRVertex_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LRVertex_T x) {
   auto la_str = fmt_str(" :: {}", x->la_);
   if (x->la_->k_ == 0) {
     la_str = "";
@@ -553,7 +553,7 @@ inline void pr(std::ostream &os, FmtFlags flags, LRVertex_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, AttrVal_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, AttrVal_T x) {
   if (x->is_Bool()) {
     fmt(os, "{}", static_cast<Int>(x->as_Bool()->v_));
   } else if (x->is_Int_()) {
@@ -563,7 +563,7 @@ inline void pr(std::ostream &os, FmtFlags flags, AttrVal_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, AttrSet_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, AttrSet_T x) {
   bool fresh = true;
   for (const auto &xi : *x->m_) {
     if (!fresh) {
@@ -574,7 +574,7 @@ inline void pr(std::ostream &os, FmtFlags flags, AttrSet_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, AttrBoundSet_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, AttrBoundSet_T x) {
   bool fresh = true;
   for (auto xi : *x->m_) {
     if (!fresh) {
@@ -585,7 +585,8 @@ inline void pr(std::ostream &os, FmtFlags flags, AttrBoundSet_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LangCompileResult::Error_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/,
+               LangCompileResult::Error_T x) {
   if (x->is_LRConf()) {
     Int conf_i = 0;
     for (const auto &conf : *x->as_LRConf()->conflict_) {
@@ -612,7 +613,7 @@ inline void pr(std::ostream &os, FmtFlags flags, LangCompileResult::Error_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, SwitchTable_T x) {
+inline void pr(std::ostream &os, FmtFlags flags, const SwitchTable_T &x) {
   pr_debug(os, flags, x);
 }
 
@@ -695,11 +696,12 @@ inline Sym_T lr_vertex_cursor(LRVertex_T v) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LRStringExemplar_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, LRStringExemplar_T x) {
   fmt(os, "{}=[{}]", LRLabel::Sym_::make(x->sym_, x->attr_), x->contents_);
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LRStringExemplarBounded_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/,
+               LRStringExemplarBounded_T x) {
   fmt(os, "{}[{}]", x->sym_, x->bounds_);
 }
 
@@ -734,7 +736,7 @@ inline Unit string_set_repr_concat(Unit x, Unit y) { return Unit{}; }
 
 inline Unit string_set_repr_select(Unit x, Unit y) { return Unit{}; }
 
-inline SymStr_T string_set_repr_concat(SymStr_T x, SymStr_T y) {
+inline SymStr_T string_set_repr_concat(const SymStr_T &x, const SymStr_T &y) {
   return sym_str_concat(x, y);
 }
 
@@ -936,7 +938,7 @@ inline std::string data_gen_id_base_to_string(IdentBase_T x) {
 }
 
 inline data::Node_T data_gen_id_string_to_node(DataGenContext data,
-                                               std::string name) {
+                                               const std::string &name) {
   auto ret_items = make_rc<Vec<std::string>>();
   ret_items->push_back(name);
   return data.Q_->qq_ext(Some<std::string>("Id"), *ret_items);
@@ -969,7 +971,7 @@ inline data::Node_T data_gen_sum_id_to_node(DataGenContext data, Ident_T id) {
 }
 
 inline LangCompileResult::Error_T
-lang_compile_error(LangCompileResult::Error_T err) {
+lang_compile_error(const LangCompileResult::Error_T &err) {
   return err;
 }
 

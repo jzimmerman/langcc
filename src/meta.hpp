@@ -15,7 +15,7 @@ using meta::Node::AttrClauseExpr_T;
 using meta::Node::ParseExpr_T;
 using meta::Node::ParserDecl::Rule_T;
 
-inline ParseExpr_Base_T parse_expr_base_from_token(TokenBase_T x) {
+inline ParseExpr_Base_T parse_expr_base_from_token(const TokenBase_T &x) {
   return ParseExpr_Base::make(x, None<meta::Node::ParseExpr_T>());
 }
 
@@ -48,7 +48,7 @@ lang_get_parser_stanza(meta::Node::Lang_T L) {
   AX();
 }
 
-inline bool lang_is_expected_fail(meta::Node::Lang_T L) {
+inline bool lang_is_expected_fail(const meta::Node::Lang_T &L) {
   auto parser = lang_get_parser_stanza(L);
   for (auto decl : *parser->decls_) {
     if (decl->is_Prop()) {
@@ -92,7 +92,7 @@ lang_get_compile_test_stanza(meta::Node::Lang_T L) {
   return ret;
 }
 
-inline Int lang_get_k_default(meta::Node::Lang_T L) {
+inline Int lang_get_k_default(const meta::Node::Lang_T &L) {
   Int ret = -1;
   auto parser = lang_get_parser_stanza(L);
   for (auto decl : *parser->decls_) {
@@ -179,11 +179,7 @@ string_extract_lang_char_seq(std::string s_raw) {
 
 inline bool lexer_instr_has_emit_match(meta::Node::LexerInstr_T instr) {
   if (instr->is_Emit()) {
-    if (instr->as_Emit()->arg_.is_none()) {
-      return true;
-    } else {
-      return false;
-    }
+    return instr->as_Emit()->arg_.is_none();
   } else if (instr->is_Pass() || instr->is_Push() || instr->is_Pop() ||
              instr->is_PopExtract() || instr->is_PopEmit()) {
     return false;
@@ -484,7 +480,7 @@ parse_expr_extract_write_phase_const_ext(ParseExpr_T e) {
   }
 }
 
-inline std::string parse_expr_extract_write_phase_const(ParseExpr_T e) {
+inline std::string parse_expr_extract_write_phase_const(const ParseExpr_T &e) {
   auto ret = parse_expr_extract_write_phase_const_ext(e);
   if (ret.is_none()) {
     LG_ERR("parse_expr_extract_write_phase_const: {}", e);
@@ -543,12 +539,11 @@ namespace ParseExprProps {
 struct _T {
   Option_T<Vec_T<meta::Node::AttrReq_T>> attr_req_;
   Option_T<IdentBase_T> name_;
-  bool unfold_;
+  bool unfold_{false};
 
   inline _T() {
     attr_req_ = None<Vec_T<meta::Node::AttrReq_T>>();
     name_ = None<IdentBase_T>();
-    unfold_ = false;
   }
 };
 
