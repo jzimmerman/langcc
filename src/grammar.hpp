@@ -20,7 +20,7 @@ inline void pr(std::ostream &os, FmtFlags flags, const Grammar_T &G) {
     std::vector<std::tuple<Int, Align>> aligns = {{6, Align::RIGHT},
                                                   {2, Align::LEFT}};
     auto td = PrintTable::make(aligns);
-    for (auto v_sym : *G->nonterm_) {
+    for (const auto &v_sym : *G->nonterm_) {
       td->push_blank_item();
       td->push(fmt_str("{}", v_sym));
     }
@@ -32,7 +32,7 @@ inline void pr(std::ostream &os, FmtFlags flags, const Grammar_T &G) {
     std::vector<std::tuple<Int, Align>> aligns = {{6, Align::RIGHT},
                                                   {2, Align::LEFT}};
     auto td = PrintTable::make(aligns);
-    for (auto v_sym : *G->term_) {
+    for (const auto &v_sym : *G->term_) {
       td->push_blank_item();
       td->push(fmt_str("{}", v_sym));
     }

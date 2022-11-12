@@ -25167,7 +25167,7 @@ void lang::cc::Node::Module::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
-            auto xi = x->decls_->at_unchecked(i);
+            auto& xi = x->decls_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(2);
@@ -25213,7 +25213,7 @@ void lang::cc::Node::Decl::Struct::tmpl::item::_T::write(langcc::PrBufStream_T& 
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
+            auto& xi = x->args_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -25241,7 +25241,7 @@ void lang::cc::Node::Decl::Struct::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->tmpl_); i++) {
-            auto xi = x->tmpl_->at_unchecked(i);
+            auto& xi = x->tmpl_->at_unchecked(i);
             if (!is_iter) {
                 indented = true;
             }
@@ -25282,7 +25282,7 @@ void lang::cc::Node::StructDeclDef::Def::_T::write(langcc::PrBufStream_T& pb) {
             bool is_iter = false;
             bool indented = false;
             for (i = 0; i _LT_ len(x->base_.as_some()); i++) {
-                auto xi = x->base_.as_some()->at_unchecked(i);
+                auto& xi = x->base_.as_some()->at_unchecked(i);
                 if (is_iter) {
                     pb->push_string(", ");
                 }
@@ -25301,7 +25301,7 @@ void lang::cc::Node::StructDeclDef::Def::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter1 = false;
         bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->entries_); i1++) {
-            auto xi1 = x->entries_->at_unchecked(i1);
+            auto& xi1 = x->entries_->at_unchecked(i1);
             if (is_iter1) {
                 pb->push_string("");
                 pb->push_newlines(1);
@@ -25368,7 +25368,7 @@ void lang::cc::Node::Entry::Fun::tmpl::item::_T::write(langcc::PrBufStream_T& pb
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
+            auto& xi = x->args_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -25396,7 +25396,7 @@ void lang::cc::Node::Entry::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->tmpl_); i++) {
-            auto xi = x->tmpl_->at_unchecked(i);
+            auto& xi = x->tmpl_->at_unchecked(i);
             if (!is_iter) {
                 indented = true;
             }
@@ -25409,7 +25409,7 @@ void lang::cc::Node::Entry::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter1 = false;
         bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->mods_); i1++) {
-            auto xi1 = x->mods_->at_unchecked(i1);
+            auto& xi1 = x->mods_->at_unchecked(i1);
             if (is_iter1) {
                 pb->push_string(" ");
             }
@@ -25434,7 +25434,7 @@ void lang::cc::Node::Entry::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter2 = false;
         bool indented2 = false;
         for (i2 = 0; i2 _LT_ len(x->params_); i2++) {
-            auto xi2 = x->params_->at_unchecked(i2);
+            auto& xi2 = x->params_->at_unchecked(i2);
             if (is_iter2) {
                 pb->push_string(", ");
             }
@@ -25451,7 +25451,7 @@ void lang::cc::Node::Entry::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter3 = false;
         bool indented3 = false;
         for (i3 = 0; i3 _LT_ len(x->mods_post_); i3++) {
-            auto xi3 = x->mods_post_->at_unchecked(i3);
+            auto& xi3 = x->mods_post_->at_unchecked(i3);
             if (is_iter3) {
                 pb->push_string("");
             }
@@ -25493,7 +25493,7 @@ void lang::cc::Node::Param::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->mods_); i++) {
-            auto xi = x->mods_->at_unchecked(i);
+            auto& xi = x->mods_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(" ");
             }
@@ -25543,7 +25543,7 @@ void lang::cc::Node::FunDeclDef::Def::_T::write(langcc::PrBufStream_T& pb) {
             bool is_iter = false;
             bool indented = false;
             for (i = 0; i _LT_ len(x->init_.as_some()); i++) {
-                auto xi = x->init_.as_some()->at_unchecked(i);
+                auto& xi = x->init_.as_some()->at_unchecked(i);
                 if (is_iter) {
                     pb->push_string(", ");
                 }
@@ -25609,7 +25609,7 @@ void lang::cc::Node::Decl::EnumStruct::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
-            auto xi = x->cases_->at_unchecked(i);
+            auto& xi = x->cases_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(",");
                 pb->push_newlines(1);
@@ -25665,7 +25665,7 @@ void lang::cc::Node::Decl::Fun::tmpl::item::_T::write(langcc::PrBufStream_T& pb)
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
+            auto& xi = x->args_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -25693,7 +25693,7 @@ void lang::cc::Node::Decl::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->tmpl_); i++) {
-            auto xi = x->tmpl_->at_unchecked(i);
+            auto& xi = x->tmpl_->at_unchecked(i);
             if (!is_iter) {
                 indented = true;
             }
@@ -25706,7 +25706,7 @@ void lang::cc::Node::Decl::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter1 = false;
         bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->mods_); i1++) {
-            auto xi1 = x->mods_->at_unchecked(i1);
+            auto& xi1 = x->mods_->at_unchecked(i1);
             if (is_iter1) {
                 pb->push_string(" ");
             }
@@ -25731,7 +25731,7 @@ void lang::cc::Node::Decl::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter2 = false;
         bool indented2 = false;
         for (i2 = 0; i2 _LT_ len(x->params_); i2++) {
-            auto xi2 = x->params_->at_unchecked(i2);
+            auto& xi2 = x->params_->at_unchecked(i2);
             if (is_iter2) {
                 pb->push_string(", ");
             }
@@ -25748,7 +25748,7 @@ void lang::cc::Node::Decl::Fun::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter3 = false;
         bool indented3 = false;
         for (i3 = 0; i3 _LT_ len(x->mods_post_); i3++) {
-            auto xi3 = x->mods_post_->at_unchecked(i3);
+            auto& xi3 = x->mods_post_->at_unchecked(i3);
             if (is_iter3) {
                 pb->push_string("");
             }
@@ -25854,7 +25854,7 @@ void lang::cc::Node::Mod::Attribute::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->attrs_); i++) {
-            auto xi = x->attrs_->at_unchecked(i);
+            auto& xi = x->attrs_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(",");
             }
@@ -25911,7 +25911,7 @@ void lang::cc::Node::Decl::Namespace::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->body_); i++) {
-            auto xi = x->body_->at_unchecked(i);
+            auto& xi = x->body_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(2);
@@ -25963,7 +25963,7 @@ void lang::cc::Node::Decl::UsingAlias::tmpl::item::_T::write(langcc::PrBufStream
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
+            auto& xi = x->args_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -25991,7 +25991,7 @@ void lang::cc::Node::Decl::UsingAlias::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->tmpl_); i++) {
-            auto xi = x->tmpl_->at_unchecked(i);
+            auto& xi = x->tmpl_->at_unchecked(i);
             if (!is_iter) {
                 indented = true;
             }
@@ -26060,7 +26060,7 @@ void lang::cc::Node::Block::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->stmts_); i++) {
-            auto xi = x->stmts_->at_unchecked(i);
+            auto& xi = x->stmts_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(1);
@@ -26134,7 +26134,7 @@ void lang::cc::Node::TypedDecl::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->mods_); i++) {
-            auto xi = x->mods_->at_unchecked(i);
+            auto& xi = x->mods_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(" ");
             }
@@ -26155,7 +26155,7 @@ void lang::cc::Node::TypedDecl::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter1 = false;
         bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->vars_); i1++) {
-            auto xi1 = x->vars_->at_unchecked(i1);
+            auto& xi1 = x->vars_->at_unchecked(i1);
             if (is_iter1) {
                 pb->push_string(", ");
             }
@@ -26294,7 +26294,7 @@ void lang::cc::Node::Stmt::Switch::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
-            auto xi = x->cases_->at_unchecked(i);
+            auto& xi = x->cases_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(1);
@@ -26413,7 +26413,7 @@ void lang::cc::Node::Expr::Call::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
+            auto& xi = x->args_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -27095,7 +27095,7 @@ void lang::cc::Node::Expr::Template::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
+            auto& xi = x->args_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -27222,7 +27222,7 @@ void lang::cc::Node::Expr::Lit::Array::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }

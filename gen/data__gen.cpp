@@ -4612,7 +4612,7 @@ void lang::data::Node::Module::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
-            auto xi = x->decls_->at_unchecked(i);
+            auto& xi = x->decls_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(2);
@@ -4658,7 +4658,7 @@ void lang::data::Node::Decl::Namespace::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->body_); i++) {
-            auto xi = x->body_->at_unchecked(i);
+            auto& xi = x->body_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(2);
@@ -4703,7 +4703,7 @@ void lang::data::Node::Decl::Data::_T::write(langcc::PrBufStream_T& pb) {
             bool is_iter = false;
             bool indented = false;
             for (i = 0; i _LT_ len(x->params_.as_some()); i++) {
-                auto xi = x->params_.as_some()->at_unchecked(i);
+                auto& xi = x->params_.as_some()->at_unchecked(i);
                 if (is_iter) {
                     pb->push_string(", ");
                 }
@@ -4722,7 +4722,7 @@ void lang::data::Node::Decl::Data::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter1 = false;
         bool indented1 = false;
         for (i1 = 0; i1 _LT_ len(x->mods_); i1++) {
-            auto xi1 = x->mods_->at_unchecked(i1);
+            auto& xi1 = x->mods_->at_unchecked(i1);
             if (is_iter1) {
                 pb->push_string(" ");
             }
@@ -4742,7 +4742,7 @@ void lang::data::Node::Decl::Data::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter2 = false;
         bool indented2 = false;
         for (i2 = 0; i2 _LT_ len(x->entries_); i2++) {
-            auto xi2 = x->entries_->at_unchecked(i2);
+            auto& xi2 = x->entries_->at_unchecked(i2);
             if (is_iter2) {
                 pb->push_string("");
                 pb->push_newlines(1);
@@ -4780,7 +4780,7 @@ void lang::data::Node::Decl::Enum::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
-            auto xi = x->cases_->at_unchecked(i);
+            auto& xi = x->cases_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(1);
@@ -4895,7 +4895,7 @@ void lang::data::Node::Entry::Method::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->params_); i++) {
-            auto xi = x->params_->at_unchecked(i);
+            auto& xi = x->params_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -4942,7 +4942,7 @@ void lang::data::Node::Expr::App::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->args_); i++) {
-            auto xi = x->args_->at_unchecked(i);
+            auto& xi = x->args_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -4980,7 +4980,7 @@ void lang::data::Node::SumId::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(".");
             }
@@ -5006,7 +5006,7 @@ void lang::data::Node::Id::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("::");
             }

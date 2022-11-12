@@ -1464,7 +1464,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
   }
 
   inline void extend(rc_ptr<Vec<T>> x) {
-    for (auto xi : *x) {
+    for (const auto &xi : *x) {
       this->push(xi);
     }
   }
@@ -2790,7 +2790,7 @@ inline void pr(std::ostream &os, FmtFlags flags, const Map<K, V> &x) {
   }
 
   os << "{";
-  for (auto p : x) {
+  for (const auto &p : x) {
     flags.sub_lo().advance_lines(1, os);
     pr(os, flags.sub_lo(), p.first);
     os << ": ";
@@ -3303,7 +3303,7 @@ struct PrintTable {
     auto x = fmt_str("{}", entry);
     auto xs = str_split(x, "\n");
     Int j = this->get_buffer_cursor();
-    for (auto xi : xs) {
+    for (const auto &xi : xs) {
       buffer_[j].push_back(xi);
     }
     buffer_active_ = true;

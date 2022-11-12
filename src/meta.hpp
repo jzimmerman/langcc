@@ -190,7 +190,7 @@ inline bool lexer_instr_has_emit_match(meta::Node::LexerInstr_T instr) {
   } else if (instr->is_MatchHistory()) {
     auto ic = instr->as_MatchHistory();
     for (auto case_ : *ic->cases_) {
-      for (auto instr_sub : *case_->instrs_) {
+      for (const auto &instr_sub : *case_->instrs_) {
         if (lexer_instr_has_emit_match(instr_sub)) {
           return true;
         }
@@ -204,7 +204,7 @@ inline bool lexer_instr_has_emit_match(meta::Node::LexerInstr_T instr) {
 
 inline bool
 lexer_instrs_has_emit_match(Vec_T<meta::Node::LexerInstr_T> instrs) {
-  for (auto instr : *instrs) {
+  for (const auto &instr : *instrs) {
     if (lexer_instr_has_emit_match(instr)) {
       return true;
     }
@@ -373,7 +373,7 @@ xform_parse_expr_freshen_rec(meta::Node::ParseExpr_T e, Gensym_T gen,
   } else if (e->is_Alt()) {
     auto cc = e->as_Alt();
     auto xs_new = make_rc<Vec<meta::Node::ParseExpr_T>>();
-    for (auto x : *cc->xs_) {
+    for (const auto &x : *cc->xs_) {
       xs_new->push_back(xform_parse_expr_freshen_rec(x, gen, bounds));
     }
     ret = meta::Node::ParseExpr::Alt::make(
@@ -382,7 +382,7 @@ xform_parse_expr_freshen_rec(meta::Node::ParseExpr_T e, Gensym_T gen,
   } else if (e->is_Concat()) {
     auto cc = e->as_Concat();
     auto xs_new = make_rc<Vec<meta::Node::ParseExpr_T>>();
-    for (auto x : *cc->xs_) {
+    for (const auto &x : *cc->xs_) {
       xs_new->push_back(xform_parse_expr_freshen_rec(x, gen, bounds));
     }
     ret = meta::Node::ParseExpr::Concat::make(
@@ -460,7 +460,7 @@ parse_expr_extract_write_phase_const_ext(ParseExpr_T e) {
 
   } else if (e->is_Concat()) {
     std::string ret = "";
-    for (auto x : *e->as_Concat()->xs_) {
+    for (const auto &x : *e->as_Concat()->xs_) {
       auto rx = parse_expr_extract_write_phase_const_ext(x);
       if (rx.is_none()) {
         return None<std::string>();
@@ -499,7 +499,7 @@ inline bool parse_expr_is_parse_phase_const(ParseExpr_T e) {
 
     return true;
   } else if (e->is_Concat()) {
-    for (auto x : *e->as_Concat()->xs_) {
+    for (const auto &x : *e->as_Concat()->xs_) {
       if (!parse_expr_is_parse_phase_const(x)) {
         return false;
       }

@@ -21296,7 +21296,7 @@ void lang::meta::Node::Lang::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->stanzas_); i++) {
-            auto xi = x->stanzas_->at_unchecked(i);
+            auto& xi = x->stanzas_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(2);
@@ -21327,7 +21327,7 @@ void lang::meta::Node::Stanza::Tokens::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
-            auto xi = x->decls_->at_unchecked(i);
+            auto& xi = x->decls_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(1);
@@ -21367,7 +21367,7 @@ void lang::meta::Node::Stanza::Lexer::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
-            auto xi = x->decls_->at_unchecked(i);
+            auto& xi = x->decls_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(2);
@@ -21404,7 +21404,7 @@ void lang::meta::Node::Stanza::Parser::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->decls_); i++) {
-            auto xi = x->decls_->at_unchecked(i);
+            auto& xi = x->decls_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(1);
@@ -21441,7 +21441,7 @@ void lang::meta::Node::Stanza::Test::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(2);
@@ -21481,7 +21481,7 @@ void lang::meta::Node::Stanza::CompileTest::_T::write(langcc::PrBufStream_T& pb)
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(1);
@@ -21602,7 +21602,7 @@ void lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T::write(langcc::PrBufSt
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->delims_); i++) {
-            auto xi = x->delims_->at_unchecked(i);
+            auto& xi = x->delims_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -21652,7 +21652,7 @@ void lang::meta::Node::LexerDecl::Mode::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
-            auto xi = x->cases_->at_unchecked(i);
+            auto& xi = x->cases_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(1);
@@ -21691,7 +21691,7 @@ void lang::meta::Node::LexerModeCase::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->instrs_); i++) {
-            auto xi = x->instrs_->at_unchecked(i);
+            auto& xi = x->instrs_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(1);
@@ -21805,7 +21805,7 @@ void lang::meta::Node::LexerInstr::MatchHistory::_T::write(langcc::PrBufStream_T
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
-            auto xi = x->cases_->at_unchecked(i);
+            auto& xi = x->cases_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("");
                 pb->push_newlines(1);
@@ -21843,7 +21843,7 @@ void lang::meta::Node::ParserDecl::Main::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->names_); i++) {
-            auto xi = x->names_->at_unchecked(i);
+            auto& xi = x->names_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -21875,7 +21875,7 @@ void lang::meta::Node::ParserDecl::Prop::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->props_); i++) {
-            auto xi = x->props_->at_unchecked(i);
+            auto& xi = x->props_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string("; ");
             }
@@ -21908,7 +21908,7 @@ void lang::meta::Node::ParserDecl::Prec::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(1);
@@ -21948,7 +21948,7 @@ void lang::meta::Node::ParserDecl::Attr::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->clauses_); i++) {
-            auto xi = x->clauses_->at_unchecked(i);
+            auto& xi = x->clauses_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(2);
@@ -22034,7 +22034,7 @@ void lang::meta::Node::ParserDecl::Rule::_T::write(langcc::PrBufStream_T& pb) {
             bool is_iter = false;
             bool indented = false;
             for (i = 0; i _LT_ len(x->lhs_attrs_.as_some()); i++) {
-                auto xi = x->lhs_attrs_.as_some()->at_unchecked(i);
+                auto& xi = x->lhs_attrs_.as_some()->at_unchecked(i);
                 if (is_iter) {
                     pb->push_string(", ");
                 }
@@ -22114,7 +22114,7 @@ void lang::meta::Node::PrecItem::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->ids_); i++) {
-            auto xi = x->ids_->at_unchecked(i);
+            auto& xi = x->ids_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(" ");
             }
@@ -22200,7 +22200,7 @@ void lang::meta::Node::AttrClause::Block::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(";");
                 pb->push_newlines(1);
@@ -22240,7 +22240,7 @@ void lang::meta::Node::AttrClause::Match::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->cases_); i++) {
-            auto xi = x->cases_->at_unchecked(i);
+            auto& xi = x->cases_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(",");
                 pb->push_newlines(1);
@@ -22292,7 +22292,7 @@ void lang::meta::Node::AttrMatchCasePattern::Alt::_T::write(langcc::PrBufStream_
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->items_); i++) {
-            auto xi = x->items_->at_unchecked(i);
+            auto& xi = x->items_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(" | ");
             }
@@ -22559,7 +22559,7 @@ void lang::meta::Node::ParseExpr::Alt::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->xs_); i++) {
-            auto xi = x->xs_->at_unchecked(i);
+            auto& xi = x->xs_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(" | ");
             }
@@ -22614,7 +22614,7 @@ void lang::meta::Node::ParseExpr::Concat::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->xs_); i++) {
-            auto xi = x->xs_->at_unchecked(i);
+            auto& xi = x->xs_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(" ");
             }
@@ -22855,7 +22855,7 @@ void lang::meta::Node::ParseExpr::AttrReq::_T::write(langcc::PrBufStream_T& pb) 
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->attrs_); i++) {
-            auto xi = x->attrs_->at_unchecked(i);
+            auto& xi = x->attrs_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(", ");
             }
@@ -22994,7 +22994,7 @@ void lang::meta::Node::Id::_T::write(langcc::PrBufStream_T& pb) {
         bool is_iter = false;
         bool indented = false;
         for (i = 0; i _LT_ len(x->names_); i++) {
-            auto xi = x->names_->at_unchecked(i);
+            auto& xi = x->names_->at_unchecked(i);
             if (is_iter) {
                 pb->push_string(".");
             }

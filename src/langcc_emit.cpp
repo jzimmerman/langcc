@@ -58,7 +58,7 @@ Int lexer_instr_num_stack_changes_max(lang::meta::Node::LexerInstr_T instr) {
 Int lexer_instrs_num_stack_changes_max(
     Vec_T<lang::meta::Node::LexerInstr_T> instrs) {
   Int ret = 0;
-  for (auto instr : *instrs) {
+  for (const auto &instr : *instrs) {
     ret += lexer_instr_num_stack_changes_max(instr);
   }
   return ret;
@@ -97,7 +97,7 @@ Int lexer_instr_num_emit_match_max(lang::meta::Node::LexerInstr_T instr) {
 Int lexer_instrs_num_emit_match_max(
     Vec_T<lang::meta::Node::LexerInstr_T> instrs) {
   Int ret = 0;
-  for (auto instr : *instrs) {
+  for (const auto &instr : *instrs) {
     ret += lexer_instr_num_emit_match_max(instr);
   }
   return ret;
@@ -298,7 +298,7 @@ void lexer_gen_cpp_defs(
       if (lexer_instrs_num_emit_match_max(case_->instrs_) > 1) {
         ctx.error(case_, "Multiple emits in lexer instruction");
       }
-      for (auto instr : *case_->instrs_) {
+      for (const auto &instr : *case_->instrs_) {
         lexer_step_exec_compile_instr_acc(cpp_case_body, instr, mode, fun_ns,
                                           cc, ctx);
       }
@@ -457,13 +457,15 @@ void lang_emit_datatype_defs(LangCompileContext &ctx, HeaderMode header_mode) {
   auto data_res = compile_data_defs(data_mod, None<std::string>(), header_mode);
 
   if (data_res.hpp_decls.is_some()) {
-    for (auto decl : *data_res.hpp_decls.as_some()->as_Module()->decls_) {
+    for (const auto &decl :
+         *data_res.hpp_decls.as_some()->as_Module()->decls_) {
       ctx.cc_.dst_decls_->push_back(decl);
     }
   }
 
   if (data_res.cpp_decls.is_some()) {
-    for (auto decl : *data_res.cpp_decls.as_some()->as_Module()->decls_) {
+    for (const auto &decl :
+         *data_res.cpp_decls.as_some()->as_Module()->decls_) {
       ctx.cc_.dst_defs_->push_back(decl);
     }
   }
@@ -551,7 +553,7 @@ std::pair<cc::Node_T, cc::Node_T> parser_lr_unwind_impl_gen_name_to_cpp_struct(
   ret_struct->push_back("lang");
   ret_struct->push_back(src_base_name);
   ret_struct->push_back("Node");
-  for (auto x : *id->xs_) {
+  for (const auto &x : *id->xs_) {
     ret_struct->push_back(fmt_str("{}", x));
   }
   auto ret_ns = ret_struct->clone_rc();
@@ -1204,7 +1206,7 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
 
   } else if (wr->is_Seq()) {
     auto wc = wr->as_Seq();
-    for (auto instr : *wc->instrs_) {
+    for (const auto &instr : *wc->instrs_) {
       parser_lr_write_impl_gen_cpp_instr(dst, instr, curr, fun_ns,
                                          src_base_name, cc, ctx);
     }
@@ -1298,7 +1300,7 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
 
     auto loop_body = make_rc<Vec<cc::Node_T>>();
     {
-      cc.qq_stmt_acc(loop_body, "auto", x_sub, "=", curr, "->at_unchecked(",
+      cc.qq_stmt_acc(loop_body, "auto&", x_sub, "=", curr, "->at_unchecked(",
                      x_ind, ");");
 
       auto if_body1 = make_rc<Vec<cc::Node_T>>();
@@ -1394,13 +1396,13 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
 Vec_T<std::string> lower_name_ident_struct(Ident_T id) {
   auto name = make_rc<Vec<IdBase>>();
   name->push_back("Node");
-  for (auto x : *id->xs_) {
+  for (const auto &x : *id->xs_) {
     name->push_back(data_gen_id_base_to_string(x));
   }
   auto v = lower_name(LowerTy::STRUCT, name, None<GenName>());
   auto ret = make_rc<Vec<std::string>>();
   bool fresh = true;
-  for (auto x : *v) {
+  for (const auto &x : *v) {
     if (!fresh) {
       ret->push_back("::");
     }
@@ -1610,7 +1612,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
   {
     auto sym_to_recur_step_cases = make_rc<Vec<cc::Node_T>>();
-    for (auto sym : *ctx.Gr_cps_->nonterm_) {
+    for (const auto &sym : *ctx.Gr_cps_->nonterm_) {
       auto sym_ind = grammar_sym_to_ind_flat(ctx, LRSym::Base::make(sym));
       auto rec_ind = grammar_sym_to_ind_flat(ctx, LRSym::RecurStep::make(sym));
       sym_to_recur_step_cases->push_back(ctx.cc_.Q_->qq_ext(
@@ -1640,7 +1642,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     auto sym_all = grammar_all_lr_syms(ctx.Gr_cps_);
     Int sym_ind = 0;
-    for (auto sym : *sym_all) {
+    for (const auto &sym : *sym_all) {
       auto sym_ret = fmt_str("{}", sym);
       sym_to_str_cases->push_back(ctx.cc_.qq_switch_case(
           "case", fmt_str("{}", sym_ind), ": { return",

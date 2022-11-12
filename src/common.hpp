@@ -61,7 +61,7 @@ inline IdentBase_T last(Ident_T x) {
 
 inline Ident_T with_sub(Ident_T x, IdentBase_T x_sub) {
   auto xs_new = make_rc<Vec<IdentBase_T>>();
-  for (auto xi : *x->xs_) {
+  for (const auto &xi : *x->xs_) {
     xs_new->push_back(xi);
   }
   xs_new->push_back(x_sub);
@@ -70,10 +70,10 @@ inline Ident_T with_sub(Ident_T x, IdentBase_T x_sub) {
 
 inline Ident_T with_extend(Ident_T x, Ident_T x_sub) {
   auto xs_new = make_rc<Vec<IdentBase_T>>();
-  for (auto xi : *x->xs_) {
+  for (const auto &xi : *x->xs_) {
     xs_new->push_back(xi);
   }
-  for (auto xi : *x_sub->xs_) {
+  for (const auto &xi : *x_sub->xs_) {
     xs_new->push_back(xi);
   }
   return Ident::make(xs_new);
@@ -98,7 +98,7 @@ inline Ident_T empty() { return Ident::make(make_rc<Vec<IdentBase_T>>()); }
 inline Ident_T ident_with_prepend(Ident_T id, IdentBase_T x) {
   auto ret_items = make_rc<Vec<IdentBase_T>>();
   ret_items->push_back(x);
-  for (auto y : *id->xs_) {
+  for (const auto &y : *id->xs_) {
     ret_items->push_back(y);
   }
   return Ident::make(ret_items);
@@ -106,7 +106,7 @@ inline Ident_T ident_with_prepend(Ident_T id, IdentBase_T x) {
 
 inline Ident_T ident_with_append(Ident_T id, IdentBase_T x) {
   auto ret_items = make_rc<Vec<IdentBase_T>>();
-  for (auto y : *id->xs_) {
+  for (const auto &y : *id->xs_) {
     ret_items->push_back(y);
   }
   ret_items->push_back(x);
@@ -151,7 +151,7 @@ inline StringSet_T<SymStr_T> string_set_single_empty(Int k, bool strict_eq) {
 template <typename Repr>
 StringSet_T<Unit> string_set_repr_stripped(StringSet_T<Repr> s) {
   auto m = make_rc<Map<SymStr_T, Unit>>();
-  for (auto p : *s->items_) {
+  for (const auto &p : *s->items_) {
     m->insert(p.first, Unit{});
   }
   return StringSet::make<Unit>(m, s->k_, s->strict_eq_);
@@ -464,7 +464,7 @@ inline void pr(std::ostream &os, FmtFlags flags, SymStr_T x) {
   }
 
   bool fresh = true;
-  for (auto xi : *x->v_) {
+  for (const auto &xi : *x->v_) {
     if (!fresh) {
       fmt(os, " ");
     }
@@ -476,7 +476,7 @@ inline void pr(std::ostream &os, FmtFlags flags, SymStr_T x) {
 inline void pr(std::ostream &os, FmtFlags flags, StringSet_T<SymStr_T> x) {
   fmt(os, "{{");
   bool fresh = true;
-  for (auto si : *x->items_) {
+  for (const auto &si : *x->items_) {
     if (!fresh) {
       fmt(os, ", ");
     }
@@ -489,7 +489,7 @@ inline void pr(std::ostream &os, FmtFlags flags, StringSet_T<SymStr_T> x) {
 inline void pr(std::ostream &os, FmtFlags flags, StringSet_T<Unit> x) {
   fmt(os, "{{");
   bool fresh = true;
-  for (auto si : *x->items_) {
+  for (const auto &si : *x->items_) {
     if (!fresh) {
       fmt(os, ", ");
     }
@@ -565,7 +565,7 @@ inline void pr(std::ostream &os, FmtFlags flags, AttrVal_T x) {
 
 inline void pr(std::ostream &os, FmtFlags flags, AttrSet_T x) {
   bool fresh = true;
-  for (auto xi : *x->m_) {
+  for (const auto &xi : *x->m_) {
     if (!fresh) {
       fmt(os, ",");
     }
@@ -588,7 +588,7 @@ inline void pr(std::ostream &os, FmtFlags flags, AttrBoundSet_T x) {
 inline void pr(std::ostream &os, FmtFlags flags, LangCompileResult::Error_T x) {
   if (x->is_LRConf()) {
     Int conf_i = 0;
-    for (auto conf : *x->as_LRConf()->conflict_) {
+    for (const auto &conf : *x->as_LRConf()->conflict_) {
       fmt(os, " ===== LR conflict {} of {}\n\n{}\n\n", conf_i + 1,
           x->as_LRConf()->conflict_->length(), conf);
       ++conf_i;
@@ -596,13 +596,13 @@ inline void pr(std::ostream &os, FmtFlags flags, LangCompileResult::Error_T x) {
   } else if (x->is_SymUnreach()) {
     fmt(os, " ===== Unreachable symbols (add `prop {{ allow_unreach; }}` to "
             "parser stanza to override):\n");
-    for (auto sym : *x->as_SymUnreach()->syms_) {
+    for (const auto &sym : *x->as_SymUnreach()->syms_) {
       fmt(os, "  - {}\n", sym);
     }
   } else if (x->is_LexUnreach()) {
     fmt(os, " ===== Unreachable symbols (add `prop {{ allow_unreach; }}` to "
             "parser stanza to override):\n");
-    for (auto id : *x->as_LexUnreach()->ids_) {
+    for (const auto &id : *x->as_LexUnreach()->ids_) {
       fmt(os, "  - {}\n", id);
     }
   } else if (x->is_Other()) {
@@ -721,10 +721,10 @@ inline SymStr_T sym_str_trunc(SymStr_T s, Int k) {
 
 inline SymStr_T sym_str_concat(SymStr_T x, SymStr_T y) {
   auto v = make_rc<Vec<LRSym_T>>();
-  for (auto xi : *x->v_) {
+  for (const auto &xi : *x->v_) {
     v->push_back(xi);
   }
-  for (auto yi : *y->v_) {
+  for (const auto &yi : *y->v_) {
     v->push_back(yi);
   }
   return SymStr::make(v);
@@ -945,7 +945,7 @@ inline data::Node_T data_gen_id_string_to_node(DataGenContext data,
 inline data::Node_T data_gen_id_to_node(DataGenContext data, Ident_T id) {
   auto ret_items = make_rc<Vec<std::string>>();
   bool fresh = true;
-  for (auto x : *id->xs_) {
+  for (const auto &x : *id->xs_) {
     if (!fresh) {
       ret_items->push_back("::");
     }
@@ -958,7 +958,7 @@ inline data::Node_T data_gen_id_to_node(DataGenContext data, Ident_T id) {
 inline data::Node_T data_gen_sum_id_to_node(DataGenContext data, Ident_T id) {
   auto ret_items = make_rc<Vec<std::string>>();
   bool fresh = true;
-  for (auto x : *id->xs_) {
+  for (const auto &x : *id->xs_) {
     if (!fresh) {
       ret_items->push_back(".");
     }
