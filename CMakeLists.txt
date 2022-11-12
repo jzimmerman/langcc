@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.13.4) # 3.13.4 comes from https://llvm.org/docs/CMake.html#embedding-llvm-in-your-project
+cmake_minimum_required(VERSION 3.9)
+cmake_policy(SET CMP0069 NEW)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+
 project(langcc VERSION 1.0.0)
 set (PROJECT_SUMMARY "A Next-Generation Compiler Compiler")
 # C++ standard requirements
