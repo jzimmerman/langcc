@@ -64,11 +64,13 @@ jobs:
         path: report.xml
         reporter: java-junit
         fail-on-error: "false"
+      if: always()
 
     - name: Test Summary
       uses: test-summary/action@v1
       with:
         paths: report.xml
+      if: always()
 
     - name: bootstrap
       run: python3 bootstrap.py
