@@ -188,8 +188,10 @@ inline bool run_unit_tests() {
       test.testthread_.join();
       test.ret_ = Some<Int>(static_cast<Int>(status));
       test.end_time_ = now();
+      double test_duration = (test.end_time_ - test.start_time_) / 1000000000.0;
       if (test.is_success()) {
-        LOG(0, "\033[32m[success]\033[0m {}", test.desc_.name_);
+        LOG(0, "\033[32m[success]\033[0m [{}s] {}", test_duration,
+            test.desc_.name_);
       } else {
         LOG(0, "\033[31m[FAILURE]\033[0m [{}] {}", test.ret_desc(),
             test.desc_.name_);
