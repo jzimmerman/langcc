@@ -27,7 +27,7 @@ TEST_P(PyStandaloneTest, Tests) {
   const auto &pyfile = GetParam();
   auto L = lang::py::init();
   auto A = make_rc<Arena>();
-  auto input = read_file_shared(pyfile, A.get());
+  auto input = read_file_shared(pyfile.string(), A.get());
   auto gen = make_rc<Gensym>();
   auto parse = L->parse_ext(input, None<std::string>(), gen, A.get());
   EXPECT_TRUE(parse->is_success());
@@ -41,7 +41,7 @@ TEST_P(PyStandaloneBidirTest, Tests) {
   const auto &pyfile = GetParam();
   auto L = lang::py::init();
   auto Q = L->quote_env();
-  auto input = read_file(pyfile);
+  auto input = read_file(pyfile.string());
 
   auto parse = Q->L_->parse_ext(vec_from_std_string(input), None<std::string>(),
                                 Q->gen_, nullptr);
