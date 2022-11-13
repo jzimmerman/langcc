@@ -30,8 +30,15 @@ jobs:
         git config --global core.autocrlf false
         git config --global core.eol lf
     - uses: actions/checkout@v3
+
     - uses: ilammy/msvc-dev-cmd@v1
       if: runner.os == 'Windows'
+    - name: Setup Ninja
+      run: brew install ninja
+      if: runner.os == 'macOS'
+    - name: Setup Ninja
+      run: sudo apt-get install -y ninja-build
+      if: runner.os == 'Linux'
 
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
