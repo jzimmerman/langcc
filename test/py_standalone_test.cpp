@@ -21,19 +21,16 @@ std::vector<std::filesystem::path> get_python_files() {
 }
 static const std::vector<std::filesystem::path> PYFILES = get_python_files();
 
-class PyStandaloneTest : public testing::TestWithParam<std::filesystem::path> {
-};
-TEST_P(PyStandaloneTest, Tests) {
-  const auto &pyfile = GetParam();
-  auto L = lang::py::init();
-  auto A = make_rc<Arena>();
-  auto input = read_file_shared(pyfile, A.get());
-  auto gen = make_rc<Gensym>();
-  auto parse = L->parse_ext(input, None<std::string>(), gen, A.get());
-  EXPECT_TRUE(parse->is_success());
+TEST(PyStandaloneTest, Tests) {
+  for (const auto &pyfile : PYFILES) {
+    auto L = lang::py::init();
+    auto A = make_rc<Arena>();
+    auto input = read_file_shared(pyfile, A.get());
+    auto gen = make_rc<Gensym>();
+    auto parse = L->parse_ext(input, None<std::string>(), gen, A.get());
+    EXPECT_TRUE(parse->is_success());
+  }
 }
-INSTANTIATE_TEST_SUITE_P(PyStandaloneTest, PyStandaloneTest,
-                         testing::ValuesIn(PYFILES));
 
 class PyStandaloneBidirTest
     : public testing::TestWithParam<std::filesystem::path> {};

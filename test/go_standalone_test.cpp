@@ -21,19 +21,16 @@ std::vector<std::filesystem::path> get_golang_files() {
 }
 static const std::vector<std::filesystem::path> GOFILES = get_golang_files();
 
-class GoStandaloneTest : public testing::TestWithParam<std::filesystem::path> {
-};
-TEST_P(GoStandaloneTest, Tests) {
-  const auto &gofile = GetParam();
-  auto L = lang::go::init();
-  auto A = make_rc<Arena>();
-  auto input = read_file_shared(gofile, A.get());
-  auto gen = make_rc<Gensym>();
-  auto parse = L->parse_ext(input, None<std::string>(), gen, A.get());
-  EXPECT_TRUE(parse->is_success());
+TEST(GoStandaloneTest, Tests) {
+  for (const auto &gofile : GOFILES) {
+    auto L = lang::go::init();
+    auto A = make_rc<Arena>();
+    auto input = read_file_shared(gofile, A.get());
+    auto gen = make_rc<Gensym>();
+    auto parse = L->parse_ext(input, None<std::string>(), gen, A.get());
+    EXPECT_TRUE(parse->is_success());
+  }
 }
-INSTANTIATE_TEST_SUITE_P(GoStandaloneTest, GoStandaloneTest,
-                         testing::ValuesIn(GOFILES));
 
 class GoStandaloneBidirTest
     : public testing::TestWithParam<std::filesystem::path> {};
