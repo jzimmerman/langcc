@@ -21,7 +21,7 @@ std::vector<std::filesystem::path> get_golang_files() {
 }
 static const std::vector<std::filesystem::path> GOFILES = get_golang_files();
 
-TEST(GoStandaloneTest, Tests) {
+TEST(GoStandaloneTest, ParserTest) {
   for (const auto &gofile : GOFILES) {
     auto L = lang::go::init();
     auto A = make_rc<Arena>();
@@ -32,28 +32,25 @@ TEST(GoStandaloneTest, Tests) {
   }
 }
 
-class GoStandaloneBidirTest
-    : public testing::TestWithParam<std::filesystem::path> {};
-TEST_P(GoStandaloneBidirTest, Tests) {
-  const auto &gofile = GetParam();
-  auto L = lang::go::init();
-  auto Q = L->quote_env();
-  auto input = read_file(gofile);
+TEST(GoStandaloneTest, BidirectionalTest) {
+  for (const auto &gofile : GOFILES) {
+    auto L = lang::go::init();
+    auto Q = L->quote_env();
+    auto input = read_file(gofile);
 
-  auto parse = Q->L_->parse_ext(vec_from_std_string(input), None<std::string>(),
-                                Q->gen_, nullptr);
-  EXPECT_TRUE(parse->is_success());
-  auto prog = parse->res_.as_some();
-  auto s = fmt_str("{}", prog);
+    auto parse = Q->L_->parse_ext(vec_from_std_string(input),
+                                  None<std::string>(), Q->gen_, nullptr);
+    EXPECT_TRUE(parse->is_success());
+    auto prog = parse->res_.as_some();
+    auto s = fmt_str("{}", prog);
 
-  auto parse_chk = Q->L_->parse_ext(vec_from_std_string(input),
-                                    None<std::string>(), Q->gen_, nullptr);
-  EXPECT_TRUE(parse_chk->is_success());
-  auto prog_chk = parse_chk->res_.as_some();
-  auto s_chk = fmt_str("{}", prog_chk);
+    auto parse_chk = Q->L_->parse_ext(vec_from_std_string(input),
+                                      None<std::string>(), Q->gen_, nullptr);
+    EXPECT_TRUE(parse_chk->is_success());
+    auto prog_chk = parse_chk->res_.as_some();
+    auto s_chk = fmt_str("{}", prog_chk);
 
-  EXPECT_EQ(val_hash(prog), val_hash(prog_chk));
-  EXPECT_EQ(s, s_chk);
+    EXPECT_EQ(val_hash(prog), val_hash(prog_chk));
+    EXPECT_EQ(s, s_chk);
+  }
 }
-INSTANTIATE_TEST_SUITE_P(GoStandaloneBidirTest, GoStandaloneBidirTest,
-                         testing::ValuesIn(GOFILES));
