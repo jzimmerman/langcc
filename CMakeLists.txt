@@ -14,6 +14,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/
 add_compile_definitions(__CC__=${CMAKE_CXX_COMPILER})
 if (MSVC)
   add_compile_options(/wd4244 /wd4065 /wd4996 /wd5051 /wd4311 /wd4302 /wd4018)
+  add_link_options(/Stack:0xa00000) # Linux stack is 10MB by default, windows is 1MB
 endif()
 #
 # Create datacc target
