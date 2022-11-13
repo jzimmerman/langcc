@@ -32,13 +32,13 @@ struct LangCompileContext {
   DataGenContext data_;
 
   std::string src_base_name_;
-  std::string dst_path_;
+  std::filesystem::path dst_path_;
 
   std::string hpp_name_;
-  std::string hpp_path_;
-  std::string cpp_path_;
-  std::string cpp_test_path_;
-  std::string cpp_debug_path_;
+  std::filesystem::path hpp_path_;
+  std::filesystem::path cpp_path_;
+  std::filesystem::path cpp_test_path_;
+  std::filesystem::path cpp_debug_path_;
 
   Int lr_k_;
 
@@ -114,15 +114,15 @@ struct LangCompileContext {
                             const Gensym_T &gen_meta,
                             const LexOutput_T &lex_res,
                             const std::string &src_base_name,
-                            const std::string &dst_path, Int k)
+                            const std::filesystem::path &dst_path, Int k)
       : src_(src), gen_meta_(gen_meta), lex_res_(lex_res),
         src_base_name_(src_base_name), dst_path_(dst_path), lr_k_(k) {
 
     hpp_name_ = fmt_str("{}__gen.hpp", src_base_name);
-    hpp_path_ = fmt_str("{}/{}__gen.hpp", dst_path, src_base_name);
-    cpp_path_ = fmt_str("{}/{}__gen.cpp", dst_path, src_base_name);
-    cpp_test_path_ = fmt_str("{}/{}__gen_test.cpp", dst_path, src_base_name);
-    cpp_debug_path_ = fmt_str("{}/{}__gen_debug.cpp", dst_path, src_base_name);
+    hpp_path_ = dst_path / fmt_str("{}__gen.hpp", src_base_name);
+    cpp_path_ = dst_path / fmt_str("{}__gen.cpp", src_base_name);
+    cpp_test_path_ = dst_path / fmt_str("{}__gen_test.cpp", src_base_name);
+    cpp_debug_path_ = dst_path / fmt_str("{}__gen_debug.cpp", src_base_name);
   }
 
   inline void error(meta::Node_T x, const std::string &msg) {

@@ -3369,7 +3369,7 @@ inline i32 sys_chk_nonneg(i32 ret, const std::string &desc) {
   AX();
 }
 
-inline std::string read_file(const std::string &filename) {
+inline std::string read_file(const std::filesystem::path &filename) {
   std::ifstream inFile(filename, std::ios_base::binary);
   if (!inFile.good()) {
     LG_ERR("Error opening for reading: {}", filename);
@@ -3380,11 +3380,12 @@ inline std::string read_file(const std::string &filename) {
   return strStream.str();
 }
 
-inline Str_T read_file_shared(const std::string &filename, Arena *A = nullptr) {
+inline Str_T read_file_shared(const std::filesystem::path &filename,
+                              Arena *A = nullptr) {
   Int len = std::filesystem::file_size(filename);
   std::ifstream inFile(filename, std::ios_base::binary);
   if (!inFile.good()) {
-    LG_ERR("Error opening for reading: {}", filename);
+    LG_ERR("Error opening for reading: {}", filename.string());
     AX();
   }
   auto ret = make_rc<Str>(A, 0, len * 2, _Vec_constr_internal{});
@@ -3394,7 +3395,7 @@ inline Str_T read_file_shared(const std::string &filename, Arena *A = nullptr) {
   return ret;
 }
 
-inline void write_file(const std::string &filename_dst,
+inline void write_file(const std::filesystem::path &filename_dst,
                        const std::string &contents) {
   std::ofstream fout(filename_dst);
   if (!fout.good()) {

@@ -56,8 +56,8 @@ int main(int argc, char **argv) {
   }
   set_log_level(log_level);
 
-  std::string src_path = args->operator[](0);
-  std::string dst_path = args->operator[](1);
+  auto src_path = std::filesystem::path(args->operator[](0));
+  auto dst_path = std::filesystem::path(args->operator[](1));
 
   auto stat = compile_lang_full(src_path, dst_path, tests_mode, header_mode,
                                 langcc_include_path);

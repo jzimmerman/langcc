@@ -5,12 +5,12 @@
 #endif
 
 // Climbs directory tree until it finds the first match then returns abs path
-inline std::string resolvePath(const std::string &relPath) {
+inline std::filesystem::path resolvePath(const std::string &relPath) {
   auto baseDir = std::filesystem::current_path();
   while (baseDir.has_parent_path()) {
     auto combinePath = baseDir / relPath;
     if (std::filesystem::exists(combinePath)) {
-      return combinePath.string();
+      return combinePath;
     }
     if (baseDir == baseDir.parent_path()) {
       break;

@@ -5,10 +5,12 @@
 
 namespace langcc {
 
-LangCompileResult_T
-compile_lang_inner(lang::meta::Node_T src, Int k, const Gensym_T &gen_meta,
-                   const LexOutput_T &lex_res, const std::string &src_base_name,
-                   const std::string &dst_path, HeaderMode header_mode) {
+LangCompileResult_T compile_lang_inner(lang::meta::Node_T src, Int k,
+                                       const Gensym_T &gen_meta,
+                                       const LexOutput_T &lex_res,
+                                       const std::string &src_base_name,
+                                       const std::filesystem::path &dst_path,
+                                       HeaderMode header_mode) {
 
   AR_ge(k, 0);
 
@@ -95,7 +97,7 @@ compile_lang_inner(lang::meta::Node_T src, Int k, const Gensym_T &gen_meta,
 LangCompileResult_T
 compile_lang(const lang::meta::Node_T &src, Int k, const Gensym_T &gen_meta,
              const LexOutput_T &lex_res, const std::string &src_base_name,
-             const std::string &dst_path, HeaderMode header_mode) {
+             const std::filesystem::path &dst_path, HeaderMode header_mode) {
 
   try {
     return compile_lang_inner(src, k, gen_meta, lex_res, src_base_name,
@@ -106,7 +108,7 @@ compile_lang(const lang::meta::Node_T &src, Int k, const Gensym_T &gen_meta,
 }
 
 std::tuple<meta::Node::Lang_T, Gensym_T, LexOutput_T>
-load_lang_path(const std::string &src_path) {
+load_lang_path(const std::filesystem::path &src_path) {
   auto src_str = read_file_shared(src_path);
 
   auto gen_meta = make_rc<Gensym>();
@@ -122,19 +124,17 @@ load_lang_path(const std::string &src_path) {
   return std::make_tuple(src, gen_meta, parse->lex_);
 }
 
-std::string lang_get_src_base_name(const std::string &src_path) {
-  auto src_comps = str_split(src_path, "/");
-  auto src_base_comps = str_split(src_comps.at(src_comps.size() - 1), ".");
-  if (src_base_comps.size() != 2 || src_base_comps[1] != "lang") {
+std::string lang_get_src_base_name(const std::filesystem::path &src_path) {
+  if (src_path.extension().string() != ".lang") {
     LG_ERR("Incorrect format for source filename");
     AX();
   }
-  auto src_base_name = src_base_comps[0];
+  auto src_base_name = src_path.stem().string();
   return src_base_name;
 }
 
-LangCompileResult_T compile_lang_path(const std::string &src_path,
-                                      const std::string &dst_path,
+LangCompileResult_T compile_lang_path(const std::filesystem::path &src_path,
+                                      const std::filesystem::path &dst_path,
                                       Option_T<Int> k, HeaderMode header_mode) {
 
   auto src_base_name = lang_get_src_base_name(src_path);
@@ -150,8 +150,9 @@ LangCompileResult_T compile_lang_path(const std::string &src_path,
 }
 
 LangCompileResult_T
-compile_lang_full(const std::string &src_path, const std::string &dst_path,
-                  RunTests run_tests, HeaderMode header_mode,
+compile_lang_full(const std::filesystem::path &src_path,
+                  const std::filesystem::path &dst_path, RunTests run_tests,
+                  HeaderMode header_mode,
                   const std::filesystem::path &langcc_include_path) {
 
   std::filesystem::create_directories(dst_path);
@@ -271,7 +272,8 @@ compile_lang_full(const std::string &src_path, const std::string &dst_path,
 
 bool test_lang(const std::filesystem::path &lang_path,
                const std::filesystem::path &langcc_include_path) {
-  std::string dst_path = "build/gen_test_src";
+  std::filesystem::path dst_path =
+      std::filesystem::path("build") / "gen_test_src";
   auto [src, _, __] = load_lang_path(lang_path.string());
   auto stat = compile_lang_full(lang_path.string(), dst_path, RunTests::Y,
                                 HeaderMode::N, langcc_include_path);

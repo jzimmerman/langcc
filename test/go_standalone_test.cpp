@@ -9,7 +9,7 @@ void pr(std::ostream &os, FmtFlags flags, lang::go::Node_T x) {
 }
 } // namespace langcc
 
-static const std::string CPYTHON_PATH = resolvePath("../go");
+static const std::filesystem::path CPYTHON_PATH = resolvePath("../go");
 
 std::vector<std::filesystem::path> get_golang_files() {
   auto mn = read_file(resolvePath("data/golang_manifest_gen.txt"));
@@ -27,7 +27,7 @@ TEST_P(GoStandaloneTest, Tests) {
   const auto &gofile = GetParam();
   auto L = lang::go::init();
   auto A = make_rc<Arena>();
-  auto input = read_file_shared(gofile.string(), A.get());
+  auto input = read_file_shared(gofile, A.get());
   auto gen = make_rc<Gensym>();
   auto parse = L->parse_ext(input, None<std::string>(), gen, A.get());
   EXPECT_TRUE(parse->is_success());
@@ -41,7 +41,7 @@ TEST_P(PyStandaloneBidirTest, Tests) {
   const auto &gofile = GetParam();
   auto L = lang::go::init();
   auto Q = L->quote_env();
-  auto input = read_file(gofile.string());
+  auto input = read_file(gofile);
 
   auto parse = Q->L_->parse_ext(vec_from_std_string(input), None<std::string>(),
                                 Q->gen_, nullptr);
