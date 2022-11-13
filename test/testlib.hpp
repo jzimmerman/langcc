@@ -99,10 +99,10 @@ inline void register_unit_test(std::string test_name,
                                std::function<int()> test_function);
 
 #define TEST(test_name)                                                        \
-  void _test_##test_name();                                                    \
+  int _test_##test_name();                                                     \
   static Int _test_##test_name##_init __attribute((unused)) =                  \
       (register_unit_test(#test_name, _test_##test_name), 0);                  \
-  void _test_##test_name()
+  int _test_##test_name()
 
 inline std::vector<UnitTest> &get_unit_tests() {
   static std::vector<UnitTest> _unit_tests;

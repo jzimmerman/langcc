@@ -1,5 +1,6 @@
 
 #include "langcc_util.hpp"
+#include "testlib.hpp"
 
 namespace langcc {
 
@@ -10,6 +11,7 @@ TEST(str_split1) {
   };
   auto output_act = str_split(input, "\n");
   AR_eq(output_exp, output_act);
+  return 0;
 }
 
 TEST(print_table1) {
@@ -35,22 +37,25 @@ TEST(print_table1) {
   output_act = fmt_str("{}", td);
 
   AR_eq(output_exp, output_act);
+  return 0;
 }
 
 TEST(char_display1) {
   auto output_exp = "`a`";
   auto output_act = char_display('a');
   AR_eq(output_exp, output_act);
+  return 0;
 }
 
 TEST(char_display2) {
   auto output_exp = "`\\U0000feff`";
   auto output_act = char_display(0xfeff);
   AR_eq(output_exp, output_act);
+  return 0;
 }
 
 TEST(vec1) {
-  auto Q = make_shared<Vec<Int>>();
+  auto Q = std::make_shared<Vec<Int>>();
   Q->push_back(1);
   Q->push_back(2);
   Q->push_front(3);
@@ -59,21 +64,23 @@ TEST(vec1) {
   AR_eq(Q->pop_back_val(), 1);
   AR_eq(Q->pop_back_val(), 3);
   AR_eq(Q->pop_back_val(), 4);
+  return 0;
 }
 
 struct test_vec2_struct {
-  shared_ptr<Int> v_;
-  inline test_vec2_struct(Int x) : v_(make_shared<Int>(x)) {}
+  std::shared_ptr<Int> v_;
+  inline test_vec2_struct(Int x) : v_(std::make_shared<Int>(x)) {}
 };
 
 TEST(vec2) {
-  auto Q = make_shared<Vec<test_vec2_struct>>();
+  auto Q = std::make_shared<Vec<test_vec2_struct>>();
   Q->push_back(test_vec2_struct{1});
   Q->push_back(test_vec2_struct{2});
   Q->push_front(test_vec2_struct{3});
   Q->push_front(test_vec2_struct{4});
   Q->pop_back();
   Q->pop_front();
+  return 0;
 }
 
 TEST(utf8_encode1) {
@@ -89,6 +96,7 @@ TEST(utf8_encode1) {
   auto r = utf8_decode(s);
   AT(r.is_some());
   AR_eq(r.as_some(), v);
+  return 0;
 }
 
 } // namespace langcc

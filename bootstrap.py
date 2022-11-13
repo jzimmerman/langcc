@@ -39,15 +39,15 @@ def main():
     build_target("datacc")
     build_target("langcc")
     build_target("go_standalone_test")
-    run_command([build_dir / "go_standalone_test", "1"])
+    run_command([build_dir / "test" / "go_standalone_test", "1"])
     build_target("py_standalone_test")
-    run_command([build_dir / "py_standalone_test", "1"])
+    run_command([build_dir / "test" / "py_standalone_test", "1"])
     build_target("go_standalone_bidir_test")
-    run_command([build_dir / "go_standalone_bidir_test", "1"])
+    run_command([build_dir / "test" / "go_standalone_bidir_test", "1"])
     build_target("py_standalone_bidir_test")
-    run_command([build_dir / "py_standalone_bidir_test", "1"])
+    run_command([build_dir / "test" / "py_standalone_bidir_test", "1"])
     build_target("unittest_lang")
-    run_command([build_dir / "unittest_lang"])
+    run_command([build_dir / "test" / "unittest_lang"])
 
 
 if __name__ == "__main__":
