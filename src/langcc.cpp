@@ -201,7 +201,7 @@ compile_lang_full(const std::filesystem::path &src_path,
     cmds.push("/MDd /Zi /Ob0 /Od /RTC1");
 #endif
     cmds.push("/I");
-    cmds.push(fmt_str("./{}", dst_path));
+    cmds.push(dst_path.string());
     cmds.push("/I");
     if (!langcc_include_path.empty()) {
       cmds.push(langcc_include_path.string());
@@ -232,7 +232,7 @@ compile_lang_full(const std::filesystem::path &src_path,
     cmds.push("-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk");
 #endif
     cmds.push("-I");
-    cmds.push(fmt_str("./{}", dst_path));
+    cmds.push(dst_path.string());
     cmds.push("-I");
     if (!langcc_include_path.empty()) {
       cmds.push(langcc_include_path.string());
