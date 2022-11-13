@@ -8,13 +8,8 @@
 
 namespace langcc {
 
-inline void pr(std::ostream &os, FmtFlags flags, const Grammar_T &G) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, const Grammar_T &G) {
   fmt(os, "===== Grammar =====\n\n");
-
-  Int N = G->nonterm_->length();
-  Int T = G->term_->length();
-  Int M = G->prods_->length();
-
   fmt(os, "    Nonterminals:\n\n");
   {
     std::vector<std::tuple<Int, Align>> aligns = {{6, Align::RIGHT},
@@ -101,11 +96,8 @@ inline bool sym_is_nonterm_gen(Sym_T sym) {
 }
 
 inline bool sym_is_cps_eligible(Sym_T sym) {
-  if (sym->is_GenCPS()) {
-    return false;
-  } else if (sym->is_Term() || sym->is_TermStartMarker()) {
-    return false;
-  } else if (sym->is_Defined() || sym->is_Start()) {
+  if (sym->is_GenCPS() || sym->is_Term() || sym->is_TermStartMarker() ||
+      sym->is_Defined() || sym->is_Start()) {
     return false;
   } else if (sym->is_Direct() || sym->is_Iter()) {
     return true;

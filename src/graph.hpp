@@ -21,10 +21,10 @@ struct _T_inner {
 
   inline Int add_vertex() {
     Int ret = EL_.size();
-    EL_.push_back(std::vector<Int>());
-    EV_.push_back(std::vector<std::vector<Int>>());
-    ELI_.push_back(std::unordered_map<Int, Int>());
-    ES_.push_back(std::unordered_map<Int, std::unordered_set<Int>>());
+    EL_.emplace_back();
+    EV_.emplace_back();
+    ELI_.emplace_back();
+    ES_.emplace_back();
     return ret;
   }
 

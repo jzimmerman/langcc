@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 using namespace langcc;
 
-TEST(UtilTest, str_split1) {
+TEST(UtilTest, StrSplit1) {
   std::string input = "ABC\nDEF\n\nG\n";
   std::vector<std::string> output_exp = {
       "ABC", "DEF", "", "G", "",
@@ -13,7 +13,7 @@ TEST(UtilTest, str_split1) {
   AR_eq(output_exp, output_act);
 }
 
-TEST(UtilTest, print_table1) {
+TEST(UtilTest, PrintTable1) {
   std::vector<std::tuple<Int, Align>> aligns = {{2, Align::RIGHT},
                                                 {1, Align::LEFT}};
 
@@ -38,19 +38,19 @@ TEST(UtilTest, print_table1) {
   AR_eq(output_exp, output_act);
 }
 
-TEST(UtilTest, char_display1) {
-  auto output_exp = "`a`";
+TEST(UtilTest, CharDisplay1) {
+  auto *output_exp = "`a`";
   auto output_act = char_display('a');
   AR_eq(output_exp, output_act);
 }
 
-TEST(UtilTest, char_display2) {
-  auto output_exp = "`\\U0000feff`";
+TEST(UtilTest, CharDisplay2) {
+  auto *output_exp = "`\\U0000feff`";
   auto output_act = char_display(0xfeff);
   AR_eq(output_exp, output_act);
 }
 
-TEST(UtilTest, vec1) {
+TEST(UtilTest, Vec1) {
   auto Q = std::make_shared<Vec<Int>>();
   Q->push_back(1);
   Q->push_back(2);
@@ -64,10 +64,10 @@ TEST(UtilTest, vec1) {
 
 struct test_vec2_struct {
   std::shared_ptr<Int> v_;
-  inline test_vec2_struct(Int x) : v_(std::make_shared<Int>(x)) {}
+  inline explicit test_vec2_struct(Int x) : v_(std::make_shared<Int>(x)) {}
 };
 
-TEST(UtilTest, vec2) {
+TEST(UtilTest, Vec2) {
   auto Q = std::make_shared<Vec<test_vec2_struct>>();
   Q->push_back(test_vec2_struct{1});
   Q->push_back(test_vec2_struct{2});
@@ -77,7 +77,7 @@ TEST(UtilTest, vec2) {
   Q->pop_front();
 }
 
-TEST(UtilTest, utf8_encode1) {
+TEST(UtilTest, Utf8Encode1) {
   std::vector<Ch> v = {0x12,     0x34, 0x56,     0x123, 0x5678,
                        0x101234, 0x12, 0x10ffff, 0x34};
   std::string s = utf8_encode(v);

@@ -154,7 +154,7 @@ xform_parse_expr_normalize(meta::Node::ParseExpr_T e,
 // Lexer
 void lexer_extract_alias_toks_sub_acc(Vec<ParseExpr_Base_T> &dst,
                                       meta::Node::ParseExpr_T x,
-                                      ParseExpr_Base_T root,
+                                      const ParseExpr_Base_T &root,
                                       LangCompileContext &ctx);
 using LexerInstrs = Vec_T<meta::Node::LexerInstr_T>;
 struct LexerModeTrivial_T {
@@ -198,10 +198,11 @@ using LexerNFASub_T = NFA_T<Lexer_NFAVertex, Lexer_NFALabel_T, Unit>;
 void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
                                        meta::Node::LexerInstr_T instr,
                                        meta::Node::LexerDecl::Mode_T mode,
-                                       GenName fun_ns, CppGenContext &cc,
+                                       const GenName &fun_ns, CppGenContext &cc,
                                        LangCompileContext &ctx);
 Vec_T<Lexer_TopTokenInd>
-lexer_token_inds_emit_reachable(ParseExpr_Base_T e, LangCompileContext &ctx);
+lexer_token_inds_emit_reachable(const ParseExpr_Base_T &e,
+                                LangCompileContext &ctx);
 Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T>
 lexer_compile_dfas(LangCompileContext &ctx);
 Option_T<LangCompileResult::Error::LexUnreach_T>

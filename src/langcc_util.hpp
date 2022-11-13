@@ -3215,7 +3215,7 @@ struct PrintTable {
     AT(len(col) > 0);
     ret->col_ = col;
     for (Int i = 0; i < len(col); i++) {
-      ret->buffer_.push_back(std::deque<std::string>());
+      ret->buffer_.emplace_back();
     }
     ret->buffer_cursor_ = 0;
     ret->buffer_active_ = false;
@@ -3227,7 +3227,7 @@ struct PrintTable {
   make(const std::vector<std::tuple<Int, Align>> &col) {
     std::vector<std::tuple<std::string, Align>> col_ext;
     for (auto [count_, align] : col) {
-      col_ext.push_back({str_repeat(" ", count_), align});
+      col_ext.emplace_back(str_repeat(" ", count_), align);
     }
     return make_ext(col_ext);
   }
@@ -3262,7 +3262,7 @@ struct PrintTable {
       bool trivial = true;
       for (Int j = 0; j < this->num_col(); j++) {
         if (len(buffer_[j]) == 0) {
-          curr_row.push_back("");
+          curr_row.emplace_back("");
         } else {
           auto x = buffer_[j].front();
           buffer_[j].pop_front();

@@ -400,13 +400,13 @@ NFA_T<Vertex, Label, Unit> dfa_negated(NFA_T<Vertex, Label, Unit> &D,
   }
 
   auto sink = NFA::gen_vertex_acc(ret, Unit{});
-  for (auto lbl : *all_labels) {
+  for (const auto &lbl : *all_labels) {
     NFA::add_edge(ret, sink, lbl, sink);
   }
 
   for (Int i = 0; i < Graph::N(D->G_); i++) {
     Set<Label> labels_rem;
-    for (auto lbl : *all_labels) {
+    for (const auto &lbl : *all_labels) {
       labels_rem.insert_strict(lbl);
     }
 
@@ -421,7 +421,7 @@ NFA_T<Vertex, Label, Unit> dfa_negated(NFA_T<Vertex, Label, Unit> &D,
       }
     }
 
-    for (auto lbl : labels_rem) {
+    for (const auto &lbl : labels_rem) {
       NFA::add_edge(ret, i, lbl, sink);
     }
   }

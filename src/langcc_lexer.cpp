@@ -5,7 +5,7 @@
 
 namespace langcc {
 
-inline void pr(std::ostream &os, FmtFlags flags, Lexer_TopTokenInd x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Lexer_TopTokenInd x) {
   fmt(os, "Tok({}, {})", x.ind_, x.src_);
 }
 
@@ -20,7 +20,7 @@ inline void hash_ser(SerBuf &buf, const Lexer_NFAAcc &x) {
 
 inline HashVal val_hash(const Lexer_NFAAcc &x) { return val_hash_base(x); }
 
-inline void pr(std::ostream &os, FmtFlags flags, Lexer_NFALabel_T x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Lexer_NFALabel_T x) {
   if (x->is_Eps()) {
     os << "eps";
   } else if (x->is_Eof()) {
@@ -39,7 +39,7 @@ inline void pr(std::ostream &os, FmtFlags flags, Lexer_NFALabel_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, Lexer_NFAAcc x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, Lexer_NFAAcc x) {
   fmt(os, "Lexer_NFAAcc({}, {})", x.case_id_, x.arg_top_id_);
 }
 
@@ -96,7 +96,7 @@ void lang_init_validate_tabulate_lexer_instr_emit_rec(
     // pass
   } else if (instr->is_MatchHistory()) {
     for (auto case_sub : *instr->as_MatchHistory()->cases_) {
-      for (auto instr_sub : *case_sub->instrs_) {
+      for (const auto &instr_sub : *case_sub->instrs_) {
         lang_init_validate_tabulate_lexer_instr_emit_rec(instr_sub, case_pat,
                                                          ctx);
       }
@@ -137,7 +137,7 @@ void lexer_check_all_reach_visit_instr(lang::meta::Node::LexerInstr_T instr,
     }
   } else if (instr->is_MatchHistory()) {
     for (auto case_sub : *instr->as_MatchHistory()->cases_) {
-      for (auto instr_sub : *case_sub->instrs_) {
+      for (const auto &instr_sub : *case_sub->instrs_) {
         lexer_check_all_reach_visit_instr(instr_sub, id_reach, Q);
       }
     }
@@ -171,7 +171,7 @@ lexer_check_all_reach(LangCompileContext &ctx) {
         }
       }
 
-      for (auto instr : *case_->instrs_) {
+      for (const auto &instr : *case_->instrs_) {
         lexer_check_all_reach_visit_instr(instr, id_reach, Q);
       }
     }
@@ -196,7 +196,7 @@ lexer_check_all_reach(LangCompileContext &ctx) {
   }
 
   auto ret = make_rc<Vec<Ident_T>>();
-  for (auto def : ctx.tokens_def_) {
+  for (const auto &def : ctx.tokens_def_) {
     if (!id_reach->contains_key(def.first)) {
       ret->push(def.first);
     }
@@ -212,7 +212,7 @@ lexer_check_all_reach(LangCompileContext &ctx) {
 
 void lexer_extract_alias_toks_sub_acc(Vec<ParseExpr_Base_T> &dst,
                                       meta::Node::ParseExpr_T x,
-                                      ParseExpr_Base_T root,
+                                      const ParseExpr_Base_T &root,
                                       LangCompileContext &ctx) {
 
   auto xb = parse_expr_to_base_maybe(x);
@@ -230,7 +230,7 @@ void lexer_extract_alias_toks_sub_acc(Vec<ParseExpr_Base_T> &dst,
 
   } else if (x->is_Alt()) {
     auto cc = x->as_Alt();
-    for (auto y : *cc->xs_) {
+    for (const auto &y : *cc->xs_) {
       lexer_extract_alias_toks_sub_acc(dst, y, root, ctx);
     }
 
@@ -240,7 +240,8 @@ void lexer_extract_alias_toks_sub_acc(Vec<ParseExpr_Base_T> &dst,
 }
 
 Vec_T<Lexer_TopTokenInd>
-lexer_token_inds_emit_reachable(ParseExpr_Base_T e, LangCompileContext &ctx) {
+lexer_token_inds_emit_reachable(const ParseExpr_Base_T &e,
+                                LangCompileContext &ctx) {
 
   auto ret = make_rc<Vec<Lexer_TopTokenInd>>();
   Set<Int> vis;
@@ -261,7 +262,7 @@ lexer_token_inds_emit_reachable(ParseExpr_Base_T e, LangCompileContext &ctx) {
       if (decl->op_->is_DEF_ALIAS()) {
         Vec<ParseExpr_Base_T> toks_sub;
         lexer_extract_alias_toks_sub_acc(toks_sub, decl->def__, tok, ctx);
-        for (auto tok_sub : toks_sub) {
+        for (const auto &tok_sub : toks_sub) {
           if (!ctx.tokens_top_by_id_rev_.contains_key(tok_sub)) {
             LG_ERR("Not found: {}", tok_sub);
             AX();
@@ -284,7 +285,7 @@ lexer_token_inds_emit_reachable(ParseExpr_Base_T e, LangCompileContext &ctx) {
   return ret;
 }
 
-LexerNFASub_T lexer_nfa_compile_sub(meta::Node::ParseExpr_T x,
+LexerNFASub_T lexer_nfa_compile_sub(const meta::Node::ParseExpr_T &x,
                                     LangCompileContext &ctx);
 
 template <typename N>
@@ -296,7 +297,7 @@ void lexer_nfa_item_compile(meta::Node::ParseExpr_T src, N &nfa,
   Lexer_NFALabel_T eps = Lexer_NFALabel::Eps::make();
 
   if (src->is_Alt()) {
-    for (auto y : *src->as_Alt()->xs_) {
+    for (const auto &y : *src->as_Alt()->xs_) {
       lexer_nfa_item_compile(y, nfa, v_src, v_dst, src_wildcard, ctx);
     }
 
@@ -363,7 +364,7 @@ void lexer_nfa_item_compile(meta::Node::ParseExpr_T src, N &nfa,
 
   } else if (src->is_Concat()) {
     auto v_curr = v_src;
-    for (auto y : *src->as_Concat()->xs_) {
+    for (const auto &y : *src->as_Concat()->xs_) {
       auto v_next = NFA::gen_vertex(nfa);
       lexer_nfa_item_compile(y, nfa, v_curr, v_next, src_wildcard, ctx);
       v_curr = v_next;
@@ -447,7 +448,7 @@ void lexer_nfa_item_compile(meta::Node::ParseExpr_T src, N &nfa,
   }
 }
 
-LexerNFASub_T lexer_nfa_compile_sub(meta::Node::ParseExpr_T x,
+LexerNFASub_T lexer_nfa_compile_sub(const meta::Node::ParseExpr_T &x,
                                     LangCompileContext &ctx) {
   auto nfa_sub = NFA::empty<Lexer_NFAVertex, Lexer_NFALabel_T, Unit>();
   auto start_sub = NFA::gen_vertex_start(nfa_sub);
@@ -510,7 +511,7 @@ SwitchTable_T lexer_dfa_to_switch_table(const LexerNFA_T &D,
 void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
                                        meta::Node::LexerInstr_T instr,
                                        meta::Node::LexerDecl::Mode_T mode,
-                                       GenName fun_ns, CppGenContext &cc,
+                                       const GenName &fun_ns, CppGenContext &cc,
                                        LangCompileContext &ctx) {
 
   auto cpp_advance_instr = cc.qq("Stmt", "in_i = tok_hi;");
@@ -597,7 +598,7 @@ void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
       } else if (case_->tok_->is_Alt()) {
         auto toks_alt = case_->tok_->as_Alt()->xs_;
         auto arg_ids_alt = make_rc<Vec<Int>>();
-        for (auto tok_alt : *toks_alt) {
+        for (const auto &tok_alt : *toks_alt) {
           auto arg_m = parse_expr_to_base_maybe(tok_alt);
           if (arg_m.is_none()) {
             ctx.error(case_, "Case pattern must be a base token or underscore");
@@ -629,7 +630,7 @@ void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
       }
 
       auto cc_case_body = make_rc<Vec<cc::Node_T>>();
-      for (auto instr_sub : *case_->instrs_) {
+      for (const auto &instr_sub : *case_->instrs_) {
         lexer_step_exec_compile_instr_acc(cc_case_body, instr_sub, mode, fun_ns,
                                           cc, ctx);
       }
@@ -699,7 +700,7 @@ lexer_compile_dfas(LangCompileContext &ctx) {
         }
         auto pat_base = parse_expr_to_base_maybe(pat).as_some();
         auto emit_ids = lexer_token_inds_emit_reachable(pat_base, ctx);
-        for (auto emit_id : *emit_ids) {
+        for (const auto &emit_id : *emit_ids) {
           auto acc = Lexer_NFAAcc::emit_match(case_id, emit_id);
           auto v_dst = NFA::gen_vertex_acc(nfa, acc);
           auto emit_expr = ctx.tokens_top_by_id_[emit_id.ind_];
@@ -719,7 +720,7 @@ lexer_compile_dfas(LangCompileContext &ctx) {
 
     auto dfa_res = NFA::nfa_subset_constr(nfa);
     if (NFA::has_conflicts(dfa_res)) {
-      for (auto vs : *dfa_res->G_->V_) {
+      for (const auto &vs : *dfa_res->G_->V_) {
         auto vsi = dfa_res->G_->V_->index_of_maybe(vs).as_some();
         auto acc_i = dfa_res->acc_->operator[](vsi);
         if (acc_i->length() > 1) {
@@ -734,7 +735,7 @@ lexer_compile_dfas(LangCompileContext &ctx) {
             auto curr = Q->pop_front_val();
             auto es = NFA::outgoing_edges(dfa_res, curr);
             for (auto [lbl, nbrs] : *es) {
-              for (auto nbr : *nbrs) {
+              for (const auto &nbr : *nbrs) {
                 if (!m->contains_key(nbr)) {
                   m->insert(nbr, Some<std::pair<Lexer_NFALabel_T, Set_T<Int>>>(
                                      std::make_pair(lbl, curr)));
@@ -798,11 +799,9 @@ lexer_extract_trivial_maybe(meta::Node::LexerDecl::Mode_T mode) {
 
     if (tok->is_Id() || tok->is_Special()) {
       return None<LexerModeTrivial_T>();
-    } else if (tok->is_LitEps()) {
-      AX();
     } else if (tok->is_LitEof()) {
       cs = None<Vec_T<Ch>>();
-    } else if (tok->is_LitCharRange()) {
+    } else if (tok->is_LitEps() || tok->is_LitCharRange()) {
       AX();
     } else if (tok->is_LitStr()) {
       auto cc = tok->as_LitStr();
