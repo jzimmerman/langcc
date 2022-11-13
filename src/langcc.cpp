@@ -202,7 +202,7 @@ compile_lang_full(const std::string &src_path, const std::string &dst_path,
     cmds.push(fmt_str("./{}", dst_path));
     cmds.push("/I");
     if (!langcc_include_path.empty()) {
-      cmds.push(langcc_include_path);
+      cmds.push(langcc_include_path.string());
     } else {
       cmds.push("./src");
     }
@@ -233,7 +233,7 @@ compile_lang_full(const std::string &src_path, const std::string &dst_path,
     cmds.push(fmt_str("./{}", dst_path));
     cmds.push("-I");
     if (!langcc_include_path.empty()) {
-      cmds.push(langcc_include_path);
+      cmds.push(langcc_include_path.string());
     } else {
       cmds.push("./src");
     }
@@ -272,9 +272,9 @@ compile_lang_full(const std::string &src_path, const std::string &dst_path,
 bool test_lang(const std::filesystem::path &lang_path,
                const std::filesystem::path &langcc_include_path) {
   std::string dst_path = "build/gen_test_src";
-  auto [src, _, __] = load_lang_path(lang_path);
-  auto stat = compile_lang_full(lang_path, dst_path, RunTests::Y, HeaderMode::N,
-                                langcc_include_path);
+  auto [src, _, __] = load_lang_path(lang_path.string());
+  auto stat = compile_lang_full(lang_path.string(), dst_path, RunTests::Y,
+                                HeaderMode::N, langcc_include_path);
   if (stat->is_Error() && !lang_is_expected_fail(src)) {
     LG_ERR("Error:\n\n{}\n\n", stat->as_Error());
     return false;
