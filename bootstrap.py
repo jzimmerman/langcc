@@ -5,8 +5,6 @@ import os
 is_windows = os.name == "nt"
 build_type = os.environ.get("BUILD_TYPE", "Debug")
 build_dir = Path("build")
-if is_windows:
-    build_dir = build_dir / build_type
 
 
 def run_command(command):
