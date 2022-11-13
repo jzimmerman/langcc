@@ -3,9 +3,10 @@ import subprocess
 import os
 
 is_windows = os.name == "nt"
+build_type = os.environ.get("BUILD_TYPE", "Debug")
 build_dir = Path("build")
 if is_windows:
-    build_dir = build_dir / os.environ.get("BUILD_TYPE", "Debug")
+    build_dir = build_dir / build_type
 
 
 def run_command(command):
@@ -17,7 +18,6 @@ def run_command(command):
 
 
 def build_target(target):
-    build_type = os.environ.get("BUILD_TYPE", "Debug")
     run_command(
         ["cmake", "--build", "build", "--config", build_type, "--target", target]
     )
@@ -28,26 +28,11 @@ def generate_grammar(grammar_file):
 
 
 def main():
-    build_target("datacc")
     build_target("langcc")
-    build_target("unittest_lang")
     generate_grammar("grammars/data.lang")
     generate_grammar("grammars/cc.lang")
     generate_grammar("grammars/meta.lang")
-
-    build_target("clean")
-    build_target("datacc")
-    build_target("langcc")
-    build_target("go_standalone_test")
-    run_command([build_dir / "test" / "go_standalone_test", "1"])
-    build_target("py_standalone_test")
-    run_command([build_dir / "test" / "py_standalone_test", "1"])
-    build_target("go_standalone_bidir_test")
-    run_command([build_dir / "test" / "go_standalone_bidir_test", "1"])
-    build_target("py_standalone_bidir_test")
-    run_command([build_dir / "test" / "py_standalone_bidir_test", "1"])
-    build_target("unittest_lang")
-    run_command([build_dir / "test" / "unittest_lang"])
+    subprocess.check_call(["git", "diff", "--exit-code", "gen"])
 
 
 if __name__ == "__main__":

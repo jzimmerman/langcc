@@ -1149,16 +1149,6 @@ inline void set_log_level(Int log_level_new) {
   get_log_level() = log_level_new;
 }
 
-inline std::ostream *&get_stdout() {
-  static thread_local std::ostream *local_stdout = &std::cout;
-  return local_stdout;
-}
-inline void set_stdout(std::ostream *stdout_new) { get_stdout() = stdout_new; }
-inline std::ostream *&get_stderr() {
-  static thread_local std::ostream *local_stderr = &std::cerr;
-  return local_stderr;
-}
-inline void set_stderr(std::ostream *stderr_new) { get_stderr() = stderr_new; }
 // -1: Error messages user must see
 //  0: Messages user should see
 //  1: Progress updates
@@ -1191,7 +1181,7 @@ template <typename... Ts> void log_inner(Int level, const Ts &...args) {
     ret_str = fmt_str("[{}]\n", time_str_res) + ret_str;
   }
 
-  *get_stderr() << ret_str << std::endl;
+  std::cout << ret_str << std::endl;
 
   prev_level = level;
 }

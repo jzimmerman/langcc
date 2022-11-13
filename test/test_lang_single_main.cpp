@@ -2,16 +2,15 @@
 #include "langcc_util.hpp"
 
 #include "langcc.hpp"
-
-using namespace langcc;
+#include "testlib.hpp"
 
 i32 main(i32 argc, char **argv) {
-  global_init();
-  set_log_level(3);
+  langcc::global_init();
+  langcc::set_log_level(3);
 
   AR_eq(argc, 2);
   std::string lang_name = argv[1];
 
-  test_lang(lang_name);
+  langcc::test_lang(lang_name, "");
   return 0;
 }

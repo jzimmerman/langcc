@@ -27,8 +27,13 @@ int main(int argc, char **argv) {
   Int log_level = 1;
   HeaderMode header_mode = HeaderMode::N;
   RunTests tests_mode = RunTests::Y;
-  for (auto param : *params) {
-    if (param == "-q") {
+  std::filesystem::path langcc_include_path;
+  bool next_include_path = false;
+  for (const auto &param : *params) {
+    if (next_include_path) {
+      langcc_include_path = param;
+      next_include_path = false;
+    } else if (param == "-q") {
       log_level = 0;
     } else if (param == "-v") {
       log_level = 1;
@@ -42,6 +47,8 @@ int main(int argc, char **argv) {
       header_mode = HeaderMode::Y;
     } else if (param == "-t") {
       tests_mode = RunTests::N;
+    } else if (param == "-I") {
+      next_include_path = true;
     } else {
       LG_ERR("Parameter not recognized: {}", param);
       return 1;
@@ -52,7 +59,8 @@ int main(int argc, char **argv) {
   std::string src_path = args->operator[](0);
   std::string dst_path = args->operator[](1);
 
-  auto stat = compile_lang_full(src_path, dst_path, tests_mode, header_mode);
+  auto stat = compile_lang_full(src_path, dst_path, tests_mode, header_mode,
+                                langcc_include_path);
   if (stat->is_Error()) {
     LG_ERR("langcc compile error:\n\n{}\n\n", stat->as_Error());
     return 1;

@@ -36,33 +36,19 @@ jobs:
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target unittest_lang
-
-    - name: single_test1
-      if: runner.os != 'Windows'
-      run: build/unittest_lang golang_if_func_assoc2
-    - name: single_test2
-      if: runner.os != 'Windows'
-      run: build/unittest_lang calc
-    - name: single_test3
-      if: runner.os != 'Windows'
-      run: build/unittest_lang xfail_lexer_cycle
-
-    - name: win-single_test1
-      if: runner.os == 'Windows'
-      run: build/${{env.BUILD_TYPE}}/unittest_lang.exe golang_if_func_assoc2
-    - name: win-single_test2
-      if: runner.os == 'Windows'
-      run: build/${{env.BUILD_TYPE}}/unittest_lang.exe calc
-    - name: win-single_test3
-      if: runner.os == 'Windows'
-      run: build/${{env.BUILD_TYPE}}/unittest_lang.exe xfail_lexer_cycle
+    - name: Build langcc
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target langcc
 
     - name: clone_golang
       run: git clone -b go1.17.8 --single-branch https://github.com/golang/go ../go
     - name: clone_python
       run: git clone -b v3.9.12 --single-branch https://github.com/python/cpython ../cpython
+
+    - name: Build tests
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target build_tests
+
+    - name: Run tests
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target run_tests
 
     - name: bootstrap
       run: python3 bootstrap.py

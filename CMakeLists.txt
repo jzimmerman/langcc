@@ -54,7 +54,6 @@ add_library(langcclib STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_emit.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/meta__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/common__data_gen.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/gen/cc__gen.cpp
 )
 add_executable(langcc
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_main.cpp
@@ -62,4 +61,5 @@ add_executable(langcc
 target_link_libraries(langcc langcclib datacclib)
 
 # Tests
+enable_testing()
 add_subdirectory(test EXCLUDE_FROM_ALL)
