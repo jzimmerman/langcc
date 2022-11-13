@@ -11,20 +11,20 @@ enable_testing()
 include(GoogleTest)
 
 # Generate python parser
-# add_custom_command(
-#     COMMAND $<TARGET_FILE:langcc> ${CMAKE_SOURCE_DIR}/grammars/go.lang ${CMAKE_SOURCE_DIR}/gen
-#     DEPENDS langcc ${CMAKE_SOURCE_DIR}/grammars/go.lang
-#     OUTPUT ${CMAKE_SOURCE_DIR}/gen/go__gen.cpp
-#     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-# )
+add_custom_command(
+    COMMAND $<TARGET_FILE:langcc> ${CMAKE_SOURCE_DIR}/grammars/go.lang ${CMAKE_SOURCE_DIR}/gen
+    DEPENDS langcc ${CMAKE_SOURCE_DIR}/grammars/go.lang
+    OUTPUT ${CMAKE_SOURCE_DIR}/gen/go__gen.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
 
 # Generate python parser
-# add_custom_command(
-#     COMMAND $<TARGET_FILE:langcc> ${CMAKE_SOURCE_DIR}/grammars/py.lang ${CMAKE_SOURCE_DIR}/gen
-#     DEPENDS langcc ${CMAKE_SOURCE_DIR}/grammars/py.lang
-#     OUTPUT ${CMAKE_SOURCE_DIR}/gen/py__gen.cpp
-#     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-# )
+add_custom_command(
+    COMMAND $<TARGET_FILE:langcc> ${CMAKE_SOURCE_DIR}/grammars/py.lang ${CMAKE_SOURCE_DIR}/gen
+    DEPENDS langcc ${CMAKE_SOURCE_DIR}/grammars/py.lang
+    OUTPUT ${CMAKE_SOURCE_DIR}/gen/py__gen.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
 
 
 add_compile_definitions(LANGCC_INCLUDE_PATH="${CMAKE_SOURCE_DIR}/src")
@@ -58,7 +58,7 @@ if(NOT N EQUAL 0)
   set(CTEST_PARALLEL_FLAG -j${N})
 endif()
 add_custom_target(tests
-  COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARALLEL_FLAG} -C $<CONFIGURATION>
+  COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARALLEL_FLAG} -C $<CONFIGURATION> --output-junit ${CMAKE_SOURCE_DIR}/report.xml
   DEPENDS build_tests
   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
 )

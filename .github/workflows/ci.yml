@@ -48,7 +48,20 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target build_tests
 
     - name: Run tests
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target run_tests
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target tests
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      with:
+        name: ${{ matrix.os }} Tests
+        path: report.xml
+        reporter: java-junit
+        fail-on-error: "false"
+
+    - name: Test Summary
+      uses: test-summary/action@v1
+      with:
+        paths: report.xml
 
     - name: bootstrap
       run: python3 bootstrap.py
