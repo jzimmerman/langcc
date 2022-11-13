@@ -16,10 +16,11 @@ if (MSVC)
   add_compile_options(/wd4244 /wd4065 /wd4996 /wd5051 /wd4311 /wd4302 /wd4018)
   add_link_options(/Stack:0xa00000) # Linux stack is 10MB by default, windows is 1MB
 endif()
+
 #
 # Create datacc target
 #
-add_library(datacclib
+add_library(datacclib STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/datacc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/cc__gen.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gen/data__gen.cpp
@@ -41,7 +42,7 @@ add_custom_command(
 #
 # Create langcc target
 #
-add_library(langcclib
+add_library(langcclib STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_lexer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/langcc_parser_flatten.cpp
@@ -73,6 +74,7 @@ add_executable(unittest_lang
   EXCLUDE_FROM_ALL
   ${CMAKE_CURRENT_SOURCE_DIR}/test/unittest_lang_main.cpp
 )
+
 find_package(Threads REQUIRED)
 target_link_libraries(unittest_lib PRIVATE Threads::Threads)
 target_link_libraries(unittest_lang PRIVATE Threads::Threads langcclib datacclib)
