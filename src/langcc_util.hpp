@@ -3407,7 +3407,7 @@ inline Str_T read_file_shared(const std::filesystem::path &filename,
 
 inline void write_file(const std::filesystem::path &filename_dst,
                        const std::string &contents) {
-  std::ofstream fout(filename_dst);
+  std::ofstream fout(filename_dst, std::ios_base::binary);
   if (!fout.good()) {
     LG_ERR("Error opening for writing: {}", filename_dst);
     AX();
