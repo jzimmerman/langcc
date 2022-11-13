@@ -9,7 +9,7 @@ void pr(std::ostream &os, FmtFlags flags, lang::go::Node_T x) {
 }
 } // namespace langcc
 
-static const std::filesystem::path CPYTHON_PATH = resolvePath("../go");
+static const std::filesystem::path GO_PATH = resolvePath("../go");
 
 std::vector<std::filesystem::path> get_golang_files() {
   auto mn = read_file(resolvePath("data/golang_manifest_gen.txt"));
@@ -35,9 +35,9 @@ TEST_P(GoStandaloneTest, Tests) {
 INSTANTIATE_TEST_SUITE_P(GoStandaloneTest, GoStandaloneTest,
                          testing::ValuesIn(GOFILES));
 
-class PyStandaloneBidirTest
+class GoStandaloneBidirTest
     : public testing::TestWithParam<std::filesystem::path> {};
-TEST_P(PyStandaloneBidirTest, Tests) {
+TEST_P(GoStandaloneBidirTest, Tests) {
   const auto &gofile = GetParam();
   auto L = lang::go::init();
   auto Q = L->quote_env();
@@ -58,5 +58,5 @@ TEST_P(PyStandaloneBidirTest, Tests) {
   EXPECT_EQ(val_hash(prog), val_hash(prog_chk));
   EXPECT_EQ(s, s_chk);
 }
-INSTANTIATE_TEST_SUITE_P(PyStandaloneBidirTest, PyStandaloneBidirTest,
+INSTANTIATE_TEST_SUITE_P(GoStandaloneBidirTest, GoStandaloneBidirTest,
                          testing::ValuesIn(GOFILES));
