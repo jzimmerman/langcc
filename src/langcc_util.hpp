@@ -868,6 +868,16 @@ inline void pr_debug(std::ostream &os, FmtFlags /*flags*/,
   os << "\"" << x << "\"";
 }
 
+inline void pr(std::ostream &os, FmtFlags /*flags*/,
+               const std::filesystem::path &x) {
+  os << x;
+}
+
+inline void pr_debug(std::ostream &os, FmtFlags /*flags*/,
+                     const std::filesystem::path &x) {
+  os << "\"" << x << "\"";
+}
+
 inline void pr(std::ostream &os, FmtFlags /*flags*/, const char *x) { os << x; }
 
 inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, const char *x) {

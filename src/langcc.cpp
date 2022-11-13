@@ -90,8 +90,9 @@ LangCompileResult_T compile_lang_inner(lang::meta::Node_T src, Int k,
 
   lang_emit_extract_final(ctx, header_mode);
 
-  return LangCompileResult::Ok::make(ctx.hpp_path_, ctx.cpp_path_,
-                                     ctx.cpp_test_path_, ctx.cpp_debug_path_);
+  return LangCompileResult::Ok::make(
+      ctx.hpp_path_.string(), ctx.cpp_path_.string(),
+      ctx.cpp_test_path_.string(), ctx.cpp_debug_path_.string());
 }
 
 LangCompileResult_T
