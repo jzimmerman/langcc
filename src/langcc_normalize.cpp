@@ -4,7 +4,7 @@
 namespace langcc {
 
 void parser_Gr_flat_tabulate_defined_nonterm(LangCompileContext &ctx,
-                                             IdentBase_T ident) {
+                                             const IdentBase_T &ident) {
   if (ctx.Nm_->contains_key(ident)) {
     return;
   }
@@ -570,7 +570,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   }
 }
 
-bool lang_name_is_lower_reserved(std::string x) {
+bool lang_name_is_lower_reserved(const std::string &x) {
   auto res = make_rc<Set<std::string>>();
   res->insert("__attribute__");
   res->insert("_LT_");

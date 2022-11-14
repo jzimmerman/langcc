@@ -687,15 +687,14 @@ cc::Node_T parser_lr_unwind_impl_gen_cpp_acc_type_rec(
 
 void parser_lr_unwind_impl_gen_cpp_acc_type_rec_dummy(
     Vec_T<cc::Node_T> &cpp_dst_unwind, const cc::Node_T &val, bool do_take,
-    GenType_T ty, const GenName &fun_ns, std::string src_base_name,
+    GenType_T ty, const GenName &fun_ns, const std::string &src_base_name,
     CppGenContext &cc, LangCompileContext &ctx) {
 
   if (ty->is_String() || ty->is_Nil()) {
     // pass (not allocated on the heap)
   } else {
     parser_lr_unwind_impl_gen_cpp_acc_type_rec(cpp_dst_unwind, val, do_take, ty,
-                                               fun_ns, std::move(src_base_name),
-                                               cc, ctx);
+                                               fun_ns, src_base_name, cc, ctx);
   }
 }
 
@@ -2094,26 +2093,33 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
               ctx.cc_.Q_->qq_args_acc(lex_args, ",");
             }
             ctx.cc_.Q_->qq_args_acc(lex_args, "{");
-            ctx.cc_.Q_->qq_args_acc(lex_args, fmt_str("{}", Int(Ch(v_delim0))));
+            ctx.cc_.Q_->qq_args_acc(
+                lex_args,
+                fmt_str("{}", static_cast<Int>(static_cast<Ch>(v_delim0))));
             ctx.cc_.Q_->qq_args_acc(lex_args, ",");
-            ctx.cc_.Q_->qq_args_acc(lex_args, fmt_str("{}", Int(Ch(v_delim1))));
+            ctx.cc_.Q_->qq_args_acc(
+                lex_args,
+                fmt_str("{}", static_cast<Int>(static_cast<Ch>(v_delim1))));
             ctx.cc_.Q_->qq_args_acc(lex_args, "}");
           }
           ctx.cc_.Q_->qq_args_acc(lex_args, "}");
           cc_delim = ctx.cc_.Q_->qq_inner(Some<std::string>("Expr"), lex_args);
         }
       } else {
-        cc_lc = ctx.cc_.qq_expr("langcc::Some<langcc::Ch>(",
-                                fmt_str("{}", Int(Ch('\\'))), ")");
+        cc_lc = ctx.cc_.qq_expr(
+            "langcc::Some<langcc::Ch>(",
+            fmt_str("{}", static_cast<Int>(static_cast<Ch>('\\'))), ")");
         cc_delim = ctx.cc_.qq_expr(
-            "{", "{", fmt_str("{}", Int(Ch('['))), ",",
-            fmt_str("{}", Int(Ch(']'))),
+            "{", "{", fmt_str("{}", static_cast<Int>(static_cast<Ch>('['))),
+            ",", fmt_str("{}", static_cast<Int>(static_cast<Ch>(']'))),
             "},"
             "{",
-            fmt_str("{}", Int(Ch('{'))), ",", fmt_str("{}", Int(Ch('}'))),
+            fmt_str("{}", static_cast<Int>(static_cast<Ch>('{'))), ",",
+            fmt_str("{}", static_cast<Int>(static_cast<Ch>('}'))),
             "},"
             "{",
-            fmt_str("{}", Int(Ch('('))), ",", fmt_str("{}", Int(Ch(')'))),
+            fmt_str("{}", static_cast<Int>(static_cast<Ch>('('))), ",",
+            fmt_str("{}", static_cast<Int>(static_cast<Ch>(')'))),
             "}"
             "}");
       }

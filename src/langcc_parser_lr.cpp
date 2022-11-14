@@ -112,7 +112,7 @@ StringSet_T<Repr> string_set_concat(StringSet_T<Repr> x, StringSet_T<Repr> y) {
   return StringSet::make(ret, ret_k, ret_strict_eq);
 }
 
-void pr(std::ostream &os, FmtFlags flags, GrammarSymConstrGen_T G_gen) {
+void pr(std::ostream &os, FmtFlags /*flags*/, GrammarSymConstrGen_T G_gen) {
   fmt(os, "GrammarSymConstrGen {{\n");
   for (const auto &p : *G_gen) {
     auto sym = p.first;
@@ -133,7 +133,8 @@ void pr(std::ostream &os, FmtFlags flags, GrammarSymConstrGen_T G_gen) {
 bool prod_constr_gen_extend_inplace(
     GrammarProdConstrGen_T &prod_gen, const DottedProd_T &dqt,
     const AttrSet_T &dqt_attr_new,
-    const StringSet_T<SymStr_T> &dqt_str_gen_incr, LangCompileContext &ctx) {
+    const StringSet_T<SymStr_T> &dqt_str_gen_incr,
+    LangCompileContext & /*ctx*/) {
 
   bool fresh = false;
   if (!prod_gen->contains_key(dqt)) {
@@ -514,7 +515,7 @@ AttrBoundSet_T lr_vertex_bounds_pred(LRVertex_T v,
   return lr_prod_bounds_pred(dp, v->bounds_, G_constrs);
 }
 
-bool lr_cursor_unfold_naive(DottedProd_T dp, const Grammar_T &G) {
+bool lr_cursor_unfold_naive(DottedProd_T dp, const Grammar_T & /*G*/) {
   AT(!dotted_prod_is_end(dp));
   return dp->prod_->unfold_mask_->operator[](dp->dot_);
 }
@@ -522,8 +523,6 @@ bool lr_cursor_unfold_naive(DottedProd_T dp, const Grammar_T &G) {
 bool lr_cursor_unfold(LRVertex_T v, const Grammar_T &G) {
   if (v->is_RecStart()) {
     return true;
-  } else if (v->is_RecEnd()) {
-    AX();
   } else if (v->is_Prod()) {
     auto dp = v->as_Prod()->prod_;
     bool ret = lr_cursor_unfold_naive(dp, G);
@@ -533,13 +532,15 @@ bool lr_cursor_unfold(LRVertex_T v, const Grammar_T &G) {
       ret = true;
     }
     return ret;
+  } else if (v->is_RecEnd()) {
+    AX();
   } else {
     AX();
   }
 }
 
 bool lr_lookahead_pred_compat(LRVertex_T v, LRVertex_T w, Int k,
-                              const Grammar_T &G,
+                              const Grammar_T & /*G*/,
                               const GrammarSymConstrGen_T &G_gen,
                               const GrammarProdConstrs_T &G_constrs) {
 
@@ -559,10 +560,10 @@ bool lr_lookahead_pred_compat(LRVertex_T v, LRVertex_T w, Int k,
   }
 }
 
-StringSet_T<Unit> lr_sym_constr_gen(const Sym_T &sym,
-                                    const AttrBoundSet_T &bounds_sym,
-                                    GrammarSymConstrGen_T G_gen, Int k,
-                                    const GrammarProdConstrs_T &G_constrs) {
+StringSet_T<Unit>
+lr_sym_constr_gen(const Sym_T &sym, const AttrBoundSet_T &bounds_sym,
+                  GrammarSymConstrGen_T G_gen, Int k,
+                  const GrammarProdConstrs_T & /*G_constrs*/) {
 
   auto ret = string_set_empty<Unit>(k, false);
   for (const auto &[attr, gen_set] : *G_gen->operator[](sym)) {
@@ -858,7 +859,7 @@ LR_NFA_T parser_lr_construct_nfa(const Grammar_T &G,
 
 using LRFollowSets_T = Map_T<LRVertex_T, StringSet_T<Unit>>;
 
-LRFollowSets_T lr_nfa_compute_follows(LR_NFA_T N0, const Grammar_T &G,
+LRFollowSets_T lr_nfa_compute_follows(LR_NFA_T N0, const Grammar_T & /*G*/,
                                       const GrammarSymConstrGen_T &G_gen, Int k,
                                       const GrammarProdConstrs_T &G_constrs) {
 
@@ -1137,7 +1138,7 @@ LookaheadPartsNested lr_prop_part(LookaheadPartDir dir,
             for (const auto &t : *ret->operator[](curr).part_) {
               auto la_t = string_set_union_multi(t);
               auto curr_full = lr_vertex_with_lookahead(curr, la_t);
-              bool r;
+              bool r = false;
               if (lbl->is_Eps() ||
                   (lbl->is_Sym_() && lbl->as_Sym_()->sym_->is_RecurStep())) {
                 if (dir == LookaheadPartDir::BWD) {
@@ -1218,7 +1219,7 @@ lr_conflict_extract_exemplar_sym(LRSym_T sym, const AttrSet_T &attr,
 
 Vec_T<LRStringExemplarBounded_T>
 lr_conflict_extract_exemplars_tail(LRVertex_T v, bool proper,
-                                   const GrammarSymConstrGen_T &G_gen,
+                                   const GrammarSymConstrGen_T & /*G_gen*/,
                                    const GrammarProdConstrs_T &G_constrs) {
 
   if (v->is_Prod()) {
@@ -1407,7 +1408,7 @@ Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
             auto x_nbr = std::make_tuple(y, pre_ind - (is_recurstep ? 1 : 0),
                                          la_ind, buf_nbr);
             auto vi_nbr = vs->insert(x_nbr);
-            auto len_nbr = pair_snd_add(len_curr, Int(1));
+            auto len_nbr = pair_snd_add(len_curr, static_cast<Int>(1));
             BackEdge_T v_curr_be =
                 std::make_pair(None<LRStringExemplar_T>(), v_curr);
 
@@ -1476,12 +1477,12 @@ Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
   return ret;
 }
 
-void pr(std::ostream &os, FmtFlags flags, LRConflict_T conf) {
+void pr(std::ostream &os, FmtFlags /*flags*/, LRConflict_T conf) {
   std::vector<std::tuple<Int, Align>> aligns;
-  aligns.push_back(std::make_pair(4, Align::RIGHT));
-  aligns.push_back(std::make_pair(4, Align::RIGHT));
+  aligns.emplace_back(4, Align::RIGHT);
+  aligns.emplace_back(4, Align::RIGHT);
   for (Int i = 1; i < conf->items_->length(); i++) {
-    aligns.push_back(std::make_pair(4, Align::LEFT));
+    aligns.emplace_back(4, Align::LEFT);
   }
   auto td = PrintTable::make(aligns);
 
@@ -1629,8 +1630,10 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
 
   Int n_iter = 0;
 
-  GrammarSymConstrGen_T G_gen0, G_gen;
-  LR_NFA_T N0, Ns;
+  GrammarSymConstrGen_T G_gen0;
+  GrammarSymConstrGen_T G_gen;
+  LR_NFA_T N0;
+  LR_NFA_T Ns;
   LR_DFA_T Ds;
   LookaheadPartsFlat la_part_slr;
 
@@ -1753,9 +1756,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
 
   LOG(3, " === Forward-propagated lookahead partition:\n{}\n\n", la_part_fwd);
 
-  auto la_part_final = la_part_fwd;
-
-  auto la_part_final_flat = lookahead_parts_flatten(la_part_final);
+  auto la_part_final_flat = lookahead_parts_flatten(la_part_fwd);
 
   LOG(1, "Compiling parser: constructing LR NFA");
 
@@ -1777,7 +1778,6 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
   // DFA vertex, lookahead, map from action to NFA vertices
 
   for (const auto &vs : *D->G_->V_) {
-    auto vsi = D->G_->V_->index_of_maybe(vs).as_some();
     auto mm = lr_tabulate_nfa_acc(N, vs);
     for (const auto &[la, ma] : *mm) {
       if (ma->length() > 1) {
@@ -1822,7 +1822,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
       for (const auto &[lbl, nbrs] : *es) {
         auto nbr = nbrs->only();
         auto lbl_sym = lbl->as_Sym_()->sym_;
-        Int lbl_len;
+        Int lbl_len = 0;
         if (lbl_sym->is_RecurStep()) {
           lbl_len = 1;
         } else if (lbl_sym->is_Base()) {
@@ -1924,8 +1924,8 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
 
   std::vector<IntPair> inds;
   for (Int i = 0; i < lr_conflicts_pre->length(); i++) {
-    inds.push_back(std::make_pair(
-        lr_conflict_len_total(lr_conflicts_pre->operator[](i)), i));
+    inds.emplace_back(lr_conflict_len_total(lr_conflicts_pre->operator[](i)),
+                      i);
   }
   std::sort(inds.begin(), inds.end());
 

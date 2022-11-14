@@ -51,8 +51,8 @@ ProdConstr_T parser_prod_constr_from_attr_clause_expr(LangCompileContext &ctx,
 
 void parser_infer_attrs_top_clause_acc(LangCompileContext &ctx,
                                        Vec_T<ProdConstr_T> &dst_constr,
-                                       Sym_T sym, Ident_T id_ctx,
-                                       Ident_T match_curr,
+                                       const Sym_T &sym, const Ident_T &id_ctx,
+                                       const Ident_T &match_curr,
                                        AttrClause_T clause) {
 
   if (clause->is_Match()) {
@@ -399,7 +399,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
 }
 
 inline AttrKey_T attr_key_lift_loc(AttrKey_T k,
-                                   Option_T<ProdConstrRhsLoc> loc) {
+                                   const Option_T<ProdConstrRhsLoc> &loc) {
   AT(k->loc_.is_none());
   if (k->is_Id()) {
     return AttrKey::Id::make(loc, k->as_Id()->name_);
@@ -412,12 +412,12 @@ inline AttrKey_T attr_key_lift_loc(AttrKey_T k,
 
 void parser_attr_propagate_flattened_prod_rec(Vec_T<ProdConstr_T> rule_constrs,
                                               Prod_T prod, bool is_rule_lhs,
-                                              Set_T<Sym_T> vis,
+                                              const Set_T<Sym_T> &vis,
                                               LangCompileContext &ctx);
 
-void parser_attr_propagate_flattened_sym_rec(Vec_T<ProdConstr_T> rule_constrs,
-                                             Sym_T sym, Set_T<Sym_T> vis,
-                                             LangCompileContext &ctx) {
+void parser_attr_propagate_flattened_sym_rec(
+    const Vec_T<ProdConstr_T> &rule_constrs, const Sym_T &sym, Set_T<Sym_T> vis,
+    LangCompileContext &ctx) {
 
   if (!Grammar::sym_is_nonterm_gen(sym)) {
     return;
@@ -436,10 +436,10 @@ void parser_attr_propagate_flattened_sym_rec(Vec_T<ProdConstr_T> rule_constrs,
 
 void parser_attr_propagate_flattened_prod_rec_inner_implies(
     VecUniq_T<ProdConstrFlat_T> &dst, Prod_T prod, ProdConstr::Implies_T cc,
-    AttrKey_T kl, AttrKey_T kr, AttrType_T ty, Int i_lo, Int i_hi,
-    ProdConstrRhsLoc loc_base_lhs, ProdConstrRhsLoc loc_base_rhs,
-    bool is_rule_lhs, Vec_T<ProdConstr_T> rule_constrs, Set_T<Sym_T> vis,
-    LangCompileContext &ctx) {
+    const AttrKey_T &kl, const AttrKey_T &kr, const AttrType_T &ty, Int i_lo,
+    Int i_hi, ProdConstrRhsLoc loc_base_lhs, ProdConstrRhsLoc loc_base_rhs,
+    bool is_rule_lhs, const Vec_T<ProdConstr_T> &rule_constrs,
+    const Set_T<Sym_T> &vis, LangCompileContext &ctx) {
 
   for (Int i = i_lo; i < i_hi; i++) {
     if (i < 0 || i >= prod->rhs_->length()) {
@@ -481,10 +481,10 @@ void parser_attr_propagate_flattened_prod_rec_inner_implies(
 }
 
 void parser_attr_propagate_flattened_prod_rec_inner_rhs(
-    VecUniq_T<ProdConstrFlat_T> &dst, Prod_T prod, AttrKey_T kr, AttrVal_T v,
-    Int i_lo, Int i_hi, ProdConstrRhsLoc loc_base_rhs, bool is_rule_lhs,
-    Vec_T<ProdConstr_T> rule_constrs, Set_T<Sym_T> vis,
-    LangCompileContext &ctx) {
+    VecUniq_T<ProdConstrFlat_T> &dst, Prod_T prod, const AttrKey_T &kr,
+    const AttrVal_T &v, Int i_lo, Int i_hi, ProdConstrRhsLoc loc_base_rhs,
+    bool is_rule_lhs, const Vec_T<ProdConstr_T> &rule_constrs,
+    const Set_T<Sym_T> &vis, LangCompileContext &ctx) {
 
   for (Int i = i_lo; i < i_hi; i++) {
     if (i < 0 || i >= prod->rhs_->length()) {
@@ -514,7 +514,7 @@ void parser_attr_propagate_flattened_prod_rec_inner_rhs(
 
 void parser_attr_propagate_flattened_prod_rec(Vec_T<ProdConstr_T> rule_constrs,
                                               Prod_T prod, bool is_rule_lhs,
-                                              Set_T<Sym_T> vis,
+                                              const Set_T<Sym_T> &vis,
                                               LangCompileContext &ctx) {
 
   Int n = prod->rhs_->length();

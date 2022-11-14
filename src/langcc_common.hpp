@@ -140,8 +140,8 @@ void lang_init_validate_tabulate_lexer_instr_emit_rec(
     meta::Node::LexerInstr_T instr, meta::Node::ParseExpr_T case_pat,
     LangCompileContext &ctx);
 void parser_Gr_flat_tabulate_defined_nonterm(LangCompileContext &ctx,
-                                             IdentBase_T ident);
-bool lang_name_is_lower_reserved(std::string x);
+                                             const IdentBase_T &ident);
+bool lang_name_is_lower_reserved(const std::string &x);
 meta::Node::Lang_T xform_lang_normalize(Gensym_T gen,
                                         ParseExprPropsMap_T &dst_props,
                                         meta::Node::Lang_T L,
@@ -215,13 +215,14 @@ sym_flatten_result_extract_vec(Vec_T<SymFlattenResult_T> rhs);
 std::pair<Vec_T<Sym_T>, Vec_T<bool>>
 sym_flatten_result_extract_vec(Vec_T<SymFlattenResultCPS_T> rhs);
 std::pair<Sym_T, SymFlattenResult_T>
-parser_flatten_gen_nonterm(LangCompileContext &ctx, Sym_T sym, Rule_T rule_ctx,
-                           bool unfold, Option_T<ParseExpr_T> src);
-void parser_Gr_flat_add_prod(LangCompileContext &ctx, Sym_T lhs,
-                             Option_T<AttrLeaf_T> lhs_leaf,
+parser_flatten_gen_nonterm(LangCompileContext &ctx, const Sym_T &sym,
+                           Rule_T rule_ctx, bool unfold,
+                           const Option_T<ParseExpr_T> &src);
+void parser_Gr_flat_add_prod(LangCompileContext &ctx, const Sym_T &lhs,
+                             const Option_T<AttrLeaf_T> &lhs_leaf,
                              Vec_T<SymFlattenResult_T> rhs,
                              meta::Node::ParserDecl::Rule_T rule_ctx,
-                             UnwindInstr_T rd_instr);
+                             const UnwindInstr_T &rd_instr);
 void parser_flatten_grammar_rules(LangCompileContext &ctx);
 void parser_tabulate_syms_top(LangCompileContext &ctx);
 
@@ -278,7 +279,8 @@ void switch_table_encode_acc_u16(Vec_T<Int> &dst, SwitchTable_T &tt);
 Vec_T<Int> switch_table_encode_u16(SwitchTable_T &tt);
 SwitchTable_T lexer_dfa_to_switch_table(const LexerNFA_T &D,
                                         LangCompileContext &ctx);
-Int attr_key_to_index(Sym_T sym, AttrKey_T k, LangCompileContext &ctx);
+Int attr_key_to_index(const Sym_T &sym, const AttrKey_T &k,
+                      LangCompileContext &ctx);
 SwitchTable_T parser_lr_vertex_dfa_step_impl_table_rec(
     LRSym_T sym, Map_T<Map_T<AttrKey_T, Int>, Int> table,
     LangCompileContext &ctx);
@@ -291,13 +293,13 @@ SwitchTable_T parser_lr_action_by_vertex_impl_table_rec(
     Option_T<LRAction_T> acc_default, Vec_T<LRSym_T> buf, Int k,
     LangCompileContext &ctx);
 VecUniq_T<LRSym_T> grammar_all_lr_syms(Grammar_T G);
-Int grammar_sym_to_ind_flat(LangCompileContext &ctx, LRSym_T sym);
+Int grammar_sym_to_ind_flat(LangCompileContext &ctx, const LRSym_T &sym);
 SwitchTable_T
 parser_lr_action_by_vertex_impl_table_basic(LangCompileContext &ctx, LR_DFA_T D,
                                             Int k);
 std::pair<Vec_T<Int>, Vec_T<Int>>
-parser_lr_action_by_vertex_impl_table_opt(LangCompileContext &ctx, LR_NFA_T N,
-                                          LR_DFA_T D, Int k);
+parser_lr_action_by_vertex_impl_table_opt(LangCompileContext &ctx,
+                                          const LR_NFA_T &N, LR_DFA_T D, Int k);
 
 // Code generation
 void lang_emit_preambles(LangCompileContext &ctx);

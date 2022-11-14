@@ -699,7 +699,7 @@ inline std::string u8_char_display(u8 c) {
 }
 
 inline std::string char_display(Ch c) {
-  if (c < Ch(256)) {
+  if (c < static_cast<Ch>(256)) {
     return u8_char_display(static_cast<u8>(c));
   } else {
     return fmt_str("`\\U{}`", hex_u32_display(c));
@@ -2046,7 +2046,7 @@ void hash256_block(RaIter1 message_digest, RaIter2 first, RaIter2 last) {
   }
   static_cast<void>(last); // for avoiding unused-variable warning
   word_t w[64];
-  std::fill(w, w + 64, word_t(0));
+  std::fill(w, w + 64, static_cast<word_t>(0));
   for (std::size_t i = 0; i < 16; ++i) {
     w[i] = (static_cast<word_t>(mask_8bit(*(first + i * 4))) << 24) |
            (static_cast<word_t>(mask_8bit(*(first + i * 4 + 1))) << 16) |
@@ -2138,7 +2138,8 @@ public:
 
   void init() {
     buffer_.clear();
-    std::fill(data_length_digits_, data_length_digits_ + 4, word_t(0));
+    std::fill(data_length_digits_, data_length_digits_ + 4,
+              static_cast<word_t>(0));
     std::copy(detail::initial_message_digest,
               detail::initial_message_digest + 8, h_);
   }
@@ -2155,17 +2156,17 @@ public:
 
   void finish() {
     byte_t temp[64];
-    std::fill(temp, temp + 64, byte_t(0));
+    std::fill(temp, temp + 64, static_cast<byte_t>(0));
     std::size_t remains = buffer_.size();
     std::copy(buffer_.begin(), buffer_.end(), temp);
     temp[remains] = 0x80;
 
     if (remains > 55) {
-      std::fill(temp + remains + 1, temp + 64, byte_t(0));
+      std::fill(temp + remains + 1, temp + 64, static_cast<byte_t>(0));
       detail::hash256_block(h_, temp, temp + 64);
-      std::fill(temp, temp + 64 - 4, byte_t(0));
+      std::fill(temp, temp + 64 - 4, static_cast<byte_t>(0));
     } else {
-      std::fill(temp + remains + 1, temp + 64 - 4, byte_t(0));
+      std::fill(temp + remains + 1, temp + 64 - 4, static_cast<byte_t>(0));
     }
 
     write_data_bit_length(&(temp[56]));
@@ -2390,7 +2391,7 @@ inline void ser(SerBuf &buf, const HashVal &x) { ser_bytes(buf, 32, x.v_); }
 // or security-critical applications.
 inline HashVal hash_data(const u8 *data, Int len) {
   HashVal ret;
-  AR_eq(Int(picosha2::k_digest_size), 32);
+  AR_eq(static_cast<Int>(picosha2::k_digest_size), 32);
   std::vector<char> dst(32, 0);
   picosha2::hash256(std::string(reinterpret_cast<const char *>(data), len),
                     dst);
@@ -2597,8 +2598,8 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
   inline void insert(const K &k, const V &v) {
     auto hk = val_hash(k);
     auto n = vs_.length();
-    auto k2 = K(k);
-    auto v2 = V(v);
+    auto k2 = (k);
+    auto v2 = (v);
     vs_.push(std::make_pair<K, V>(std::move(k2), std::move(v2)));
     live_.push(true);
     if (m_.find(hk) != m_.end()) {

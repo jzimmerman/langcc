@@ -25,7 +25,7 @@ inline NameMaybe_T from_ident(Ident_T id) {
   return NameMaybe::make(items);
 }
 
-inline NameMaybe_T singleton(NameMaybeBase_T item) {
+inline NameMaybe_T singleton(const NameMaybeBase_T &item) {
   auto items = make_rc<Vec<NameMaybeBase_T>>();
   items->push_back(item);
   return NameMaybe::make(items);
@@ -91,8 +91,9 @@ sym_flatten_result_extract_vec(Vec_T<SymFlattenResultCPS_T> rhs) {
 }
 
 std::pair<Sym_T, SymFlattenResult_T>
-parser_flatten_gen_nonterm(LangCompileContext &ctx, Sym_T sym, Rule_T rule_ctx,
-                           bool unfold, Option_T<ParseExpr_T> src) {
+parser_flatten_gen_nonterm(LangCompileContext &ctx, const Sym_T &sym,
+                           Rule_T rule_ctx, bool unfold,
+                           const Option_T<ParseExpr_T> &src) {
 
   auto rule_ident = parse_expr_id_to_ident(rule_ctx->name_);
 
@@ -106,11 +107,11 @@ parser_flatten_gen_nonterm(LangCompileContext &ctx, Sym_T sym, Rule_T rule_ctx,
   return std::make_pair(sym, ret);
 }
 
-void parser_Gr_flat_add_prod(LangCompileContext &ctx, Sym_T lhs,
-                             Option_T<AttrLeaf_T> lhs_leaf,
+void parser_Gr_flat_add_prod(LangCompileContext &ctx, const Sym_T &lhs,
+                             const Option_T<AttrLeaf_T> &lhs_leaf,
                              Vec_T<SymFlattenResult_T> rhs,
                              meta::Node::ParserDecl::Rule_T rule_ctx,
-                             UnwindInstr_T rd_instr) {
+                             const UnwindInstr_T &rd_instr) {
 
   auto [rhs_sym, rhs_unfold] = sym_flatten_result_extract_vec(rhs);
 
@@ -193,15 +194,15 @@ inline NameMaybeBase_T parser_flatten_lookup_name(ParseExpr_T x,
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_acc_new(ParseExpr_T x, Sym_T dst,
-                            Option_T<AttrLeaf_T> lhs_leaf, NameMaybe_T id,
-                            bool owns_id,
-                            meta::Node::ParserDecl::Rule_T rule_ctx,
+parser_flatten_expr_acc_new(ParseExpr_T x, const Sym_T &dst,
+                            const Option_T<AttrLeaf_T> &lhs_leaf,
+                            const NameMaybe_T &id, bool owns_id,
+                            const meta::Node::ParserDecl::Rule_T &rule_ctx,
                             LangCompileContext &ctx);
 
 inline std::tuple<SymFlattenResult_T, WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_base_new(ParseExpr_Base_T xb, NameMaybe_T id,
-                             meta::Node::ParserDecl::Rule_T rule_ctx,
+parser_flatten_expr_base_new(ParseExpr_Base_T xb, const NameMaybe_T &id,
+                             const meta::Node::ParserDecl::Rule_T &rule_ctx,
                              LangCompileContext &ctx) {
 
   auto ret_fl = parser_resolve_base(ctx, xb);
@@ -254,8 +255,8 @@ parser_flatten_expr_base_new(ParseExpr_Base_T xb, NameMaybe_T id,
 }
 
 inline std::tuple<SymFlattenResult_T, WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_new(ParseExpr_T x, NameMaybe_T id, bool owns_id,
-                        meta::Node::ParserDecl::Rule_T rule_ctx,
+parser_flatten_expr_new(ParseExpr_T x, const NameMaybe_T &id, bool owns_id,
+                        const meta::Node::ParserDecl::Rule_T &rule_ctx,
                         LangCompileContext &ctx) {
 
   while (x->is_Paren()) {
@@ -368,18 +369,17 @@ inline std::pair<bool, bool> parser_flatten_expr_concat_acc_extract_spec(
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_concat_acc_new(Vec_T<ParseExpr_T> xs, Sym_T dst,
-                                   Option_T<AttrLeaf_T> lhs_leaf,
-                                   NameMaybe_T id, bool owns_id,
-                                   meta::Node::ParserDecl::Rule_T rule_ctx,
-                                   bool allow_passthrough,
-                                   LangCompileContext &ctx);
+parser_flatten_expr_concat_acc_new(
+    Vec_T<ParseExpr_T> xs, const Sym_T &dst,
+    const Option_T<AttrLeaf_T> &lhs_leaf, const NameMaybe_T &id, bool owns_id,
+    const meta::Node::ParserDecl::Rule_T &rule_ctx, bool allow_passthrough,
+    LangCompileContext &ctx);
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_alt_acc_new(ParseExpr_T x, Sym_T dst,
-                                Option_T<AttrLeaf_T> lhs_leaf, NameMaybe_T id,
-                                bool owns_id,
-                                meta::Node::ParserDecl::Rule_T rule_ctx,
+parser_flatten_expr_alt_acc_new(ParseExpr_T x, const Sym_T &dst,
+                                const Option_T<AttrLeaf_T> &lhs_leaf,
+                                const NameMaybe_T &id, bool owns_id,
+                                const meta::Node::ParserDecl::Rule_T &rule_ctx,
                                 LangCompileContext &ctx) {
 
   auto ys = x->as_Alt()->xs_;
@@ -466,11 +466,10 @@ parser_flatten_expr_alt_acc_new(ParseExpr_T x, Sym_T dst,
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_optional_acc_new(ParseExpr_T x, Sym_T dst,
-                                     Option_T<AttrLeaf_T> lhs_leaf,
-                                     NameMaybe_T id, bool owns_id,
-                                     meta::Node::ParserDecl::Rule_T rule_ctx,
-                                     LangCompileContext &ctx) {
+parser_flatten_expr_optional_acc_new(
+    ParseExpr_T x, const Sym_T &dst, const Option_T<AttrLeaf_T> &lhs_leaf,
+    const NameMaybe_T &id, bool owns_id,
+    const meta::Node::ParserDecl::Rule_T &rule_ctx, LangCompileContext &ctx) {
 
   auto y = x->as_Optional()->x_;
 
@@ -526,12 +525,11 @@ parser_flatten_expr_optional_acc_new(ParseExpr_T x, Sym_T dst,
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_concat_acc_new(Vec_T<ParseExpr_T> ys, Sym_T dst,
-                                   Option_T<AttrLeaf_T> lhs_leaf,
-                                   NameMaybe_T id, bool owns_id,
-                                   meta::Node::ParserDecl::Rule_T rule_ctx,
-                                   bool allow_passthrough,
-                                   LangCompileContext &ctx) {
+parser_flatten_expr_concat_acc_new(
+    Vec_T<ParseExpr_T> ys, const Sym_T &dst,
+    const Option_T<AttrLeaf_T> &lhs_leaf, const NameMaybe_T &id, bool owns_id,
+    const meta::Node::ParserDecl::Rule_T &rule_ctx, bool allow_passthrough,
+    LangCompileContext &ctx) {
 
   ys = parse_expr_squash_concat_rec(ys, ctx);
   // Spurious nested concats may arise from alias expansion.
@@ -657,10 +655,10 @@ parser_flatten_expr_concat_acc_new(Vec_T<ParseExpr_T> ys, Sym_T dst,
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_iter_acc_new(ParseExpr_T x, Sym_T dst,
-                                 Option_T<AttrLeaf_T> lhs_leaf, NameMaybe_T id,
-                                 bool owns_id,
-                                 meta::Node::ParserDecl::Rule_T rule_ctx,
+parser_flatten_expr_iter_acc_new(ParseExpr_T x, const Sym_T &dst,
+                                 const Option_T<AttrLeaf_T> &lhs_leaf,
+                                 const NameMaybe_T &id, bool owns_id,
+                                 const meta::Node::ParserDecl::Rule_T &rule_ctx,
                                  LangCompileContext &ctx) {
 
   meta::Node::ParseExpr_T y_raw;
@@ -931,10 +929,10 @@ parser_flatten_expr_iter_acc_new(ParseExpr_T x, Sym_T dst,
 }
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_acc_new(ParseExpr_T x, Sym_T dst,
-                            Option_T<AttrLeaf_T> lhs_leaf, NameMaybe_T id,
-                            bool owns_id,
-                            meta::Node::ParserDecl::Rule_T rule_ctx,
+parser_flatten_expr_acc_new(ParseExpr_T x, const Sym_T &dst,
+                            const Option_T<AttrLeaf_T> &lhs_leaf,
+                            const NameMaybe_T &id, bool owns_id,
+                            const meta::Node::ParserDecl::Rule_T &rule_ctx,
                             LangCompileContext &ctx) {
 
   while (x->is_Paren()) {
@@ -1016,8 +1014,10 @@ parser_flatten_grammar_rule_acc(LangCompileContext &ctx,
   }
 }
 
-inline void parser_flatten_gen_inline_sum_cases(
-    Ident_T id, Map_T<IdentBase_T, Ident_T> ids_sub, LangCompileContext &ctx) {
+inline void
+parser_flatten_gen_inline_sum_cases(const Ident_T &id,
+                                    Map_T<IdentBase_T, Ident_T> ids_sub,
+                                    LangCompileContext &ctx) {
 
   auto wr_ids_sub = make_rc<Map<IdentBase_T, WriteInstr_T>>();
   for (const auto &[id_case, id_sub] : *ids_sub) {

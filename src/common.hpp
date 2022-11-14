@@ -228,18 +228,13 @@ inline void pr(std::ostream &os, FmtFlags flags, ParseExpr_Base_T x) {
 }
 
 inline std::string str_short(Sym_T x) {
-  if (x->is_Term()) {
-    return fmt_str("{}", x);
-  } else if (x->is_Start()) {
-    return fmt_str("{}", x);
-  } else if (x->is_Defined()) {
+  if (x->is_Term() || x->is_Start() || x->is_Defined() ||
+      x->is_TermStartMarker()) {
     return fmt_str("{}", x);
   } else if (x->is_Direct()) {
     return fmt_str("X{}", x->as_Direct()->gen_id_);
   } else if (x->is_GenCPS()) {
     return fmt_str("@{}:{}", x->as_GenCPS()->uniq_ind_, x->as_GenCPS()->sym_);
-  } else if (x->is_TermStartMarker()) {
-    return fmt_str("{}", x);
   } else if (x->is_Iter()) {
     return fmt_str("Iter({})", x->as_Iter()->e_);
   } else {
@@ -705,9 +700,9 @@ inline SymStr_T sym_str_concat(SymStr_T x, SymStr_T y) {
   return SymStr::make(v);
 }
 
-inline Unit string_set_repr_concat(Unit x, Unit y) { return Unit{}; }
+inline Unit string_set_repr_concat(Unit /*x*/, Unit /*y*/) { return Unit{}; }
 
-inline Unit string_set_repr_select(Unit x, Unit y) { return Unit{}; }
+inline Unit string_set_repr_select(Unit /*x*/, Unit /*y*/) { return Unit{}; }
 
 inline SymStr_T string_set_repr_concat(const SymStr_T &x, const SymStr_T &y) {
   return sym_str_concat(x, y);

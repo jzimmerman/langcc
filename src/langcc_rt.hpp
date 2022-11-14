@@ -1312,7 +1312,7 @@ lexer_char_to_label(Ch *in_data, Int in_i, Int /*in_data_len*/,
   Ch c = in_data[in_i];
 
   DFALabelId cl = 0;
-  if (__builtin_expect(c <= Ch(0x7f), 1)) {
+  if (__builtin_expect(c <= static_cast<Ch>(0x7f), 1)) {
     cl = label_ids_ascii[static_cast<Int>(c)];
   } else {
     if (c == NO_CHAR) { // NOTE: c is unsigned, so NO_CHAR is not <= 0x7f
@@ -1589,7 +1589,7 @@ using ParseOutput_T = rc_ptr<ParseOutput<Node, FAcc, FStep>>;
 inline void pr(std::ostream &os, FmtFlags /*flags*/, ParserAttrMask attr) {
   fmt(os, "{{");
   for (Int i = 0; i < 8; i++) {
-    fmt(os, "{},", Int(attr.v_[i]));
+    fmt(os, "{},", static_cast<Int>(attr.v_[i]));
   }
   fmt(os, "..}}");
 }
@@ -1597,7 +1597,7 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, ParserAttrMask attr) {
 inline void pr(std::ostream &os, FmtFlags /*flags*/, ParserLookahead la) {
   fmt(os, "{{");
   for (Int i = 0; i < 8; i++) {
-    fmt(os, "{},", Int(la.v_[i]));
+    fmt(os, "{},", static_cast<Int>(la.v_[i]));
   }
   fmt(os, "}}");
 }

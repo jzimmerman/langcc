@@ -45,7 +45,6 @@ void switch_table_encode_acc_u16(Vec_T<Int> &dst, SwitchTable_T &tt) {
     auto dst_default = make_rc<Vec<Int>>();
     switch_table_encode_acc_u16(dst_default, cc->default__);
     dst_subs->push_back(dst_default);
-    auto dst_default_len = dst_default->length();
     dst->push_back(trunc_u16_s2u(offset));
     for (const auto &dst_sub : *dst_subs) {
       for (const auto &n : *dst_sub) {
@@ -104,7 +103,7 @@ VecUniq_T<LRSym_T> grammar_all_lr_syms(Grammar_T G) {
   return ret;
 }
 
-Int grammar_sym_to_ind_flat(LangCompileContext &ctx, LRSym_T sym) {
+Int grammar_sym_to_ind_flat(LangCompileContext &ctx, const LRSym_T &sym) {
   auto v = grammar_all_lr_syms(ctx.Gr_cps_);
   return v->index_of_maybe(sym).as_some();
 }
@@ -178,7 +177,8 @@ table_keys_minimal_partition(Map_T<Map_T<K, V>, W> table) {
   }
 }
 
-Int attr_key_to_index(Sym_T sym, AttrKey_T k, LangCompileContext &ctx) {
+Int attr_key_to_index(const Sym_T &sym, const AttrKey_T &k,
+                      LangCompileContext &ctx) {
   auto dom = ctx.parser_attr_domains_->operator[](sym);
   Int i = 0;
   for (const auto &[ki, _] : *dom) {
@@ -466,16 +466,16 @@ parser_lr_action_by_vertex_impl_table_basic(LangCompileContext &ctx, LR_DFA_T D,
   return table;
 }
 
-std::pair<Vec_T<Int>, Vec_T<Int>>
-parser_lr_action_by_vertex_impl_table_opt(LangCompileContext &ctx, LR_NFA_T N,
-                                          LR_DFA_T D, Int k) {
+std::pair<Vec_T<Int>, Vec_T<Int>> parser_lr_action_by_vertex_impl_table_opt(
+    LangCompileContext &ctx, const LR_NFA_T &N, LR_DFA_T D, Int k) {
 
   Int n = D->G_->V_->length();
   Int m = 2 + ctx.Gr_cps_->term_->length(); // EndMarker, Start
   Int vl = ((m * n / 2) + 1) * 2;
 
   AR_eq(static_cast<Int>(ParserActionData_W::SHIFT), 4);
-  auto tt_acc = make_rc<Vec<u8>>(vl, vl, _Vec_constr_internal{}, u8(4));
+  auto tt_acc =
+      make_rc<Vec<u8>>(vl, vl, _Vec_constr_internal{}, static_cast<u8>(4));
   auto tt_arg = make_rc<Vec<Int>>(vl, vl, _Vec_constr_internal{}, 0);
 
   for (Int i = 0; i < n; i++) {
