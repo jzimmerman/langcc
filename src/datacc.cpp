@@ -876,8 +876,6 @@ void data_gen_xform_id_fn(const GenName &star, const GenName &curr,
 
   auto cpp_template_params = make_rc<Vec<cc::Node_T>>();
 
-  auto ret_ty = cpp_struct_decl_ptr_name_curr;
-
   auto id_xform_fun_ns = name_lit({
       ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),
   });
@@ -911,19 +909,21 @@ void data_gen_xform_id_fn(const GenName &star, const GenName &curr,
 
   ctx.cc_.dst_decls_->push_back(
       ctx.cc_
-          .gen_cpp_fun_proto_decl(cpp_template_params, NodeV_empty(),
-                                  Some<cc::Node_T>(ret_ty), id_xform_name_full,
-                                  cpp_xform_params)
+          .gen_cpp_fun_proto_decl(
+              cpp_template_params, NodeV_empty(),
+              Some<cc::Node_T>(cpp_struct_decl_ptr_name_curr),
+              id_xform_name_full, cpp_xform_params)
           ->as_Decl());
 
-  ctx.cc_.push_def(cpp_template_params->length() > 0,
-                   ctx.cc_
-                       .gen_cpp_fun_body(cpp_template_params, NodeV_empty(),
-                                         inline_maybe_mods(header_mode, ctx),
-                                         Some<cc::Node_T>(ret_ty),
-                                         cpp_xform_name_full, cpp_xform_params,
-                                         NodeV_empty(), cpp_xform_body)
-                       ->as_Decl());
+  ctx.cc_.push_def(
+      cpp_template_params->length() > 0,
+      ctx.cc_
+          .gen_cpp_fun_body(cpp_template_params, NodeV_empty(),
+                            inline_maybe_mods(header_mode, ctx),
+                            Some<cc::Node_T>(cpp_struct_decl_ptr_name_curr),
+                            cpp_xform_name_full, cpp_xform_params,
+                            NodeV_empty(), cpp_xform_body)
+          ->as_Decl());
 }
 
 DataDefsResult compile_data_defs(lang::data::Node_T src,
@@ -1375,10 +1375,10 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     auto methods = dt_extract_def_methods(name_full, ctx);
 
     for (const auto &[_, method] : *methods) {
-      auto def_ns = name_full;
       auto cpp_method_name =
           ctx.cc_.gen_cpp_id_base(method->name_.to_std_string());
-      auto cpp_ret_type = data_type_expr_to_cpp(method->ret_type_, def_ns, ctx);
+      auto cpp_ret_type =
+          data_type_expr_to_cpp(method->ret_type_, name_full, ctx);
       auto lex_args = ctx.cc_.Q_->make_lex_builder();
       if (method->virtual__ && method->interface__) {
         LG_ERR("Method {} cannot be both `virtual` and `interface`",
@@ -1395,7 +1395,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
           ctx.cc_.Q_->qq_args_acc(lex_args, ",");
         }
         fresh = false;
-        auto cpp_arg_ty = data_type_expr_to_cpp(param->type__, def_ns, ctx);
+        auto cpp_arg_ty = data_type_expr_to_cpp(param->type__, name_full, ctx);
         ctx.cc_.Q_->qq_args_acc(lex_args, cpp_arg_ty);
         ctx.cc_.Q_->qq_args_acc(
             lex_args, ctx.cc_.gen_cpp_id_base(param->name_.to_std_string()));
@@ -1573,9 +1573,8 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     for (const auto &q : *fields_proper) {
       auto data_field_name = q.first;
       auto data_field_type = q.second;
-      auto def_ns = name_full;
       auto cpp_type =
-          data_type_expr_to_cpp(data_field_type->type__, def_ns, ctx);
+          data_type_expr_to_cpp(data_field_type->type__, name_full, ctx);
       auto cpp_field_name = ctx.cc_.gen_cpp_id_base(data_field_name + "_");
 
       cpp_fields->push_back(ctx.cc_.Q_->qq_ext(Some<std::string>("Entry"),
@@ -1585,9 +1584,8 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     for (const auto &q : *fields_full) {
       auto data_field_name = q.first;
       auto data_field_type = q.second;
-      auto def_ns = name_full;
       auto cpp_type =
-          data_type_expr_to_cpp(data_field_type->type__, def_ns, ctx);
+          data_type_expr_to_cpp(data_field_type->type__, name_full, ctx);
       auto cpp_field_name = ctx.cc_.gen_cpp_id_base(data_field_name + "_");
 
       // make()

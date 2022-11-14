@@ -14,7 +14,7 @@ static const std::filesystem::path CPYTHON_PATH = resolvePath("../cpython");
 std::vector<std::filesystem::path> get_python_files() {
   auto mn = read_file(resolvePath("data/py_manifest_gen.txt"));
   auto mn_ls = str_split(mn.substr(0, len(mn) - 1), "\n");
-  std::vector<std::filesystem::path> pyfiles;
+  std::vector<std::filesystem::path> pyfiles{};
   std::transform(mn_ls.begin(), mn_ls.end(), std::back_inserter(pyfiles),
                  [](const auto &x) { return resolvePath(x); });
   return pyfiles;

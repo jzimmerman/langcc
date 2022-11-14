@@ -203,8 +203,8 @@ template <typename T> struct rc_ptr {
 
   inline rc_ptr() : v_(nullptr), rc_(nullptr) {}
 
-  inline void incref() const;
-  inline void decref();
+  inline void incref() const noexcept;
+  inline void decref() noexcept;
 
   static rc_ptr from_alloc(void *v);
 
@@ -216,7 +216,9 @@ template <typename T> struct rc_ptr {
     return ret;
   }
 
-  inline rc_ptr(const rc_ptr<T> &x) : v_(x.v_), rc_(x.rc_) { this->incref(); }
+  inline rc_ptr(const rc_ptr<T> &x) noexcept : v_(x.v_), rc_(x.rc_) {
+    this->incref();
+  }
 
   inline rc_ptr(nullptr_t) : v_(nullptr), rc_(nullptr) {}
 
@@ -227,7 +229,7 @@ template <typename T> struct rc_ptr {
     this->incref();
   }
 
-  inline rc_ptr<T> &operator=(const rc_ptr<T> &x) {
+  inline rc_ptr<T> &operator=(const rc_ptr<T> &x) noexcept {
     x.incref();
     this->decref();
     v_ = x.v_;
@@ -333,7 +335,8 @@ template <typename T, typename... Ts> T *make_rc_inc(Ts... args) {
   return ret_ptr;
 }
 
-template <typename T> [[always_inlines]] inline void rc_ptr<T>::incref() const {
+template <typename T>
+[[always_inlines]] inline void rc_ptr<T>::incref() const noexcept {
   if (__builtin_expect(!!rc_, 0)) {
     if (__builtin_expect(!!v_, 1)) {
       rc_->fetch_add(1);
@@ -341,7 +344,8 @@ template <typename T> [[always_inlines]] inline void rc_ptr<T>::incref() const {
   }
 }
 
-template <typename T> [[always_inlines]] inline void rc_ptr<T>::decref() {
+template <typename T>
+[[always_inlines]] inline void rc_ptr<T>::decref() noexcept {
   if (__builtin_expect(!!rc_, 0)) {
     if (__builtin_expect(!!v_, 1)) {
       Int rc_new = rc_->fetch_sub(1) - 1;
@@ -1916,7 +1920,7 @@ struct Arena : enable_rc_from_this<Arena> {
 
   template <typename T, typename... Ts>
   [[always_inlines]] rc_ptr<T> make_new(Ts... args) {
-    auto new_addr = this->alloc(sizeof(T));
+    auto *new_addr = this->alloc(sizeof(T));
     new (new_addr) T(args...);
     rc_ptr<T> ret;
     ret.rc_ = nullptr;
@@ -2665,7 +2669,7 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
   }
 
   inline MapIterator<K, V> begin() {
-    MapIterator<K, V> ret;
+    MapIterator<K, V> ret{};
     ret.m_ = this;
     ret.i_ = 0;
     ret.catchup();
@@ -2673,14 +2677,14 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
   }
 
   inline MapIterator<K, V> end() {
-    MapIterator<K, V> ret;
+    MapIterator<K, V> ret{};
     ret.m_ = this;
     ret.i_ = vs_.length();
     return ret;
   }
 
   inline const MapIterator<K, V> begin() const {
-    MapIterator<K, V> ret;
+    MapIterator<K, V> ret{};
     ret.m_ = const_cast<Map<K, V> *>(this);
     ret.i_ = 0;
     ret.catchup();
@@ -2688,7 +2692,7 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
   }
 
   inline const MapIterator<K, V> end() const {
-    MapIterator<K, V> ret;
+    MapIterator<K, V> ret{};
     ret.m_ = const_cast<Map<K, V> *>(this);
     ret.i_ = vs_.length();
     return ret;
@@ -2902,7 +2906,7 @@ template <typename T> struct Set : enable_rc_from_this<Set<T>> {
   }
 
   inline SetIterator<T> begin() const {
-    SetIterator<T> ret;
+    SetIterator<T> ret{};
     ret.s_ = const_cast<Set<T> *>(this);
     ret.i_ = 0;
     ret.catchup();
@@ -3193,16 +3197,18 @@ using Gensym_T = rc_ptr<Gensym>;
 struct Gensym {
   Int next_{0};
 
+  inline Gensym() = default;
+  virtual ~Gensym() = default;
   Gensym(const Gensym &) = delete;
   Gensym &operator=(const Gensym &) = delete;
+  Gensym(Gensym &&) = default;
+  Gensym &operator=(Gensym &&) = default;
 
   inline Int gen() {
     auto ret = next_;
     ++next_;
     return ret;
   }
-
-  inline Gensym() = default;
 };
 
 using PrintTableRow = std::vector<std::string>;
@@ -3252,7 +3258,7 @@ struct PrintTable {
     return len(items_);
   }
 
-  inline Int get_buffer_cursor() {
+  inline Int get_buffer_cursor() const {
     check_range(buffer_cursor_, this->num_col());
     return buffer_cursor_;
   }

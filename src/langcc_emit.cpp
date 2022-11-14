@@ -1129,9 +1129,8 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
         }
         auto sym_i = prod_cps->rhs_->operator[](vc->i_);
         auto k_rhs_ind = attr_key_to_index(sym_i, vc->kr_, ctx);
-        auto cpp_val_rhs =
-            cc.qq_expr(cpp_rhs_sym->operator[](vc->i_), ".attr_[",
-                       fmt_str("{}", k_rhs_ind), "]");
+        auto cpp_val_rhs = cc.qq_expr(cpp_rhs_sym->operator[](vc->i_),
+                                      ".attr_[", fmt_str("{}", k_rhs_ind), "]");
         auto cpp_val_new = cc.qq_expr("std::min<langcc::Int>(", cpp_val_lhs,
                                       ",", cpp_val_rhs, ")");
         cc.qq_stmt_acc(cpp_dst_proc, cpp_val_lhs, "=", cpp_val_new, ";");
@@ -2301,15 +2300,14 @@ void lang_emit_debug_defs(LangCompileContext &ctx) {
   debug_decls->push_back(ctx.cc_.qq("Stmt", "langcc::global_init();"));
   debug_decls->push_back(
       ctx.cc_.qq("Stmt", "auto L = lang::", ctx.src_base_name_, "::init();"));
-  debug_decls->push_back(
-      ctx.cc_.qq("Stmt", "{",
-                 "std::string sym_name = "
-                 "langcc::string_ws_strip(langcc::stdin_readline().as_some());",
-                 "std::string body = \"\";",
-                 "for (langcc::cc_nop(); true; langcc::cc_nop()) {",
-                 "auto si = langcc::stdin_readline();", "if (si.is_none()) {",
-                 "    break;", "}", "body = body + si.as_some();", "}",
-                 "L->debug_example(sym_name, body);", "return 0;", "}"));
+  debug_decls->push_back(ctx.cc_.qq(
+      "Stmt", "{",
+      "std::string sym_name = "
+      "langcc::string_ws_strip(langcc::stdin_readline().as_some());",
+      "std::string body;", "for (langcc::cc_nop(); true; langcc::cc_nop()) {",
+      "auto si = langcc::stdin_readline();", "if (si.is_none()) {",
+      "    break;", "}", "body += si.as_some();", "}",
+      "L->debug_example(sym_name, body);", "return 0;", "}"));
 
   ctx.cc_debug_.push_def(
       false,

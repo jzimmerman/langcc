@@ -433,7 +433,7 @@ parse_expr_extract_write_phase_const_ext(ParseExpr_T e) {
   if (e->is_StrLit()) {
     auto cs = string_extract_lang_char_seq(e->as_StrLit()->s_.to_std_string())
                   .as_some();
-    std::string ret = "";
+    std::string ret;
     for (const auto &c : cs) {
       ret += utf8_encode(c);
     }
@@ -442,7 +442,7 @@ parse_expr_extract_write_phase_const_ext(ParseExpr_T e) {
   } else if (e->is_Pass()) {
     auto cs = string_extract_lang_char_seq(e->as_Pass()->s_.to_std_string())
                   .as_some();
-    std::string ret = "";
+    std::string ret;
     for (const auto &c : cs) {
       ret += utf8_encode(c);
     }
@@ -455,7 +455,7 @@ parse_expr_extract_write_phase_const_ext(ParseExpr_T e) {
     return Some<std::string>("");
 
   } else if (e->is_Concat()) {
-    std::string ret = "";
+    std::string ret;
     for (const auto &x : *e->as_Concat()->xs_) {
       auto rx = parse_expr_extract_write_phase_const_ext(x);
       if (rx.is_none()) {

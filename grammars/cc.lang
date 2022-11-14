@@ -8,7 +8,7 @@ tokens {
     kw <= `return` | `struct` | `if` | `else` | `for`
         | `template` | `typename` | `namespace` | `enum` | `delete` | `using`
         | `virtual` | `static` | `inline` | `const` | `switch` | `case` | `default`
-        | `break` | `continue` | `new`
+        | `break` | `continue` | `new` | `noexcept`
         | `_LT_` | `_GT_`
         | `__attribute__` | `always_inline` | `noinline`;
 
@@ -21,6 +21,9 @@ tokens {
         | `<<`
         | `+` | `-` | `*` | `/` | `%`
         | `&`
+        | `<<=` | `>>=`
+        | `+=` | `-=` | `*=` | `/=` | `%=`
+        | `&=` | `|=`
         | `||` | `&&`
         | `++` | `--`
         | `~`
@@ -71,6 +74,7 @@ parser {
 
     prec {
         Expr.Assign assoc_right;
+        Expr.OpAssign assoc_right;
         Expr.Bin1 assoc_left;
         Expr.Bin2 assoc_left;
         Expr.Bin3 assoc_left;
@@ -134,6 +138,7 @@ parser {
             FunDeclDef.Decl <- `;`;
             FunDeclDef.Def <- init:(_`:`_ #L[Expr::+`,`_])? _ body:Block;
             FunDeclDef.Del <- _ `=` _ `delete` `;`;
+            FunDeclDef.Default <- _ `=` _ `default` `;`;
             FunDeclDef.Zero <- _ `=` _ val:int_lit `;`;
 
     Decl.EnumStruct <- `enum` _ `struct` _ name:Id _ `{` cases:#B[Id::`,`::] `}` `;`;
@@ -147,6 +152,7 @@ parser {
         Mod.Inline <- `inline`;
         Mod.Static <- `static`;
         Mod.Virtual <- `virtual`;
+        Mod.Noexcept <- `noexcept`;
         Mod.NoInline <- `__attribute__` `(` `(` `noinline` `)` `)`;
         Mod.AlwaysInline <- `__attribute__` `(` `(` `always_inline` `)` `)`;
         Mod.Attribute <- `[` `[` attrs:#L[Attribute::`,`] `]` `]`;
@@ -205,6 +211,12 @@ parser {
     Expr.IncDecPre <- op:(INC:`++` | DEC:`--`) x:Expr;
     Expr.IncDecPost <- x:Expr op:(INC:`++` | DEC:`--`);
     Expr.Assign <- xl:Expr _ `=` _ xr:Expr;
+    Expr.OpAssign <-
+        xl:Expr
+        op:(SHL:(_`<<=`_) | SHR:(_`>>=`_)
+            | PLUS:(_`+=`_) | MINUX:(_`-=`_) | TIMES:(_`*=`_) | DIVIDE:(_`/=`_) | MODULO:(_`%=`_)
+            | BAND:(_`&=`_) | BOR:(_`|=`_))
+        xr:Expr;
     Expr.Bin1 <- xl:Expr op:#Alt[LOR:(_`||`_)] xr:Expr;
     Expr.Bin2 <- xl:Expr op:#Alt[LAND:(_`&&`_)] xr:Expr;
     Expr.Bin3 <-

@@ -105,7 +105,7 @@ struct SymItem {
   // u8
   Result_T res_;
 
-  ParserLookahead first_k_;
+  ParserLookahead first_k_{};
 
   inline SymItem()
       : tok_(NO_TOKEN), id_(NO_SYM), attr_(attr_mask_trivial()),
