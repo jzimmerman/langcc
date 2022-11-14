@@ -1108,7 +1108,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
   std::vector<IntPair> data_leaves_inds;
   for (Int i = 0; i < data_leaves_vec->length(); i++) {
     auto len_i = data_leaves_vec->operator[](i).first->length();
-    data_leaves_inds.push_back(std::make_pair(len_i, i));
+    data_leaves_inds.emplace_back(len_i, i);
   }
   std::sort(data_leaves_inds.begin(), data_leaves_inds.end());
 

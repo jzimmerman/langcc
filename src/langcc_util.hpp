@@ -1441,9 +1441,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
     free_ext(arr_, A_);
   }
 
-  inline Vec() : A_(nullptr), begin_(0), end_(0), len_(0), cap_(1) {
-    this->_init();
-  }
+  inline Vec() : A_(nullptr), len_(0), cap_(1) { this->_init(); }
 
   inline ~Vec() { this->_deinit(); }
 
@@ -1811,7 +1809,7 @@ inline void pr_debug(std::ostream &os, FmtFlags flags, const StrSlice &x) {
 }
 
 inline void pr(std::ostream &os, FmtFlags /*flags*/, StrSlice x) {
-  auto base_ptr = x.base_->begin();
+  auto *base_ptr = x.base_->begin();
   for (Int i = x.lo_; i < x.hi_; i++) {
     os << base_ptr[i];
   }
@@ -1890,7 +1888,7 @@ struct Page {
 struct Arena : enable_rc_from_this<Arena> {
   Vec<Page> pages_;
   Page curr_page_;
-  Int curr_offset_;
+  Int curr_offset_{0};
   Int page_size_default_;
 
   inline explicit Arena(Int page_size_default = 4194304)
@@ -1898,7 +1896,6 @@ struct Arena : enable_rc_from_this<Arena> {
 
     pages_.push(Page::make_alloc(page_size_default_));
     curr_page_ = pages_[0];
-    curr_offset_ = 0;
   }
 
   inline ~Arena() {
