@@ -868,6 +868,25 @@ inline void pr_debug(std::ostream &os, FmtFlags /*flags*/,
   os << "\"" << x << "\"";
 }
 
+template <class _Tp, size_t _Size>
+inline void pr(std::ostream &os, FmtFlags flags,
+               const std::array<_Tp, _Size> &x) {
+  os << "[";
+  for (Int i = 0; i < _Size; i++) {
+    if (i > 0) {
+      os << ", ";
+    }
+    pr(os, flags, x[i]);
+  }
+  os << "]";
+}
+
+template <class _Tp, size_t _Size>
+inline void pr_debug(std::ostream &os, FmtFlags flags,
+                     const std::array<_Tp, _Size> &x) {
+  pr(os, flags, x);
+}
+
 inline void pr(std::ostream &os, FmtFlags /*flags*/,
                const std::filesystem::path &x) {
   os << x;
@@ -2335,33 +2354,13 @@ void hash256(std::ifstream &f, OutIter first, OutIter last) {
 
 using SerBuf = Vec<u8>;
 
-struct HashVal {
-  u8 v_[32];
-
-  inline bool operator==(const HashVal &x) const {
-    return !memcmp(&v_[0], &x.v_[0], 32);
-  }
-
-  inline bool operator!=(const HashVal &x) const { return !(*this == x); }
-
-  inline bool operator<(const HashVal &x) const {
-    for (Int i = 0; i < 32; i++) {
-      if (v_[i] < x.v_[i]) {
-        return true;
-      } else if (v_[i] > x.v_[i]) {
-        return false;
-      }
-    }
-    return false;
-  }
-};
-
+using HashVal = std::array<u8, 32>;
 } // namespace langcc
 
 namespace std {
 template <> struct hash<langcc::HashVal> {
   inline std::size_t operator()(const langcc::HashVal &x) const {
-    return *reinterpret_cast<const size_t *>(&x.v_);
+    return *reinterpret_cast<const size_t *>(&x);
   }
 };
 } // namespace std
@@ -2387,7 +2386,9 @@ inline void ser_int(SerBuf &buf, Int x) {
   ser_bytes(buf, 8, reinterpret_cast<u8 *>(&x));
 }
 
-inline void ser(SerBuf &buf, const HashVal &x) { ser_bytes(buf, 32, x.v_); }
+inline void ser(SerBuf &buf, const HashVal &x) {
+  ser_bytes(buf, x.size(), x.data());
+}
 
 // Note: Use for value-based hashing only; do not use for cryptographic
 // or security-critical applications.
@@ -2397,7 +2398,7 @@ inline HashVal hash_data(const u8 *data, Int len) {
   std::vector<char> dst(32, 0);
   picosha2::hash256(std::string(reinterpret_cast<const char *>(data), len),
                     dst);
-  memcpy(&ret.v_[0], dst.data(), 32);
+  memcpy(&ret[0], dst.data(), 32);
   return ret;
 }
 
@@ -2563,8 +2564,8 @@ inline void hash_ser(SerBuf &buf, const StrSlice &s) {
 inline HashVal val_hash(const StrSlice &s) { return val_hash_base(s); }
 
 inline void pr(std::ostream &os, FmtFlags /*flags*/, HashVal hv) {
-  for (Int i = 0; i < 32; i++) {
-    os << hex_byte_display(hv.v_[i]);
+  for (const auto &b : hv) {
+    os << hex_byte_display(b);
   }
 }
 
@@ -3039,9 +3040,9 @@ template <typename T> struct VecUniq : enable_rc_from_this<VecUniq<T>> {
   VecUniq(const VecUniq<T> &) = delete;
   VecUniq(VecUniq<T> &&) = delete;
 
-  inline VecUniq() {}
+  inline VecUniq() = default;
 
-  inline ~VecUniq() {}
+  inline ~VecUniq() = default;
 
   inline Int length() const { return items_.length(); }
 

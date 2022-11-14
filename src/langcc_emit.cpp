@@ -1099,7 +1099,7 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
   cc.qq_stmt_acc(cpp_dst_proc, "langcc::SymItem", cpp_ret_sym, "=",
                  cpp_ret_sym_init, ";");
 
-  auto cpp_ret_attr = cc.qq_expr(cpp_ret_sym, ".attr_.v_");
+  auto cpp_ret_attr = cc.qq_expr(cpp_ret_sym, ".attr_");
 
   for (Int i = 0; i < n_attr; i++) {
     auto attr_key = attr_keys->operator[](i);
@@ -1130,7 +1130,7 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
         auto sym_i = prod_cps->rhs_->operator[](vc->i_);
         auto k_rhs_ind = attr_key_to_index(sym_i, vc->kr_, ctx);
         auto cpp_val_rhs =
-            cc.qq_expr(cpp_rhs_sym->operator[](vc->i_), ".attr_.v_[",
+            cc.qq_expr(cpp_rhs_sym->operator[](vc->i_), ".attr_[",
                        fmt_str("{}", k_rhs_ind), "]");
         auto cpp_val_new = cc.qq_expr("std::min<langcc::Int>(", cpp_val_lhs,
                                       ",", cpp_val_rhs, ")");
@@ -1471,7 +1471,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
                      tt_arg_init_list, ";",
                      "auto tt_acc = "
                      "langcc::table_u16_array_as_u8_array(tt_acc_raw);",
-                     "langcc::Int ind = la.v_[0] * ",
+                     "langcc::Int ind = la[0] * ",
                      fmt_str("{}", D->G_->V_->length()), " + v;",
                      "langcc::Int ret_acc = tt_acc[ind];",
                      "langcc::Int ret_arg = tt_arg[ind];",

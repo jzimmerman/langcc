@@ -64,29 +64,10 @@ constexpr Int PARSER_LOOKAHEAD_LEN_MAX = 8;
 constexpr i16 PARSER_LOOKAHEAD_SENTINEL = -1;
 
 using TermTokToSymFn = ParserSymId (*)(TokenId);
-
-struct ParserAttrMask {
-  u8 v_[PARSER_ATTR_MASK_MAX]{};
-  ParserAttrMask() {
-    for (Int j = 0; j < PARSER_ATTR_MASK_MAX; j++) {
-      v_[j] = PARSER_ATTR_MASK_SENTINEL;
-    }
-  }
-};
-
+using ParserAttrMask = std::array<u8, PARSER_ATTR_MASK_MAX>;
 ParserAttrMask attr_mask_trivial();
-
-struct ParserLookahead {
-  i16 v_[PARSER_LOOKAHEAD_LEN_MAX]{};
-  ParserLookahead() {
-    for (Int j = 0; j < PARSER_LOOKAHEAD_LEN_MAX; j++) {
-      v_[j] = PARSER_LOOKAHEAD_SENTINEL;
-    }
-  }
-};
-
+using ParserLookahead = std::array<i16, PARSER_LOOKAHEAD_LEN_MAX>;
 using ParserSymByName = std::map<std::string, Int>;
-
 using ParserProdId = Int;
 
 constexpr ParserVertexId NO_VERTEX = -1;
@@ -820,24 +801,23 @@ inline ParserLookahead LexOutput::first_k(Int lr_k) {
       if (items_internal_->operator[](item_i).tok_ == NO_TOKEN) {
         Int r = 0;
         while (la_j < lr_k) {
-          auto la_item_curr =
-              items_internal_->operator[](item_i).first_k_.v_[r];
+          auto la_item_curr = items_internal_->operator[](item_i).first_k_[r];
           if (la_item_curr == 0) { // EndMarker
             break;
           }
-          ret.v_[la_j] = la_item_curr;
+          ret[la_j] = la_item_curr;
           ++la_j;
           ++r;
         }
         ++item_i;
       } else {
-        ret.v_[la_j] = items_internal_->operator[](item_i).id_;
+        ret[la_j] = items_internal_->operator[](item_i).id_;
         ++la_j;
         ++item_i;
       }
     }
     while (la_j < lr_k) {
-      ret.v_[la_j] = 0; // EndMarker
+      ret[la_j] = 0; // EndMarker
       ++la_j;
     }
     return ret;
@@ -848,12 +828,12 @@ inline ParserLookahead LexOutput::first_k(Int lr_k) {
   Int item_i = 0;
   Int la_j = 0;
   while (la_j < lr_k && la_j < items_internal_->length()) {
-    ret.v_[la_j] = items_internal_->operator[](item_i).id_;
+    ret[la_j] = items_internal_->operator[](item_i).id_;
     ++la_j;
     ++item_i;
   }
   while (la_j < lr_k) {
-    ret.v_[la_j] = 0; // EndMarker
+    ret[la_j] = 0; // EndMarker
     ++la_j;
   }
   return ret;
@@ -1459,19 +1439,19 @@ inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T &input,
 ////////////////////////////////////////////////////////////////////////////////
 
 inline void pr_debug(std::ostream &os, FmtFlags flags, ParserAttrMask x) {
-  pr_debug(os, flags, x.v_);
+  pr_debug(os, flags, x);
 }
 
 inline void pr_debug(std::ostream &os, FmtFlags flags, ParserLookahead x) {
-  pr_debug(os, flags, x.v_);
+  pr_debug(os, flags, x);
 }
 
 inline void hash_ser(SerBuf &buf, const ParserAttrMask &x) {
-  ser_bytes(buf, 16, x.v_);
+  ser_bytes(buf, x.size(), x.data());
 }
 
 inline void hash_ser(SerBuf &buf, const ParserLookahead &x) {
-  ser_bytes(buf, 16, reinterpret_cast<const u8 *>(x.v_));
+  ser_bytes(buf, x.size() * 2, reinterpret_cast<const u8 *>(x.data()));
 }
 
 struct ParserVertexStackItem {
@@ -1587,16 +1567,16 @@ using ParseOutput_T = rc_ptr<ParseOutput<Node, FAcc, FStep>>;
 
 inline void pr(std::ostream &os, FmtFlags /*flags*/, ParserAttrMask attr) {
   fmt(os, "{{");
-  for (Int i = 0; i < 8; i++) {
-    fmt(os, "{},", static_cast<Int>(attr.v_[i]));
+  for (const auto &i : attr) {
+    fmt(os, "{},", static_cast<Int>(i));
   }
   fmt(os, "..}}");
 }
 
 inline void pr(std::ostream &os, FmtFlags /*flags*/, ParserLookahead la) {
   fmt(os, "{{");
-  for (Int i = 0; i < 8; i++) {
-    fmt(os, "{},", static_cast<Int>(la.v_[i]));
+  for (const auto &i : la) {
+    fmt(os, "{},", static_cast<Int>(i));
   }
   fmt(os, "}}");
 }
@@ -1633,18 +1613,18 @@ inline std::string parser_format_sym(ParserDesc *desc_raw, ParserSymId sym,
   auto n_attr = desc_raw->sym_to_num_attrs_(sym);
   auto attr_strs = make_rc<Vec<std::string>>();
   for (Int i = 0; i < n_attr; i++) {
-    if (attr.v_[i] == PARSER_ATTR_MASK_SENTINEL) {
+    if (attr[i] == PARSER_ATTR_MASK_SENTINEL) {
       AX();
     }
     auto attr_str = desc_raw->attr_to_debug_string_(sym, i);
     bool is_prec = (attr_str == "prL" || attr_str == "prR");
-    if (attr.v_[i] == 0 && !is_prec) {
+    if (attr[i] == 0 && !is_prec) {
       continue;
     }
     if (is_prec) {
-      attr_strs->push_back(fmt_str("{}={}", attr_str, attr.v_[i]));
+      attr_strs->push_back(fmt_str("{}={}", attr_str, attr[i]));
     } else {
-      AT(attr.v_[i] == 1);
+      AT(attr[i] == 1);
       attr_strs->push_back(attr_str);
     }
   }
@@ -1816,7 +1796,7 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
     ParserLookahead lookahead;
 
     if (LR_K1) {
-      lookahead.v_[0] = static_cast<i16>(sym_curr.id_);
+      lookahead[0] = static_cast<i16>(sym_curr.id_);
     } else {
       for (Int j = 0; j < desc_raw->lr_k_; j++) {
         auto la_j = parser_proc_sym_at(st_i + j, desc_raw, lex_out_items_cached,
@@ -1826,11 +1806,11 @@ LangDesc<Node, FAcc, FStep>::parse_from_lex_specialized(
           // Quoted symbol, rather than a lexed token; remaining lookahead is
           // incorrect as given and must instead be read off of la_j's field.
           for (Int r = 0; r < desc_raw->lr_k_ - j; r++) {
-            lookahead.v_[j + r] = la_j.first_k_.v_[r];
+            lookahead[j + r] = la_j.first_k_[r];
           }
           break;
         }
-        lookahead.v_[j] = static_cast<i16>(la_j.id_);
+        lookahead[j] = static_cast<i16>(la_j.id_);
       }
     }
 
@@ -2739,7 +2719,7 @@ template <typename Num, typename UNum, typename Buf>
     u16 tt2 = tt_word & 0xffff;
 
     Int id = tt1;
-    Int v = z.v_[id - 2];
+    Int v = z[id - 2];
 
     Int n = tt2;
     tt += 3;
