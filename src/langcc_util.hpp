@@ -4,6 +4,7 @@
 // Common includes
 ////////////////////////////////////////////////////////////////////////////////
 #include <algorithm>
+#include <array>
 #include <atomic>
 #include <chrono>
 #include <climits>
