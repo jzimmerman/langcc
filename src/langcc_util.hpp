@@ -2009,7 +2009,7 @@ namespace picosha2 {
 using word_t = unsigned long;
 using byte_t = unsigned char;
 
-static const size_t k_digest_size = 32;
+constexpr size_t k_digest_size = 32;
 
 namespace detail {
 inline byte_t mask_8bit(byte_t x) { return x & 0xff; }
@@ -2356,13 +2356,18 @@ void hash256(std::ifstream &f, OutIter first, OutIter last) {
 
 using SerBuf = Vec<u8>;
 
-using HashVal = std::array<u8, 32>;
+using HashVal = std::array<u8, picosha2::k_digest_size>;
 } // namespace langcc
 
 namespace std {
 template <> struct hash<langcc::HashVal> {
   inline std::size_t operator()(const langcc::HashVal &x) const {
-    return *reinterpret_cast<const size_t *>(&x);
+    std::size_t seed = 0;
+    for (const auto &elem : x) {
+      seed ^= std::hash<typename langcc::HashVal::value_type>()(elem) +
+              0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+    return seed;
   }
 };
 } // namespace std
@@ -2396,11 +2401,12 @@ inline void ser(SerBuf &buf, const HashVal &x) {
 // or security-critical applications.
 inline HashVal hash_data(const u8 *data, Int len) {
   HashVal ret;
-  AR_eq(static_cast<Int>(picosha2::k_digest_size), 32);
-  std::vector<char> dst(32, 0);
+  AR_eq(static_cast<Int>(picosha2::k_digest_size),
+        static_cast<Int>(ret.size()));
+  std::vector<char> dst(ret.size(), 0);
   picosha2::hash256(std::string(reinterpret_cast<const char *>(data), len),
                     dst);
-  memcpy(&ret[0], dst.data(), 32);
+  memcpy(ret.data(), dst.data(), ret.size());
   return ret;
 }
 

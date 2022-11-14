@@ -44,7 +44,7 @@ TEST(GoStandaloneTest, BidirectionalTest) {
     auto prog = parse->res_.as_some();
     auto s = fmt_str("{}", prog);
 
-    auto parse_chk = Q->L_->parse_ext(vec_from_std_string(input),
+    auto parse_chk = Q->L_->parse_ext(vec_from_std_string(s),
                                       None<std::string>(), Q->gen_, nullptr);
     EXPECT_TRUE(parse_chk->is_success());
     auto prog_chk = parse_chk->res_.as_some();

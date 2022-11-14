@@ -10,7 +10,7 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 include(GoogleTest)
 
-# Generate python parser
+# Generate golang parser
 add_custom_command(
     COMMAND $<TARGET_FILE:langcc> ${CMAKE_SOURCE_DIR}/grammars/go.lang ${CMAKE_SOURCE_DIR}/gen
     DEPENDS langcc ${CMAKE_SOURCE_DIR}/grammars/go.lang

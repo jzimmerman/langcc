@@ -64,9 +64,23 @@ constexpr Int PARSER_LOOKAHEAD_LEN_MAX = 8;
 constexpr i16 PARSER_LOOKAHEAD_SENTINEL = -1;
 
 using TermTokToSymFn = ParserSymId (*)(TokenId);
-using ParserAttrMask = std::array<u8, PARSER_ATTR_MASK_MAX>;
+class ParserAttrMask : public std::array<u8, PARSER_ATTR_MASK_MAX> {
+public:
+  ParserAttrMask() {
+    for (Int i = 0; i < PARSER_ATTR_MASK_MAX; i++) {
+      this->at(i) = PARSER_ATTR_MASK_SENTINEL;
+    }
+  }
+};
 ParserAttrMask attr_mask_trivial();
-using ParserLookahead = std::array<i16, PARSER_LOOKAHEAD_LEN_MAX>;
+class ParserLookahead : public std::array<i16, PARSER_LOOKAHEAD_LEN_MAX> {
+public:
+  ParserLookahead() {
+    for (Int i = 0; i < PARSER_LOOKAHEAD_LEN_MAX; i++) {
+      this->at(i) = PARSER_LOOKAHEAD_SENTINEL;
+    }
+  }
+};
 using ParserSymByName = std::map<std::string, Int>;
 using ParserProdId = Int;
 
