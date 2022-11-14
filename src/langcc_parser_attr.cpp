@@ -4,7 +4,8 @@
 namespace langcc {
 
 ProdConstrRhsLoc parser_prod_constr_loc_from_attr_clause_expr(
-    LangCompileContext &ctx, lang::meta::Node::AttrClauseExprRhsLoc_T loc) {
+    LangCompileContext & /*ctx*/,
+    lang::meta::Node::AttrClauseExprRhsLoc_T loc) {
 
   if (loc->is_All()) {
     return ProdConstrRhsLoc::All;
@@ -483,7 +484,7 @@ void parser_attr_propagate_flattened_prod_rec_inner_implies(
 void parser_attr_propagate_flattened_prod_rec_inner_rhs(
     VecUniq_T<ProdConstrFlat_T> &dst, Prod_T prod, const AttrKey_T &kr,
     const AttrVal_T &v, Int i_lo, Int i_hi, ProdConstrRhsLoc loc_base_rhs,
-    bool is_rule_lhs, const Vec_T<ProdConstr_T> &rule_constrs,
+    bool /*is_rule_lhs*/, const Vec_T<ProdConstr_T> &rule_constrs,
     const Set_T<Sym_T> &vis, LangCompileContext &ctx) {
 
   for (Int i = i_lo; i < i_hi; i++) {
@@ -532,10 +533,6 @@ void parser_attr_propagate_flattened_prod_rec(Vec_T<ProdConstr_T> rule_constrs,
       if (is_rule_lhs) {
         dst->insert(ProdConstrFlat::LhsLeq::make(cc->k_, cc->v_));
       }
-
-    } else if (constr->is_LhsGeq()) {
-      AX();
-
     } else if (constr->is_Implies()) {
       auto cc = constr->as_Implies();
       auto kl = cc->kl_;
@@ -640,6 +637,8 @@ void parser_attr_propagate_flattened_prod_rec(Vec_T<ProdConstr_T> rule_constrs,
         AX();
       }
 
+    } else if (constr->is_LhsGeq()) {
+      AX();
     } else {
       AX();
     }
@@ -647,12 +646,12 @@ void parser_attr_propagate_flattened_prod_rec(Vec_T<ProdConstr_T> rule_constrs,
 }
 
 Int prod_id_extract_rule_ind(ProdId_T prod_id) {
-  if (prod_id->is_Start()) {
-    AX();
-  } else if (prod_id->is_Explicit()) {
+  if (prod_id->is_Explicit()) {
     return prod_id->as_Explicit()->rule_ind_;
   } else if (prod_id->is_GenCPS()) {
     return prod_id_extract_rule_ind(prod_id->as_GenCPS()->orig_);
+  } else if (prod_id->is_Start()) {
+    AX();
   } else {
     AX();
   }

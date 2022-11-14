@@ -344,8 +344,6 @@ data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty) {
     auto tc = ty->as_Vector();
     auto node_sub = data_gen_type_to_node(data, tc->elem_ty_);
     return data.Q_->qq_ext(Some<std::string>("Expr"), "Vec(", node_sub, ")");
-  } else if (ty->is_Datatype() || ty->is_Builtin()) {
-    AX();
   } else if (ty->is_Named()) {
     auto id =
         ident_with_prepend(ty->as_Named()->id_, IdentBase::User::make("Node"));
@@ -354,6 +352,8 @@ data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty) {
     auto tc = ty->as_Optional();
     auto node_sub = data_gen_type_to_node(data, tc->item_ty_);
     return data.Q_->qq_ext(Some<std::string>("Expr"), "Option(", node_sub, ")");
+  } else if (ty->is_Datatype() || ty->is_Builtin()) {
+    AX();
   } else {
     AX();
   }
@@ -1259,7 +1259,10 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
     auto wc = wr->as_RecList();
     auto ret_body = make_rc<Vec<cc::Node_T>>();
 
-    Int nl_init, nl_delim, nl_final, indent_inner;
+    Int nl_init = 0;
+    Int nl_delim = 0;
+    Int nl_final = 0;
+    Int indent_inner = 0;
     if (wc->format_->is_Inline()) {
       nl_init = 0;
       nl_delim = 0;

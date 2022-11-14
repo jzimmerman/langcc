@@ -106,7 +106,7 @@ struct Result_T {
 };
 
 inline Result_T result_encode_placeholder() {
-  return Result_T(nullptr, TokenBounds(-1, -1));
+  return {nullptr, TokenBounds(-1, -1)};
 }
 
 inline TokenBounds result_decode_token_bounds(Result_T x) { return x.bounds_; }
@@ -1069,8 +1069,8 @@ struct LexWhitespaceState {
   Ch *input_data_;
   Int scan_i_;
   Vec<Ch> delim_stack_;
-  bool ws_buf_is_line_start_;
-  bool ws_buf_is_lc_curr_;
+  bool ws_buf_is_line_start_{true};
+  bool ws_buf_is_lc_curr_{false};
   Vec_T<Ch> ws_buf_curr_;
   Vec<Vec_T<Ch>> ws_buf_stack_;
 
@@ -1092,8 +1092,7 @@ struct LexWhitespaceState {
                             TokenId tok_id_err_delim_mismatch,
                             const WsSigSpec &ws_sig_spec)
       : st_(st), tok_to_sym_(tok_to_sym), scan_i_(buf_pos),
-        input_data_(input_data), ws_buf_is_line_start_(true),
-        ws_buf_is_lc_curr_(false), ws_sig_spec_(ws_sig_spec),
+        input_data_(input_data), ws_sig_spec_(ws_sig_spec),
         tok_id_newline_(tok_id_newline), tok_id_indent_(tok_id_indent),
         tok_id_dedent_(tok_id_dedent), tok_id_err_incons_(tok_id_err_incons),
         tok_id_err_text_after_lc_(tok_id_err_text_after_lc),
@@ -1306,8 +1305,8 @@ lexer_raise_nonempty_mode_stack(LexerState * /*st*/, Int /*in_i*/) {
 }
 
 [[always_inlines]] inline DFALabelId
-lexer_char_to_label(Ch *in_data, Int in_i, Int /*in_data_len*/,
-                    DFALabelId *label_ids_ascii, LexerState *st) {
+lexer_char_to_label(const Ch *in_data, Int in_i, Int /*in_data_len*/,
+                    const DFALabelId *label_ids_ascii, LexerState *st) {
 
   Ch c = in_data[in_i];
 
@@ -1373,7 +1372,7 @@ inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T &input,
   try {
     auto desc = st->mode_descs_->operator[](st->main_mode_);
     pos = desc->proc_mode_loop_opt_fn_(desc.get(), st.get(), nullptr, 0, 0);
-  } catch (LexError_T err) {
+  } catch (const LexError_T &err) {
     st->out_->err_ = Some<LexError_T>(err);
   }
 
@@ -1574,7 +1573,7 @@ enum struct ParserActionData_W {
   SHIFT,
 };
 
-inline ParserLookahead parser_lookahead_trivial() { return ParserLookahead(); }
+inline ParserLookahead parser_lookahead_trivial() { return {}; }
 
 inline ParserAttrMask attr_mask_trivial() {
   ParserAttrMask ret;

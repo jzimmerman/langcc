@@ -110,6 +110,7 @@ struct LangCompileContext {
   LangCompileContext(LangCompileContext &&) = delete;
   LangCompileContext &operator=(const LangCompileContext &) = delete;
   LangCompileContext &operator=(LangCompileContext &&) = delete;
+  virtual ~LangCompileContext() = default;
 
   inline LangCompileContext(const lang::meta::Node::Lang_T &src,
                             const Gensym_T &gen_meta,

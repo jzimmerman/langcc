@@ -141,10 +141,10 @@ enum struct _W {
 namespace Option {
 template <typename T> struct _T {
   Option::_W w_;
-  u8 t_[sizeof(T)];
+  u8 t_[sizeof(T)]{};
 
-  _T(const _T &);
-  _T &operator=(const _T &);
+  _T(const _T &x);
+  _T &operator=(const _T &x);
 
   Option::_W w();
   _T();
@@ -777,13 +777,13 @@ inline std::string str_repeat(const std::string &s, Int count) {
 inline bool u8_is_ws(u8 x) { return isspace(x); }
 
 inline std::string string_ws_strip(std::string x) {
-  u64 i;
+  u64 i = 0;
   for (i = 0; i < x.length(); i++) {
     if (!u8_is_ws(x[i])) {
       break;
     }
   }
-  u64 j;
+  u64 j = 0;
   for (j = x.length(); j >= 0; j--) {
     if (j == 0 || !u8_is_ws(x[j - 1])) {
       break;
@@ -820,27 +820,27 @@ struct FmtFlags {
   Int prec_curr_;
 
   inline static FmtFlags default_() {
-    FmtFlags ret;
+    FmtFlags ret{};
     ret.indent_width_ = 4;
     ret.indent_curr_ = 0;
     ret.prec_curr_ = 0;
     return ret;
   }
 
-  inline FmtFlags sub_lo() {
-    FmtFlags ret;
+  inline FmtFlags sub_lo() const {
+    FmtFlags ret{};
     ret.indent_width_ = indent_width_;
     ret.indent_curr_ = indent_curr_ + 1;
     ret.prec_curr_ = 0;
     return ret;
   }
 
-  inline void indent_single(std::ostream &os) {
+  inline void indent_single(std::ostream &os) const {
     AT(indent_width_ >= 0);
     os << str_repeat(" ", indent_width_);
   }
 
-  inline void write_indent(std::ostream &os) {
+  inline void write_indent(std::ostream &os) const {
     AT(indent_curr_ >= 0);
     AT(indent_width_ >= 0);
     auto k = indent_curr_ * indent_width_;
@@ -1392,8 +1392,8 @@ template <typename T> struct Vec;
 template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
   Arena *A_;
   T *arr_;
-  Int begin_;
-  Int end_;
+  Int begin_{};
+  Int end_{};
   Int len_;
   Int cap_;
 
@@ -1683,7 +1683,7 @@ template <typename T> struct Vec : enable_rc_from_this<Vec<T>> {
 template <typename T> using Vec_T = rc_ptr<Vec<T>>;
 
 inline std::string vec_to_std_string(const Vec_T<char> &v) {
-  return std::string(&v->at_unchecked(0), v->len_);
+  return {&v->at_unchecked(0), static_cast<std::string::size_type>(v->len_)};
 }
 
 template <typename T> inline Int len(const Vec<T> &v) { return v.length(); }
@@ -1777,7 +1777,8 @@ struct StrSlice {
   }
 
   inline std::string to_std_string() const {
-    return std::string(&base_->at_unchecked(lo_), hi_ - lo_);
+    return {&base_->at_unchecked(lo_),
+            static_cast<std::string::size_type>(hi_ - lo_)};
   }
 };
 
@@ -1855,7 +1856,7 @@ struct Page {
   Int size_;
 
   static inline Page make_alloc(Int size) {
-    Page ret;
+    Page ret{};
     ret.addr_ = reinterpret_cast<u8 *>(malloc(size));
     ret.size_ = size;
     return ret;
@@ -1868,8 +1869,8 @@ struct Arena : enable_rc_from_this<Arena> {
   Int curr_offset_;
   Int page_size_default_;
 
-  inline Arena(Int page_size_default = 4194304)
-      : page_size_default_(page_size_default) {
+  inline explicit Arena(Int page_size_default = 4194304)
+      : enable_rc_from_this(), page_size_default_(page_size_default) {
 
     pages_.push(Page::make_alloc(page_size_default_));
     curr_page_ = pages_[0];
@@ -1936,7 +1937,7 @@ inline void *malloc_ext(Int size, Arena *A) {
 
 inline void *realloc_ext(void *x, Int size, Arena *A) {
   if (__builtin_expect(!!A, 1)) {
-    auto ret = A->alloc(size);
+    auto *ret = A->alloc(size);
     memcpy(ret, x, size);
     return ret;
   }
@@ -2376,6 +2377,7 @@ struct hash_obj {
 };
 
 inline void ser_bytes(SerBuf &buf, Int len, const u8 *data) {
+  buf.reserve_unchecked(buf.length() + len);
   for (Int i = 0; i < len; i++) {
     buf.push(data[i]);
   }
@@ -3188,7 +3190,7 @@ struct Gensym;
 using Gensym_T = rc_ptr<Gensym>;
 
 struct Gensym {
-  Int next_;
+  Int next_{0};
 
   Gensym(const Gensym &) = delete;
   Gensym &operator=(const Gensym &) = delete;
@@ -3199,7 +3201,7 @@ struct Gensym {
     return ret;
   }
 
-  inline Gensym() : next_(0) {}
+  inline Gensym() = default;
 };
 
 using PrintTableRow = std::vector<std::string>;
@@ -3243,10 +3245,8 @@ struct PrintTable {
     auto cols = vec_repeat(p, n_col);
     return make(cols);
   }
-
-  inline Int num_col() { return len(col_); }
-
-  inline Int num_rows() {
+  inline Int num_col() const { return len(col_); }
+  inline Int num_rows() const {
     AT(!buffer_active_);
     return len(items_);
   }

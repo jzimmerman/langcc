@@ -217,8 +217,6 @@ SwitchTable_T parser_lr_vertex_dfa_step_impl_table_rec(
     AX();
   }
 
-  auto n_attr = ctx.parser_attr_domains_->operator[](sym_base)->length();
-
   auto table_keys = make_rc<Set<AttrKey_T>>();
   for (const auto &[kvs, _] : *table) {
     for (const auto &[k, _] : *kvs) {
@@ -467,7 +465,7 @@ parser_lr_action_by_vertex_impl_table_basic(LangCompileContext &ctx, LR_DFA_T D,
 }
 
 std::pair<Vec_T<Int>, Vec_T<Int>> parser_lr_action_by_vertex_impl_table_opt(
-    LangCompileContext &ctx, const LR_NFA_T &N, LR_DFA_T D, Int k) {
+    LangCompileContext &ctx, const LR_NFA_T &N, LR_DFA_T D, Int /*k*/) {
 
   Int n = D->G_->V_->length();
   Int m = 2 + ctx.Gr_cps_->term_->length(); // EndMarker, Start
@@ -501,7 +499,7 @@ std::pair<Vec_T<Int>, Vec_T<Int>> parser_lr_action_by_vertex_impl_table_opt(
   }
 
   AT(vl % 2 == 0);
-  auto tt_acc_base = reinterpret_cast<u16 *>(&tt_acc->at_unchecked(0));
+  auto *tt_acc_base = reinterpret_cast<u16 *>(&tt_acc->at_unchecked(0));
   auto tt_acc_norm = make_rc<Vec<Int>>();
   for (Int r = 0; r < vl / 2; r++) {
     tt_acc_norm->push_back(static_cast<Int>(tt_acc_base[r]));

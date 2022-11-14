@@ -201,9 +201,10 @@ parser_flatten_expr_acc_new(ParseExpr_T x, const Sym_T &dst,
                             LangCompileContext &ctx);
 
 inline std::tuple<SymFlattenResult_T, WriteInstr_T, GenType_T, IsOwnDatatype>
-parser_flatten_expr_base_new(ParseExpr_Base_T xb, const NameMaybe_T &id,
-                             const meta::Node::ParserDecl::Rule_T &rule_ctx,
-                             LangCompileContext &ctx) {
+parser_flatten_expr_base_new(
+    ParseExpr_Base_T xb, const NameMaybe_T & /*id*/,
+    const meta::Node::ParserDecl::Rule_T & /*rule_ctx*/,
+    LangCompileContext &ctx) {
 
   auto ret_fl = parser_resolve_base(ctx, xb);
   WriteInstr_T ret_wr;
@@ -370,7 +371,7 @@ inline std::pair<bool, bool> parser_flatten_expr_concat_acc_extract_spec(
 
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
 parser_flatten_expr_concat_acc_new(
-    Vec_T<ParseExpr_T> xs, const Sym_T &dst,
+    Vec_T<ParseExpr_T> ys, const Sym_T &dst,
     const Option_T<AttrLeaf_T> &lhs_leaf, const NameMaybe_T &id, bool owns_id,
     const meta::Node::ParserDecl::Rule_T &rule_ctx, bool allow_passthrough,
     LangCompileContext &ctx);
@@ -403,24 +404,19 @@ parser_flatten_expr_alt_acc_new(ParseExpr_T x, const Sym_T &dst,
 
     WriteInstr_T yi_wr;
     GenType_T yi_ty;
-    IsOwnDatatype yi_is_dt;
     if (!yi_is_dt_pred) {
       auto yi_vec = make_rc<Vec<ParseExpr_T>>();
       yi_vec->push_back(yi);
-      auto [yi_wr_inner, yi_ty_inner, yi_is_dt_inner] =
-          parser_flatten_expr_concat_acc_new(yi_vec, ri_sym, None<AttrLeaf_T>(),
-                                             id_sub_yi, true, rule_ctx, false,
-                                             ctx);
+      auto [yi_wr_inner, yi_ty_inner, _] = parser_flatten_expr_concat_acc_new(
+          yi_vec, ri_sym, None<AttrLeaf_T>(), id_sub_yi, true, rule_ctx, false,
+          ctx);
       yi_wr = yi_wr_inner;
       yi_ty = yi_ty_inner;
-      yi_is_dt = yi_is_dt_inner;
     } else {
-      auto [yi_wr_inner, yi_ty_inner, yi_is_dt_inner] =
-          parser_flatten_expr_acc_new(yi, ri_sym, None<AttrLeaf_T>(), id_sub_yi,
-                                      true, rule_ctx, ctx);
+      auto [yi_wr_inner, yi_ty_inner, _] = parser_flatten_expr_acc_new(
+          yi, ri_sym, None<AttrLeaf_T>(), id_sub_yi, true, rule_ctx, ctx);
       yi_wr = yi_wr_inner;
       yi_ty = yi_ty_inner;
-      yi_is_dt = yi_is_dt_inner;
     }
 
     auto id_sub_yi_f = NameMaybe::force(id_sub_yi, ctx);
@@ -473,12 +469,11 @@ parser_flatten_expr_optional_acc_new(
 
   auto y = x->as_Optional()->x_;
 
-  auto id_sub_y = id;
   // Do not introduce new name domain, as generated type is Option_T or bool
   // (not named).
 
   auto [y_fl, y_wr, y_ty, y_is_dt] =
-      parser_flatten_expr_new(y, id_sub_y, owns_id, rule_ctx, ctx);
+      parser_flatten_expr_new(y, id, owns_id, rule_ctx, ctx);
 
   GenType_T ret_ty;
   WriteInstr_T ret_wr;
@@ -498,7 +493,8 @@ parser_flatten_expr_optional_acc_new(
   auto rd_instr_true = UnwindInstr::True::make(y_ty);
   auto rd_instr_false = UnwindInstr::False::make();
 
-  UnwindInstr_T rd_instr_0, rd_instr_1;
+  UnwindInstr_T rd_instr_0;
+  UnwindInstr_T rd_instr_1;
   if (y_ty->is_Nil()) {
     rd_instr_0 = rd_instr_false;
     rd_instr_1 = rd_instr_true;
@@ -657,7 +653,7 @@ parser_flatten_expr_concat_acc_new(
 inline std::tuple<WriteInstr_T, GenType_T, IsOwnDatatype>
 parser_flatten_expr_iter_acc_new(ParseExpr_T x, const Sym_T &dst,
                                  const Option_T<AttrLeaf_T> &lhs_leaf,
-                                 const NameMaybe_T &id, bool owns_id,
+                                 const NameMaybe_T &id, bool /*owns_id*/,
                                  const meta::Node::ParserDecl::Rule_T &rule_ctx,
                                  LangCompileContext &ctx) {
 
@@ -745,7 +741,6 @@ parser_flatten_expr_iter_acc_new(ParseExpr_T x, const Sym_T &dst,
     } else {
       AX();
     }
-    bool allow_empty = n_min == 0;
 
     HasFinalDelim_T has_final;
     if (xc->end_delim_->is_SOME()) {
@@ -990,7 +985,6 @@ parser_flatten_grammar_rule_acc(LangCompileContext &ctx,
   auto rule_id = parse_expr_id_to_ident(rule->name_);
   auto rule_id_ctx_init = Some<Ident_T>(rule_id);
   auto dst_sym = ctx.Np_->operator[](rule_id);
-  auto dst_sym_outer = dst_sym;
 
   SymFlattenResult_T s_fl;
 
@@ -1087,7 +1081,6 @@ void parser_tabulate_syms_top(LangCompileContext &ctx) {
 void parser_flatten_grammar_rules(LangCompileContext &ctx) {
   for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
-    auto i = p.second;
     if (rule->op_->is_DEF_ALIAS()) {
       continue;
     }
@@ -1100,7 +1093,6 @@ void parser_flatten_grammar_rules(LangCompileContext &ctx) {
 
   for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
-    auto i = p.second;
 
     if (rule->op_->is_DEF_ALIAS()) {
       continue;

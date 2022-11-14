@@ -298,7 +298,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   }
   while (!Q_tabulate_chars.empty()) {
     auto e = Q_tabulate_chars.pop_front_val();
-    if (e->is_Id()) {
+    if (e->is_Id() || e->is_False() || e->is_Eof()) {
       // pass
     } else if (e->is_Underscore()) {
       char_ranges.push_back(std::make_pair(0, 0x110000));
@@ -351,10 +351,6 @@ void lang_init_validate(LangCompileContext &ctx) {
           std::make_pair(chs_min.as_some()[0], chs_max.as_some()[0] + 1));
       char_thresholds_s.insert(chs_min.as_some()[0]);
       char_thresholds_s.insert(chs_max.as_some()[0] + 1);
-    } else if (e->is_False()) {
-      // pass
-    } else if (e->is_Eof()) {
-      // pass
     } else if (e->is_UnicodeAny()) {
       char_ranges.push_back(std::make_pair(0, 0x110000));
       char_thresholds_s.insert(0);
@@ -529,7 +525,6 @@ void lang_init_validate(LangCompileContext &ctx) {
 
   for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
-    auto i = p.second;
 
     auto curr = parse_expr_id_to_ident(rule->name_);
     if (ctx.parser_rule_explicit_def_ids_->contains(curr)) {
@@ -554,7 +549,6 @@ void lang_init_validate(LangCompileContext &ctx) {
 
   for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
-    auto i = p.second;
 
     auto curr = parse_expr_id_to_ident(rule->name_);
     while (true) {
@@ -691,14 +685,6 @@ xform_parse_expr_normalize(meta::Node::ParseExpr_T e,
       } else {
         break;
       }
-
-    } else if (e->is_Eps()) {
-      break;
-
-    } else if (e->is_Pass() || e->is_Underscore()) {
-      // Leave underscores in for readability.
-      break;
-
     } else if (e->is_AltExplicit()) {
       auto v = make_rc<Vec<ParseExpr_T>>();
       v->push_back(e->as_AltExplicit()->e_);
@@ -771,7 +757,8 @@ xform_parse_expr_normalize(meta::Node::ParseExpr_T e,
       do_paren = true;
       continue;
 
-    } else if (parse_expr_to_base_maybe(e).is_some()) {
+    } else if (e->is_Eps() || e->is_Pass() || e->is_Underscore() ||
+               parse_expr_to_base_maybe(e).is_some()) {
       break;
 
     } else {
