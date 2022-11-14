@@ -2654,7 +2654,7 @@ table_decode_r1_vec_pair(const UNum tt[], Int x, Buf z) {
     }
 
     Int id = tt[1];
-    Int v = z.v_[id - 1];
+    Int v = z[id - 1];
 
     Int n = tt[2];
     tt += 3;
