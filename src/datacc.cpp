@@ -63,7 +63,7 @@ struct DataCompileContext {
     auto ret = make_rc<Vec<IdBase>>();
     bool active = false;
     auto anc = this->dt_ancestors(x);
-    for (auto [nm, sel] : *anc) {
+    for (const auto &[nm, sel] : *anc) {
       if (val_hash(nm) == val_hash(a)) {
         active = true;
       }
@@ -97,7 +97,7 @@ inline Vec_T<cc::Node_T> cpp_tabulate_template_params(const GenName &curr,
 
   auto param_names = make_rc<Set<std::string>>();
 
-  for (auto [q, _] : *anc) {
+  for (const auto &[q, _] : *anc) {
     auto q_dt = ctx.data_leaves_->operator[](q);
     if (q_dt->params_.is_some()) {
       if (ctx.sum_cases_rev_->contains_key(q)) {
@@ -105,7 +105,7 @@ inline Vec_T<cc::Node_T> cpp_tabulate_template_params(const GenName &curr,
         AX();
       }
 
-      for (auto param : *q_dt->params_.as_some()) {
+      for (const auto &param : *q_dt->params_.as_some()) {
         if (param_names->contains(param->name_.to_std_string())) {
           LG_ERR("Type parameter {} is shadowed", param->name_.to_std_string());
           AX();
@@ -147,7 +147,7 @@ GenName data_id_to_name(const Vec_T<StrSlice> &items) {
 }
 
 inline bool has_mod_mut(data::Node::Decl::Data_T x) {
-  for (auto mod : *x->mods_) {
+  for (const auto &mod : *x->mods_) {
     if (mod->is_Mut()) {
       return true;
     }
@@ -156,7 +156,7 @@ inline bool has_mod_mut(data::Node::Decl::Data_T x) {
 }
 
 inline bool has_mod_xform(data::Node::Decl::Data_T x) {
-  for (auto mod : *x->mods_) {
+  for (const auto &mod : *x->mods_) {
     if (mod->is_Xform()) {
       return true;
     }
@@ -165,7 +165,7 @@ inline bool has_mod_xform(data::Node::Decl::Data_T x) {
 }
 
 inline bool has_mod_visit(data::Node::Decl::Data_T x) {
-  for (auto mod : *x->mods_) {
+  for (const auto &mod : *x->mods_) {
     if (mod->is_Visit()) {
       return true;
     }
@@ -501,9 +501,9 @@ dt_extract_def_fields_full(const GenName &curr, DataCompileContext &ctx) {
   auto fields_full_s = make_rc<Set<IdBase>>();
   auto anc = ctx.dt_ancestors(curr);
   AR_ge(anc->length(), 1);
-  for (auto [q, _] : *anc) {
+  for (const auto &[q, _] : *anc) {
     auto q_dt = ctx.data_leaves_->operator[](q);
-    for (auto data_entry : *q_dt->entries_) {
+    for (const auto &data_entry : *q_dt->entries_) {
       if (data_entry->is_Field()) {
         auto cc = data_entry->as_Field();
         auto data_field_name = cc->name_.to_std_string();
@@ -517,7 +517,7 @@ dt_extract_def_fields_full(const GenName &curr, DataCompileContext &ctx) {
       }
     }
   }
-  for (auto data_entry : *dt->entries_) {
+  for (const auto &data_entry : *dt->entries_) {
     if (data_entry->is_Field()) {
       auto cc = data_entry->as_Field();
       auto data_field_name = cc->name_.to_std_string();
@@ -531,7 +531,7 @@ Vec_T<std::pair<IdBase, data::Node::Entry::Method_T>>
 dt_extract_def_methods(const GenName &curr, DataCompileContext &ctx) {
   auto dt = ctx.data_leaves_->operator[](curr);
   auto methods = make_rc<Vec<std::pair<IdBase, data::Node::Entry::Method_T>>>();
-  for (auto data_entry : *dt->entries_) {
+  for (const auto &data_entry : *dt->entries_) {
     if (data_entry->is_Method()) {
       auto cc = data_entry->as_Method();
       auto method_name = cc->name_.to_std_string();
@@ -793,7 +793,7 @@ void data_gen_xform_fn(XformTy xform_ty, const GenName &star,
   } else {
     auto cpp_make_args = make_rc<Vec<cc::Node_T>>();
     auto [fields_full, _] = dt_extract_def_fields_full(curr, ctx);
-    for (auto [__, q] : *fields_full) {
+    for (const auto &[__, q] : *fields_full) {
       auto field_name = q->name_;
       auto cpp_field_proj = ctx.cc_.qq("Expr", cpp_xform_param_x_var, "->",
                                        fmt_str("{}_", field_name));
@@ -1112,7 +1112,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
   }
   std::sort(data_leaves_inds.begin(), data_leaves_inds.end());
 
-  for (auto [_, i] : data_leaves_inds) {
+  for (const auto &[_, i] : data_leaves_inds) {
     auto p = data_leaves_vec->operator[](i);
 
     auto name_full = p.first;
@@ -1374,7 +1374,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
 
     auto methods = dt_extract_def_methods(name_full, ctx);
 
-    for (auto [_, method] : *methods) {
+    for (const auto &[_, method] : *methods) {
       auto def_ns = name_full;
       auto cpp_method_name =
           ctx.cc_.gen_cpp_id_base(method->name_.to_std_string());
@@ -1390,7 +1390,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
       }
       ctx.cc_.Q_->qq_args_acc(lex_args, cpp_ret_type, cpp_method_name, "(");
       bool fresh = true;
-      for (auto param : *method->params_) {
+      for (const auto &param : *method->params_) {
         if (!fresh) {
           ctx.cc_.Q_->qq_args_acc(lex_args, ",");
         }
@@ -2037,7 +2037,7 @@ DataDefsResult compile_data_defs(lang::data::Node_T src,
     }
   }
 
-  for (auto [_, i] : data_leaves_inds) {
+  for (const auto &[_, i] : data_leaves_inds) {
     auto p = data_leaves_vec->operator[](i);
 
     if (has_mod_visit(p.second)) {

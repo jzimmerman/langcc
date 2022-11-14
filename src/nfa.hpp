@@ -60,7 +60,7 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/,
       td->push(fmt_str("{}", lbl));
       std::string rhs = "--> ";
       bool fresh = true;
-      for (auto w : nbr_inds) {
+      for (const auto &w : nbr_inds) {
         if (!fresh) {
           rhs += ", ";
         }
@@ -165,7 +165,7 @@ Map_T<Label, Vec_T<Vertex>> outgoing_edges(NFA_T<Vertex, Label, Acc> &N,
     const auto &nbr_inds = N->G_->fwd_.EV_.at(vi).at(li);
     auto lbl = N->G_->L_->operator[](lbl_ind);
     auto nbrs = make_rc<Vec<Vertex>>();
-    for (auto nbr_ind : nbr_inds) {
+    for (const auto &nbr_ind : nbr_inds) {
       nbrs->push_back(N->G_->V_->operator[](nbr_ind));
     }
     ret->insert(lbl, nbrs);
@@ -183,7 +183,7 @@ Map_T<Label, Vec_T<Vertex>> incoming_edges(NFA_T<Vertex, Label, Acc> &N,
     const auto &nbr_inds = N->G_->rev_.EV_.at(vi).at(li);
     auto lbl = N->G_->L_->operator[](lbl_ind);
     auto nbrs = make_rc<Vec<Vertex>>();
-    for (auto nbr_ind : nbr_inds) {
+    for (const auto &nbr_ind : nbr_inds) {
       nbrs->push_back(N->G_->V_->operator[](nbr_ind));
     }
     ret->insert(lbl, nbrs);
@@ -195,7 +195,7 @@ template <typename Vertex, typename Label, typename Acc>
 Set_T<Int> eps_closure(NFA_T<Vertex, Label, Acc> &N, const Set_T<Int> &vs) {
   auto ret = make_rc<Set<Int>>();
   Vec<Int> Q;
-  for (auto v : *vs) {
+  for (const auto &v : *vs) {
     ret->insert(v);
     Q.push_back(v);
   }
@@ -211,7 +211,7 @@ Set_T<Int> eps_closure(NFA_T<Vertex, Label, Acc> &N, const Set_T<Int> &vs) {
         continue;
       }
 
-      for (auto nbr : nbr_inds) {
+      for (const auto &nbr : nbr_inds) {
         if (!ret->contains(nbr)) {
           ret->insert(nbr);
           Q.push_back(nbr);
@@ -225,7 +225,7 @@ Set_T<Int> eps_closure(NFA_T<Vertex, Label, Acc> &N, const Set_T<Int> &vs) {
 template <typename Vertex, typename Label, typename Acc>
 Set_T<Vertex> vertex_set_lookup(NFA_T<Vertex, Label, Acc> &N, Set_T<Int> s) {
   auto ret = make_rc<Set<Vertex>>();
-  for (auto i : *s) {
+  for (const auto &i : *s) {
     ret->insert(N->G_->V_->operator[](i));
   }
   return ret;
@@ -248,7 +248,7 @@ nfa_subset_constr(NFA_T<Vertex, Label, Acc> &N) {
     D->start_ = Some<Int>(ns_i);
 
     auto ns_acc = make_rc<Set<Acc>>();
-    for (auto n : *D_start) {
+    for (const auto &n : *D_start) {
       auto n_acc = N->acc_->operator[](n);
       ns_acc = ns_acc->with_union(n_acc);
     }
@@ -261,7 +261,7 @@ nfa_subset_constr(NFA_T<Vertex, Label, Acc> &N) {
 
     Set<Label> all_labels;
 
-    for (auto v : *vs) {
+    for (const auto &v : *vs) {
       for (Int li = 0; li < N->G_->fwd_.EL_.at(v).size(); li++) {
         auto lbl_ind = N->G_->fwd_.EL_.at(v).at(li);
         auto lbl = N->G_->L_->operator[](lbl_ind);
@@ -277,7 +277,7 @@ nfa_subset_constr(NFA_T<Vertex, Label, Acc> &N) {
     for (const auto &lbl_iter : all_labels) {
       auto ns = make_rc<Set<Int>>();
 
-      for (auto v : *vs) {
+      for (const auto &v : *vs) {
         for (Int li = 0; li < N->G_->fwd_.EL_.at(v).size(); li++) {
           auto lbl_ind = N->G_->fwd_.EL_.at(v).at(li);
           const auto &nbr_inds = N->G_->fwd_.EV_.at(v).at(li);
@@ -287,7 +287,7 @@ nfa_subset_constr(NFA_T<Vertex, Label, Acc> &N) {
             continue;
           }
 
-          for (auto nbr : nbr_inds) {
+          for (const auto &nbr : nbr_inds) {
             ns->insert(nbr);
           }
         }
@@ -302,7 +302,7 @@ nfa_subset_constr(NFA_T<Vertex, Label, Acc> &N) {
         auto ns_i = NFA::add_vertex(D, ns);
         reach_rev.insert(ns, std::make_pair(lbl_iter, vs));
         auto ns_acc = make_rc<Set<Acc>>();
-        for (auto n : *ns) {
+        for (const auto &n : *ns) {
           auto n_acc = N->acc_->operator[](n);
           ns_acc = ns_acc->with_union(n_acc);
         }
@@ -366,7 +366,7 @@ rc_ptr<NFA::_T<Int, Label, Acc>> vertex_stripped(NFA_T<Vertex, Label, Acc> &N) {
       auto lbl_ind = N->G_->fwd_.EL_.at(i).at(li);
       const auto &nbr_inds = N->G_->fwd_.EV_.at(i).at(li);
       auto lbl = N->G_->L_->operator[](lbl_ind);
-      for (auto nbr : nbr_inds) {
+      for (const auto &nbr : nbr_inds) {
         NFA::add_edge(ret, i, lbl, nbr);
       }
     }
@@ -416,7 +416,7 @@ NFA_T<Vertex, Label, Unit> dfa_negated(NFA_T<Vertex, Label, Unit> &D,
       auto lbl = D->G_->L_->operator[](lbl_ind);
       AT(labels_rem.contains(lbl));
       labels_rem.remove(lbl);
-      for (auto nbr : nbr_inds) {
+      for (const auto &nbr : nbr_inds) {
         NFA::add_edge(ret, i, lbl, nbr);
       }
     }
@@ -472,8 +472,8 @@ dfa_product(NFA_T<Vertex, Label, Unit> &Da, NFA_T<Vertex, Label, Unit> &Db) {
             continue;
           }
 
-          for (auto v_nbr : v_nbr_inds) {
-            for (auto w_nbr : w_nbr_inds) {
+          for (const auto &v_nbr : v_nbr_inds) {
+            for (const auto &w_nbr : w_nbr_inds) {
               auto vw_nbr = std::make_pair(v_nbr, w_nbr);
               NFA::add_edge(ret, vw, v_lbl, vw_nbr);
             }
@@ -514,7 +514,7 @@ void splice_in(NFA_T<Vertex, Label, Acc> &dst,
       auto lbl_ind = src->G_->fwd_.EL_.at(vi).at(li);
       const auto &nbr_inds = src->G_->fwd_.EV_.at(vi).at(li);
       auto lbl = src->G_->L_->operator[](lbl_ind);
-      for (auto nbr : nbr_inds) {
+      for (const auto &nbr : nbr_inds) {
         NFA::add_edge(dst, vm[vi], lbl, vm[nbr]);
       }
     }

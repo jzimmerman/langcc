@@ -25,7 +25,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   ctx.parser_ = lang_get_parser_stanza(ctx.src_);
 
   // Tabulate token defs
-  for (auto &decl : *ctx.tokens_->decls_) {
+  for (const auto &decl : *ctx.tokens_->decls_) {
     auto name = ident_singleton_from_string(decl->name_.to_std_string());
     if (ctx.tokens_def_.contains_key(name)) {
       ctx.error(decl, "Duplicate token definition");
@@ -34,7 +34,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   }
 
   // Tabulate lexer modes
-  for (auto &mode : *ctx.lexer_->decls_) {
+  for (const auto &mode : *ctx.lexer_->decls_) {
     if (mode->is_Mode()) {
       auto name = mode->as_Mode()->name_.to_std_string();
       if (ctx.lexer_modes_ind_.contains_key(name)) {
@@ -46,7 +46,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   }
 
   bool lexer_main_mode_init = false;
-  for (auto &main : *ctx.lexer_->decls_) {
+  for (const auto &main : *ctx.lexer_->decls_) {
     if (main->is_Main()) {
       if (lexer_main_mode_init) {
         ctx.error(main, "Duplicate main mode");
@@ -67,7 +67,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   auto m_token_refs_rev =
       make_rc<Map<Ident_T, Set_T<std::pair<bool, Ident_T>>>>();
 
-  for (auto &decl : *ctx.tokens_->decls_) {
+  for (const auto &decl : *ctx.tokens_->decls_) {
     visit_lang_meta_Node(decl->def__, [&](lang::meta::Node_T node) {
       if (node->is_Id()) {
         auto name_id = ident_singleton_from_string(decl->name_.to_std_string());
@@ -124,7 +124,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   {
     auto m_nested_vis = make_rc<Set<std::pair<Ident_T, Int>>>();
     auto Q = make_rc<Vec<std::pair<Ident_T, Int>>>();
-    for (auto decl : *ctx.tokens_->decls_) {
+    for (const auto &decl : *ctx.tokens_->decls_) {
       auto id = ident_singleton_from_string(decl->name_.to_std_string());
       auto p = std::make_pair(id, decl->op_->is_DEF() ? 1 : 0);
       Q->push_back(p);
@@ -136,10 +136,10 @@ void lang_init_validate(LangCompileContext &ctx) {
         continue;
       }
       auto ids_ref = m_token_refs_rev->operator[](curr);
-      for (auto [is_def, id_ref] : *ids_ref) {
+      for (const auto &[is_def, id_ref] : *ids_ref) {
         auto d_new = d + (is_def ? 1 : 0);
         if (d_new >= 2) {
-          for (auto [is_def, id_ref] : *ids_ref) {
+          for (const auto &[is_def, id_ref] : *ids_ref) {
             ctx.error(ctx.tokens_,
                       fmt_str("Lexer tokens contain nested structure: {} -> {}",
                               id_ref, curr));
@@ -160,7 +160,7 @@ void lang_init_validate(LangCompileContext &ctx) {
     auto m_cycle_vis = make_rc<Set<Ident_T>>();
     auto S = make_rc<Vec<Ident_T>>();
     auto S_set = make_rc<Set<Ident_T>>();
-    for (auto decl : *ctx.tokens_->decls_) {
+    for (const auto &decl : *ctx.tokens_->decls_) {
       auto id = ident_singleton_from_string(decl->name_.to_std_string());
       if (!m_cycle_vis->contains(id)) {
         S->push(id);
@@ -171,7 +171,7 @@ void lang_init_validate(LangCompileContext &ctx) {
           bool pushed = false;
           if (m_token_refs_rev->contains_key(curr)) {
             auto ids_ref = m_token_refs_rev->operator[](curr);
-            for (auto [_, id_ref] : *ids_ref) {
+            for (const auto &[_, id_ref] : *ids_ref) {
               if (S_set->contains(id_ref)) {
                 ctx.error(ctx.tokens_,
                           fmt_str("Lexer tokens contain cycle: {} -> {}",
@@ -201,11 +201,11 @@ void lang_init_validate(LangCompileContext &ctx) {
   // Populate tokens_top_init_src_ with immediately-emitted exprs (note: used to
   // initialize search for top-level tokens, but may not be top-level tokens
   // themselves).
-  for (auto &decl : *ctx.lexer_->decls_) {
+  for (const auto &decl : *ctx.lexer_->decls_) {
     if (decl->is_Mode()) {
-      for (auto &mode_case : *decl->as_Mode()->cases_) {
+      for (const auto &mode_case : *decl->as_Mode()->cases_) {
         auto case_pat = mode_case->tok_;
-        for (auto &instr : *mode_case->instrs_) {
+        for (const auto &instr : *mode_case->instrs_) {
           lang_init_validate_tabulate_lexer_instr_emit_rec(instr, case_pat,
                                                            ctx);
         }
@@ -214,7 +214,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   }
 
   bool any_ws = false;
-  for (auto &decl : *ctx.lexer_->decls_) {
+  for (const auto &decl : *ctx.lexer_->decls_) {
     if (decl->is_Mode()) {
       if (decl->as_Mode()->ws_sig__.is_some()) {
         any_ws = true;
@@ -224,7 +224,7 @@ void lang_init_validate(LangCompileContext &ctx) {
 
   // Tabulate top-level tokens
   Vec<ParseExpr_Base_T> Q_tokens_top_traversal;
-  for (auto &[tok, _] : *ctx.tokens_top_init_src_) {
+  for (const auto &[tok, _] : *ctx.tokens_top_init_src_) {
     Q_tokens_top_traversal.push_back(tok);
     ctx.tokens_top_traversal_alias_parent_.insert_strict(tok, tok);
   }
@@ -235,7 +235,7 @@ void lang_init_validate(LangCompileContext &ctx) {
       if (decl->op_->is_DEF_ALIAS()) {
         Vec<ParseExpr_Base_T> toks_sub;
         lexer_extract_alias_toks_sub_acc(toks_sub, decl->def__, tok, ctx);
-        for (auto tok_sub : toks_sub) {
+        for (const auto &tok_sub : toks_sub) {
           if (!ctx.tokens_top_traversal_alias_parent_.contains_key(tok_sub)) {
             ctx.tokens_top_traversal_alias_parent_.insert_strict(tok_sub, tok);
             Q_tokens_top_traversal.push_back(tok_sub);
@@ -271,7 +271,7 @@ void lang_init_validate(LangCompileContext &ctx) {
     ws_toks->push_back(
         TokenBase::Special::make(TokenBaseSpecial::ErrDelimMismatch));
 
-    for (auto tok : *ws_toks) {
+    for (const auto &tok : *ws_toks) {
       auto tok_expr = parse_expr_base_from_token(tok);
       if (!ctx.tokens_top_by_id_rev_.contains_key(tok_expr)) {
         ctx.tokens_top_by_id_rev_.insert(tok_expr,
@@ -287,11 +287,11 @@ void lang_init_validate(LangCompileContext &ctx) {
   std::set<Int> char_thresholds_s;
   Vec<IntPair> char_ranges;
   Vec<meta::Node::ParseExpr_T> Q_tabulate_chars;
-  for (auto decl : *ctx.tokens_->decls_) {
+  for (const auto &decl : *ctx.tokens_->decls_) {
     Q_tabulate_chars.push_back(decl->def__);
   }
-  for (auto mode : ctx.lexer_modes_) {
-    for (auto mode_case : *mode->as_Mode()->cases_) {
+  for (const auto &mode : ctx.lexer_modes_) {
+    for (const auto &mode_case : *mode->as_Mode()->cases_) {
       auto case_pat = mode_case->tok_;
       Q_tabulate_chars.push_back(case_pat);
     }
@@ -305,13 +305,13 @@ void lang_init_validate(LangCompileContext &ctx) {
       char_thresholds_s.insert(0);
       char_thresholds_s.insert(0x110000);
     } else if (e->is_Alt()) {
-      for (auto x : *e->as_Alt()->xs_) {
+      for (const auto &x : *e->as_Alt()->xs_) {
         Q_tabulate_chars.push_back(x);
       }
     } else if (e->is_AltExplicit()) {
       Q_tabulate_chars.push_back(e->as_AltExplicit()->e_);
     } else if (e->is_Concat()) {
-      for (auto x : *e->as_Concat()->xs_) {
+      for (const auto &x : *e->as_Concat()->xs_) {
         Q_tabulate_chars.push_back(x);
       }
     } else if (e->is_Optional()) {
@@ -334,7 +334,7 @@ void lang_init_validate(LangCompileContext &ctx) {
       if (chs.is_none()) {
         ctx.error(e, "Invalid std::string literal");
       }
-      for (auto ch : chs.as_some()) {
+      for (const auto &ch : chs.as_some()) {
         char_ranges.push_back(std::make_pair(ch, ch + 1));
         char_thresholds_s.insert(ch);
         char_thresholds_s.insert(ch + 1);
@@ -375,7 +375,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   char_thresholds_naive.push(k_naive);
   char_thresholds_naive_r.insert(k_naive, j_naive);
   ++j_naive;
-  for (auto ch : char_thresholds_s) {
+  for (const auto &ch : char_thresholds_s) {
     if (ch == k_naive) {
       continue;
     }
@@ -389,7 +389,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   ++j_naive;
 
   auto char_intervals_hit = Vec<bool>::repeat(false, j_naive - 1);
-  for (auto r : char_ranges) {
+  for (const auto &r : char_ranges) {
     AT(char_thresholds_naive_r.contains_key(r.first));
     AT(char_thresholds_naive_r.contains_key(r.second));
     for (Int i = char_thresholds_naive_r[r.first];
@@ -416,7 +416,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   }
 
   Option_T<IntPair> buf = None<IntPair>();
-  for (auto p : ctx.char_thresholds_) {
+  for (const auto &p : ctx.char_thresholds_) {
     if (buf.is_some() && buf.as_some().second != -1) {
       ctx.char_ranges_.push_back(std::make_pair(buf.as_some().first, p.first));
     }
@@ -461,7 +461,7 @@ void lang_init_validate(LangCompileContext &ctx) {
   bool found_attr = false;
   bool found_prec = false;
 
-  for (auto decl : *ctx.parser_->decls_) {
+  for (const auto &decl : *ctx.parser_->decls_) {
     if (decl->is_Rule()) {
       auto rule = decl->as_Rule();
       if (rule->op_->is_DEF_ALIAS()) {
@@ -477,7 +477,7 @@ void lang_init_validate(LangCompileContext &ctx) {
       }
       found_main = true;
       auto dc = decl->as_Main();
-      for (auto name : *dc->names_) {
+      for (const auto &name : *dc->names_) {
         if (ctx.parser_sym_top_main_.is_none()) {
           ctx.parser_sym_top_main_ = Some<std::string>(name.to_std_string());
         }
@@ -493,7 +493,7 @@ void lang_init_validate(LangCompileContext &ctx) {
       }
 
     } else if (decl->is_Prop()) {
-      for (auto prop : *decl->as_Prop()->props_) {
+      for (const auto &prop : *decl->as_Prop()->props_) {
         if (prop->is_NameStrict()) {
           ctx.parser_name_strict_ = true;
         } else if (prop->is_AllowUnreach()) {
@@ -514,7 +514,7 @@ void lang_init_validate(LangCompileContext &ctx) {
       }
       found_attr = true;
       auto dc = decl->as_Attr();
-      for (auto clause : *dc->clauses_) {
+      for (const auto &clause : *dc->clauses_) {
         ctx.parser_attr_clauses_->push_back(clause);
       }
 
@@ -527,7 +527,7 @@ void lang_init_validate(LangCompileContext &ctx) {
     ctx.error(ctx.parser_, "Parser definition requires a main stanza");
   }
 
-  for (auto p : *ctx.parser_rule_inds_) {
+  for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
     auto i = p.second;
 
@@ -552,7 +552,7 @@ void lang_init_validate(LangCompileContext &ctx) {
     }
   }
 
-  for (auto p : *ctx.parser_rule_inds_) {
+  for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
     auto i = p.second;
 
@@ -800,7 +800,7 @@ meta::Node::Lang_T xform_lang_normalize(Gensym_T gen,
 
   auto parser_aliases_by_ident = make_rc<Map<Ident_T, ParseExpr_T>>();
   auto parser = lang_get_parser_stanza(L);
-  for (auto decl : *parser->decls_) {
+  for (const auto &decl : *parser->decls_) {
     if (decl->is_Rule()) {
       auto rule = decl->as_Rule();
       if (rule->op_->is_DEF_ALIAS()) {
@@ -818,7 +818,7 @@ meta::Node::Lang_T xform_lang_normalize(Gensym_T gen,
 
   // Check for alias cycles
   auto m_alias_refs = make_rc<Map<Ident_T, Set_T<Ident_T>>>();
-  for (auto decl : *parser->decls_) {
+  for (const auto &decl : *parser->decls_) {
     if (decl->is_Rule()) {
       auto rule = decl->as_Rule();
       if (rule->op_->is_DEF_ALIAS()) {
@@ -838,7 +838,7 @@ meta::Node::Lang_T xform_lang_normalize(Gensym_T gen,
   auto vis_alias_search = make_rc<Set<Ident_T>>();
   auto S = make_rc<Vec<Ident_T>>();
   auto S_set = make_rc<Set<Ident_T>>();
-  for (auto decl : *parser->decls_) {
+  for (const auto &decl : *parser->decls_) {
     if (decl->is_Rule()) {
       auto rule = decl->as_Rule();
       if (rule->op_->is_DEF_ALIAS()) {
@@ -878,12 +878,12 @@ meta::Node::Lang_T xform_lang_normalize(Gensym_T gen,
   }
 
   auto stanzas_new = make_rc<Vec<meta::Node::Stanza_T>>();
-  for (auto xi : *L->as_Lang()->stanzas_) {
+  for (const auto &xi : *L->as_Lang()->stanzas_) {
     auto xi_new = xi;
     if (xi->is_Parser()) {
       auto cc = xi->as_Parser();
       auto decls_new = make_rc<Vec<meta::Node::ParserDecl_T>>();
-      for (auto decl : *cc->decls_) {
+      for (const auto &decl : *cc->decls_) {
         if (decl->is_Main() || decl->is_Prop() || decl->is_Prec() ||
             decl->is_Attr()) {
           decls_new->push_back(decl);
@@ -892,7 +892,7 @@ meta::Node::Lang_T xform_lang_normalize(Gensym_T gen,
           if (dc->op_->is_DEF_ALIAS()) {
             continue;
           }
-          for (auto nm : *dc->name_->names_) {
+          for (const auto &nm : *dc->name_->names_) {
             if (lang_name_is_lower_reserved(nm.to_std_string())) {
               ctx.error(
                   dc,

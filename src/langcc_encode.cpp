@@ -21,7 +21,7 @@ void switch_table_encode_acc_u16(Vec_T<Int> &dst, SwitchTable_T &tt) {
   if (tt->is_Base()) {
     dst->push_back(trunc_u16_s2u(0));
     auto cc = tt->as_Base();
-    for (auto x : *cc->v_) {
+    for (const auto &x : *cc->v_) {
       dst->push_back(trunc_u16_s2u(x));
     }
   } else if (tt->is_IterList()) {
@@ -31,10 +31,10 @@ void switch_table_encode_acc_u16(Vec_T<Int> &dst, SwitchTable_T &tt) {
     dst->push_back(trunc_u16_s2u(cc->cases_->length()));
     auto dst_subs = make_rc<Vec<Vec_T<Int>>>();
     Int offset = 2 * cc->cases_->length() + 1;
-    for (auto entry : *cc->cases_) {
+    for (const auto &entry : *cc->cases_) {
       dst->push_back(trunc_u16_s2u(entry->case_val_));
     }
-    for (auto entry : *cc->cases_) {
+    for (auto &entry : *cc->cases_) {
       auto dst_sub = make_rc<Vec<Int>>();
       switch_table_encode_acc_u16(dst_sub, entry->case__);
       dst_subs->push_back(dst_sub);
@@ -47,8 +47,8 @@ void switch_table_encode_acc_u16(Vec_T<Int> &dst, SwitchTable_T &tt) {
     dst_subs->push_back(dst_default);
     auto dst_default_len = dst_default->length();
     dst->push_back(trunc_u16_s2u(offset));
-    for (auto dst_sub : *dst_subs) {
-      for (auto n : *dst_sub) {
+    for (const auto &dst_sub : *dst_subs) {
+      for (const auto &n : *dst_sub) {
         dst->push_back(n);
       }
     }
@@ -71,7 +71,7 @@ void switch_table_encode_acc_u16(Vec_T<Int> &dst, SwitchTable_T &tt) {
       offset += dst_sub_len;
       ++i;
     }
-    for (auto dst_sub : *dst_subs) {
+    for (const auto &dst_sub : *dst_subs) {
       for (Int n : *dst_sub) {
         dst->push(n);
       }
@@ -92,13 +92,13 @@ VecUniq_T<LRSym_T> grammar_all_lr_syms(Grammar_T G) {
   ret->insert(LRSym::EndMarker::make());
   // NOTE: EndMarker must be index 0 (used, e.g., in LexOutput::first_k)
   ret->insert(LRSym::Base::make(Sym::Start::make()));
-  for (auto sym : *G->term_) {
+  for (const auto &sym : *G->term_) {
     ret->insert(LRSym::Base::make(sym));
   }
-  for (auto sym : *G->nonterm_) {
+  for (const auto &sym : *G->nonterm_) {
     ret->insert(LRSym::Base::make(sym));
   }
-  for (auto sym : *G->nonterm_) {
+  for (const auto &sym : *G->nonterm_) {
     ret->insert(LRSym::RecurStep::make(sym));
   }
   return ret;
@@ -114,9 +114,9 @@ K table_keys_select_branch(Set_T<K> ks, Map_T<Map_T<K, V>, W> tt) {
   Option_T<K> k_max = None<K>();
   Int n_part_max = 0;
 
-  for (auto k : *ks) {
+  for (const auto &k : *ks) {
     auto part_k = make_rc<Set<V>>();
-    for (auto [m, _] : *tt) {
+    for (const auto &[m, _] : *tt) {
       part_k->insert(m->operator[](k));
     }
     if (part_k->length() > n_part_max) {
@@ -133,8 +133,8 @@ std::pair<Set_T<K>, Map_T<Map_T<K, V>, W>>
 table_keys_minimal_partition(Map_T<Map_T<K, V>, W> table) {
 
   auto ks = make_rc<Set<K>>();
-  for (auto [kvs, w] : *table) {
-    for (auto [k, _] : *kvs) {
+  for (const auto &[kvs, w] : *table) {
+    for (const auto &[k, _] : *kvs) {
       ks->insert(k);
     }
   }
@@ -146,11 +146,11 @@ table_keys_minimal_partition(Map_T<Map_T<K, V>, W> table) {
     auto to_prune = None<K>();
     auto table_pruned_outer = None<Map_T<Map_T<K, V>, W>>();
 
-    for (auto ret_i : *ret_curr) {
+    for (const auto &ret_i : *ret_curr) {
       bool prune_ok = true;
       auto table_pruned = make_rc<Map<Map_T<K, V>, W>>();
 
-      for (auto [kvs, w] : *table_curr) {
+      for (const auto &[kvs, w] : *table_curr) {
         auto kvs_pruned = kvs->clone_rc();
         kvs_pruned->remove(ret_i);
         if (table_pruned->contains_key(kvs_pruned) &&
@@ -181,7 +181,7 @@ table_keys_minimal_partition(Map_T<Map_T<K, V>, W> table) {
 Int attr_key_to_index(Sym_T sym, AttrKey_T k, LangCompileContext &ctx) {
   auto dom = ctx.parser_attr_domains_->operator[](sym);
   Int i = 0;
-  for (auto [ki, _] : *dom) {
+  for (const auto &[ki, _] : *dom) {
     if (val_hash(ki) == val_hash(k)) {
       return i;
     }
@@ -201,7 +201,7 @@ SwitchTable_T parser_lr_vertex_dfa_step_impl_table_rec(
 
   AT(table->length() > 0);
   if (table->length() == 1) {
-    for (auto [k, v] : *table) {
+    for (const auto &[k, v] : *table) {
       auto vr = make_rc<Vec<Int>>();
       vr->push_back(v);
       return SwitchTable::Base::make(vr);
@@ -220,8 +220,8 @@ SwitchTable_T parser_lr_vertex_dfa_step_impl_table_rec(
   auto n_attr = ctx.parser_attr_domains_->operator[](sym_base)->length();
 
   auto table_keys = make_rc<Set<AttrKey_T>>();
-  for (auto [kvs, _] : *table) {
-    for (auto [k, _] : *kvs) {
+  for (const auto &[kvs, _] : *table) {
+    for (const auto &[k, _] : *kvs) {
       table_keys->insert(k);
     }
     break;
@@ -230,16 +230,16 @@ SwitchTable_T parser_lr_vertex_dfa_step_impl_table_rec(
   auto part_key_ind = attr_key_to_index(sym_base, part_key, ctx);
 
   auto part_vals = make_rc<Set<Int>>();
-  for (auto [kvs, w] : *table) {
+  for (const auto &[kvs, w] : *table) {
     auto v = kvs->operator[](part_key);
     part_vals->insert(v);
   }
 
   auto tables_sub = make_rc<Vec<SwitchTable_IterListEntry_T>>();
 
-  for (auto part_val : *part_vals) {
+  for (const auto &part_val : *part_vals) {
     auto table_filtered = make_rc<Map<Map_T<AttrKey_T, Int>, Int>>();
-    for (auto [kvs, w] : *table) {
+    for (const auto &[kvs, w] : *table) {
       if (val_hash(kvs->operator[](part_key)) != val_hash(part_val)) {
         continue;
       }
@@ -277,18 +277,18 @@ SwitchTable_T parser_lr_vertex_dfa_step_impl_table(LangCompileContext &ctx,
     auto vsi_es = NFA::outgoing_edges(D, vsi);
 
     auto label_syms = make_rc<Set<LRSym_T>>();
-    for (auto [lbl, nbrs] : *vsi_es) {
+    for (const auto &[lbl, nbrs] : *vsi_es) {
       label_syms->insert(lr_label_get_sym_maybe(lbl).as_some());
     }
 
     auto tables_sub_sym = make_rc<Vec<SwitchTable_IterListEntry_T>>();
 
-    for (auto sym : *label_syms) {
+    for (const auto &sym : *label_syms) {
       auto sym_ind = grammar_sym_to_ind_flat(ctx, sym);
       auto table = make_rc<Map<Map_T<AttrKey_T, Int>, Int>>();
 
       auto es = NFA::outgoing_edges(D, vsi);
-      for (auto [lbl, nbrs] : *vsi_es) {
+      for (const auto &[lbl, nbrs] : *vsi_es) {
         if (val_hash(lr_label_get_sym_maybe(lbl).as_some()) != val_hash(sym)) {
           continue;
         }
@@ -299,7 +299,7 @@ SwitchTable_T parser_lr_vertex_dfa_step_impl_table(LangCompileContext &ctx,
         auto attr_kvs = make_rc<Map<AttrKey_T, Int>>();
 
         auto lbl_attr = lr_label_get_attr_maybe(lbl).as_some();
-        for (auto [k, v] : *lbl_attr->m_) {
+        for (const auto &[k, v] : *lbl_attr->m_) {
           attr_kvs->insert(k, attr_val_to_int(v));
         }
         table->insert(attr_kvs, nbr_ind);
@@ -368,7 +368,7 @@ SwitchTable_T parser_lr_action_by_vertex_impl_table_rec(
   if (buf->length() == k) {
     if (part_table_filt->length() > 0) {
       AT(part_table_filt->length() == 1);
-      for (auto [la, acc] : *part_table_filt) {
+      for (const auto &[la, acc] : *part_table_filt) {
         auto [acc_i, arg_i] = parser_lr_action_dfa_acc_to_indices(acc, ctx);
         auto vr = make_rc<Vec<Int>>();
         vr->push_back(acc_i);
@@ -388,7 +388,7 @@ SwitchTable_T parser_lr_action_by_vertex_impl_table_rec(
   auto la_syms_by_ind_j =
       make_rc<Map<LRSym_T, VecUniq_T<std::pair<SymStr_T, LRAction_T>>>>();
 
-  for (auto [la, acc] : *part_table_filt) {
+  for (const auto &[la, acc] : *part_table_filt) {
     auto la_j = la->v_->operator[](j);
     if (!la_syms_by_ind_j->contains_key(la_j)) {
       la_syms_by_ind_j->insert(
@@ -399,11 +399,11 @@ SwitchTable_T parser_lr_action_by_vertex_impl_table_rec(
 
   auto tables_sub = make_rc<Vec<SwitchTable_IterListEntry_T>>();
 
-  for (auto [la_j, part_table_filt_sub] : *la_syms_by_ind_j) {
+  for (const auto &[la_j, part_table_filt_sub] : *la_syms_by_ind_j) {
     auto la_j_flat = grammar_sym_to_ind_flat(ctx, la_j);
 
     auto buf_sub = make_rc<Vec<LRSym_T>>();
-    for (auto x : *buf) {
+    for (const auto &x : *buf) {
       buf_sub->push_back(x);
     }
     buf_sub->push_back(la_j);
@@ -434,7 +434,7 @@ parser_lr_action_by_vertex_impl_table_basic(LangCompileContext &ctx, LR_DFA_T D,
 
     auto m = D->acc_->operator[](i);
     auto la_max = None<StringSet_T<Unit>>();
-    for (auto ll : *m) {
+    for (const auto &ll : *m) {
       if (la_max.is_none() ||
           ll->la_->items_->length() > la_max.as_some()->items_->length()) {
         la_max = Some<StringSet_T<Unit>>(ll->la_);
@@ -443,14 +443,14 @@ parser_lr_action_by_vertex_impl_table_basic(LangCompileContext &ctx, LR_DFA_T D,
 
     Option_T<LRAction_T> acc_default = None<LRAction_T>();
     auto v = make_rc<VecUniq<std::pair<SymStr_T, LRAction_T>>>();
-    for (auto ll : *m) {
+    for (const auto &ll : *m) {
       if (k <= 1 && la_max.is_some() &&
           val_hash(ll->la_) == val_hash(la_max.as_some())) {
         // Note: k <= 1 since lookaheads k > 1 admit partial matches (``best
         // match'')
         acc_default = Some<LRAction_T>(ll->acc_);
       } else {
-        for (auto [s, _] : *ll->la_->items_) {
+        for (const auto &[s, _] : *ll->la_->items_) {
           v->insert(std::make_pair(s, ll->acc_));
         }
       }
@@ -481,7 +481,7 @@ parser_lr_action_by_vertex_impl_table_opt(LangCompileContext &ctx, LR_NFA_T N,
   for (Int i = 0; i < n; i++) {
     auto vsi = D->G_->V_->operator[](i);
     auto mm = lr_tabulate_nfa_acc(N, vsi);
-    for (auto [la, accs] : *mm) {
+    for (const auto &[la, accs] : *mm) {
       if (accs->length() > 1) {
         LG_ERR("Conflict remains after compilation");
         AX();

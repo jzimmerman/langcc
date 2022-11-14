@@ -12,11 +12,12 @@ AttrSet_T prod_lhs_attr_init(Prod_T prod, LangCompileContext &ctx) {
     AX();
   }
 
-  for (auto [attr_k, attr_ty] : *ctx.parser_attr_domains_->operator[](lhs)) {
+  for (const auto &[attr_k, attr_ty] :
+       *ctx.parser_attr_domains_->operator[](lhs)) {
     m->insert_strict(attr_k, attr_val_max(attr_ty));
   }
 
-  for (auto constr : *ctx.Gr_cps_prod_constrs_->operator[](prod)) {
+  for (const auto &constr : *ctx.Gr_cps_prod_constrs_->operator[](prod)) {
     if (constr->is_LhsLeq()) {
       auto cc = constr->as_LhsLeq();
       if (!m->contains_key(cc->k_)) {
@@ -38,11 +39,11 @@ prod_lhs_apply_constrs_incremental(DottedProd_T dq, AttrSet_T dq_attr,
                                    LangCompileContext &ctx) {
 
   auto ret = make_rc<Map<AttrKey_T, AttrVal_T>>();
-  for (auto [k, v] : *dq_attr->m_) {
+  for (const auto &[k, v] : *dq_attr->m_) {
     ret->insert(k, v);
   }
 
-  for (auto constr : *ctx.Gr_cps_prod_constrs_->operator[](dq->prod_)) {
+  for (const auto &constr : *ctx.Gr_cps_prod_constrs_->operator[](dq->prod_)) {
     if (constr->is_LhsLeq()) {
       // pass
 
@@ -82,8 +83,8 @@ template <typename Repr>
 void string_set_concat_inner_acc(Map_T<SymStr_T, Repr> &dst, Int k,
                                  StringSet_T<Repr> x, StringSet_T<Repr> y) {
 
-  for (auto [xi, rxi] : *x->items_) {
-    for (auto [yi, ryi] : *y->items_) {
+  for (const auto &[xi, rxi] : *x->items_) {
+    for (const auto &[yi, ryi] : *y->items_) {
       auto zi_full = sym_str_concat(xi, yi);
       auto zi = sym_str_trunc(zi_full, k);
       auto rzi = string_set_repr_concat(rxi, ryi);
@@ -113,9 +114,9 @@ StringSet_T<Repr> string_set_concat(StringSet_T<Repr> x, StringSet_T<Repr> y) {
 
 void pr(std::ostream &os, FmtFlags flags, GrammarSymConstrGen_T G_gen) {
   fmt(os, "GrammarSymConstrGen {{\n");
-  for (auto p : *G_gen) {
+  for (const auto &p : *G_gen) {
     auto sym = p.first;
-    for (auto q : *p.second) {
+    for (const auto &q : *p.second) {
       auto attr = q.first;
       fmt(os, "    {}", sym);
       auto attr_str = fmt_str("{}", attr);
@@ -129,10 +130,10 @@ void pr(std::ostream &os, FmtFlags flags, GrammarSymConstrGen_T G_gen) {
   fmt(os, "}}");
 }
 
-bool prod_constr_gen_extend_inplace(GrammarProdConstrGen_T &prod_gen,
-                                    DottedProd_T dqt, AttrSet_T dqt_attr_new,
-                                    StringSet_T<SymStr_T> dqt_str_gen_incr,
-                                    LangCompileContext &ctx) {
+bool prod_constr_gen_extend_inplace(
+    GrammarProdConstrGen_T &prod_gen, const DottedProd_T &dqt,
+    const AttrSet_T &dqt_attr_new,
+    const StringSet_T<SymStr_T> &dqt_str_gen_incr, LangCompileContext &ctx) {
 
   bool fresh = false;
   if (!prod_gen->contains_key(dqt)) {
@@ -160,11 +161,11 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k,
   auto prod_gen =
       make_rc<Map<DottedProd_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>>();
 
-  for (auto sym : *G->nonterm_) {
+  for (const auto &sym : *G->nonterm_) {
     sym_gen->insert(sym, make_rc<Map<AttrSet_T, StringSet_T<SymStr_T>>>());
   }
 
-  for (auto sym : *G->term_) {
+  for (const auto &sym : *G->term_) {
     auto sym_v = make_rc<Vec<LRSym_T>>();
     sym_v->push_back(LRSym::Base::make(sym));
     auto sym_str = SymStr::make(sym_v);
@@ -177,7 +178,7 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k,
 
   auto Q = make_rc<Vec<std::pair<DottedProd_T, AttrSet_T>>>();
 
-  for (auto prod : *G->prods_) {
+  for (const auto &prod : *G->prods_) {
     for (Int dot = 0; dot <= prod->rhs_->length(); dot++) {
       auto dp = DottedProd::make(prod, dot);
       prod_gen->insert_strict(dp,
@@ -209,10 +210,10 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k,
         sym_gen->operator[](sym)->insert(dp_attr, str_gen_new);
       }
 
-      for (auto dq : *G->prods_by_nonterm_rhs_->operator[](sym)) {
+      for (const auto &dq : *G->prods_by_nonterm_rhs_->operator[](sym)) {
         auto dqt = dotted_prod_with_step(dq);
 
-        for (auto [dq_attr, dq_str_gen] : *prod_gen->operator[](dq)) {
+        for (const auto &[dq_attr, dq_str_gen] : *prod_gen->operator[](dq)) {
           auto dqt_attr_new_m =
               prod_lhs_apply_constrs_incremental(dq, dq_attr, dp_attr, ctx);
           if (dqt_attr_new_m.is_none()) {
@@ -238,7 +239,7 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k,
         AX();
       }
 
-      for (auto [cur_attr, cur_str_gen] :
+      for (const auto &[cur_attr, cur_str_gen] :
            *sym_gen->operator[](dotted_prod_cursor(dp))) {
         auto dpt_attr_new_m =
             prod_lhs_apply_constrs_incremental(dp, dp_attr, cur_attr, ctx);
@@ -257,6 +258,33 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k,
   }
 
   return sym_gen;
+}
+
+inline LRVertex_T lr_vertex_without_lookahead(LRVertex_T v) {
+  auto la_trivial = string_set_single_empty_unit(0, true);
+
+  if (v->is_Prod()) {
+    return LRVertex::Prod::make(v->as_Prod()->bounds_, la_trivial,
+                                v->as_Prod()->prod_, v->as_Prod()->left_rec_);
+  } else if (v->is_RecStart()) {
+    return LRVertex::RecStart::make(v->as_RecStart()->bounds_, la_trivial,
+                                    v->as_RecStart()->sym_);
+  } else if (v->is_RecEnd()) {
+    return LRVertex::RecEnd::make(v->as_RecEnd()->bounds_, la_trivial,
+                                  v->as_RecEnd()->sym_);
+  } else {
+    AX();
+  }
+}
+
+inline Sym_T lr_vertex_cursor(LRVertex_T v) {
+  if (v->is_Prod()) {
+    return dotted_prod_cursor(v->as_Prod()->prod_);
+  } else if (v->is_RecStart()) {
+    return v->as_RecStart()->sym_;
+  } else {
+    AX();
+  }
 }
 
 SymStr_T sym_str_sentinel(Int k) {
@@ -294,10 +322,10 @@ lr_vertex_with_bounds_pruned(LRVertex_T v, GrammarSymConstrGen_T G_gen,
     auto rhs_models = make_rc<Vec<Set_T<AttrSet_T>>>();
     for (Int i = 0; i < dp->prod_->rhs_->length(); i++) {
       auto rhs_models_i = make_rc<Set<AttrSet_T>>();
-      for (auto [attr, _] :
+      for (const auto &[attr, _] :
            *G_gen->operator[](dp->prod_->rhs_->operator[](i))) {
         bool model_ok = true;
-        for (auto constr : *G_constrs->operator[](dp->prod_)) {
+        for (const auto &constr : *G_constrs->operator[](dp->prod_)) {
           if (constr->is_RhsGeq()) {
             auto cc = constr->as_RhsGeq();
             if (cc->i_ == i && attr->m_->contains_key(cc->k_) &&
@@ -317,13 +345,13 @@ lr_vertex_with_bounds_pruned(LRVertex_T v, GrammarSymConstrGen_T G_gen,
       rhs_models->push_back(rhs_models_i);
     }
     auto ret_bounds = attr_bound_set_empty();
-    for (auto [attr_k, attr_bound] : *v->bounds_->m_) {
+    for (const auto &[attr_k, attr_bound] : *v->bounds_->m_) {
       bool trivial = true;
-      for (auto constr : *G_constrs->operator[](dp->prod_)) {
+      for (const auto &constr : *G_constrs->operator[](dp->prod_)) {
         if (constr->is_Implies()) {
           auto cc = constr->as_Implies();
           if (val_hash(cc->kl_) == val_hash(attr_k) && cc->i_ >= dp->dot_) {
-            for (auto gen_attr : *rhs_models->operator[](cc->i_)) {
+            for (const auto &gen_attr : *rhs_models->operator[](cc->i_)) {
               if (!gen_attr->m_->contains_key(cc->kr_)) {
                 continue;
               }
@@ -366,9 +394,9 @@ struct LookaheadPartNested {
   LookaheadPartFlat univ_;
   Set_T<Set_T<StringSet_T<Unit>>> part_;
 
-  inline LookaheadPartFlat flatten() {
+  inline LookaheadPartFlat flatten() const {
     auto ret = make_rc<Set<StringSet_T<Unit>>>();
-    for (auto s : *part_) {
+    for (const auto &s : *part_) {
       auto s_flat = string_set_union_multi(s);
       ret->insert(s_flat);
     }
@@ -379,9 +407,9 @@ struct LookaheadPartNested {
     LookaheadPartNested ret;
     ret.univ_ = make_rc<Set<StringSet_T<Unit>>>();
     ret.part_ = make_rc<Set<Set_T<StringSet_T<Unit>>>>();
-    for (auto s : *part) {
+    for (const auto &s : *part) {
       auto part_s = make_rc<Set<StringSet_T<Unit>>>();
-      for (auto [la, _] : *s->items_) {
+      for (const auto &[la, _] : *s->items_) {
         auto la_s = string_set_single<Unit>(la, Unit{}, s->k_, s->strict_eq_);
         ret.univ_->insert(la_s);
         part_s->insert(la_s);
@@ -391,7 +419,8 @@ struct LookaheadPartNested {
     return ret;
   }
 
-  inline static LookaheadPartNested raise_join_coarse(LookaheadPartFlat part) {
+  inline static LookaheadPartNested
+  raise_join_coarse(const LookaheadPartFlat &part) {
     LookaheadPartNested ret;
     ret.univ_ = part;
     ret.part_ = make_rc<Set<Set_T<StringSet_T<Unit>>>>();
@@ -404,7 +433,7 @@ using LookaheadPartsNested = Map_T<LRVertex_T, LookaheadPartNested>;
 
 inline LookaheadPartsFlat lookahead_parts_flatten(LookaheadPartsNested parts) {
   auto ret = make_rc<Map<LRVertex_T, LookaheadPartFlat>>();
-  for (auto [v, part] : *parts) {
+  for (const auto &[v, part] : *parts) {
     ret->insert(v, part.flatten());
   }
   return ret;
@@ -413,7 +442,7 @@ inline LookaheadPartsFlat lookahead_parts_flatten(LookaheadPartsNested parts) {
 inline LookaheadPartsNested
 lookahead_parts_raise_single(LookaheadPartsFlat parts) {
   auto ret = make_rc<Map<LRVertex_T, LookaheadPartNested>>();
-  for (auto [v, part] : *parts) {
+  for (const auto &[v, part] : *parts) {
     ret->insert(v, LookaheadPartNested::raise_single(part));
   }
   return ret;
@@ -422,13 +451,14 @@ lookahead_parts_raise_single(LookaheadPartsFlat parts) {
 inline LookaheadPartsNested
 lookahead_parts_raise_join_coarse(LookaheadPartsFlat parts) {
   auto ret = make_rc<Map<LRVertex_T, LookaheadPartNested>>();
-  for (auto [v, part] : *parts) {
+  for (const auto &[v, part] : *parts) {
     ret->insert(v, LookaheadPartNested::raise_join_coarse(part));
   }
   return ret;
 }
 
-inline void pr(std::ostream &os, FmtFlags flags, LookaheadPartNested part) {
+inline void pr(std::ostream &os, FmtFlags flags,
+               const LookaheadPartNested &part) {
   pr(os, flags, part.part_);
 }
 
@@ -443,7 +473,7 @@ AttrBoundSet_T lr_prod_bounds_pred(DottedProd_T dp, AttrBoundSet_T lhs_bounds,
 
   auto ret = make_rc<Map<AttrKey_T, AttrBound_T>>();
 
-  for (auto constr : *G_constrs->operator[](dp->prod_)) {
+  for (const auto &constr : *G_constrs->operator[](dp->prod_)) {
     if (constr->is_LhsLeq()) {
       // pass
     } else if (constr->is_RhsGeq()) {
@@ -475,7 +505,7 @@ AttrBoundSet_T lr_prod_bounds_pred(DottedProd_T dp, AttrBoundSet_T lhs_bounds,
 }
 
 AttrBoundSet_T lr_vertex_bounds_pred(LRVertex_T v,
-                                     GrammarProdConstrs_T G_constrs) {
+                                     const GrammarProdConstrs_T &G_constrs) {
   if (v->is_RecStart()) {
     return v->bounds_;
   }
@@ -484,12 +514,12 @@ AttrBoundSet_T lr_vertex_bounds_pred(LRVertex_T v,
   return lr_prod_bounds_pred(dp, v->bounds_, G_constrs);
 }
 
-bool lr_cursor_unfold_naive(DottedProd_T dp, Grammar_T G) {
+bool lr_cursor_unfold_naive(DottedProd_T dp, const Grammar_T &G) {
   AT(!dotted_prod_is_end(dp));
   return dp->prod_->unfold_mask_->operator[](dp->dot_);
 }
 
-bool lr_cursor_unfold(LRVertex_T v, Grammar_T G) {
+bool lr_cursor_unfold(LRVertex_T v, const Grammar_T &G) {
   if (v->is_RecStart()) {
     return true;
   } else if (v->is_RecEnd()) {
@@ -508,9 +538,10 @@ bool lr_cursor_unfold(LRVertex_T v, Grammar_T G) {
   }
 }
 
-bool lr_lookahead_pred_compat(LRVertex_T v, LRVertex_T w, Int k, Grammar_T G,
-                              GrammarSymConstrGen_T G_gen,
-                              GrammarProdConstrs_T G_constrs) {
+bool lr_lookahead_pred_compat(LRVertex_T v, LRVertex_T w, Int k,
+                              const Grammar_T &G,
+                              const GrammarSymConstrGen_T &G_gen,
+                              const GrammarProdConstrs_T &G_constrs) {
 
   if (k == 0) {
     return true;
@@ -528,12 +559,13 @@ bool lr_lookahead_pred_compat(LRVertex_T v, LRVertex_T w, Int k, Grammar_T G,
   }
 }
 
-StringSet_T<Unit> lr_sym_constr_gen(Sym_T sym, AttrBoundSet_T bounds_sym,
+StringSet_T<Unit> lr_sym_constr_gen(const Sym_T &sym,
+                                    const AttrBoundSet_T &bounds_sym,
                                     GrammarSymConstrGen_T G_gen, Int k,
-                                    GrammarProdConstrs_T G_constrs) {
+                                    const GrammarProdConstrs_T &G_constrs) {
 
   auto ret = string_set_empty<Unit>(k, false);
-  for (auto [attr, gen_set] : *G_gen->operator[](sym)) {
+  for (const auto &[attr, gen_set] : *G_gen->operator[](sym)) {
     if (!attr_set_meets_bounds(attr, bounds_sym)) {
       continue;
     }
@@ -542,10 +574,10 @@ StringSet_T<Unit> lr_sym_constr_gen(Sym_T sym, AttrBoundSet_T bounds_sym,
   return ret;
 }
 
-StringSet_T<Unit> lr_prod_comp_constr_gen(Prod_T prod, Int i,
-                                          AttrBoundSet_T bounds,
-                                          GrammarSymConstrGen_T G_gen, Int k,
-                                          GrammarProdConstrs_T G_constrs) {
+StringSet_T<Unit>
+lr_prod_comp_constr_gen(const Prod_T &prod, Int i, const AttrBoundSet_T &bounds,
+                        const GrammarSymConstrGen_T &G_gen, Int k,
+                        const GrammarProdConstrs_T &G_constrs) {
 
   auto dp = DottedProd::make(prod, i);
   auto cur = dotted_prod_cursor(dp);
@@ -553,11 +585,11 @@ StringSet_T<Unit> lr_prod_comp_constr_gen(Prod_T prod, Int i,
   return lr_sym_constr_gen(cur, bounds_pred, G_gen, k, G_constrs);
 }
 
-StringSet_T<Unit> lr_prod_tail_constr_gen(DottedProd_T dp,
-                                          AttrBoundSet_T bounds,
-                                          StringSet_T<Unit> la_end,
-                                          GrammarSymConstrGen_T G_gen, Int k,
-                                          GrammarProdConstrs_T G_constrs) {
+StringSet_T<Unit>
+lr_prod_tail_constr_gen(DottedProd_T dp, const AttrBoundSet_T &bounds,
+                        const StringSet_T<Unit> &la_end,
+                        const GrammarSymConstrGen_T &G_gen, Int k,
+                        const GrammarProdConstrs_T &G_constrs) {
 
   auto ret = la_end;
   for (Int i = dp->prod_->rhs_->length() - 1; i >= dp->dot_; i--) {
@@ -568,9 +600,9 @@ StringSet_T<Unit> lr_prod_tail_constr_gen(DottedProd_T dp,
   return ret;
 }
 
-StringSet_T<Unit> lr_vertex_cur_look_set(LRVertex_T w,
-                                         GrammarSymConstrGen_T G_gen, Int k,
-                                         GrammarProdConstrs_T G_constrs) {
+StringSet_T<Unit>
+lr_vertex_cur_look_set(LRVertex_T w, const GrammarSymConstrGen_T &G_gen, Int k,
+                       const GrammarProdConstrs_T &G_constrs) {
 
   if (w->is_RecStart()) {
     auto ret = lr_sym_constr_gen(
@@ -596,8 +628,9 @@ StringSet_T<Unit> lr_vertex_cur_look_set(LRVertex_T w,
 }
 
 void lr_nfa_ensure_vertex_acc(LRVertex_T w, Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
-                              Grammar_T G, GrammarSymConstrGen_T G_gen, Int k,
-                              GrammarProdConstrs_T G_constrs) {
+                              const Grammar_T &G,
+                              const GrammarSymConstrGen_T &G_gen, Int k,
+                              const GrammarProdConstrs_T &G_constrs) {
 
   auto [_, fresh] = NFA::ensure_vertex(N, w);
 
@@ -639,10 +672,10 @@ void lr_nfa_ensure_vertex_acc(LRVertex_T w, Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
 
 void parser_lr_nfa_add_pred_edges(Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
                                   LRVertex_T v, Grammar_T G,
-                                  GrammarSymConstrGen_T G_gen,
-                                  GrammarSymConstrGen_T G_gen0,
+                                  const GrammarSymConstrGen_T &G_gen,
+                                  const GrammarSymConstrGen_T &G_gen0,
                                   Option_T<LookaheadPartsFlat> la_part, Int k,
-                                  GrammarProdConstrs_T G_constrs) {
+                                  const GrammarProdConstrs_T &G_constrs) {
 
   auto sym = lr_vertex_cursor(v);
 
@@ -652,7 +685,7 @@ void parser_lr_nfa_add_pred_edges(Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
     AX();
   }
 
-  for (auto prod : *G->prods_) {
+  for (const auto &prod : *G->prods_) {
     if (val_hash(prod->lhs_) != val_hash(sym)) {
       continue;
     }
@@ -681,7 +714,7 @@ void parser_lr_nfa_add_pred_edges(Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
       la_part_curr = la_part.as_some()->operator[](w_k0);
     }
 
-    for (auto la : *la_part_curr) {
+    for (const auto &la : *la_part_curr) {
       LRVertex_T w = LRVertex::Prod::make(
           bounds_pred, la, DottedProd::make(prod, 0), w_left_rec);
       auto wr = lr_vertex_with_bounds_pruned(w, G_gen, G_constrs);
@@ -702,11 +735,11 @@ void parser_lr_nfa_add_pred_edges(Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
 }
 
 void parser_lr_nfa_add_rec_edges(Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
-                                 LRVertex_T v, Grammar_T G,
-                                 GrammarSymConstrGen_T G_gen,
-                                 GrammarSymConstrGen_T G_gen0,
+                                 const LRVertex_T &v, const Grammar_T &G,
+                                 const GrammarSymConstrGen_T &G_gen,
+                                 const GrammarSymConstrGen_T &G_gen0,
                                  Option_T<LookaheadPartsFlat> la_part, Int k,
-                                 GrammarProdConstrs_T G_constrs) {
+                                 const GrammarProdConstrs_T &G_constrs) {
 
   auto sym = lr_vertex_cursor(v);
 
@@ -721,7 +754,7 @@ void parser_lr_nfa_add_rec_edges(Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
     la_part_curr = la_part.as_some()->operator[](w_k0);
   }
 
-  for (auto la : *la_part_curr) {
+  for (const auto &la : *la_part_curr) {
     LRVertex_T w = LRVertex::RecStart::make(bounds_pred, la, sym);
     auto wr = lr_vertex_with_bounds_pruned(w, G_gen, G_constrs);
     if (wr.is_none()) {
@@ -740,10 +773,11 @@ void parser_lr_nfa_add_rec_edges(Vec_T<LRVertex_T> &Q, LR_NFA_T &N,
   }
 }
 
-LR_NFA_T parser_lr_construct_nfa(Grammar_T G, GrammarSymConstrGen_T G_gen,
-                                 GrammarSymConstrGen_T G_gen0,
-                                 Option_T<LookaheadPartsFlat> la_part, Int k,
-                                 GrammarProdConstrs_T G_constrs) {
+LR_NFA_T parser_lr_construct_nfa(const Grammar_T &G,
+                                 GrammarSymConstrGen_T G_gen,
+                                 const GrammarSymConstrGen_T &G_gen0,
+                                 const Option_T<LookaheadPartsFlat> &la_part,
+                                 Int k, const GrammarProdConstrs_T &G_constrs) {
 
   auto N = NFA::empty<LRVertex_T, LRLabel_T, LRLookAction_T>();
 
@@ -767,7 +801,7 @@ LR_NFA_T parser_lr_construct_nfa(Grammar_T G, GrammarSymConstrGen_T G_gen,
       }
       v_end = vr_end.as_some();
       lr_nfa_ensure_vertex_acc(v_end, Q, N, G, G_gen, k, G_constrs);
-      for (auto p : *G_gen->operator[](sym)) {
+      for (const auto &p : *G_gen->operator[](sym)) {
         if (attr_set_meets_bounds(p.first, v->bounds_)) {
           LRLabel_T label =
               LRLabel::Sym_::make(LRSym::Base::make(sym), p.first);
@@ -789,7 +823,7 @@ LR_NFA_T parser_lr_construct_nfa(Grammar_T G, GrammarSymConstrGen_T G_gen,
     auto cur = lr_vertex_cursor(v);
 
     // Step edges
-    for (auto p : *G_gen->operator[](cur)) {
+    for (const auto &p : *G_gen->operator[](cur)) {
       if (attr_set_meets_bounds(p.first, lr_vertex_bounds_pred(v, G_constrs))) {
         LRLabel_T label = LRLabel::Sym_::make(LRSym::Base::make(cur), p.first);
 
@@ -824,9 +858,9 @@ LR_NFA_T parser_lr_construct_nfa(Grammar_T G, GrammarSymConstrGen_T G_gen,
 
 using LRFollowSets_T = Map_T<LRVertex_T, StringSet_T<Unit>>;
 
-LRFollowSets_T lr_nfa_compute_follows(LR_NFA_T N0, Grammar_T G,
-                                      GrammarSymConstrGen_T G_gen, Int k,
-                                      GrammarProdConstrs_T G_constrs) {
+LRFollowSets_T lr_nfa_compute_follows(LR_NFA_T N0, const Grammar_T &G,
+                                      const GrammarSymConstrGen_T &G_gen, Int k,
+                                      const GrammarProdConstrs_T &G_constrs) {
 
   auto ret = make_rc<Map<LRVertex_T, StringSet_T<Unit>>>();
 
@@ -842,8 +876,8 @@ LRFollowSets_T lr_nfa_compute_follows(LR_NFA_T N0, Grammar_T G,
     auto la = ret->operator[](v);
 
     auto es = NFA::outgoing_edges(N0, v);
-    for (auto [lbl, nbrs] : *es) {
-      for (auto nbr : *nbrs) {
+    for (const auto &[lbl, nbrs] : *es) {
+      for (const auto &nbr : *nbrs) {
         bool updated = false;
         if (!ret->contains_key(nbr)) {
           ret->insert(nbr, string_set_empty<Unit>(k, true));
@@ -886,7 +920,7 @@ LRFollowSets_T lr_nfa_compute_follows(LR_NFA_T N0, Grammar_T G,
 
 LookaheadPartsFlat lr_extract_slr_partitions(LRFollowSets_T fol) {
   auto ret = make_rc<Map<LRVertex_T, LookaheadPartFlat>>();
-  for (auto [v, v_fol] : *fol) {
+  for (const auto &[v, v_fol] : *fol) {
     auto v_part = make_rc<Set<StringSet_T<Unit>>>();
     v_part->insert(v_fol);
     ret->insert(v, v_part);
@@ -898,10 +932,10 @@ Map_T<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>
 lr_tabulate_nfa_acc(LR_NFA_T N, Set_T<LRVertex_T> vs) {
 
   auto ret = make_rc<Map<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>>();
-  for (auto v : *vs) {
+  for (const auto &v : *vs) {
     auto vi = N->G_->V_->index_of_maybe(v).as_some();
-    for (auto x : *N->acc_->operator[](vi)) {
-      for (auto [la_str, _] : *x->la_->items_) {
+    for (const auto &x : *N->acc_->operator[](vi)) {
+      for (const auto &[la_str, _] : *x->la_->items_) {
         if (!ret->contains_key(la_str)) {
           ret->insert(la_str, make_rc<Map<LRAction_T, Set_T<LRVertex_T>>>());
         }
@@ -916,7 +950,7 @@ lr_tabulate_nfa_acc(LR_NFA_T N, Set_T<LRVertex_T> vs) {
 }
 
 Map_T<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>
-lr_tabulate_nfa_acc_single(LR_NFA_T N, LRVertex_T v) {
+lr_tabulate_nfa_acc_single(const LR_NFA_T &N, const LRVertex_T &v) {
 
   auto vs = make_rc<Set<LRVertex_T>>();
   vs->insert(v);
@@ -924,14 +958,14 @@ lr_tabulate_nfa_acc_single(LR_NFA_T N, LRVertex_T v) {
 }
 
 Set_T<Sym_T> lr_extract_slr_sym_cps_conf(Grammar_T G, LR_DFA_T Ds,
-                                         LR_NFA_T Ns) {
+                                         const LR_NFA_T &Ns) {
   auto ret = make_rc<Set<Sym_T>>();
 
-  for (auto vs : *Ds->G_->V_) {
+  for (const auto &vs : *Ds->G_->V_) {
     auto acc_table = lr_tabulate_nfa_acc(Ns, vs);
-    for (auto p : *acc_table) {
+    for (const auto &p : *acc_table) {
       if (p.second->length() > 1) {
-        for (auto x : *p.second) {
+        for (const auto &x : *p.second) {
           if (x.first->is_Reduce()) {
             auto sym = x.first->as_Reduce()->prod_->lhs_;
             if (Grammar::sym_is_cps_eligible(sym)) {
@@ -950,12 +984,12 @@ Set_T<Sym_T> lr_extract_slr_sym_cps_conf(Grammar_T G, LR_DFA_T Ds,
 
   // Close set
   auto Q = make_rc<Vec<Sym_T>>();
-  for (auto x : *ret) {
+  for (const auto &x : *ret) {
     Q->push_back(x);
   }
   while (!Q->empty()) {
     auto curr = Q->pop_front_val();
-    for (auto prod : *G->prods_by_nonterm_rhs_->operator[](curr)) {
+    for (const auto &prod : *G->prods_by_nonterm_rhs_->operator[](curr)) {
       auto next = prod->prod_->lhs_;
       if (Grammar::sym_is_cps_eligible(next) && !ret->contains(next)) {
         ret->insert(next);
@@ -967,7 +1001,7 @@ Set_T<Sym_T> lr_extract_slr_sym_cps_conf(Grammar_T G, LR_DFA_T Ds,
   return ret;
 }
 
-LRVertex_T lr_vertex_with_lookahead(LRVertex_T v, StringSet_T<Unit> la) {
+LRVertex_T lr_vertex_with_lookahead(LRVertex_T v, const StringSet_T<Unit> &la) {
   if (v->is_Prod()) {
     return LRVertex::Prod::make(v->bounds_, la, v->as_Prod()->prod_,
                                 v->as_Prod()->left_rec_);
@@ -980,34 +1014,35 @@ LRVertex_T lr_vertex_with_lookahead(LRVertex_T v, StringSet_T<Unit> la) {
   }
 }
 
-LookaheadPartsFlat lr_extract_immed_conf_part(LR_DFA_T Ds, LR_NFA_T Ns,
-                                              LookaheadPartsFlat la_part_slr,
-                                              GrammarSymConstrGen_T G_gen,
-                                              Int k,
-                                              GrammarProdConstrs_T G_constrs) {
+LookaheadPartsFlat
+lr_extract_immed_conf_part(LR_DFA_T Ds, const LR_NFA_T &Ns,
+                           LookaheadPartsFlat la_part_slr,
+                           const GrammarSymConstrGen_T &G_gen, Int k,
+                           const GrammarProdConstrs_T &G_constrs) {
 
   auto la_conf = make_rc<Map<LRVertex_T, Set_T<StringSet_T<Unit>>>>();
 
-  for (auto [v0, v_part] : *la_part_slr) {
+  for (const auto &[v0, v_part] : *la_part_slr) {
     auto v0_la_conf_init = make_rc<Set<StringSet_T<Unit>>>();
     v0_la_conf_init->insert(v_part->only());
     la_conf->insert(v0, v0_la_conf_init);
   }
 
-  for (auto vs : *Ds->G_->V_) {
+  for (const auto &vs : *Ds->G_->V_) {
     auto acc_table = lr_tabulate_nfa_acc(Ns, vs);
 
-    for (auto p : *acc_table) {
+    for (const auto &p : *acc_table) {
       if (p.second->length() > 1) {
-        for (auto q : *p.second) {
-          for (auto v : *q.second) {
+        for (const auto &q : *p.second) {
+          for (const auto &v : *q.second) {
             auto v0 = lr_vertex_with_lookahead(
                 v, string_set_single_empty_unit(0, true));
 
             auto la_matching = string_set_empty<Unit>(k, true);
             auto la_non_matching = string_set_empty<Unit>(k, true);
 
-            for (auto [la, _] : *la_part_slr->operator[](v0)->only()->items_) {
+            for (const auto &[la, _] :
+                 *la_part_slr->operator[](v0)->only()->items_) {
               auto la_single = string_set_single(la, Unit{}, k, true);
               auto v_la = lr_vertex_with_lookahead(v, la_single);
               auto v_cur = lr_vertex_cur_look_set(v_la, G_gen, k, G_constrs);
@@ -1022,7 +1057,7 @@ LookaheadPartsFlat lr_extract_immed_conf_part(LR_DFA_T Ds, LR_NFA_T Ns,
             LOG(3, "la_matching: {}", la_matching);
 
             auto v0_la_conf_new = make_rc<Set<StringSet_T<Unit>>>();
-            for (auto s_curr : *la_conf->operator[](v0)) {
+            for (const auto &s_curr : *la_conf->operator[](v0)) {
               auto s_in = string_set_intersection(s_curr, la_matching);
               auto s_out = string_set_intersection(s_curr, la_non_matching);
               if (s_in->items_->length() > 0) {
@@ -1051,15 +1086,15 @@ enum struct LookaheadPartDir {
 
 LookaheadPartsNested lr_prop_part(LookaheadPartDir dir,
                                   LookaheadPartsNested lr_part_init,
-                                  LR_NFA_T N0, Grammar_T G,
-                                  GrammarSymConstrGen_T G_gen, Int k,
-                                  GrammarProdConstrs_T G_constrs) {
+                                  LR_NFA_T N0, const Grammar_T &G,
+                                  const GrammarSymConstrGen_T &G_gen, Int k,
+                                  const GrammarProdConstrs_T &G_constrs) {
 
   auto ret = make_rc<Map<LRVertex_T, LookaheadPartNested>>();
 
   auto Q = make_rc<Vec<LRVertex_T>>();
   auto Qs = make_rc<Set<LRVertex_T>>();
-  for (auto v : *lr_part_init) {
+  for (const auto &v : *lr_part_init) {
     ret->insert(v.first, v.second);
     Q->push_back(v.first);
     Qs->insert(v.first);
@@ -1078,8 +1113,8 @@ LookaheadPartsNested lr_prop_part(LookaheadPartDir dir,
       AX();
     }
 
-    for (auto [lbl, nbrs] : *m) {
-      for (auto nbr : *nbrs) {
+    for (const auto &[lbl, nbrs] : *m) {
+      for (const auto &nbr : *nbrs) {
         auto sigs = make_rc<Vec<Vec_T<Int>>>();
 
         auto nbr_la_vec = make_rc<Vec<StringSet_T<Unit>>>();
@@ -1090,8 +1125,8 @@ LookaheadPartsNested lr_prop_part(LookaheadPartDir dir,
           AX();
         }
         auto ret_nbr = ret->operator[](nbr);
-        for (auto s : *ret_nbr.part_) {
-          for (auto la_s : *s) {
+        for (const auto &s : *ret_nbr.part_) {
+          for (const auto &la_s : *s) {
             nbr_la_vec->push_back(la_s);
 
             auto sig = make_rc<Vec<Int>>();
@@ -1099,7 +1134,7 @@ LookaheadPartsNested lr_prop_part(LookaheadPartDir dir,
 
             auto nbr_full = lr_vertex_with_lookahead(nbr, la_s);
 
-            for (auto t : *ret->operator[](curr).part_) {
+            for (const auto &t : *ret->operator[](curr).part_) {
               auto la_t = string_set_union_multi(t);
               auto curr_full = lr_vertex_with_lookahead(curr, la_t);
               bool r;
@@ -1138,9 +1173,9 @@ LookaheadPartsNested lr_prop_part(LookaheadPartDir dir,
 
         auto ret_nbr_part_new = make_rc<Set<Set_T<StringSet_T<Unit>>>>();
 
-        for (auto [_, la_ind_set] : *sig_map) {
+        for (const auto &[_, la_ind_set] : *sig_map) {
           auto items = make_rc<Set<StringSet_T<Unit>>>();
-          for (auto i : *la_ind_set) {
+          for (const auto &i : *la_ind_set) {
             items->insert(nbr_la_vec->operator[](i));
           }
           ret_nbr_part_new->insert(items);
@@ -1165,7 +1200,7 @@ LookaheadPartsNested lr_prop_part(LookaheadPartDir dir,
 }
 
 LRStringExemplar_T
-lr_conflict_extract_exemplar_sym(LRSym_T sym, AttrSet_T attr,
+lr_conflict_extract_exemplar_sym(LRSym_T sym, const AttrSet_T &attr,
                                  GrammarSymConstrGen_T G_gen) {
 
   SymStr_T contents;
@@ -1183,8 +1218,8 @@ lr_conflict_extract_exemplar_sym(LRSym_T sym, AttrSet_T attr,
 
 Vec_T<LRStringExemplarBounded_T>
 lr_conflict_extract_exemplars_tail(LRVertex_T v, bool proper,
-                                   GrammarSymConstrGen_T G_gen,
-                                   GrammarProdConstrs_T G_constrs) {
+                                   const GrammarSymConstrGen_T &G_gen,
+                                   const GrammarProdConstrs_T &G_constrs) {
 
   if (v->is_Prod()) {
     auto ret = make_rc<Vec<LRStringExemplarBounded_T>>();
@@ -1220,13 +1255,14 @@ Int lr_conflict_nfa_search_post_buffer_len_heuristic(
     Vec_T<LRStringExemplarBounded_T> buf, GrammarSymConstrGen_T G_gen) {
 
   Int ret = 0;
-  for (auto x : *buf) {
+  for (const auto &x : *buf) {
     Option_T<Int> x_len_min = None<Int>();
-    for (auto [q_attr, qss] : *G_gen->operator[](x->sym_->as_Base()->sym_)) {
+    for (const auto &[q_attr, qss] :
+         *G_gen->operator[](x->sym_->as_Base()->sym_)) {
       if (!attr_set_meets_bounds_relaxed(q_attr, x->bounds_)) {
         continue;
       }
-      for (auto [_, qss_str] : *qss->items_) {
+      for (const auto &[_, qss_str] : *qss->items_) {
         if (x_len_min.is_none() ||
             qss_str->v_->length() < x_len_min.as_some()) {
           x_len_min = Some<Int>(qss_str->v_->length());
@@ -1252,10 +1288,9 @@ std::pair<T, U> pair_snd_add(std::pair<T, U> x, U inc) {
   return std::make_pair(x.first, x.second + inc);
 }
 
-Vec_T<LRStringExemplar_T>
-lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
-                            SymStr_T la, GrammarSymConstrGen_T G_gen,
-                            GrammarProdConstrs_T G_constrs) {
+Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
+    LR_NFA_T N, const LRVertex_T &w, Vec_T<LRLabel_T> pre, SymStr_T la,
+    GrammarSymConstrGen_T G_gen, const GrammarProdConstrs_T &G_constrs) {
 
   Int k = la->v_->length();
 
@@ -1310,13 +1345,13 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
 
     if (buf->length() > 0) {
       auto fst = buf->operator[](0);
-      for (auto [q_attr, qss] :
+      for (const auto &[q_attr, qss] :
            *G_gen->operator[](fst->sym_->as_Base()->sym_)) {
         if (!attr_set_meets_bounds_relaxed(q_attr, fst->bounds_)) {
           continue;
         }
 
-        for (auto [_, qss_str] : *qss->items_) {
+        for (const auto &[_, qss_str] : *qss->items_) {
           bool ok = true;
           Int match_len = std::min<Int>(k - la_ind, qss_str->v_->length());
           for (Int j = 0; j < match_len; j++) {
@@ -1352,8 +1387,8 @@ lr_conflict_nfa_search_post(LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre,
 
     } else { // buf->length() == 0
       auto es = NFA::incoming_edges(N, x);
-      for (auto [lbl, ys] : *es) {
-        for (auto y : *ys) {
+      for (const auto &[lbl, ys] : *es) {
+        for (const auto &y : *ys) {
           bool is_recurstep =
               lbl->is_Sym_() && lbl->as_Sym_()->sym_->is_RecurStep();
 
@@ -1451,10 +1486,10 @@ void pr(std::ostream &os, FmtFlags flags, LRConflict_T conf) {
   auto td = PrintTable::make(aligns);
 
   auto exr0 = conf->items_->operator[](0)->exr_;
-  for (auto item : *exr0->pre_) {
+  for (const auto &item : *exr0->pre_) {
     Int ii = 0;
 
-    for (auto x : *item->contents_->v_) {
+    for (const auto &x : *item->contents_->v_) {
       if (ii == 0 && !item->sym_->is_RecurStep()) {
         td->push(fmt_str("{}", item->sym_));
       } else {
@@ -1483,8 +1518,8 @@ void pr(std::ostream &os, FmtFlags flags, LRConflict_T conf) {
   auto full_traces = make_rc<Vec<Vec_T<LRSym_T>>>();
   for (Int i = 0; i < conf->items_->length(); i++) {
     auto full_trace_i = make_rc<Vec<LRSym_T>>();
-    for (auto item : *conf->items_->operator[](i)->exr_->post_) {
-      for (auto x : *item->contents_->v_) {
+    for (const auto &item : *conf->items_->operator[](i)->exr_->post_) {
+      for (const auto &x : *item->contents_->v_) {
         full_trace_i->push_back(x);
       }
     }
@@ -1513,7 +1548,7 @@ void pr(std::ostream &os, FmtFlags flags, LRConflict_T conf) {
 
 Set_T<LRVertex_T> lr_dfa_vertex_without_lookahead(Set_T<LRVertex_T> vs) {
   auto ret = make_rc<Set<LRVertex_T>>();
-  for (auto v : *vs) {
+  for (const auto &v : *vs) {
     ret->insert(lr_vertex_without_lookahead(v));
   }
   return ret;
@@ -1521,10 +1556,10 @@ Set_T<LRVertex_T> lr_dfa_vertex_without_lookahead(Set_T<LRVertex_T> vs) {
 
 Int lr_exemplar_bidir_len_total(LRStringExemplarBidir_T x) {
   Int ret = 0;
-  for (auto str_exr : *x->pre_) {
+  for (const auto &str_exr : *x->pre_) {
     ret += str_exr->contents_->v_->length();
   }
-  for (auto str_exr : *x->post_) {
+  for (const auto &str_exr : *x->post_) {
     ret += str_exr->contents_->v_->length();
   }
   return ret;
@@ -1532,7 +1567,7 @@ Int lr_exemplar_bidir_len_total(LRStringExemplarBidir_T x) {
 
 Int lr_conflict_len_total(LRConflict_T confl) {
   Int ret = 0;
-  for (auto exr : *confl->items_) {
+  for (const auto &exr : *confl->items_) {
     ret += lr_exemplar_bidir_len_total(exr->exr_);
   }
   return ret;
@@ -1551,8 +1586,9 @@ parser_check_all_reach(LangCompileContext &ctx) {
     if (!Grammar::sym_is_nonterm(curr)) {
       continue;
     }
-    for (auto prod : *ctx.Gr_flat_->prods_by_nonterm_->operator[](curr)) {
-      for (auto next : *prod->rhs_) {
+    for (const auto &prod :
+         *ctx.Gr_flat_->prods_by_nonterm_->operator[](curr)) {
+      for (const auto &next : *prod->rhs_) {
         if (!sym_reach->contains(next)) {
           sym_reach->insert(next);
           Q->push_back(next);
@@ -1562,12 +1598,12 @@ parser_check_all_reach(LangCompileContext &ctx) {
   }
 
   auto ret = make_rc<Vec<Sym_T>>();
-  for (auto sym : *ctx.Gr_flat_->nonterm_) {
+  for (const auto &sym : *ctx.Gr_flat_->nonterm_) {
     if (!sym_reach->contains(sym)) {
       ret->push(sym);
     }
   }
-  for (auto sym : *ctx.Gr_flat_->term_) {
+  for (const auto &sym : *ctx.Gr_flat_->term_) {
     if (!sym_reach->contains(sym)) {
       if (sym->is_Term() && sym->as_Term()->tok_->tok_->is_Special()) {
         continue;
@@ -1663,7 +1699,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
     cps_triggers_conf = lr_extract_slr_sym_cps_conf(ctx.Gr_cps_, Ds, Ns);
 
     bool ok = true;
-    for (auto sym : *cps_triggers_conf) {
+    for (const auto &sym : *cps_triggers_conf) {
       if (sym->is_GenCPS()) {
         AX();
       }
@@ -1740,10 +1776,10 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
                              Map_T<LRAction_T, Set_T<LRVertex_T>>>>>();
   // DFA vertex, lookahead, map from action to NFA vertices
 
-  for (auto vs : *D->G_->V_) {
+  for (const auto &vs : *D->G_->V_) {
     auto vsi = D->G_->V_->index_of_maybe(vs).as_some();
     auto mm = lr_tabulate_nfa_acc(N, vs);
-    for (auto [la, ma] : *mm) {
+    for (const auto &[la, ma] : *mm) {
       if (ma->length() > 1) {
         lr_conflict_vs->insert(std::make_tuple(vs, la, ma));
       }
@@ -1783,7 +1819,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
 
       auto curr_vs = D->G_->V_->operator[](curr_ind);
       auto es = NFA::outgoing_edges(D, curr_vs);
-      for (auto [lbl, nbrs] : *es) {
+      for (const auto &[lbl, nbrs] : *es) {
         auto nbr = nbrs->only();
         auto lbl_sym = lbl->as_Sym_()->sym_;
         Int lbl_len;
@@ -1821,7 +1857,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
   auto lr_conflict_cand =
       make_rc<Map<Set_T<LRAction_T>, Vec_T<LRConflict_T>>>();
 
-  for (auto [vs, la, mm] : *lr_conflict_vs) {
+  for (const auto &[vs, la, mm] : *lr_conflict_vs) {
     auto pre = make_rc<Vec<LRStringExemplar_T>>();
     auto vs_curr = vs;
     auto buf = make_rc<Vec<LRLabel_T>>();
@@ -1835,7 +1871,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
       vs_curr = vs_next;
     }
     buf->reverse();
-    for (auto lbl : *buf) {
+    for (const auto &lbl : *buf) {
       auto exr = lr_conflict_extract_exemplar_sym(lbl->as_Sym_()->sym_,
                                                   lbl->as_Sym_()->attr_, G_gen);
       pre->push(exr);
@@ -1843,11 +1879,11 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
 
     auto confl_items = make_rc<Vec<LRConflictExemplar_T>>();
     auto accs = make_rc<Set<LRAction_T>>();
-    for (auto [acc, ws] : *mm) {
+    for (const auto &[acc, ws] : *mm) {
       accs->insert(acc);
       auto len_min = None<Int>();
       auto exr_min = None<LRConflictExemplar_T>();
-      for (auto w : *ws) {
+      for (const auto &w : *ws) {
         auto post = lr_conflict_nfa_search_post(N, w, buf, la, G_gen,
                                                 ctx.Gr_cps_prod_constrs_);
         auto exr = LRStringExemplarBidir::make(pre, post);
@@ -1871,11 +1907,11 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
 
   auto lr_conflicts_pre = make_rc<Vec<LRConflict_T>>();
 
-  for (auto [accs, cand] : *lr_conflict_cand) {
+  for (const auto &[accs, cand] : *lr_conflict_cand) {
     auto len_min = None<Int>();
     auto confl_sel = None<LRConflict_T>();
 
-    for (auto confl : *cand) {
+    for (const auto &confl : *cand) {
       auto confl_len = lr_conflict_len_total(confl);
       if (len_min.is_none() || confl_len < len_min.as_some()) {
         len_min = Some<Int>(confl_len);
@@ -1895,7 +1931,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext &ctx) {
 
   auto lr_conflicts = make_rc<Vec<LRConflict_T>>();
 
-  for (auto [_, ii] : inds) {
+  for (const auto &[_, ii] : inds) {
     lr_conflicts->push(lr_conflicts_pre->operator[](ii));
   }
 

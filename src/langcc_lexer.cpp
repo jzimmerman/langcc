@@ -5,7 +5,8 @@
 
 namespace langcc {
 
-inline void pr(std::ostream &os, FmtFlags /*flags*/, Lexer_TopTokenInd x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/,
+               const Lexer_TopTokenInd &x) {
   fmt(os, "Tok({}, {})", x.ind_, x.src_);
 }
 
@@ -39,7 +40,7 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, Lexer_NFALabel_T x) {
   }
 }
 
-inline void pr(std::ostream &os, FmtFlags /*flags*/, Lexer_NFAAcc x) {
+inline void pr(std::ostream &os, FmtFlags /*flags*/, const Lexer_NFAAcc &x) {
   fmt(os, "Lexer_NFAAcc({}, {})", x.case_id_, x.arg_top_id_);
 }
 
@@ -80,7 +81,7 @@ void lang_init_validate_tabulate_lexer_instr_emit_rec(
         emit_toks.push(ec.as_some());
       }
     }
-    for (auto emit_tok : emit_toks) {
+    for (const auto &emit_tok : emit_toks) {
       if (emit_tok->tok_->is_Id() || emit_tok->tok_->is_LitStr()) {
         if (!ctx.tokens_top_init_src_->contains_key(emit_tok)) {
           ctx.tokens_top_init_src_->insert(
@@ -95,7 +96,7 @@ void lang_init_validate_tabulate_lexer_instr_emit_rec(
              instr->is_PopExtract()) {
     // pass
   } else if (instr->is_MatchHistory()) {
-    for (auto case_sub : *instr->as_MatchHistory()->cases_) {
+    for (const auto &case_sub : *instr->as_MatchHistory()->cases_) {
       for (const auto &instr_sub : *case_sub->instrs_) {
         lang_init_validate_tabulate_lexer_instr_emit_rec(instr_sub, case_pat,
                                                          ctx);
@@ -136,7 +137,7 @@ void lexer_check_all_reach_visit_instr(lang::meta::Node::LexerInstr_T instr,
       }
     }
   } else if (instr->is_MatchHistory()) {
-    for (auto case_sub : *instr->as_MatchHistory()->cases_) {
+    for (const auto &case_sub : *instr->as_MatchHistory()->cases_) {
       for (const auto &instr_sub : *case_sub->instrs_) {
         lexer_check_all_reach_visit_instr(instr_sub, id_reach, Q);
       }
@@ -151,8 +152,8 @@ lexer_check_all_reach(LangCompileContext &ctx) {
   auto id_reach = make_rc<Map<Ident_T, ParseExpr_T>>();
   auto Q = make_rc<Vec<Ident_T>>();
 
-  for (auto mode : ctx.lexer_modes_) {
-    for (auto case_ : *mode->cases_) {
+  for (const auto &mode : ctx.lexer_modes_) {
+    for (const auto &case_ : *mode->cases_) {
       if (case_->tok_->is_Id()) {
         auto x_id = parse_expr_id_to_ident(case_->tok_->as_Id()->id__);
         if (!id_reach->contains_key(x_id)) {
@@ -160,7 +161,7 @@ lexer_check_all_reach(LangCompileContext &ctx) {
           Q->push_back(x_id);
         }
       } else if (case_->tok_->is_Alt()) {
-        for (auto x : *case_->tok_->as_Alt()->xs_) {
+        for (const auto &x : *case_->tok_->as_Alt()->xs_) {
           if (x->is_Id()) {
             auto x_id = parse_expr_id_to_ident(x->as_Id()->id__);
             if (!id_reach->contains_key(x_id)) {
@@ -346,7 +347,7 @@ void lexer_nfa_item_compile(meta::Node::ParseExpr_T src, N &nfa,
   } else if (src->is_StrLit()) {
     auto cc = parse_expr_to_base_maybe(src).as_some()->tok_->as_LitStr();
     auto v_curr = v_src;
-    for (auto c : *cc->cs_) {
+    for (const auto &c : *cc->cs_) {
       auto v_next = NFA::gen_vertex(nfa);
       Option_T<Lexer_NFALabel_T> lbl = None<Lexer_NFALabel_T>();
       for (Int ri = 0; ri < ctx.char_ranges_.length(); ri++) {
@@ -641,7 +642,7 @@ void lexer_step_exec_compile_instr_acc(Vec_T<cc::Node_T> &dst,
         cc_cases->push_back(cc_case);
         has_default = true;
       } else {
-        for (auto arg_id : *arg_ids.as_some()) {
+        for (const auto &arg_id : *arg_ids.as_some()) {
           auto cc_case = cc.qq_switch_case("case", fmt_str("{}", arg_id), ": {",
                                            *cc_case_body, "}");
           cc_cases->push_back(cc_case);
@@ -664,7 +665,7 @@ Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T>
 lexer_compile_dfas(LangCompileContext &ctx) {
   auto ret = make_rc<Map<meta::Node::LexerDecl::Mode_T, LexerNFA_T>>();
 
-  for (auto mode : ctx.lexer_modes_) {
+  for (const auto &mode : ctx.lexer_modes_) {
     auto nfa = NFA::empty<Lexer_NFAVertex, Lexer_NFALabel_T, Lexer_NFAAcc>();
     auto v_start = NFA::gen_vertex_start(nfa);
 
@@ -734,7 +735,7 @@ lexer_compile_dfas(LangCompileContext &ctx) {
           while (!Q->empty()) {
             auto curr = Q->pop_front_val();
             auto es = NFA::outgoing_edges(dfa_res, curr);
-            for (auto [lbl, nbrs] : *es) {
+            for (const auto &[lbl, nbrs] : *es) {
               for (const auto &nbr : *nbrs) {
                 if (!m->contains_key(nbr)) {
                   m->insert(nbr, Some<std::pair<Lexer_NFALabel_T, Set_T<Int>>>(
@@ -779,7 +780,7 @@ lexer_extract_trivial_maybe(meta::Node::LexerDecl::Mode_T mode) {
     return None<LexerModeTrivial_T>();
   }
 
-  for (auto case_ : *mode->cases_) {
+  for (const auto &case_ : *mode->cases_) {
     if (case_->tok_->is_Underscore()) {
       AT(!has_default);
       if (case_->instrs_->length() != 1 || !case_->instrs_->only()->is_Pass()) {

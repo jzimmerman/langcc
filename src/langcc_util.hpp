@@ -483,7 +483,7 @@ inline std::string utf8_encode(Ch ch) {
 
 inline std::string utf8_encode(const std::vector<Ch> &chs) {
   std::string ret;
-  for (auto ch : chs) {
+  for (const auto &ch : chs) {
     ret += utf8_encode(ch);
   }
   return ret;
@@ -673,7 +673,7 @@ inline std::string escape_string_char(Ch ch) {
 
 inline std::string escape_string_chars(const std::vector<Ch> &chs) {
   std::string ret;
-  for (auto ch : chs) {
+  for (const auto &ch : chs) {
     ret += escape_string_char(ch);
   }
   return ret;
@@ -966,7 +966,7 @@ template <typename K, typename V>
 inline void pr(std::ostream &os, FmtFlags flags, const std::map<K, V> &x) {
   os << "{";
   bool fresh = true;
-  for (auto p : x) {
+  for (const auto &p : x) {
     if (!fresh) {
       os << ", ";
     }
@@ -1794,7 +1794,7 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, StrSlice x) {
 
 inline Vec_T<u8> byte_vec_from_string(const std::string &x) {
   auto ret = make_rc<Vec<u8>>();
-  for (auto c : x) {
+  for (const auto &c : x) {
     ret->push(static_cast<u8>(c));
   }
   return ret;
@@ -1802,7 +1802,7 @@ inline Vec_T<u8> byte_vec_from_string(const std::string &x) {
 
 inline std::string string_from_byte_vec(Vec_T<u8> x) {
   std::string ret;
-  for (auto xi : *x) {
+  for (const auto &xi : *x) {
     ret += static_cast<char>(xi);
   }
   return ret;
@@ -1877,7 +1877,7 @@ struct Arena : enable_rc_from_this<Arena> {
   }
 
   inline ~Arena() {
-    for (auto page : pages_) {
+    for (const auto &page : pages_) {
       free(page.addr_);
     }
   }
@@ -2610,7 +2610,7 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
 
   inline Int length() const { return m_.size(); }
 
-  inline bool contains_key(const K &k) {
+  inline bool contains_key(const K &k) const {
     auto hk = val_hash(k);
     return m_.find(hk) != m_.end();
   }
@@ -2692,7 +2692,7 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
 
   inline Map_T<K, V> clone_rc() const {
     auto ret = make_rc<Map<K, V>>();
-    for (auto [k, v] : *this) {
+    for (const auto &[k, v] : *this) {
       ret->insert(k, v);
     }
     return ret;
@@ -2700,7 +2700,7 @@ template <typename K, typename V> struct Map : enable_rc_from_this<Map<K, V>> {
 
   inline Vec_T<std::pair<K, V>> items_to_vec() const {
     auto ret = make_rc<Vec<std::pair<K, V>>>();
-    for (auto [k, v] : *this) {
+    for (const auto &[k, v] : *this) {
       ret->push_back(std::make_pair(k, v));
     }
     return ret;
@@ -2766,7 +2766,7 @@ inline void pr_debug(std::ostream &os, FmtFlags flags, const Map<K, V> &x) {
   }
 
   os << "{";
-  for (auto p : x) {
+  for (const auto &p : x) {
     flags.sub_lo().advance_lines(1, os);
     pr_debug(os, flags.sub_lo(), p.first);
     os << ": ";
@@ -2914,7 +2914,7 @@ template <typename T> struct Set : enable_rc_from_this<Set<T>> {
 
   inline Set_T<T> clone_rc() const {
     auto ret = make_rc<Set<T>>();
-    for (auto x : *this) {
+    for (const auto &x : *this) {
       ret->insert(x);
     }
     return ret;
@@ -2922,10 +2922,10 @@ template <typename T> struct Set : enable_rc_from_this<Set<T>> {
 
   inline Set_T<T> with_union(const Set_T<T> &x) const {
     auto ret = make_rc<Set<T>>();
-    for (const auto vi : *this) {
+    for (const auto &vi : *this) {
       ret->insert(vi);
     }
-    for (const auto vi : *x) {
+    for (const auto &vi : *x) {
       ret->insert(vi);
     }
     return ret;
@@ -2938,9 +2938,14 @@ template <typename T> struct Set : enable_rc_from_this<Set<T>> {
     return *this->begin();
   }
 
+  inline const T &only() const {
+    AT(this->length() == 1);
+    return *this->begin();
+  }
+
   inline Vec_T<T> to_vec() const {
     auto ret = make_rc<Vec<T>>();
-    for (auto x : *this) {
+    for (const auto &x : *this) {
       ret->push(x);
     }
     return ret;
@@ -2972,7 +2977,7 @@ inline void pr(std::ostream &os, FmtFlags flags, const Set<T> &x) {
     return;
   }
   os << "{";
-  for (auto xi : x) {
+  for (const auto &xi : x) {
     flags.sub_lo().advance_lines(1, os);
     pr(os, flags.sub_lo(), xi);
     os << ",";
@@ -2993,7 +2998,7 @@ inline void pr_debug(std::ostream &os, FmtFlags flags, const Set<T> &x) {
     return;
   }
   os << "{";
-  for (auto xi : x) {
+  for (const auto &xi : x) {
     flags.sub_lo().advance_lines(1, os);
     pr_debug(os, flags.sub_lo(), xi);
     os << ",";
@@ -3010,7 +3015,7 @@ inline void pr_debug(std::ostream &os, FmtFlags flags, const Set_T<T> &x) {
 template <typename K, typename V>
 inline Map_T<V, Set_T<K>> key_value_rev(Map_T<K, V> m) {
   auto ret = make_rc<Map<V, Set_T<K>>>();
-  for (auto [k, v] : *m) {
+  for (const auto &[k, v] : *m) {
     if (!ret->contains_key(v)) {
       ret->insert(v, make_rc<Set<K>>());
     }
@@ -3077,10 +3082,10 @@ template <typename T> struct VecUniq : enable_rc_from_this<VecUniq<T>> {
 
   inline VecUniq_T<T> with_union(const VecUniq_T<T> &x) const {
     auto ret = make_rc<VecUniq<T>>();
-    for (const auto vi : *this) {
+    for (const auto &vi : *this) {
       ret->insert(vi);
     }
-    for (const auto vi : *x) {
+    for (const auto &vi : *x) {
       ret->insert(vi);
     }
     return ret;
@@ -3226,7 +3231,7 @@ struct PrintTable {
   inline static PrintTable_T
   make(const std::vector<std::tuple<Int, Align>> &col) {
     std::vector<std::tuple<std::string, Align>> col_ext;
-    for (auto [count_, align] : col) {
+    for (const auto &[count_, align] : col) {
       col_ext.emplace_back(str_repeat(" ", count_), align);
     }
     return make_ext(col_ext);
@@ -3322,7 +3327,7 @@ struct PrintTable {
 
   inline void write_row(std::ostream &os, Int i) {
     check_range(i, len(items_));
-    for (auto row : items_[i]) {
+    for (const auto &row : items_[i]) {
       for (Int j = 0; j < this->num_col(); j++) {
         auto [prefix, align] = col_[j];
         fmt(os, "{}", prefix);

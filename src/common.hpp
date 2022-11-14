@@ -165,7 +165,7 @@ template <typename Repr>
 SymStr_T string_set_min_len_element(StringSet_T<Repr> x) {
   Option_T<SymStr_T> ret;
   AT(x->items_->length() > 0);
-  for (auto xi : *x->items_) {
+  for (const auto &xi : *x->items_) {
     if (ret.is_none() || xi.first->v_->length() < ret.as_some()->v_->length()) {
       ret = Some<SymStr_T>(xi.second);
     }
@@ -576,7 +576,7 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, AttrSet_T x) {
 
 inline void pr(std::ostream &os, FmtFlags /*flags*/, AttrBoundSet_T x) {
   bool fresh = true;
-  for (auto xi : *x->m_) {
+  for (const auto &xi : *x->m_) {
     if (!fresh) {
       fmt(os, ",");
     }
@@ -669,33 +669,6 @@ inline Sym_T dotted_prod_cursor(DottedProd_T dp) {
   return dp->prod_->rhs_->operator[](dp->dot_);
 }
 
-inline LRVertex_T lr_vertex_without_lookahead(LRVertex_T v) {
-  auto la_trivial = string_set_single_empty_unit(0, true);
-
-  if (v->is_Prod()) {
-    return LRVertex::Prod::make(v->as_Prod()->bounds_, la_trivial,
-                                v->as_Prod()->prod_, v->as_Prod()->left_rec_);
-  } else if (v->is_RecStart()) {
-    return LRVertex::RecStart::make(v->as_RecStart()->bounds_, la_trivial,
-                                    v->as_RecStart()->sym_);
-  } else if (v->is_RecEnd()) {
-    return LRVertex::RecEnd::make(v->as_RecEnd()->bounds_, la_trivial,
-                                  v->as_RecEnd()->sym_);
-  } else {
-    AX();
-  }
-}
-
-inline Sym_T lr_vertex_cursor(LRVertex_T v) {
-  if (v->is_Prod()) {
-    return dotted_prod_cursor(v->as_Prod()->prod_);
-  } else if (v->is_RecStart()) {
-    return v->as_RecStart()->sym_;
-  } else {
-    AX();
-  }
-}
-
 inline void pr(std::ostream &os, FmtFlags /*flags*/, LRStringExemplar_T x) {
   fmt(os, "{}=[{}]", LRLabel::Sym_::make(x->sym_, x->attr_), x->contents_);
 }
@@ -753,10 +726,10 @@ StringSet_T<Repr> string_set_union(StringSet_T<Repr> x, StringSet_T<Repr> y) {
   AT(x->k_ == y->k_);
   AT(x->strict_eq_ == y->strict_eq_);
   auto ret = make_rc<Map<SymStr_T, Repr>>();
-  for (auto xi : *x->items_) {
+  for (const auto &xi : *x->items_) {
     ret->insert(xi.first, xi.second);
   }
-  for (auto yi : *y->items_) {
+  for (const auto &yi : *y->items_) {
     auto yr = yi.second;
     if (ret->contains_key(yi.first)) {
       auto xr = ret->operator[](yi.first);
@@ -772,16 +745,16 @@ StringSet_T<Repr> string_set_union(StringSet_T<Repr> x, StringSet_T<Repr> y) {
 template <typename Repr>
 StringSet_T<Repr> string_set_union_multi(Set_T<StringSet_T<Repr>> xs) {
   AT(xs->length() > 0);
-  Int k;
-  bool strict_eq;
-  for (auto x : *xs) {
+  Int k = 0;
+  bool strict_eq = false;
+  for (const auto &x : *xs) {
     k = x->k_;
     strict_eq = x->strict_eq_;
     break;
   }
 
   auto ret = string_set_empty<Repr>(k, strict_eq);
-  for (auto x : *xs) {
+  for (const auto &x : *xs) {
     ret = string_set_union(ret, x);
   }
   return ret;
@@ -793,7 +766,7 @@ StringSet_T<Repr> string_set_intersection(StringSet_T<Repr> x,
   AT(x->k_ == y->k_);
   AT(x->strict_eq_ == y->strict_eq_);
   auto ret = make_rc<Map<SymStr_T, Repr>>();
-  for (auto xi : *x->items_) {
+  for (const auto &xi : *x->items_) {
     if (y->items_->contains_key(xi.first)) {
       auto xr = xi.second;
       auto yr = y->items_->operator[](xi.first);
@@ -894,7 +867,7 @@ inline AttrBoundSet_T attr_bound_set_empty() {
 }
 
 inline bool attr_set_meets_bounds(AttrSet_T s, AttrBoundSet_T bounds) {
-  for (auto p : *bounds->m_) {
+  for (const auto &p : *bounds->m_) {
     if (!(s->m_->contains_key(p.first))) {
       LG_ERR("Not found: {}\nmap: {}\n", p.first, s->m_);
       AX();
@@ -907,7 +880,7 @@ inline bool attr_set_meets_bounds(AttrSet_T s, AttrBoundSet_T bounds) {
 }
 
 inline bool attr_set_meets_bounds_relaxed(AttrSet_T s, AttrBoundSet_T bounds) {
-  for (auto p : *bounds->m_) {
+  for (const auto &p : *bounds->m_) {
     if (!(s->m_->contains_key(p.first))) {
       continue;
     }

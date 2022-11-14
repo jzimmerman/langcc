@@ -108,7 +108,8 @@ struct LangCompileContext {
   LangCompileContext() = delete;
   LangCompileContext(LangCompileContext &) = delete;
   LangCompileContext(LangCompileContext &&) = delete;
-  LangCompileContext &operator=(LangCompileContext &) = delete;
+  LangCompileContext &operator=(const LangCompileContext &) = delete;
+  LangCompileContext &operator=(LangCompileContext &&) = delete;
 
   inline LangCompileContext(const lang::meta::Node::Lang_T &src,
                             const Gensym_T &gen_meta,
@@ -243,24 +244,25 @@ LRVertex_T lr_vertex_without_lookahead(LRVertex_T v);
 void pr(std::ostream &os, FmtFlags flags, GrammarSymConstrGen_T G_gen);
 Int lr_conflict_exemplar_length_total(LRStringExemplarBidir_T exr);
 LRStringExemplar_T
-lr_conflict_extract_exemplar_sym(LRSym_T sym, AttrSet_T attr,
+lr_conflict_extract_exemplar_sym(LRSym_T sym, const AttrSet_T &attr,
                                  GrammarSymConstrGen_T G_gen);
 Vec_T<LRStringExemplarBounded_T>
 lr_conflict_extract_exemplars_tail(LRVertex_T v, bool proper,
-                                   GrammarSymConstrGen_T G_gen,
-                                   GrammarProdConstrs_T G_constrs);
-StringSet_T<Unit> lr_sym_constr_gen(Sym_T sym, AttrBoundSet_T bounds_sym,
+                                   const GrammarSymConstrGen_T &G_gen,
+                                   const GrammarProdConstrs_T &G_constrs);
+StringSet_T<Unit> lr_sym_constr_gen(const Sym_T &sym,
+                                    const AttrBoundSet_T &bounds_sym,
                                     GrammarSymConstrGen_T G_gen, Int k,
-                                    GrammarProdConstrs_T G_constrs);
-StringSet_T<Unit> lr_prod_comp_constr_gen(Prod_T prod, Int i,
-                                          AttrBoundSet_T bounds,
-                                          GrammarSymConstrGen_T G_gen, Int k,
-                                          GrammarProdConstrs_T G_constrs);
-StringSet_T<Unit> lr_prod_tail_constr_gen(DottedProd_T dp,
-                                          AttrBoundSet_T bounds,
-                                          StringSet_T<Unit> la_end,
-                                          GrammarSymConstrGen_T G_gen, Int k,
-                                          GrammarProdConstrs_T G_constrs);
+                                    const GrammarProdConstrs_T &G_constrs);
+StringSet_T<Unit>
+lr_prod_comp_constr_gen(const Prod_T &prod, Int i, const AttrBoundSet_T &bounds,
+                        const GrammarSymConstrGen_T &G_gen, Int k,
+                        const GrammarProdConstrs_T &G_constrs);
+StringSet_T<Unit>
+lr_prod_tail_constr_gen(DottedProd_T dp, const AttrBoundSet_T &bounds,
+                        const StringSet_T<Unit> &la_end,
+                        const GrammarSymConstrGen_T &G_gen, Int k,
+                        const GrammarProdConstrs_T &G_constrs);
 GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k,
                                                 LangCompileContext &ctx);
 Map_T<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>>

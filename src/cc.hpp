@@ -488,7 +488,7 @@ inline cc::Node_T CppGenContext::gen_cpp_init_list_u16(const Vec_T<Int> &v) {
 
   Q_->qq_args_acc(lex_args, "{");
   bool fresh = true;
-  for (auto vi : *v) {
+  for (const auto &vi : *v) {
     if (!fresh) {
       Q_->qq_args_acc(lex_args, ",");
     }

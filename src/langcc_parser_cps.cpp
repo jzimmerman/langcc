@@ -168,7 +168,7 @@ Sym_T parser_grammar_sym_to_cps(const Sym_T &sym,
     return lhs_cps;
   }
 
-  for (auto prod : *ctx.Gr_flat_->prods_by_nonterm_->operator[](sym)) {
+  for (const auto &prod : *ctx.Gr_flat_->prods_by_nonterm_->operator[](sym)) {
     auto prod_end = DottedProd::make(prod, prod->rhs_->length());
     auto lhs_leaf = ctx.Gr_flat_lhs_flatten_leaves_->operator[](prod);
 

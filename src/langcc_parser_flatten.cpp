@@ -19,7 +19,7 @@ inline IdentBase_T force(NameMaybeBase_T nm, LangCompileContext &ctx) {
 namespace NameMaybe {
 inline NameMaybe_T from_ident(Ident_T id) {
   auto items = make_rc<Vec<NameMaybeBase_T>>();
-  for (auto id_i : *id->xs_) {
+  for (const auto &id_i : *id->xs_) {
     items->push_back(NameMaybeBase::Name::make(id_i));
   }
   return NameMaybe::make(items);
@@ -36,7 +36,7 @@ inline NameMaybe_T with_sub(NameMaybe_T nm, NameMaybeBase_T item,
                             LangCompileContext &ctx) {
 
   auto ret_items = make_rc<Vec<NameMaybeBase_T>>();
-  for (auto item_i : *nm->items_) {
+  for (const auto &item_i : *nm->items_) {
     ret_items->push_back(item_i);
   }
   bool default_ok = false;
@@ -59,7 +59,7 @@ inline NameMaybe_T with_sub(NameMaybe_T nm, NameMaybeBase_T item,
 
 inline Ident_T force(NameMaybe_T nm, LangCompileContext &ctx) {
   auto ret_items = make_rc<Vec<IdentBase_T>>();
-  for (auto nm_i : *nm->items_) {
+  for (const auto &nm_i : *nm->items_) {
     ret_items->push_back(NameMaybeBase::force(nm_i, ctx));
   }
   return Ident::make(ret_items);
@@ -71,7 +71,7 @@ sym_flatten_result_extract_vec(Vec_T<SymFlattenResult_T> rhs) {
 
   auto ret_sym = make_rc<Vec<Sym_T>>();
   auto ret_unfold = make_rc<Vec<bool>>();
-  for (auto xi : *rhs) {
+  for (const auto &xi : *rhs) {
     ret_sym->push_back(xi->sym_);
     ret_unfold->push_back(xi->unfold_);
   }
@@ -83,7 +83,7 @@ sym_flatten_result_extract_vec(Vec_T<SymFlattenResultCPS_T> rhs) {
 
   auto ret_sym = make_rc<Vec<Sym_T>>();
   auto ret_unfold = make_rc<Vec<bool>>();
-  for (auto xi : *rhs) {
+  for (const auto &xi : *rhs) {
     ret_sym->push_back(xi->sym_);
     ret_unfold->push_back(xi->unfold_);
   }
@@ -128,7 +128,7 @@ void parser_Gr_flat_add_prod(LangCompileContext &ctx, Sym_T lhs,
   AT(is_new);
 
   auto rhs_leaves = make_rc<Vec<Option_T<AttrLeaf_T>>>();
-  for (auto xi : *rhs) {
+  for (const auto &xi : *rhs) {
     rhs_leaves->push_back(xi->attr_leaf_);
   }
 
@@ -229,7 +229,7 @@ parser_flatten_expr_base_new(ParseExpr_Base_T xb, NameMaybe_T id,
   } else if (xb->tok_->is_LitStr()) {
     auto xc = xb->tok_->as_LitStr();
     std::string s;
-    for (auto c : *xc->cs_) {
+    for (const auto &c : *xc->cs_) {
       s += utf8_encode(c);
     }
     ret_wr = WriteInstr::String::make(s);
@@ -288,7 +288,7 @@ inline void parse_expr_squash_concat_rec_acc(Vec_T<ParseExpr_T> &dst,
     if (x_nm.is_some()) {
       dst->push_back(x);
     } else {
-      for (auto y : *x->as_Concat()->xs_) {
+      for (const auto &y : *x->as_Concat()->xs_) {
         parse_expr_squash_concat_rec_acc(dst, y, ctx);
       }
     }
@@ -303,7 +303,7 @@ inline Vec_T<ParseExpr_T>
 parse_expr_squash_concat_rec(Vec_T<ParseExpr_T> xs, LangCompileContext &ctx) {
 
   auto ret = make_rc<Vec<ParseExpr_T>>();
-  for (auto x : *xs) {
+  for (const auto &x : *xs) {
     parse_expr_squash_concat_rec_acc(ret, x, ctx);
   }
   return ret;
@@ -1020,7 +1020,7 @@ inline void parser_flatten_gen_inline_sum_cases(
     Ident_T id, Map_T<IdentBase_T, Ident_T> ids_sub, LangCompileContext &ctx) {
 
   auto wr_ids_sub = make_rc<Map<IdentBase_T, WriteInstr_T>>();
-  for (auto [id_case, id_sub] : *ids_sub) {
+  for (const auto &[id_case, id_sub] : *ids_sub) {
     wr_ids_sub->insert_strict(
         id_case, WriteInstr::Rec::make(Ident::with_sub(id, id_case)));
   }
@@ -1029,7 +1029,7 @@ inline void parser_flatten_gen_inline_sum_cases(
   ctx.gen_wr_map_->insert_strict(id, wr_sub);
 
   auto dt_cases = make_rc<Map<IdentBase_T, GenType_T>>();
-  for (auto [id_case, id_sub] : *ids_sub) {
+  for (const auto &[id_case, id_sub] : *ids_sub) {
     dt_cases->insert(id_case, GenType::Named::make(id_sub));
   }
   auto dt_fields = make_rc<Map<IdentBase_T, GenType_T>>();
@@ -1040,7 +1040,7 @@ inline void parser_flatten_gen_inline_sum_cases(
 }
 
 void parser_tabulate_syms_top(LangCompileContext &ctx) {
-  for (auto tok : ctx.tokens_top_by_id_) {
+  for (const auto &tok : ctx.tokens_top_by_id_) {
     auto tok_sym = Sym::Term::make(tok);
     Grammar::add_term(ctx.Gr_flat_, tok_sym);
   }
@@ -1049,7 +1049,7 @@ void parser_tabulate_syms_top(LangCompileContext &ctx) {
   Grammar::add_nonterm(ctx.Gr_flat_, start);
   ctx.Gr_flat_->start_ = Some<Sym_T>(start);
 
-  for (auto sym_top : *ctx.parser_syms_top_) {
+  for (const auto &sym_top : *ctx.parser_syms_top_) {
     auto sym_top_base = Ident::extract_base_strict(sym_top);
     if (!ctx.Nm_->contains_key(sym_top_base)) {
       ctx.error(
@@ -1078,14 +1078,14 @@ void parser_tabulate_syms_top(LangCompileContext &ctx) {
     ctx.Gr_flat_rhs_flatten_leaves_->insert_strict(prod, rhs_leaves);
   }
 
-  for (auto id : *ctx.parser_rule_non_alias_ids_) {
+  for (const auto &id : *ctx.parser_rule_non_alias_ids_) {
     auto sym_def = ctx.Nm_->operator[](Ident::extract_base(id));
     ctx.Np_->insert(id, sym_def);
   }
 }
 
 void parser_flatten_grammar_rules(LangCompileContext &ctx) {
-  for (auto p : *ctx.parser_rule_inds_) {
+  for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
     auto i = p.second;
     if (rule->op_->is_DEF_ALIAS()) {
@@ -1098,7 +1098,7 @@ void parser_flatten_grammar_rules(LangCompileContext &ctx) {
   auto rule_ids = make_rc<Set<Ident_T>>();
   auto id_top = Ident::make(make_rc<Vec<IdentBase_T>>());
 
-  for (auto p : *ctx.parser_rule_inds_) {
+  for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
     auto i = p.second;
 
@@ -1110,7 +1110,7 @@ void parser_flatten_grammar_rules(LangCompileContext &ctx) {
     rule_ids->insert(rule_id);
 
     auto id_acc = id_top;
-    for (auto name : *rule_id->xs_) {
+    for (const auto &name : *rule_id->xs_) {
       auto id_acc_sub = Ident::with_sub(id_acc, name);
       if (!wr_inline_cases->contains_key(id_acc)) {
         wr_inline_cases->insert(id_acc, make_rc<Map<IdentBase_T, Ident_T>>());
@@ -1122,7 +1122,7 @@ void parser_flatten_grammar_rules(LangCompileContext &ctx) {
     }
   }
 
-  for (auto [id, ids_sub] : *wr_inline_cases) {
+  for (const auto &[id, ids_sub] : *wr_inline_cases) {
     if (val_hash(id) == val_hash(id_top)) {
       continue; // Deferred to below
     }
@@ -1131,11 +1131,11 @@ void parser_flatten_grammar_rules(LangCompileContext &ctx) {
 
   // Orphan nodes (whose parent is not a sum type) are given id_top as their
   // parent.
-  for (auto [id, ty] : *ctx.gen_dt_map_) {
+  for (const auto &[id, ty] : *ctx.gen_dt_map_) {
     if (ty->is_Datatype() && !ctx.gen_dt_parent_mapping_->contains_key(id)) {
       std::string id_str;
       bool fresh = true;
-      for (auto id_i : *id->xs_) {
+      for (const auto &id_i : *id->xs_) {
         if (!fresh) {
           id_str += "__";
         }
@@ -1152,7 +1152,7 @@ void parser_flatten_grammar_rules(LangCompileContext &ctx) {
   auto wr_ids_sub_top = wr_inline_cases->operator[](id_top);
   parser_flatten_gen_inline_sum_cases(id_top, wr_ids_sub_top, ctx);
 
-  for (auto sym : *ctx.Gr_flat_->nonterm_) {
+  for (const auto &sym : *ctx.Gr_flat_->nonterm_) {
     if (!ctx.parser_attr_domains_->contains_key(sym)) {
       ctx.parser_attr_domains_->insert(sym,
                                        make_rc<Map<AttrKey_T, AttrType_T>>());

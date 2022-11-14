@@ -41,7 +41,7 @@ inline void pr(std::ostream &os, FmtFlags /*flags*/, const Grammar_T &G) {
                                                   {1, Align::LEFT},
                                                   {4, Align::LEFT}};
     auto td = PrintTable::make(aligns);
-    for (auto prod : *G->prods_) {
+    for (const auto &prod : *G->prods_) {
       td->push(fmt_str("{}:", prod->prod_id_));
       td->push(fmt_str("{} ->", str_short(prod->lhs_)));
       std::string rhs_str;

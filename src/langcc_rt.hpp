@@ -785,7 +785,7 @@ inline std::string LexOutput::location_fmt_str(TokenBounds bounds) {
     std::string ret;
     Int tok_i_curr = 0;
     bool fresh = true;
-    for (auto item : *this->items_internal_) {
+    for (const auto &item : *this->items_internal_) {
       if (!fresh) {
         ret += " ";
       }
@@ -861,7 +861,7 @@ inline ParserLookahead LexOutput::first_k(Int lr_k) {
 
 inline void LexOutput::clear_alloc() {
   if (quoted_) {
-    for (auto x : *nodes_alloc_.as_some()) {
+    for (auto &x : *nodes_alloc_.as_some()) {
       x->decref_contents();
     }
   }
@@ -880,7 +880,7 @@ inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, LexOutput_T lex) {
     os << "LexOutput(quoted):[";
     Int tok_i = 0;
     bool fresh = true;
-    for (auto item : *lex->items_internal_) {
+    for (const auto &item : *lex->items_internal_) {
       if (!fresh) {
         fmt(os, " ");
       }
@@ -900,7 +900,7 @@ inline void pr_debug(std::ostream &os, FmtFlags /*flags*/, LexOutput_T lex) {
   os << "LexOutput:[";
   Int tok_i = 0;
   bool fresh = true;
-  for (auto item : *lex->items_internal_) {
+  for (const auto &item : *lex->items_internal_) {
     if (!fresh) {
       fmt(os, " ");
     }
@@ -975,7 +975,7 @@ struct WsSigSpec {
                    const std::vector<std::pair<Ch, Ch>> &delims)
       : line_continuation_(line_continuation) {
     delims_ = make_rc<Vec<std::pair<Ch, Ch>>>();
-    for (auto delim : delims) {
+    for (const auto &delim : delims) {
       delims_->push(delim);
     }
   }
@@ -1160,7 +1160,7 @@ struct LexWhitespaceState {
       return;
     }
 
-    for (auto ret_i : ret) {
+    for (const auto &ret_i : ret) {
       this->dst_gen_push_item(dst, ret_i);
     }
   }
@@ -1184,7 +1184,7 @@ struct LexWhitespaceState {
   }
 
   inline void delim_update(Ch ch, SymItemVec *dst) {
-    for (auto p : *this->ws_sig_spec_.delims_) {
+    for (const auto &p : *this->ws_sig_spec_.delims_) {
       if (__builtin_expect(ch == p.first, 0)) {
         delim_stack_.push(ch);
         return;
@@ -1283,7 +1283,7 @@ inline void lex_queue_pull_sub(LexerState *st, SymItemVec *dst, SymItemVec *src,
     }
   }
 
-  for (auto item : *src) {
+  for (const auto &item : *src) {
     if (!!dst) {
       dst->push(item);
     } else {

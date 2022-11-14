@@ -161,7 +161,7 @@ compile_lang_full(const std::filesystem::path &src_path,
   auto [src, _, __] = load_lang_path(src_path);
   auto compile_tests = lang_get_compile_test_stanza(src);
   if (compile_tests.is_some()) {
-    for (auto test : *compile_tests.as_some()->items_) {
+    for (const auto &test : *compile_tests.as_some()->items_) {
       auto test_k = string_to_int(test->k_.to_std_string()).as_some();
       auto test_res =
           compile_lang_path(src_path, dst_path, Some<Int>(test_k), header_mode);

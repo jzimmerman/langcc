@@ -81,7 +81,7 @@ Int lexer_instr_num_emit_match_max(lang::meta::Node::LexerInstr_T instr) {
   } else if (instr->is_MatchHistory()) {
     auto cc = instr->as_MatchHistory();
     Int ret = 0;
-    for (auto case_ : *cc->cases_) {
+    for (const auto &case_ : *cc->cases_) {
       auto ret_i = lexer_instrs_num_emit_match_max(case_->instrs_);
       if (ret_i > ret) {
         ret = ret_i;
@@ -121,7 +121,7 @@ void lexer_gen_cpp_defs(
   Vec<lang::cc::Node_T> cpp_label_ids_ascii_inits;
   Int ch_curr = 0;
   Int ind_curr = -1;
-  for (auto p : ctx.char_thresholds_) {
+  for (const auto &p : ctx.char_thresholds_) {
     while (ch_curr < p.first && ch_curr < 128) {
       if (ind_curr != -1) {
         cpp_label_ids_ascii_inits.push_back(
@@ -149,7 +149,7 @@ void lexer_gen_cpp_defs(
   Vec<lang::cc::Node_T> cpp_label_ids_unicode_inits;
   Int ch_curr_unicode = 128;
   Int ind_curr_unicode = -1;
-  for (auto p : ctx.char_thresholds_) {
+  for (const auto &p : ctx.char_thresholds_) {
     if (p.first < ch_curr_unicode) {
       ind_curr_unicode = p.second;
       continue;
@@ -180,7 +180,7 @@ void lexer_gen_cpp_defs(
               cpp_label_ids_unicode_inits, "return ret;", "}", "}")
           ->as_Decl());
 
-  for (auto [mode, dfa] : *lexer_mode_dfas) {
+  for (const auto &[mode, dfa] : *lexer_mode_dfas) {
     auto name = mode->name_.to_std_string();
 
     ctx.cc_.dst_decls_->push_back(
@@ -399,7 +399,7 @@ void data_gen_dtype_acc(DataGenContext data, Ident_T id, GenDatatype_T dt,
         Some<std::string>("Entry"), "first_k: ^langcc::ParserLookahead;"));
   }
 
-  for (auto [field_id, field_ty] : *dt->fields_) {
+  for (const auto &[field_id, field_ty] : *dt->fields_) {
     data_fields->push_back(data.Q_->qq_ext(
         Some<std::string>("Entry"), data_gen_id_base_to_string(field_id), ":",
         data_gen_type_to_node(data, field_ty), ";"));
@@ -437,7 +437,7 @@ void data_gen_dtype_acc(DataGenContext data, Ident_T id, GenDatatype_T dt,
 }
 
 void lang_emit_datatype_defs(LangCompileContext &ctx, HeaderMode header_mode) {
-  for (auto [id, dt] : *ctx.gen_dt_map_) {
+  for (const auto &[id, dt] : *ctx.gen_dt_map_) {
     auto parent = id;
     if (id->xs_->length() > 0) {
       parent = ctx.gen_dt_parent_mapping_->operator[](id).first;
@@ -471,7 +471,7 @@ void lang_emit_datatype_defs(LangCompileContext &ctx, HeaderMode header_mode) {
 }
 
 void lang_emit_writer_defs(LangCompileContext &ctx) {
-  for (auto [id, wr] : *ctx.gen_wr_map_) {
+  for (const auto &[id, wr] : *ctx.gen_wr_map_) {
     auto id_nm = lower_name_ident_struct(id);
 
     auto cpp_write_stmts = make_rc<Vec<cc::Node_T>>();
@@ -953,7 +953,7 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
 
     auto cpp_make_args =
         parser_lr_unwind_impl_gen_cpp_make_args(cpp_bounds, ctx.cc_);
-    for (auto [field_name, _] : *ic->args_map_) {
+    for (const auto &[field_name, _] : *ic->args_map_) {
       auto field_type = ret_type->dt_->fields_->operator[](field_name);
       auto src_val = vs_fields->operator[](field_name);
       auto ret_val = parser_lr_unwind_impl_gen_cpp_acc_type_rec(
@@ -1088,7 +1088,7 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
 
   auto dom = ctx.parser_attr_domains_->operator[](prod_cps->lhs_);
   auto attr_keys = make_rc<Vec<AttrKey_T>>();
-  for (auto [k, _] : *dom) {
+  for (const auto &[k, _] : *dom) {
     attr_keys->push_back(k);
   }
   auto n_attr = attr_keys->length();
@@ -1112,7 +1112,7 @@ void parser_lr_unwind_impl_gen_cpp_acc(Vec_T<cc::Node_T> &cpp_dst_proc,
     cc.qq_stmt_acc(cpp_dst_proc, cpp_val_lhs, "=", fmt_str("{}", attr_val_max),
                    ";");
 
-    for (auto constr : *ctx.Gr_cps_prod_constrs_->operator[](prod_cps)) {
+    for (const auto &constr : *ctx.Gr_cps_prod_constrs_->operator[](prod_cps)) {
       if (constr->is_LhsLeq()) {
         auto vc = constr->as_LhsLeq();
         if (val_hash(vc->k_) != val_hash(attr_key)) {
@@ -1217,7 +1217,7 @@ void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T> &dst, WriteInstr_T wr,
   } else if (wr->is_WithSumCase()) {
     auto wc = wr->as_WithSumCase();
     auto switch_cases = make_rc<Vec<cc::Node_T>>();
-    for (auto [case_id, case_instr] : *wc->cases_map_) {
+    for (const auto &[case_id, case_instr] : *wc->cases_map_) {
       auto case_body = make_rc<Vec<cc::Node_T>>();
       auto case_str = fmt_str("{}", case_id);
       auto [src_ns, _] = parser_lr_unwind_impl_gen_name_to_cpp_struct(
@@ -1514,7 +1514,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
   // parse_rt
   ctx.cps_flat_diff_max_ = 0;
 
-  for (auto prod_cps : *ctx.Gr_cps_->prods_) {
+  for (const auto &prod_cps : *ctx.Gr_cps_->prods_) {
     auto prod_flat = ctx.cps_prod_map_rev_->operator[](prod_cps);
     auto cps_flat_diff =
         std::max<Int>(0, prod_cps->rhs_->length() - prod_flat->rhs_->length());
@@ -1552,7 +1552,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
           ->as_Decl());
 
   auto start_marker_by_name_entries = make_rc<Vec<cc::Node_T>>();
-  for (auto ident : *ctx.parser_syms_top_) {
+  for (const auto &ident : *ctx.parser_syms_top_) {
     auto marker =
         LRSym::Base::make(Sym::TermStartMarker::make(ident->xs_->only()));
     auto marker_name = ident->xs_->only()->as_User()->name_;
@@ -1581,7 +1581,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
           ->as_Decl());
 
   auto term_tok_to_sym_cases = make_rc<Vec<cc::Node_T>>();
-  for (auto sym : *ctx.Gr_cps_->term_) {
+  for (const auto &sym : *ctx.Gr_cps_->term_) {
     if (sym->is_TermStartMarker()) {
       // pass
     } else if (sym->is_Term()) {
@@ -1676,7 +1676,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     auto sym_all = grammar_all_lr_syms(ctx.Gr_cps_);
     Int sym_ind = 0;
-    for (auto sym : *sym_all) {
+    for (const auto &sym : *sym_all) {
       if (!sym->is_Base()) {
         ++sym_ind;
         continue;
@@ -1717,7 +1717,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
 
     auto sym_all = grammar_all_lr_syms(ctx.Gr_cps_);
     Int sym_ind = 0;
-    for (auto sym : *sym_all) {
+    for (const auto &sym : *sym_all) {
       if (!sym->is_Base() ||
           !ctx.parser_attr_domains_->contains_key(sym->as_Base()->sym_)) {
         ++sym_ind;
@@ -1727,7 +1727,7 @@ void lang_emit_parser_defs(LangCompileContext &ctx) {
       auto attr_to_str_cases_sub_sym = make_rc<Vec<cc::Node_T>>();
       auto dom = ctx.parser_attr_domains_->operator[](sym->as_Base()->sym_);
       Int attr_ind = 0;
-      for (auto [ki, _] : *dom) {
+      for (const auto &[ki, _] : *dom) {
         auto attr_ret = fmt_str("{}", ki);
         attr_to_str_cases_sub_sym->push_back(ctx.cc_.qq_switch_case(
             "case", fmt_str("{}", attr_ind), ": { return",
@@ -1808,7 +1808,7 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
 
   auto lexer_mode_descs = make_rc<Vec<cc::Node_T>>();
 
-  for (auto mode : ctx.lexer_modes_) {
+  for (const auto &mode : ctx.lexer_modes_) {
     auto tr_m = lexer_extract_trivial_maybe(mode);
 
     lexer_mode_descs->push_back(ctx.cc_.Q_->qq_ext(
@@ -1831,7 +1831,7 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
       auto tr_cases_blocks = make_rc<Vec<cc::Node_T>>();
       Int case_i = 0;
       Option_T<cc::Node_T> eof_block = None<cc::Node_T>();
-      for (auto [case_cs_m, case_instrs] : *tr.cases_) {
+      for (const auto &[case_cs_m, case_instrs] : *tr.cases_) {
         cc::Node_T tr_case_block;
         if (case_cs_m.is_none()) {
           AT(eof_block.is_none());
@@ -2128,7 +2128,7 @@ void lang_emit_global_defs(LangCompileContext &ctx) {
     }
 
     bool any_ws = false;
-    for (auto &decl : *ctx.lexer_->decls_) {
+    for (const auto &decl : *ctx.lexer_->decls_) {
       if (decl->is_Mode()) {
         if (decl->as_Mode()->ws_sig__.is_some()) {
           any_ws = true;
@@ -2239,7 +2239,7 @@ void lang_emit_test_defs(LangCompileContext &ctx) {
       ctx.cc_.qq("Stmt", "auto L = lang::", ctx.src_base_name_, "::init();"));
   auto test_stanza = lang_get_test_stanza(ctx.src_);
   if (test_stanza.is_some()) {
-    for (auto test_case : *test_stanza.as_some()->items_) {
+    for (const auto &test_case : *test_stanza.as_some()->items_) {
       std::string test_text = test_case->text_.to_std_string();
       AT(test_text.length() >= 2 && test_text[0] == '`' &&
          test_text[test_text.length() - 1] == '`');

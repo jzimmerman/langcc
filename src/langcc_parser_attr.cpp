@@ -76,7 +76,7 @@ void parser_infer_attrs_top_clause_acc(LangCompileContext &ctx,
         }
       } else if (case_->pat_->is_Alt()) {
         auto pc = case_->pat_->as_Alt();
-        for (auto pat_id : *pc->items_) {
+        for (const auto &pat_id : *pc->items_) {
           auto match_cand =
               Ident::with_extend(match_curr, parse_expr_id_to_ident(pat_id));
           if (Ident::starts_with(id_ctx, match_cand)) {
@@ -94,7 +94,7 @@ void parser_infer_attrs_top_clause_acc(LangCompileContext &ctx,
     }
   } else if (clause->is_Block()) {
     auto cc = clause->as_Block();
-    for (auto clause_sub : *cc->items_) {
+    for (const auto &clause_sub : *cc->items_) {
       parser_infer_attrs_top_clause_acc(ctx, dst_constr, sym, id_ctx,
                                         match_curr, clause_sub);
     }
@@ -133,14 +133,14 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
   auto ident_prec_level = make_rc<Map<Ident_T, Int>>();
   auto ident_prec_assoc =
       make_rc<Map<Ident_T, Option_T<meta::Node::PrecAssoc_T>>>();
-  for (auto [_, sym] : *ctx.Np_) {
+  for (const auto &[_, sym] : *ctx.Np_) {
     sym_has_prec->insert(sym, false);
   }
   if (ctx.parser_prec_.is_some()) {
     ctx.parser_prec_n_ = ctx.parser_prec_.as_some()->items_->length();
     Int prec_level_curr = 0;
-    for (auto item : *ctx.parser_prec_.as_some()->items_) {
-      for (auto id : *item->ids_) {
+    for (const auto &item : *ctx.parser_prec_.as_some()->items_) {
+      for (const auto &id : *item->ids_) {
         auto ident = parse_expr_id_to_ident(id);
         if (!ctx.Np_->contains_key(ident)) {
           ctx.error(item, fmt_str("Attr constrained identifier not found: {}",
@@ -158,7 +158,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
       }
       ++prec_level_curr;
     }
-    for (auto p : *ctx.parser_rule_inds_) {
+    for (const auto &p : *ctx.parser_rule_inds_) {
       auto rule = ctx.parser_rules_->operator[](p.first);
       if (rule->op_->is_DEF_ALIAS()) {
         continue;
@@ -173,7 +173,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
       }
     }
   }
-  for (auto p : *ctx.parser_rule_inds_) {
+  for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
     if (rule->op_->is_DEF_ALIAS()) {
       continue;
@@ -196,7 +196,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
     auto attr_constr_unused = make_rc<Vec<ProdConstr_T>>();
 
     if (rule->lhs_attrs_.is_some()) {
-      for (auto attr : *rule->lhs_attrs_.as_some()) {
+      for (const auto &attr : *rule->lhs_attrs_.as_some()) {
         if (attr->is_PrecStar()) {
           ctx.error(rule, "Lhs attr req cannot specify pr=*");
         } else if (attr->is_Base()) {
@@ -211,7 +211,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
       }
     }
 
-    for (auto clause : *ctx.parser_attr_clauses_) {
+    for (const auto &clause : *ctx.parser_attr_clauses_) {
       parser_infer_attrs_top_clause_acc(ctx, attr_constr_unused, sym,
                                         parse_expr_id_to_ident(rule->name_),
                                         Ident::empty(), clause);
@@ -219,7 +219,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
   }
 
   // Second pass: compute attr exprs by rule.
-  for (auto p : *ctx.parser_rule_inds_) {
+  for (const auto &p : *ctx.parser_rule_inds_) {
     auto rule = ctx.parser_rules_->operator[](p.first);
     if (rule->op_->is_DEF_ALIAS()) {
       continue;
@@ -230,13 +230,13 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
 
     auto attr_constr = make_rc<Vec<ProdConstr_T>>();
 
-    for (auto clause : *ctx.parser_attr_clauses_) {
+    for (const auto &clause : *ctx.parser_attr_clauses_) {
       parser_infer_attrs_top_clause_acc(ctx, attr_constr, sym, ident,
                                         Ident::empty(), clause);
     }
 
     if (rule->lhs_attrs_.is_some()) {
-      for (auto attr : *rule->lhs_attrs_.as_some()) {
+      for (const auto &attr : *rule->lhs_attrs_.as_some()) {
         if (attr->is_Base()) {
           auto id =
               ident_singleton_from_string(attr->as_Base()->k_.to_std_string());
@@ -257,14 +257,14 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
     //   applicable Implies clause, then it is constrained to be false. This
     //   avoids cumbersome annotations such as "this is not a type expression",
     //   when we really mean "this is a value expression", and vice versa.
-    for (auto p : *ctx.parser_attr_domains_->operator[](sym)) {
+    for (const auto &p : *ctx.parser_attr_domains_->operator[](sym)) {
       if (p.first->is_Prec()) {
         continue;
       }
       AT(p.second->is_Bool());
       bool has_implies = false;
       bool has_uncond = false;
-      for (auto constr : *attr_constr) {
+      for (const auto &constr : *attr_constr) {
         if (constr->is_Implies() &&
             val_hash(constr->as_Implies()->kl_) == val_hash(p.first)) {
           has_implies = true;
@@ -287,7 +287,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
     }
 
     auto attr_constr_new = make_rc<Vec<ProdConstr_T>>();
-    for (auto constr : *attr_constr) {
+    for (const auto &constr : *attr_constr) {
       if (constr->is_RhsGeq() || constr->is_Implies()) {
         attr_constr_new->push_back(constr);
       } else if (constr->is_LhsGeq()) {
@@ -297,7 +297,7 @@ void parser_infer_attrs_top(LangCompileContext &ctx) {
       }
     }
 
-    for (auto constr : *attr_constr_extend) {
+    for (const auto &constr : *attr_constr_extend) {
       attr_constr_new->push_back(constr);
     }
 
@@ -428,7 +428,7 @@ void parser_attr_propagate_flattened_sym_rec(Vec_T<ProdConstr_T> rule_constrs,
   }
   vis->insert(sym);
 
-  for (auto prod : *ctx.Gr_cps_->prods_by_nonterm_->operator[](sym)) {
+  for (const auto &prod : *ctx.Gr_cps_->prods_by_nonterm_->operator[](sym)) {
     parser_attr_propagate_flattened_prod_rec(rule_constrs, prod, false, vis,
                                              ctx);
   }
@@ -526,7 +526,7 @@ void parser_attr_propagate_flattened_prod_rec(Vec_T<ProdConstr_T> rule_constrs,
   }
   auto dst = ctx.Gr_cps_prod_constrs_->operator[](prod);
 
-  for (auto constr : *rule_constrs) {
+  for (const auto &constr : *rule_constrs) {
     if (constr->is_LhsLeq()) {
       auto cc = constr->as_LhsLeq();
       if (is_rule_lhs) {
@@ -661,17 +661,17 @@ Int prod_id_extract_rule_ind(ProdId_T prod_id) {
 void parser_attr_propagate_flattened(LangCompileContext &ctx) {
   auto vis = make_rc<Set<Sym_T>>();
 
-  for (auto [rule_id, rule_constrs] : *ctx.parser_attr_constr_by_rule_) {
+  for (const auto &[rule_id, rule_constrs] : *ctx.parser_attr_constr_by_rule_) {
     auto sym = ctx.Np_->operator[](rule_id);
     vis->insert(sym);
   }
 
-  for (auto [rule_id, rule_constrs] : *ctx.parser_attr_constr_by_rule_) {
+  for (const auto &[rule_id, rule_constrs] : *ctx.parser_attr_constr_by_rule_) {
     auto rule_ind = ctx.parser_rule_inds_->operator[](rule_id);
 
     auto sym = ctx.Np_->operator[](rule_id);
 
-    for (auto prod : *ctx.Gr_cps_->prods_by_nonterm_->operator[](sym)) {
+    for (const auto &prod : *ctx.Gr_cps_->prods_by_nonterm_->operator[](sym)) {
       if (prod_id_extract_rule_ind(prod->prod_id_) != rule_ind) {
         continue;
       }
@@ -686,7 +686,7 @@ void parser_attr_propagate_flattened(LangCompileContext &ctx) {
     }
   }
 
-  for (auto prod : *ctx.Gr_cps_->prods_) {
+  for (const auto &prod : *ctx.Gr_cps_->prods_) {
     if (!ctx.Gr_cps_prod_constrs_->contains_key(prod)) {
       ctx.Gr_cps_prod_constrs_->insert(prod,
                                        make_rc<VecUniq<ProdConstrFlat_T>>());
@@ -695,7 +695,7 @@ void parser_attr_propagate_flattened(LangCompileContext &ctx) {
 
   // Inline attr reqs
   auto prec_exempt = make_rc<Vec<std::pair<Prod_T, Int>>>();
-  for (auto prod : *ctx.Gr_cps_->prods_) {
+  for (const auto &prod : *ctx.Gr_cps_->prods_) {
     auto dst = ctx.Gr_cps_prod_constrs_->operator[](prod);
 
     if (!ctx.Gr_cps_rhs_flatten_leaves_->contains_key(prod)) {
@@ -712,7 +712,7 @@ void parser_attr_propagate_flattened(LangCompileContext &ctx) {
         auto props =
             ctx.parse_expr_props_->operator[](li.as_some()->as_Id()->e_->id_);
         if (props->attr_req_.is_some()) {
-          for (auto ar : *props->attr_req_.as_some()) {
+          for (const auto &ar : *props->attr_req_.as_some()) {
             if (ar->is_Base()) {
               auto k_names = make_rc<Vec<IdentBase_T>>();
               k_names->push_back(
@@ -732,9 +732,9 @@ void parser_attr_propagate_flattened(LangCompileContext &ctx) {
     }
   }
 
-  for (auto [prod, i] : *prec_exempt) {
+  for (const auto &[prod, i] : *prec_exempt) {
     auto curr_new = make_rc<VecUniq<ProdConstrFlat_T>>();
-    for (auto constr : *ctx.Gr_cps_prod_constrs_->operator[](prod)) {
+    for (const auto &constr : *ctx.Gr_cps_prod_constrs_->operator[](prod)) {
       bool retain = true;
       if (constr->is_RhsGeq()) {
         auto cc = constr->as_RhsGeq();
@@ -765,12 +765,12 @@ void parser_prod_constr_cps_refine_domains(LangCompileContext &ctx) {
   ctx.parser_attr_domains_->insert(Sym::Start::make(),
                                    make_rc<Map<AttrKey_T, AttrType_T>>());
 
-  for (auto prod : *ctx.Gr_cps_->prods_) {
+  for (const auto &prod : *ctx.Gr_cps_->prods_) {
     if (!ctx.parser_attr_domains_->contains_key(prod->lhs_)) {
       ctx.parser_attr_domains_->insert(prod->lhs_,
                                        make_rc<Map<AttrKey_T, AttrType_T>>());
     }
-    for (auto sym : *prod->rhs_) {
+    for (const auto &sym : *prod->rhs_) {
       if (!ctx.parser_attr_domains_->contains_key(sym)) {
         ctx.parser_attr_domains_->insert(sym,
                                          make_rc<Map<AttrKey_T, AttrType_T>>());
@@ -784,11 +784,11 @@ void parser_prod_constr_cps_refine_domains(LangCompileContext &ctx) {
     auto has_lower = make_rc<Map<Sym_T, Map_T<AttrKey_T, AttrType_T>>>();
     auto has_upper = make_rc<Map<Sym_T, Map_T<AttrKey_T, AttrType_T>>>();
 
-    for (auto prod : *ctx.Gr_cps_->prods_) {
+    for (const auto &prod : *ctx.Gr_cps_->prods_) {
       has_lower->insert(prod->lhs_, make_rc<Map<AttrKey_T, AttrType_T>>());
       has_upper->insert(prod->lhs_, make_rc<Map<AttrKey_T, AttrType_T>>());
 
-      for (auto sym : *prod->rhs_) {
+      for (const auto &sym : *prod->rhs_) {
         has_lower->insert(sym, make_rc<Map<AttrKey_T, AttrType_T>>());
         has_upper->insert(sym, make_rc<Map<AttrKey_T, AttrType_T>>());
       }
@@ -797,8 +797,8 @@ void parser_prod_constr_cps_refine_domains(LangCompileContext &ctx) {
     while (true) {
       bool updated = false;
 
-      for (auto [prod, constrs] : *ctx.Gr_cps_prod_constrs_) {
-        for (auto constr : *constrs) {
+      for (const auto &[prod, constrs] : *ctx.Gr_cps_prod_constrs_) {
+        for (const auto &constr : *constrs) {
           if (constr->is_LhsLeq()) {
             auto cc = constr->as_LhsLeq();
             if (!has_upper->operator[](prod->lhs_)->contains_key(cc->k_)) {
@@ -841,8 +841,8 @@ void parser_prod_constr_cps_refine_domains(LangCompileContext &ctx) {
       }
     }
 
-    for (auto [sym, attrs_lower] : *has_lower) {
-      for (auto [attr_k, attr_ty] : *attrs_lower) {
+    for (const auto &[sym, attrs_lower] : *has_lower) {
+      for (const auto &[attr_k, attr_ty] : *attrs_lower) {
         if (has_upper->operator[](sym)->contains_key(attr_k)) {
           ctx.parser_attr_domains_->operator[](sym)->insert(attr_k, attr_ty);
         }
@@ -852,15 +852,15 @@ void parser_prod_constr_cps_refine_domains(LangCompileContext &ctx) {
     auto Gr_cps_prod_constrs_new =
         make_rc<Map<Prod_T, VecUniq_T<ProdConstrFlat_T>>>();
 
-    for (auto prod : *ctx.Gr_cps_->prods_) {
+    for (const auto &prod : *ctx.Gr_cps_->prods_) {
       Gr_cps_prod_constrs_new->insert(prod,
                                       make_rc<VecUniq<ProdConstrFlat_T>>());
     }
 
-    for (auto [prod, constrs] : *ctx.Gr_cps_prod_constrs_) {
+    for (const auto &[prod, constrs] : *ctx.Gr_cps_prod_constrs_) {
       auto curr_constrs_new = make_rc<VecUniq<ProdConstrFlat_T>>();
 
-      for (auto constr : *constrs) {
+      for (const auto &constr : *constrs) {
         bool ok = true;
 
         if (constr->is_LhsLeq()) {

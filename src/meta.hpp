@@ -21,7 +21,7 @@ inline ParseExpr_Base_T parse_expr_base_from_token(const TokenBase_T &x) {
 
 inline meta::Node::Stanza::Tokens_T
 lang_get_tokens_stanza(meta::Node::Lang_T L) {
-  for (auto &stanza : *L->stanzas_) {
+  for (const auto &stanza : *L->stanzas_) {
     if (stanza->is_Tokens()) {
       return stanza->as_Tokens();
     }
@@ -30,7 +30,7 @@ lang_get_tokens_stanza(meta::Node::Lang_T L) {
 }
 
 inline meta::Node::Stanza::Lexer_T lang_get_lexer_stanza(meta::Node::Lang_T L) {
-  for (auto &stanza : *L->stanzas_) {
+  for (const auto &stanza : *L->stanzas_) {
     if (stanza->is_Lexer()) {
       return stanza->as_Lexer();
     }
@@ -40,7 +40,7 @@ inline meta::Node::Stanza::Lexer_T lang_get_lexer_stanza(meta::Node::Lang_T L) {
 
 inline meta::Node::Stanza::Parser_T
 lang_get_parser_stanza(meta::Node::Lang_T L) {
-  for (auto &stanza : *L->stanzas_) {
+  for (const auto &stanza : *L->stanzas_) {
     if (stanza->is_Parser()) {
       return stanza->as_Parser();
     }
@@ -50,9 +50,9 @@ lang_get_parser_stanza(meta::Node::Lang_T L) {
 
 inline bool lang_is_expected_fail(const meta::Node::Lang_T &L) {
   auto parser = lang_get_parser_stanza(L);
-  for (auto decl : *parser->decls_) {
+  for (const auto &decl : *parser->decls_) {
     if (decl->is_Prop()) {
-      for (auto prop : *decl->as_Prop()->props_) {
+      for (const auto &prop : *decl->as_Prop()->props_) {
         if (prop->is_Err_()) {
           return true;
         }
@@ -65,7 +65,7 @@ inline bool lang_is_expected_fail(const meta::Node::Lang_T &L) {
 inline Option_T<meta::Node::Stanza::Test_T>
 lang_get_test_stanza(meta::Node::Lang_T L) {
   Option_T<meta::Node::Stanza::Test_T> ret = None<meta::Node::Stanza::Test_T>();
-  for (auto &stanza : *L->stanzas_) {
+  for (const auto &stanza : *L->stanzas_) {
     if (stanza->is_Test()) {
       if (ret.is_some()) {
         AX();
@@ -81,7 +81,7 @@ lang_get_compile_test_stanza(meta::Node::Lang_T L) {
 
   Option_T<meta::Node::Stanza::CompileTest_T> ret =
       None<meta::Node::Stanza::CompileTest_T>();
-  for (auto &stanza : *L->stanzas_) {
+  for (const auto &stanza : *L->stanzas_) {
     if (stanza->is_CompileTest()) {
       if (ret.is_some()) {
         AX();
@@ -95,9 +95,9 @@ lang_get_compile_test_stanza(meta::Node::Lang_T L) {
 inline Int lang_get_k_default(const meta::Node::Lang_T &L) {
   Int ret = -1;
   auto parser = lang_get_parser_stanza(L);
-  for (auto decl : *parser->decls_) {
+  for (const auto &decl : *parser->decls_) {
     if (decl->is_Prop()) {
-      for (auto prop : *decl->as_Prop()->props_) {
+      for (const auto &prop : *decl->as_Prop()->props_) {
         if (prop->is_LRSpec()) {
           auto prop_k =
               string_to_int(prop->as_LRSpec()->k_.to_std_string()).as_some();
@@ -185,7 +185,7 @@ inline bool lexer_instr_has_emit_match(meta::Node::LexerInstr_T instr) {
     return false;
   } else if (instr->is_MatchHistory()) {
     auto ic = instr->as_MatchHistory();
-    for (auto case_ : *ic->cases_) {
+    for (const auto &case_ : *ic->cases_) {
       for (const auto &instr_sub : *case_->instrs_) {
         if (lexer_instr_has_emit_match(instr_sub)) {
           return true;
@@ -223,7 +223,7 @@ inline Option_T<ParseExpr_Base_T> parse_expr_to_base_maybe(ParseExpr_T e) {
       AX();
     }
     auto cs_v = make_rc<Vec<Ch>>();
-    for (auto c : cs.as_some()) {
+    for (const auto &c : cs.as_some()) {
       cs_v->push_back(c);
     }
     auto ret = TokenBase::LitStr::make(cs_v);
@@ -434,7 +434,7 @@ parse_expr_extract_write_phase_const_ext(ParseExpr_T e) {
     auto cs = string_extract_lang_char_seq(e->as_StrLit()->s_.to_std_string())
                   .as_some();
     std::string ret = "";
-    for (auto c : cs) {
+    for (const auto &c : cs) {
       ret += utf8_encode(c);
     }
     return Some<std::string>(ret);
@@ -443,7 +443,7 @@ parse_expr_extract_write_phase_const_ext(ParseExpr_T e) {
     auto cs = string_extract_lang_char_seq(e->as_Pass()->s_.to_std_string())
                   .as_some();
     std::string ret = "";
-    for (auto c : cs) {
+    for (const auto &c : cs) {
       ret += utf8_encode(c);
     }
     return Some<std::string>(ret);
