@@ -58,7 +58,7 @@ if(NOT N EQUAL 0)
   set(CTEST_PARALLEL_FLAG -j${N})
 endif()
 add_custom_target(tests
-  COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARALLEL_FLAG} -C $<CONFIGURATION> --output-junit ${CMAKE_SOURCE_DIR}/report.xml
+  COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARALLEL_FLAG} -C $<CONFIGURATION> --output-on-failure --output-junit ${CMAKE_SOURCE_DIR}/report.xml
   DEPENDS build_tests
   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
