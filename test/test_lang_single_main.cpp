@@ -2,7 +2,6 @@
 #include "langcc_util.hpp"
 
 #include "langcc.hpp"
-#include "testlib.hpp"
 
 i32 main(i32 argc, char **argv) {
   langcc::global_init();
