@@ -60,6 +60,8 @@ add_executable(langcc
 )
 target_link_libraries(langcc langcclib datacclib)
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 # Tests
-enable_testing()
-add_subdirectory(test EXCLUDE_FROM_ALL)
+  enable_testing()
+  add_subdirectory(test)
+endif()
