@@ -891,6 +891,8 @@ struct FmtFlags {
     Int indent_curr_;
     Int prec_curr_;
 
+    FmtFlags(): indent_width_(4), indent_curr_(0), prec_curr_(0) {}
+
     inline static FmtFlags default_() {
         FmtFlags ret;
         ret.indent_width_ = 4;
