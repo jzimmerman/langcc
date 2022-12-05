@@ -5,11 +5,13 @@ BUILD = build
 all: \
 	$(BUILD)/calc
 
+clean:
+	rm -rf $(BUILD) gen
+
 CFLAGS_EXTRA =
 LFLAGS_EXTRA =
 CC =
 DSYMUTIL_MAYBE =
-LLVM_SYM_PATH =
 
 LFLAGS_TCMALLOC = -ltcmalloc
 
@@ -26,22 +28,14 @@ ifeq ($(shell uname), Darwin)
 	LFLAGS_EXTRA = -L/opt/local/lib -L$(HOMEBREW_BASE)/opt/gperftools/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib -ldl
 	CC = clang++
 	DSYMUTIL_MAYBE = dsymutil
-	LLVM_SYM_PATH = $(HOMEBREW_BASE)/opt/llvm/bin/llvm-symbolizer
 else
 	CFLAGS_EXTRA =
-	LFLAGS_EXTRA = -lunwind -ldl
+	LFLAGS_EXTRA = -ldl
 	CC = clang++
 	DSYMUTIL_MAYBE = true
-	LLVM_SYM_PATH = /usr/bin/llvm-symbolizer
 endif
 
-CFLAGS_LLVM_SYM =
-
-ifeq ($(shell test -e $(LLVM_SYM_PATH) && echo 'yes'), yes)
-	CFLAGS_LLVM_SYM = -D__HAS_LLVM_SYMBOLIZER__ -D__LLVM_SYMBOLIZER_PATH__=$(LLVM_SYM_PATH)
-endif
-
-CFLAGS = -I./gen -I./include -g -ggdb -g3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_LLVM_SYM) $(CFLAGS_EXTRA)
+CFLAGS = -I./gen -I./include -g -ggdb -g3 -std=c++17 -fno-omit-frame-pointer $(CFLAGS_EXTRA)
 LFLAGS = $(LFLAGS_EXTRA) $(LFLAGS_TCMALLOC)
 
 HPP_SRC = $(wildcard src/*.hpp)

@@ -6,5 +6,7 @@ gost
 .vscode
 examples/calc/gen
 examples/basic/gen
+examples/lox/gen
 examples/calc/build
 examples/basic/build
+examples/lox/build

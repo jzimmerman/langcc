@@ -32,6 +32,14 @@ namespace lang::cc::lexer::comment_single {
 
 #include <langcc_util.hpp>
 
+namespace lang::cc::Node {
+    struct _T;
+}
+
+namespace lang::cc {
+    using Node_T = langcc::rc_ptr<lang::cc::Node::_T>;
+}
+
 namespace lang::cc::Node::Module {
     struct _T;
 }
@@ -40,12 +48,20 @@ namespace lang::cc::Node {
     using Module_T = langcc::rc_ptr<lang::cc::Node::Module::_T>;
 }
 
-namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
+namespace lang::cc::Node::Decl {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl::Struct::tmpl::item::args {
-    using item_T = langcc::rc_ptr<lang::cc::Node::Decl::Struct::tmpl::item::args::item::_T>;
+namespace lang::cc::Node {
+    using Decl_T = langcc::rc_ptr<lang::cc::Node::Decl::_T>;
+}
+
+namespace lang::cc::Node::Decl::Struct {
+    struct _T;
+}
+
+namespace lang::cc::Node::Decl {
+    using Struct_T = langcc::rc_ptr<lang::cc::Node::Decl::Struct::_T>;
 }
 
 namespace lang::cc::Node::Decl::Struct::tmpl::item {
@@ -56,12 +72,20 @@ namespace lang::cc::Node::Decl::Struct::tmpl {
     using item_T = langcc::rc_ptr<lang::cc::Node::Decl::Struct::tmpl::item::_T>;
 }
 
-namespace lang::cc::Node::Decl::Struct {
+namespace lang::cc::Node::Decl::Struct::tmpl::item::args::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl {
-    using Struct_T = langcc::rc_ptr<lang::cc::Node::Decl::Struct::_T>;
+namespace lang::cc::Node::Decl::Struct::tmpl::item::args {
+    using item_T = langcc::rc_ptr<lang::cc::Node::Decl::Struct::tmpl::item::args::item::_T>;
+}
+
+namespace lang::cc::Node::StructDeclDef {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using StructDeclDef_T = langcc::rc_ptr<lang::cc::Node::StructDeclDef::_T>;
 }
 
 namespace lang::cc::Node::StructDeclDef::Decl {
@@ -80,28 +104,20 @@ namespace lang::cc::Node::StructDeclDef {
     using Def_T = langcc::rc_ptr<lang::cc::Node::StructDeclDef::Def::_T>;
 }
 
+namespace lang::cc::Node::Entry {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using Entry_T = langcc::rc_ptr<lang::cc::Node::Entry::_T>;
+}
+
 namespace lang::cc::Node::Entry::Field {
     struct _T;
 }
 
 namespace lang::cc::Node::Entry {
     using Field_T = langcc::rc_ptr<lang::cc::Node::Entry::Field::_T>;
-}
-
-namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
-    struct _T;
-}
-
-namespace lang::cc::Node::Entry::Fun::tmpl::item::args {
-    using item_T = langcc::rc_ptr<lang::cc::Node::Entry::Fun::tmpl::item::args::item::_T>;
-}
-
-namespace lang::cc::Node::Entry::Fun::tmpl::item {
-    struct _T;
-}
-
-namespace lang::cc::Node::Entry::Fun::tmpl {
-    using item_T = langcc::rc_ptr<lang::cc::Node::Entry::Fun::tmpl::item::_T>;
 }
 
 namespace lang::cc::Node::Entry::Fun {
@@ -112,12 +128,20 @@ namespace lang::cc::Node::Entry {
     using Fun_T = langcc::rc_ptr<lang::cc::Node::Entry::Fun::_T>;
 }
 
-namespace lang::cc::Node::Param::val {
+namespace lang::cc::Node::Entry::Fun::tmpl::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Param {
-    using val_T = langcc::rc_ptr<lang::cc::Node::Param::val::_T>;
+namespace lang::cc::Node::Entry::Fun::tmpl {
+    using item_T = langcc::rc_ptr<lang::cc::Node::Entry::Fun::tmpl::item::_T>;
+}
+
+namespace lang::cc::Node::Entry::Fun::tmpl::item::args::item {
+    struct _T;
+}
+
+namespace lang::cc::Node::Entry::Fun::tmpl::item::args {
+    using item_T = langcc::rc_ptr<lang::cc::Node::Entry::Fun::tmpl::item::args::item::_T>;
 }
 
 namespace lang::cc::Node::Param {
@@ -126,6 +150,22 @@ namespace lang::cc::Node::Param {
 
 namespace lang::cc::Node {
     using Param_T = langcc::rc_ptr<lang::cc::Node::Param::_T>;
+}
+
+namespace lang::cc::Node::Param::val {
+    struct _T;
+}
+
+namespace lang::cc::Node::Param {
+    using val_T = langcc::rc_ptr<lang::cc::Node::Param::val::_T>;
+}
+
+namespace lang::cc::Node::FunDeclDef {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using FunDeclDef_T = langcc::rc_ptr<lang::cc::Node::FunDeclDef::_T>;
 }
 
 namespace lang::cc::Node::FunDeclDef::Decl {
@@ -168,12 +208,12 @@ namespace lang::cc::Node::Decl {
     using EnumStruct_T = langcc::rc_ptr<lang::cc::Node::Decl::EnumStruct::_T>;
 }
 
-namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
+namespace lang::cc::Node::Decl::Fun {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl::Fun::tmpl::item::args {
-    using item_T = langcc::rc_ptr<lang::cc::Node::Decl::Fun::tmpl::item::args::item::_T>;
+namespace lang::cc::Node::Decl {
+    using Fun_T = langcc::rc_ptr<lang::cc::Node::Decl::Fun::_T>;
 }
 
 namespace lang::cc::Node::Decl::Fun::tmpl::item {
@@ -184,12 +224,20 @@ namespace lang::cc::Node::Decl::Fun::tmpl {
     using item_T = langcc::rc_ptr<lang::cc::Node::Decl::Fun::tmpl::item::_T>;
 }
 
-namespace lang::cc::Node::Decl::Fun {
+namespace lang::cc::Node::Decl::Fun::tmpl::item::args::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl {
-    using Fun_T = langcc::rc_ptr<lang::cc::Node::Decl::Fun::_T>;
+namespace lang::cc::Node::Decl::Fun::tmpl::item::args {
+    using item_T = langcc::rc_ptr<lang::cc::Node::Decl::Fun::tmpl::item::args::item::_T>;
+}
+
+namespace lang::cc::Node::Mod {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using Mod_T = langcc::rc_ptr<lang::cc::Node::Mod::_T>;
 }
 
 namespace lang::cc::Node::Mod::Const {
@@ -248,12 +296,12 @@ namespace lang::cc::Node::Decl {
     using Namespace_T = langcc::rc_ptr<lang::cc::Node::Decl::Namespace::_T>;
 }
 
-namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item {
+namespace lang::cc::Node::Decl::UsingAlias {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args {
-    using item_T = langcc::rc_ptr<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item::_T>;
+namespace lang::cc::Node::Decl {
+    using UsingAlias_T = langcc::rc_ptr<lang::cc::Node::Decl::UsingAlias::_T>;
 }
 
 namespace lang::cc::Node::Decl::UsingAlias::tmpl::item {
@@ -264,12 +312,12 @@ namespace lang::cc::Node::Decl::UsingAlias::tmpl {
     using item_T = langcc::rc_ptr<lang::cc::Node::Decl::UsingAlias::tmpl::item::_T>;
 }
 
-namespace lang::cc::Node::Decl::UsingAlias {
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item {
     struct _T;
 }
 
-namespace lang::cc::Node::Decl {
-    using UsingAlias_T = langcc::rc_ptr<lang::cc::Node::Decl::UsingAlias::_T>;
+namespace lang::cc::Node::Decl::UsingAlias::tmpl::item::args {
+    using item_T = langcc::rc_ptr<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item::_T>;
 }
 
 namespace lang::cc::Node::Decl::UsingNamespace {
@@ -304,6 +352,14 @@ namespace lang::cc::Node {
     using Block_T = langcc::rc_ptr<lang::cc::Node::Block::_T>;
 }
 
+namespace lang::cc::Node::Stmt {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using Stmt_T = langcc::rc_ptr<lang::cc::Node::Stmt::_T>;
+}
+
 namespace lang::cc::Node::Stmt::Decl {
     struct _T;
 }
@@ -312,12 +368,12 @@ namespace lang::cc::Node::Stmt {
     using Decl_T = langcc::rc_ptr<lang::cc::Node::Stmt::Decl::_T>;
 }
 
-namespace lang::cc::Node::TypedDecl::vars::item::val {
+namespace lang::cc::Node::TypedDecl {
     struct _T;
 }
 
-namespace lang::cc::Node::TypedDecl::vars::item {
-    using val_T = langcc::rc_ptr<lang::cc::Node::TypedDecl::vars::item::val::_T>;
+namespace lang::cc::Node {
+    using TypedDecl_T = langcc::rc_ptr<lang::cc::Node::TypedDecl::_T>;
 }
 
 namespace lang::cc::Node::TypedDecl::vars::item {
@@ -328,12 +384,12 @@ namespace lang::cc::Node::TypedDecl::vars {
     using item_T = langcc::rc_ptr<lang::cc::Node::TypedDecl::vars::item::_T>;
 }
 
-namespace lang::cc::Node::TypedDecl {
+namespace lang::cc::Node::TypedDecl::vars::item::val {
     struct _T;
 }
 
-namespace lang::cc::Node {
-    using TypedDecl_T = langcc::rc_ptr<lang::cc::Node::TypedDecl::_T>;
+namespace lang::cc::Node::TypedDecl::vars::item {
+    using val_T = langcc::rc_ptr<lang::cc::Node::TypedDecl::vars::item::val::_T>;
 }
 
 namespace lang::cc::Node::Stmt::Expr {
@@ -376,6 +432,14 @@ namespace lang::cc::Node::Stmt {
     using For_T = langcc::rc_ptr<lang::cc::Node::Stmt::For::_T>;
 }
 
+namespace lang::cc::Node::ExprExt {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using ExprExt_T = langcc::rc_ptr<lang::cc::Node::ExprExt::_T>;
+}
+
 namespace lang::cc::Node::ExprExt::Expr {
     struct _T;
 }
@@ -398,6 +462,14 @@ namespace lang::cc::Node::Stmt::Switch {
 
 namespace lang::cc::Node::Stmt {
     using Switch_T = langcc::rc_ptr<lang::cc::Node::Stmt::Switch::_T>;
+}
+
+namespace lang::cc::Node::SwitchCase {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using SwitchCase_T = langcc::rc_ptr<lang::cc::Node::SwitchCase::_T>;
 }
 
 namespace lang::cc::Node::SwitchCase::Case {
@@ -438,6 +510,14 @@ namespace lang::cc::Node::Stmt::Return {
 
 namespace lang::cc::Node::Stmt {
     using Return_T = langcc::rc_ptr<lang::cc::Node::Stmt::Return::_T>;
+}
+
+namespace lang::cc::Node::Expr {
+    struct _T;
+}
+
+namespace lang::cc::Node {
+    using Expr_T = langcc::rc_ptr<lang::cc::Node::Expr::_T>;
 }
 
 namespace lang::cc::Node::Expr::Paren {
@@ -512,6 +592,22 @@ namespace lang::cc::Node::Expr {
     using Deref_T = langcc::rc_ptr<lang::cc::Node::Expr::Deref::_T>;
 }
 
+namespace lang::cc::Node::Expr::UnaryPre {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr {
+    using UnaryPre_T = langcc::rc_ptr<lang::cc::Node::Expr::UnaryPre::_T>;
+}
+
+namespace lang::cc::Node::Expr::UnaryPre::op {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::UnaryPre {
+    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::UnaryPre::op::_T>;
+}
+
 namespace lang::cc::Node::Expr::UnaryPre::op::NOT {
     struct _T;
 }
@@ -528,20 +624,20 @@ namespace lang::cc::Node::Expr::UnaryPre::op {
     using NEG_T = langcc::rc_ptr<lang::cc::Node::Expr::UnaryPre::op::NEG::_T>;
 }
 
-namespace lang::cc::Node::Expr::UnaryPre::op {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::UnaryPre {
-    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::UnaryPre::op::_T>;
-}
-
-namespace lang::cc::Node::Expr::UnaryPre {
+namespace lang::cc::Node::Expr::IncDecPre {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
-    using UnaryPre_T = langcc::rc_ptr<lang::cc::Node::Expr::UnaryPre::_T>;
+    using IncDecPre_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPre::_T>;
+}
+
+namespace lang::cc::Node::Expr::IncDecPre::op {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::IncDecPre {
+    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPre::op::_T>;
 }
 
 namespace lang::cc::Node::Expr::IncDecPre::op::INC {
@@ -560,20 +656,20 @@ namespace lang::cc::Node::Expr::IncDecPre::op {
     using DEC_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPre::op::DEC::_T>;
 }
 
-namespace lang::cc::Node::Expr::IncDecPre::op {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::IncDecPre {
-    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPre::op::_T>;
-}
-
-namespace lang::cc::Node::Expr::IncDecPre {
+namespace lang::cc::Node::Expr::IncDecPost {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
-    using IncDecPre_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPre::_T>;
+    using IncDecPost_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPost::_T>;
+}
+
+namespace lang::cc::Node::Expr::IncDecPost::op {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::IncDecPost {
+    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPost::op::_T>;
 }
 
 namespace lang::cc::Node::Expr::IncDecPost::op::INC {
@@ -592,44 +688,12 @@ namespace lang::cc::Node::Expr::IncDecPost::op {
     using DEC_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPost::op::DEC::_T>;
 }
 
-namespace lang::cc::Node::Expr::IncDecPost::op {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::IncDecPost {
-    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPost::op::_T>;
-}
-
-namespace lang::cc::Node::Expr::IncDecPost {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr {
-    using IncDecPost_T = langcc::rc_ptr<lang::cc::Node::Expr::IncDecPost::_T>;
-}
-
 namespace lang::cc::Node::Expr::Assign {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
     using Assign_T = langcc::rc_ptr<lang::cc::Node::Expr::Assign::_T>;
-}
-
-namespace lang::cc::Node::Expr::Bin1::op::LOR {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::Bin1::op {
-    using LOR_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin1::op::LOR::_T>;
-}
-
-namespace lang::cc::Node::Expr::Bin1::op {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::Bin1 {
-    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin1::op::_T>;
 }
 
 namespace lang::cc::Node::Expr::Bin1 {
@@ -640,12 +704,28 @@ namespace lang::cc::Node::Expr {
     using Bin1_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin1::_T>;
 }
 
-namespace lang::cc::Node::Expr::Bin2::op::LAND {
+namespace lang::cc::Node::Expr::Bin1::op {
     struct _T;
 }
 
-namespace lang::cc::Node::Expr::Bin2::op {
-    using LAND_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin2::op::LAND::_T>;
+namespace lang::cc::Node::Expr::Bin1 {
+    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin1::op::_T>;
+}
+
+namespace lang::cc::Node::Expr::Bin1::op::LOR {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::Bin1::op {
+    using LOR_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin1::op::LOR::_T>;
+}
+
+namespace lang::cc::Node::Expr::Bin2 {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr {
+    using Bin2_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin2::_T>;
 }
 
 namespace lang::cc::Node::Expr::Bin2::op {
@@ -656,12 +736,28 @@ namespace lang::cc::Node::Expr::Bin2 {
     using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin2::op::_T>;
 }
 
-namespace lang::cc::Node::Expr::Bin2 {
+namespace lang::cc::Node::Expr::Bin2::op::LAND {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::Bin2::op {
+    using LAND_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin2::op::LAND::_T>;
+}
+
+namespace lang::cc::Node::Expr::Bin3 {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
-    using Bin2_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin2::_T>;
+    using Bin3_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin3::_T>;
+}
+
+namespace lang::cc::Node::Expr::Bin3::op {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::Bin3 {
+    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin3::op::_T>;
 }
 
 namespace lang::cc::Node::Expr::Bin3::op::EQ {
@@ -712,28 +808,12 @@ namespace lang::cc::Node::Expr::Bin3::op {
     using GT_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin3::op::GT::_T>;
 }
 
-namespace lang::cc::Node::Expr::Bin3::op {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::Bin3 {
-    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin3::op::_T>;
-}
-
-namespace lang::cc::Node::Expr::Bin3 {
+namespace lang::cc::Node::Expr::Bin4 {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
-    using Bin3_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin3::_T>;
-}
-
-namespace lang::cc::Node::Expr::Bin4::op::SHL {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::Bin4::op {
-    using SHL_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin4::op::SHL::_T>;
+    using Bin4_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin4::_T>;
 }
 
 namespace lang::cc::Node::Expr::Bin4::op {
@@ -744,12 +824,28 @@ namespace lang::cc::Node::Expr::Bin4 {
     using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin4::op::_T>;
 }
 
-namespace lang::cc::Node::Expr::Bin4 {
+namespace lang::cc::Node::Expr::Bin4::op::SHL {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::Bin4::op {
+    using SHL_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin4::op::SHL::_T>;
+}
+
+namespace lang::cc::Node::Expr::Bin5 {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
-    using Bin4_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin4::_T>;
+    using Bin5_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin5::_T>;
+}
+
+namespace lang::cc::Node::Expr::Bin5::op {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::Bin5 {
+    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin5::op::_T>;
 }
 
 namespace lang::cc::Node::Expr::Bin5::op::PLUS {
@@ -768,20 +864,20 @@ namespace lang::cc::Node::Expr::Bin5::op {
     using MINUS_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin5::op::MINUS::_T>;
 }
 
-namespace lang::cc::Node::Expr::Bin5::op {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::Bin5 {
-    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin5::op::_T>;
-}
-
-namespace lang::cc::Node::Expr::Bin5 {
+namespace lang::cc::Node::Expr::Bin6 {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
-    using Bin5_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin5::_T>;
+    using Bin6_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin6::_T>;
+}
+
+namespace lang::cc::Node::Expr::Bin6::op {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr::Bin6 {
+    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin6::op::_T>;
 }
 
 namespace lang::cc::Node::Expr::Bin6::op::TIMES {
@@ -806,22 +902,6 @@ namespace lang::cc::Node::Expr::Bin6::op::MODULO {
 
 namespace lang::cc::Node::Expr::Bin6::op {
     using MODULO_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin6::op::MODULO::_T>;
-}
-
-namespace lang::cc::Node::Expr::Bin6::op {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr::Bin6 {
-    using op_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin6::op::_T>;
-}
-
-namespace lang::cc::Node::Expr::Bin6 {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr {
-    using Bin6_T = langcc::rc_ptr<lang::cc::Node::Expr::Bin6::_T>;
 }
 
 namespace lang::cc::Node::Expr::Template {
@@ -856,12 +936,12 @@ namespace lang::cc::Node::Expr {
     using Ellipsis_T = langcc::rc_ptr<lang::cc::Node::Expr::Ellipsis::_T>;
 }
 
-namespace lang::cc::Node::Expr::Tilde {
+namespace lang::cc::Node::Expr::NSGlobal {
     struct _T;
 }
 
 namespace lang::cc::Node::Expr {
-    using Tilde_T = langcc::rc_ptr<lang::cc::Node::Expr::Tilde::_T>;
+    using NSGlobal_T = langcc::rc_ptr<lang::cc::Node::Expr::NSGlobal::_T>;
 }
 
 namespace lang::cc::Node::Expr::Namespace {
@@ -878,6 +958,14 @@ namespace lang::cc::Node::Expr::Id {
 
 namespace lang::cc::Node::Expr {
     using Id_T = langcc::rc_ptr<lang::cc::Node::Expr::Id::_T>;
+}
+
+namespace lang::cc::Node::Expr::Lit {
+    struct _T;
+}
+
+namespace lang::cc::Node::Expr {
+    using Lit_T = langcc::rc_ptr<lang::cc::Node::Expr::Lit::_T>;
 }
 
 namespace lang::cc::Node::Expr::Lit::Integer {
@@ -904,94 +992,6 @@ namespace lang::cc::Node::Expr::Lit {
     using Array_T = langcc::rc_ptr<lang::cc::Node::Expr::Lit::Array::_T>;
 }
 
-namespace lang::cc::Node::Decl {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using Decl_T = langcc::rc_ptr<lang::cc::Node::Decl::_T>;
-}
-
-namespace lang::cc::Node::StructDeclDef {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using StructDeclDef_T = langcc::rc_ptr<lang::cc::Node::StructDeclDef::_T>;
-}
-
-namespace lang::cc::Node::Entry {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using Entry_T = langcc::rc_ptr<lang::cc::Node::Entry::_T>;
-}
-
-namespace lang::cc::Node::FunDeclDef {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using FunDeclDef_T = langcc::rc_ptr<lang::cc::Node::FunDeclDef::_T>;
-}
-
-namespace lang::cc::Node::Mod {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using Mod_T = langcc::rc_ptr<lang::cc::Node::Mod::_T>;
-}
-
-namespace lang::cc::Node::Stmt {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using Stmt_T = langcc::rc_ptr<lang::cc::Node::Stmt::_T>;
-}
-
-namespace lang::cc::Node::ExprExt {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using ExprExt_T = langcc::rc_ptr<lang::cc::Node::ExprExt::_T>;
-}
-
-namespace lang::cc::Node::SwitchCase {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using SwitchCase_T = langcc::rc_ptr<lang::cc::Node::SwitchCase::_T>;
-}
-
-namespace lang::cc::Node::Expr {
-    struct _T;
-}
-
-namespace lang::cc::Node {
-    using Expr_T = langcc::rc_ptr<lang::cc::Node::Expr::_T>;
-}
-
-namespace lang::cc::Node::Expr::Lit {
-    struct _T;
-}
-
-namespace lang::cc::Node::Expr {
-    using Lit_T = langcc::rc_ptr<lang::cc::Node::Expr::Lit::_T>;
-}
-
-namespace lang::cc::Node {
-    struct _T;
-}
-
-namespace lang::cc {
-    using Node_T = langcc::rc_ptr<lang::cc::Node::_T>;
-}
-
 namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node_T x);
 }
@@ -999,20 +999,29 @@ namespace langcc {
 namespace lang::cc::Node {
     enum struct _W {
         Module,
-        Decl__Struct__tmpl__item__args__item,
+        Decl,
         Decl__Struct__tmpl__item,
-        Entry__Fun__tmpl__item__args__item,
+        Decl__Struct__tmpl__item__args__item,
+        StructDeclDef,
+        Entry,
         Entry__Fun__tmpl__item,
-        Param__val,
+        Entry__Fun__tmpl__item__args__item,
         Param,
-        Decl__Fun__tmpl__item__args__item,
+        Param__val,
+        FunDeclDef,
         Decl__Fun__tmpl__item,
-        Decl__UsingAlias__tmpl__item__args__item,
+        Decl__Fun__tmpl__item__args__item,
+        Mod,
         Decl__UsingAlias__tmpl__item,
+        Decl__UsingAlias__tmpl__item__args__item,
         Block,
-        TypedDecl__vars__item__val,
-        TypedDecl__vars__item,
+        Stmt,
         TypedDecl,
+        TypedDecl__vars__item,
+        TypedDecl__vars__item__val,
+        ExprExt,
+        SwitchCase,
+        Expr,
         Expr__UnaryPre__op,
         Expr__IncDecPre__op,
         Expr__IncDecPost__op,
@@ -1022,15 +1031,6 @@ namespace lang::cc::Node {
         Expr__Bin4__op,
         Expr__Bin5__op,
         Expr__Bin6__op,
-        Decl,
-        StructDeclDef,
-        Entry,
-        FunDeclDef,
-        Mod,
-        Stmt,
-        ExprExt,
-        SwitchCase,
-        Expr,
     };
 }
 
@@ -1048,20 +1048,29 @@ namespace lang::cc::Node {
         langcc::ParserLookahead first_k_;
         _T(lang::cc::Node::_W w);
         bool is_Module();
-        bool is_Decl__Struct__tmpl__item__args__item();
+        bool is_Decl();
         bool is_Decl__Struct__tmpl__item();
-        bool is_Entry__Fun__tmpl__item__args__item();
+        bool is_Decl__Struct__tmpl__item__args__item();
+        bool is_StructDeclDef();
+        bool is_Entry();
         bool is_Entry__Fun__tmpl__item();
-        bool is_Param__val();
+        bool is_Entry__Fun__tmpl__item__args__item();
         bool is_Param();
-        bool is_Decl__Fun__tmpl__item__args__item();
+        bool is_Param__val();
+        bool is_FunDeclDef();
         bool is_Decl__Fun__tmpl__item();
-        bool is_Decl__UsingAlias__tmpl__item__args__item();
+        bool is_Decl__Fun__tmpl__item__args__item();
+        bool is_Mod();
         bool is_Decl__UsingAlias__tmpl__item();
+        bool is_Decl__UsingAlias__tmpl__item__args__item();
         bool is_Block();
-        bool is_TypedDecl__vars__item__val();
-        bool is_TypedDecl__vars__item();
+        bool is_Stmt();
         bool is_TypedDecl();
+        bool is_TypedDecl__vars__item();
+        bool is_TypedDecl__vars__item__val();
+        bool is_ExprExt();
+        bool is_SwitchCase();
+        bool is_Expr();
         bool is_Expr__UnaryPre__op();
         bool is_Expr__IncDecPre__op();
         bool is_Expr__IncDecPost__op();
@@ -1071,30 +1080,30 @@ namespace lang::cc::Node {
         bool is_Expr__Bin4__op();
         bool is_Expr__Bin5__op();
         bool is_Expr__Bin6__op();
-        bool is_Decl();
-        bool is_StructDeclDef();
-        bool is_Entry();
-        bool is_FunDeclDef();
-        bool is_Mod();
-        bool is_Stmt();
-        bool is_ExprExt();
-        bool is_SwitchCase();
-        bool is_Expr();
         lang::cc::Node::Module_T as_Module();
-        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T as_Decl__Struct__tmpl__item__args__item();
+        lang::cc::Node::Decl_T as_Decl();
         lang::cc::Node::Decl::Struct::tmpl::item_T as_Decl__Struct__tmpl__item();
-        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T as_Entry__Fun__tmpl__item__args__item();
+        lang::cc::Node::Decl::Struct::tmpl::item::args::item_T as_Decl__Struct__tmpl__item__args__item();
+        lang::cc::Node::StructDeclDef_T as_StructDeclDef();
+        lang::cc::Node::Entry_T as_Entry();
         lang::cc::Node::Entry::Fun::tmpl::item_T as_Entry__Fun__tmpl__item();
-        lang::cc::Node::Param::val_T as_Param__val();
+        lang::cc::Node::Entry::Fun::tmpl::item::args::item_T as_Entry__Fun__tmpl__item__args__item();
         lang::cc::Node::Param_T as_Param();
-        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T as_Decl__Fun__tmpl__item__args__item();
+        lang::cc::Node::Param::val_T as_Param__val();
+        lang::cc::Node::FunDeclDef_T as_FunDeclDef();
         lang::cc::Node::Decl::Fun::tmpl::item_T as_Decl__Fun__tmpl__item();
-        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T as_Decl__UsingAlias__tmpl__item__args__item();
+        lang::cc::Node::Decl::Fun::tmpl::item::args::item_T as_Decl__Fun__tmpl__item__args__item();
+        lang::cc::Node::Mod_T as_Mod();
         lang::cc::Node::Decl::UsingAlias::tmpl::item_T as_Decl__UsingAlias__tmpl__item();
+        lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T as_Decl__UsingAlias__tmpl__item__args__item();
         lang::cc::Node::Block_T as_Block();
-        lang::cc::Node::TypedDecl::vars::item::val_T as_TypedDecl__vars__item__val();
-        lang::cc::Node::TypedDecl::vars::item_T as_TypedDecl__vars__item();
+        lang::cc::Node::Stmt_T as_Stmt();
         lang::cc::Node::TypedDecl_T as_TypedDecl();
+        lang::cc::Node::TypedDecl::vars::item_T as_TypedDecl__vars__item();
+        lang::cc::Node::TypedDecl::vars::item::val_T as_TypedDecl__vars__item__val();
+        lang::cc::Node::ExprExt_T as_ExprExt();
+        lang::cc::Node::SwitchCase_T as_SwitchCase();
+        lang::cc::Node::Expr_T as_Expr();
         lang::cc::Node::Expr::UnaryPre::op_T as_Expr__UnaryPre__op();
         lang::cc::Node::Expr::IncDecPre::op_T as_Expr__IncDecPre__op();
         lang::cc::Node::Expr::IncDecPost::op_T as_Expr__IncDecPost__op();
@@ -1104,82 +1113,142 @@ namespace lang::cc::Node {
         lang::cc::Node::Expr::Bin4::op_T as_Expr__Bin4__op();
         lang::cc::Node::Expr::Bin5::op_T as_Expr__Bin5__op();
         lang::cc::Node::Expr::Bin6::op_T as_Expr__Bin6__op();
-        lang::cc::Node::Decl_T as_Decl();
-        lang::cc::Node::StructDeclDef_T as_StructDeclDef();
-        lang::cc::Node::Entry_T as_Entry();
-        lang::cc::Node::FunDeclDef_T as_FunDeclDef();
-        lang::cc::Node::Mod_T as_Mod();
-        lang::cc::Node::Stmt_T as_Stmt();
-        lang::cc::Node::ExprExt_T as_ExprExt();
-        lang::cc::Node::SwitchCase_T as_SwitchCase();
-        lang::cc::Node::Expr_T as_Expr();
-        void match(std::function<void(lang::cc::Node::Module_T)> f_Module, std::function<void(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, std::function<void(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, std::function<void(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, std::function<void(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, std::function<void(lang::cc::Node::Param::val_T)> f_Param__val, std::function<void(lang::cc::Node::Param_T)> f_Param, std::function<void(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, std::function<void(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, std::function<void(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, std::function<void(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, std::function<void(lang::cc::Node::Block_T)> f_Block, std::function<void(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, std::function<void(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, std::function<void(lang::cc::Node::TypedDecl_T)> f_TypedDecl, std::function<void(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, std::function<void(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, std::function<void(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, std::function<void(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, std::function<void(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, std::function<void(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, std::function<void(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, std::function<void(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, std::function<void(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, std::function<void(lang::cc::Node::Decl_T)> f_Decl, std::function<void(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, std::function<void(lang::cc::Node::Entry_T)> f_Entry, std::function<void(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, std::function<void(lang::cc::Node::Mod_T)> f_Mod, std::function<void(lang::cc::Node::Stmt_T)> f_Stmt, std::function<void(lang::cc::Node::ExprExt_T)> f_ExprExt, std::function<void(lang::cc::Node::SwitchCase_T)> f_SwitchCase, std::function<void(lang::cc::Node::Expr_T)> f_Expr);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Module_T)> f_Module, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, std::function<RetT(lang::cc::Node::Param_T)> f_Param, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, std::function<RetT(lang::cc::Node::Block_T)> f_Block, std::function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, std::function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, std::function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, std::function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, std::function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, std::function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, std::function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, std::function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, std::function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, std::function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, std::function<RetT(lang::cc::Node::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, std::function<RetT(lang::cc::Node::Entry_T)> f_Entry, std::function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, std::function<RetT(lang::cc::Node::Mod_T)> f_Mod, std::function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, std::function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, std::function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, std::function<RetT(lang::cc::Node::Expr_T)> f_Expr);
+        langcc::Ptr<lang::cc::Node::Module::_T> as_Module_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::_T> as_Decl_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::Struct::tmpl::item::_T> as_Decl__Struct__tmpl__item_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::Struct::tmpl::item::args::item::_T> as_Decl__Struct__tmpl__item__args__item_unchecked();
+        langcc::Ptr<lang::cc::Node::StructDeclDef::_T> as_StructDeclDef_unchecked();
+        langcc::Ptr<lang::cc::Node::Entry::_T> as_Entry_unchecked();
+        langcc::Ptr<lang::cc::Node::Entry::Fun::tmpl::item::_T> as_Entry__Fun__tmpl__item_unchecked();
+        langcc::Ptr<lang::cc::Node::Entry::Fun::tmpl::item::args::item::_T> as_Entry__Fun__tmpl__item__args__item_unchecked();
+        langcc::Ptr<lang::cc::Node::Param::_T> as_Param_unchecked();
+        langcc::Ptr<lang::cc::Node::Param::val::_T> as_Param__val_unchecked();
+        langcc::Ptr<lang::cc::Node::FunDeclDef::_T> as_FunDeclDef_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::Fun::tmpl::item::_T> as_Decl__Fun__tmpl__item_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::Fun::tmpl::item::args::item::_T> as_Decl__Fun__tmpl__item__args__item_unchecked();
+        langcc::Ptr<lang::cc::Node::Mod::_T> as_Mod_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::UsingAlias::tmpl::item::_T> as_Decl__UsingAlias__tmpl__item_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item::_T> as_Decl__UsingAlias__tmpl__item__args__item_unchecked();
+        langcc::Ptr<lang::cc::Node::Block::_T> as_Block_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::_T> as_Stmt_unchecked();
+        langcc::Ptr<lang::cc::Node::TypedDecl::_T> as_TypedDecl_unchecked();
+        langcc::Ptr<lang::cc::Node::TypedDecl::vars::item::_T> as_TypedDecl__vars__item_unchecked();
+        langcc::Ptr<lang::cc::Node::TypedDecl::vars::item::val::_T> as_TypedDecl__vars__item__val_unchecked();
+        langcc::Ptr<lang::cc::Node::ExprExt::_T> as_ExprExt_unchecked();
+        langcc::Ptr<lang::cc::Node::SwitchCase::_T> as_SwitchCase_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::_T> as_Expr_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::UnaryPre::op::_T> as_Expr__UnaryPre__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPre::op::_T> as_Expr__IncDecPre__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPost::op::_T> as_Expr__IncDecPost__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin1::op::_T> as_Expr__Bin1__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin2::op::_T> as_Expr__Bin2__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::op::_T> as_Expr__Bin3__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin4::op::_T> as_Expr__Bin4__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin5::op::_T> as_Expr__Bin5__op_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin6::op::_T> as_Expr__Bin6__op_unchecked();
+        void match(std::function<void(lang::cc::Node::Module_T)> f_Module, std::function<void(lang::cc::Node::Decl_T)> f_Decl, std::function<void(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, std::function<void(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, std::function<void(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, std::function<void(lang::cc::Node::Entry_T)> f_Entry, std::function<void(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, std::function<void(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, std::function<void(lang::cc::Node::Param_T)> f_Param, std::function<void(lang::cc::Node::Param::val_T)> f_Param__val, std::function<void(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, std::function<void(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, std::function<void(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, std::function<void(lang::cc::Node::Mod_T)> f_Mod, std::function<void(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, std::function<void(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, std::function<void(lang::cc::Node::Block_T)> f_Block, std::function<void(lang::cc::Node::Stmt_T)> f_Stmt, std::function<void(lang::cc::Node::TypedDecl_T)> f_TypedDecl, std::function<void(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, std::function<void(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, std::function<void(lang::cc::Node::ExprExt_T)> f_ExprExt, std::function<void(lang::cc::Node::SwitchCase_T)> f_SwitchCase, std::function<void(lang::cc::Node::Expr_T)> f_Expr, std::function<void(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, std::function<void(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, std::function<void(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, std::function<void(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, std::function<void(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, std::function<void(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, std::function<void(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, std::function<void(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, std::function<void(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Module_T)> f_Module, std::function<RetT(lang::cc::Node::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, std::function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, std::function<RetT(lang::cc::Node::Entry_T)> f_Entry, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Param_T)> f_Param, std::function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, std::function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Mod_T)> f_Mod, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Block_T)> f_Block, std::function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, std::function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, std::function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, std::function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, std::function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, std::function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, std::function<RetT(lang::cc::Node::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, std::function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, std::function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, std::function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, std::function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, std::function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, std::function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op);
         void hash_ser_acc_lang_cc_Node(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::cc::Node::_T::match_expr(std::function<RetT(lang::cc::Node::Module_T)> f_Module, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, std::function<RetT(lang::cc::Node::Param_T)> f_Param, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, std::function<RetT(lang::cc::Node::Block_T)> f_Block, std::function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, std::function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, std::function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, std::function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, std::function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, std::function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, std::function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, std::function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, std::function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, std::function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op, std::function<RetT(lang::cc::Node::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, std::function<RetT(lang::cc::Node::Entry_T)> f_Entry, std::function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, std::function<RetT(lang::cc::Node::Mod_T)> f_Mod, std::function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, std::function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, std::function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, std::function<RetT(lang::cc::Node::Expr_T)> f_Expr) {
+template<typename RetT> RetT lang::cc::Node::_T::match_expr(std::function<RetT(lang::cc::Node::Module_T)> f_Module, std::function<RetT(lang::cc::Node::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item_T)> f_Decl__Struct__tmpl__item, std::function<RetT(lang::cc::Node::Decl::Struct::tmpl::item::args::item_T)> f_Decl__Struct__tmpl__item__args__item, std::function<RetT(lang::cc::Node::StructDeclDef_T)> f_StructDeclDef, std::function<RetT(lang::cc::Node::Entry_T)> f_Entry, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item_T)> f_Entry__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Entry::Fun::tmpl::item::args::item_T)> f_Entry__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Param_T)> f_Param, std::function<RetT(lang::cc::Node::Param::val_T)> f_Param__val, std::function<RetT(lang::cc::Node::FunDeclDef_T)> f_FunDeclDef, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item_T)> f_Decl__Fun__tmpl__item, std::function<RetT(lang::cc::Node::Decl::Fun::tmpl::item::args::item_T)> f_Decl__Fun__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Mod_T)> f_Mod, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item_T)> f_Decl__UsingAlias__tmpl__item, std::function<RetT(lang::cc::Node::Decl::UsingAlias::tmpl::item::args::item_T)> f_Decl__UsingAlias__tmpl__item__args__item, std::function<RetT(lang::cc::Node::Block_T)> f_Block, std::function<RetT(lang::cc::Node::Stmt_T)> f_Stmt, std::function<RetT(lang::cc::Node::TypedDecl_T)> f_TypedDecl, std::function<RetT(lang::cc::Node::TypedDecl::vars::item_T)> f_TypedDecl__vars__item, std::function<RetT(lang::cc::Node::TypedDecl::vars::item::val_T)> f_TypedDecl__vars__item__val, std::function<RetT(lang::cc::Node::ExprExt_T)> f_ExprExt, std::function<RetT(lang::cc::Node::SwitchCase_T)> f_SwitchCase, std::function<RetT(lang::cc::Node::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::Expr::UnaryPre::op_T)> f_Expr__UnaryPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPre::op_T)> f_Expr__IncDecPre__op, std::function<RetT(lang::cc::Node::Expr::IncDecPost::op_T)> f_Expr__IncDecPost__op, std::function<RetT(lang::cc::Node::Expr::Bin1::op_T)> f_Expr__Bin1__op, std::function<RetT(lang::cc::Node::Expr::Bin2::op_T)> f_Expr__Bin2__op, std::function<RetT(lang::cc::Node::Expr::Bin3::op_T)> f_Expr__Bin3__op, std::function<RetT(lang::cc::Node::Expr::Bin4::op_T)> f_Expr__Bin4__op, std::function<RetT(lang::cc::Node::Expr::Bin5::op_T)> f_Expr__Bin5__op, std::function<RetT(lang::cc::Node::Expr::Bin6::op_T)> f_Expr__Bin6__op) {
     switch (this->w_) {
         case lang::cc::Node::_W::Module: {
             return f_Module(this->as_Module());
             break;
         }
-        case lang::cc::Node::_W::Decl__Struct__tmpl__item__args__item: {
-            return f_Decl__Struct__tmpl__item__args__item(this->as_Decl__Struct__tmpl__item__args__item());
+        case lang::cc::Node::_W::Decl: {
+            return f_Decl(this->as_Decl());
             break;
         }
         case lang::cc::Node::_W::Decl__Struct__tmpl__item: {
             return f_Decl__Struct__tmpl__item(this->as_Decl__Struct__tmpl__item());
             break;
         }
-        case lang::cc::Node::_W::Entry__Fun__tmpl__item__args__item: {
-            return f_Entry__Fun__tmpl__item__args__item(this->as_Entry__Fun__tmpl__item__args__item());
+        case lang::cc::Node::_W::Decl__Struct__tmpl__item__args__item: {
+            return f_Decl__Struct__tmpl__item__args__item(this->as_Decl__Struct__tmpl__item__args__item());
+            break;
+        }
+        case lang::cc::Node::_W::StructDeclDef: {
+            return f_StructDeclDef(this->as_StructDeclDef());
+            break;
+        }
+        case lang::cc::Node::_W::Entry: {
+            return f_Entry(this->as_Entry());
             break;
         }
         case lang::cc::Node::_W::Entry__Fun__tmpl__item: {
             return f_Entry__Fun__tmpl__item(this->as_Entry__Fun__tmpl__item());
             break;
         }
-        case lang::cc::Node::_W::Param__val: {
-            return f_Param__val(this->as_Param__val());
+        case lang::cc::Node::_W::Entry__Fun__tmpl__item__args__item: {
+            return f_Entry__Fun__tmpl__item__args__item(this->as_Entry__Fun__tmpl__item__args__item());
             break;
         }
         case lang::cc::Node::_W::Param: {
             return f_Param(this->as_Param());
             break;
         }
-        case lang::cc::Node::_W::Decl__Fun__tmpl__item__args__item: {
-            return f_Decl__Fun__tmpl__item__args__item(this->as_Decl__Fun__tmpl__item__args__item());
+        case lang::cc::Node::_W::Param__val: {
+            return f_Param__val(this->as_Param__val());
+            break;
+        }
+        case lang::cc::Node::_W::FunDeclDef: {
+            return f_FunDeclDef(this->as_FunDeclDef());
             break;
         }
         case lang::cc::Node::_W::Decl__Fun__tmpl__item: {
             return f_Decl__Fun__tmpl__item(this->as_Decl__Fun__tmpl__item());
             break;
         }
-        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__item__args__item: {
-            return f_Decl__UsingAlias__tmpl__item__args__item(this->as_Decl__UsingAlias__tmpl__item__args__item());
+        case lang::cc::Node::_W::Decl__Fun__tmpl__item__args__item: {
+            return f_Decl__Fun__tmpl__item__args__item(this->as_Decl__Fun__tmpl__item__args__item());
+            break;
+        }
+        case lang::cc::Node::_W::Mod: {
+            return f_Mod(this->as_Mod());
             break;
         }
         case lang::cc::Node::_W::Decl__UsingAlias__tmpl__item: {
             return f_Decl__UsingAlias__tmpl__item(this->as_Decl__UsingAlias__tmpl__item());
             break;
         }
+        case lang::cc::Node::_W::Decl__UsingAlias__tmpl__item__args__item: {
+            return f_Decl__UsingAlias__tmpl__item__args__item(this->as_Decl__UsingAlias__tmpl__item__args__item());
+            break;
+        }
         case lang::cc::Node::_W::Block: {
             return f_Block(this->as_Block());
             break;
         }
-        case lang::cc::Node::_W::TypedDecl__vars__item__val: {
-            return f_TypedDecl__vars__item__val(this->as_TypedDecl__vars__item__val());
+        case lang::cc::Node::_W::Stmt: {
+            return f_Stmt(this->as_Stmt());
+            break;
+        }
+        case lang::cc::Node::_W::TypedDecl: {
+            return f_TypedDecl(this->as_TypedDecl());
             break;
         }
         case lang::cc::Node::_W::TypedDecl__vars__item: {
             return f_TypedDecl__vars__item(this->as_TypedDecl__vars__item());
             break;
         }
-        case lang::cc::Node::_W::TypedDecl: {
-            return f_TypedDecl(this->as_TypedDecl());
+        case lang::cc::Node::_W::TypedDecl__vars__item__val: {
+            return f_TypedDecl__vars__item__val(this->as_TypedDecl__vars__item__val());
+            break;
+        }
+        case lang::cc::Node::_W::ExprExt: {
+            return f_ExprExt(this->as_ExprExt());
+            break;
+        }
+        case lang::cc::Node::_W::SwitchCase: {
+            return f_SwitchCase(this->as_SwitchCase());
+            break;
+        }
+        case lang::cc::Node::_W::Expr: {
+            return f_Expr(this->as_Expr());
             break;
         }
         case lang::cc::Node::_W::Expr__UnaryPre__op: {
@@ -1218,42 +1287,6 @@ template<typename RetT> RetT lang::cc::Node::_T::match_expr(std::function<RetT(l
             return f_Expr__Bin6__op(this->as_Expr__Bin6__op());
             break;
         }
-        case lang::cc::Node::_W::Decl: {
-            return f_Decl(this->as_Decl());
-            break;
-        }
-        case lang::cc::Node::_W::StructDeclDef: {
-            return f_StructDeclDef(this->as_StructDeclDef());
-            break;
-        }
-        case lang::cc::Node::_W::Entry: {
-            return f_Entry(this->as_Entry());
-            break;
-        }
-        case lang::cc::Node::_W::FunDeclDef: {
-            return f_FunDeclDef(this->as_FunDeclDef());
-            break;
-        }
-        case lang::cc::Node::_W::Mod: {
-            return f_Mod(this->as_Mod());
-            break;
-        }
-        case lang::cc::Node::_W::Stmt: {
-            return f_Stmt(this->as_Stmt());
-            break;
-        }
-        case lang::cc::Node::_W::ExprExt: {
-            return f_ExprExt(this->as_ExprExt());
-            break;
-        }
-        case lang::cc::Node::_W::SwitchCase: {
-            return f_SwitchCase(this->as_SwitchCase());
-            break;
-        }
-        case lang::cc::Node::_W::Expr: {
-            return f_Expr(this->as_Expr());
-            break;
-        }
         default: {
             langcc::AX();
         }
@@ -1286,106 +1319,6 @@ namespace lang::cc::Node::Module {
         lang::cc::Node::Module_T with_first_k(langcc::ParserLookahead first_k);
         lang::cc::Node::Module_T with_decls(langcc::Vec_T<lang::cc::Node::Decl_T> decls);
         void hash_ser_acc_lang_cc_Node_Module(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Param_T x);
-}
-
-namespace lang::cc::Node::Param {
-    lang::cc::Node::Param_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, langcc::Option_T<lang::cc::Node::Param::val_T> val);
-}
-
-namespace lang::cc::Node::Param {
-    lang::cc::Node::Param_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, langcc::Option_T<lang::cc::Node::Param::val_T> val);
-}
-
-namespace lang::cc::Node::Param {
-    struct _T: lang::cc::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::Vec_T<lang::cc::Node::Mod_T> mods_;
-        lang::cc::Node::Expr_T type__;
-        lang::cc::Node::Expr_T name_;
-        langcc::Option_T<lang::cc::Node::Param::val_T> val_;
-        _T();
-        lang::cc::Node::Param_T with_id(langcc::Int id);
-        lang::cc::Node::Param_T with_bounds(langcc::TokenBounds bounds);
-        lang::cc::Node::Param_T with_is_top(bool is_top);
-        lang::cc::Node::Param_T with_sym(langcc::ParserSymId sym);
-        lang::cc::Node::Param_T with_attr(langcc::ParserAttrMask attr);
-        lang::cc::Node::Param_T with_first_k(langcc::ParserLookahead first_k);
-        lang::cc::Node::Param_T with_mods(langcc::Vec_T<lang::cc::Node::Mod_T> mods);
-        lang::cc::Node::Param_T with_type_(lang::cc::Node::Expr_T type_);
-        lang::cc::Node::Param_T with_name(lang::cc::Node::Expr_T name);
-        lang::cc::Node::Param_T with_val(langcc::Option_T<lang::cc::Node::Param::val_T> val);
-        void hash_ser_acc_lang_cc_Node_Param(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Block_T x);
-}
-
-namespace lang::cc::Node::Block {
-    lang::cc::Node::Block_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Stmt_T> stmts);
-}
-
-namespace lang::cc::Node::Block {
-    lang::cc::Node::Block_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Stmt_T> stmts);
-}
-
-namespace lang::cc::Node::Block {
-    struct _T: lang::cc::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::Vec_T<lang::cc::Node::Stmt_T> stmts_;
-        _T();
-        lang::cc::Node::Block_T with_id(langcc::Int id);
-        lang::cc::Node::Block_T with_bounds(langcc::TokenBounds bounds);
-        lang::cc::Node::Block_T with_is_top(bool is_top);
-        lang::cc::Node::Block_T with_sym(langcc::ParserSymId sym);
-        lang::cc::Node::Block_T with_attr(langcc::ParserAttrMask attr);
-        lang::cc::Node::Block_T with_first_k(langcc::ParserLookahead first_k);
-        lang::cc::Node::Block_T with_stmts(langcc::Vec_T<lang::cc::Node::Stmt_T> stmts);
-        void hash_ser_acc_lang_cc_Node_Block(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl_T x);
-}
-
-namespace lang::cc::Node::TypedDecl {
-    lang::cc::Node::TypedDecl_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
-}
-
-namespace lang::cc::Node::TypedDecl {
-    lang::cc::Node::TypedDecl_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
-}
-
-namespace lang::cc::Node::TypedDecl {
-    struct _T: lang::cc::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::Vec_T<lang::cc::Node::Mod_T> mods_;
-        lang::cc::Node::Expr_T type__;
-        langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars_;
-        _T();
-        lang::cc::Node::TypedDecl_T with_id(langcc::Int id);
-        lang::cc::Node::TypedDecl_T with_bounds(langcc::TokenBounds bounds);
-        lang::cc::Node::TypedDecl_T with_is_top(bool is_top);
-        lang::cc::Node::TypedDecl_T with_sym(langcc::ParserSymId sym);
-        lang::cc::Node::TypedDecl_T with_attr(langcc::ParserAttrMask attr);
-        lang::cc::Node::TypedDecl_T with_first_k(langcc::ParserLookahead first_k);
-        lang::cc::Node::TypedDecl_T with_mods(langcc::Vec_T<lang::cc::Node::Mod_T> mods);
-        lang::cc::Node::TypedDecl_T with_type_(lang::cc::Node::Expr_T type_);
-        lang::cc::Node::TypedDecl_T with_vars(langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
-        void hash_ser_acc_lang_cc_Node_TypedDecl(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
     };
 }
@@ -1430,6 +1363,14 @@ namespace lang::cc::Node::Decl {
         lang::cc::Node::Decl::UsingNamespace_T as_UsingNamespace();
         lang::cc::Node::Decl::Include_T as_Include();
         lang::cc::Node::Decl::PragmaOnce_T as_PragmaOnce();
+        langcc::Ptr<lang::cc::Node::Decl::Struct::_T> as_Struct_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::EnumStruct::_T> as_EnumStruct_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::Fun::_T> as_Fun_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::Namespace::_T> as_Namespace_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::UsingAlias::_T> as_UsingAlias_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::UsingNamespace::_T> as_UsingNamespace_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::Include::_T> as_Include_unchecked();
+        langcc::Ptr<lang::cc::Node::Decl::PragmaOnce::_T> as_PragmaOnce_unchecked();
         void match(std::function<void(lang::cc::Node::Decl::Struct_T)> f_Struct, std::function<void(lang::cc::Node::Decl::EnumStruct_T)> f_EnumStruct, std::function<void(lang::cc::Node::Decl::Fun_T)> f_Fun, std::function<void(lang::cc::Node::Decl::Namespace_T)> f_Namespace, std::function<void(lang::cc::Node::Decl::UsingAlias_T)> f_UsingAlias, std::function<void(lang::cc::Node::Decl::UsingNamespace_T)> f_UsingNamespace, std::function<void(lang::cc::Node::Decl::Include_T)> f_Include, std::function<void(lang::cc::Node::Decl::PragmaOnce_T)> f_PragmaOnce);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Decl::Struct_T)> f_Struct, std::function<RetT(lang::cc::Node::Decl::EnumStruct_T)> f_EnumStruct, std::function<RetT(lang::cc::Node::Decl::Fun_T)> f_Fun, std::function<RetT(lang::cc::Node::Decl::Namespace_T)> f_Namespace, std::function<RetT(lang::cc::Node::Decl::UsingAlias_T)> f_UsingAlias, std::function<RetT(lang::cc::Node::Decl::UsingNamespace_T)> f_UsingNamespace, std::function<RetT(lang::cc::Node::Decl::Include_T)> f_Include, std::function<RetT(lang::cc::Node::Decl::PragmaOnce_T)> f_PragmaOnce);
         void hash_ser_acc_lang_cc_Node_Decl(langcc::SerBuf& buf) const;
@@ -1499,6 +1440,8 @@ namespace lang::cc::Node::StructDeclDef {
         bool is_Def();
         lang::cc::Node::StructDeclDef::Decl_T as_Decl();
         lang::cc::Node::StructDeclDef::Def_T as_Def();
+        langcc::Ptr<lang::cc::Node::StructDeclDef::Decl::_T> as_Decl_unchecked();
+        langcc::Ptr<lang::cc::Node::StructDeclDef::Def::_T> as_Def_unchecked();
         void match(std::function<void(lang::cc::Node::StructDeclDef::Decl_T)> f_Decl, std::function<void(lang::cc::Node::StructDeclDef::Def_T)> f_Def);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::StructDeclDef::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::StructDeclDef::Def_T)> f_Def);
         void hash_ser_acc_lang_cc_Node_StructDeclDef(langcc::SerBuf& buf) const;
@@ -1544,6 +1487,8 @@ namespace lang::cc::Node::Entry {
         bool is_Fun();
         lang::cc::Node::Entry::Field_T as_Field();
         lang::cc::Node::Entry::Fun_T as_Fun();
+        langcc::Ptr<lang::cc::Node::Entry::Field::_T> as_Field_unchecked();
+        langcc::Ptr<lang::cc::Node::Entry::Fun::_T> as_Fun_unchecked();
         void match(std::function<void(lang::cc::Node::Entry::Field_T)> f_Field, std::function<void(lang::cc::Node::Entry::Fun_T)> f_Fun);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Entry::Field_T)> f_Field, std::function<RetT(lang::cc::Node::Entry::Fun_T)> f_Fun);
         void hash_ser_acc_lang_cc_Node_Entry(langcc::SerBuf& buf) const;
@@ -1565,6 +1510,42 @@ template<typename RetT> RetT lang::cc::Node::Entry::_T::match_expr(std::function
             langcc::AX();
         }
     }
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Param_T x);
+}
+
+namespace lang::cc::Node::Param {
+    lang::cc::Node::Param_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, langcc::Option_T<lang::cc::Node::Param::val_T> val);
+}
+
+namespace lang::cc::Node::Param {
+    lang::cc::Node::Param_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, lang::cc::Node::Expr_T name, langcc::Option_T<lang::cc::Node::Param::val_T> val);
+}
+
+namespace lang::cc::Node::Param {
+    struct _T: lang::cc::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::Vec_T<lang::cc::Node::Mod_T> mods_;
+        lang::cc::Node::Expr_T type__;
+        lang::cc::Node::Expr_T name_;
+        langcc::Option_T<lang::cc::Node::Param::val_T> val_;
+        _T();
+        lang::cc::Node::Param_T with_id(langcc::Int id);
+        lang::cc::Node::Param_T with_bounds(langcc::TokenBounds bounds);
+        lang::cc::Node::Param_T with_is_top(bool is_top);
+        lang::cc::Node::Param_T with_sym(langcc::ParserSymId sym);
+        lang::cc::Node::Param_T with_attr(langcc::ParserAttrMask attr);
+        lang::cc::Node::Param_T with_first_k(langcc::ParserLookahead first_k);
+        lang::cc::Node::Param_T with_mods(langcc::Vec_T<lang::cc::Node::Mod_T> mods);
+        lang::cc::Node::Param_T with_type_(lang::cc::Node::Expr_T type_);
+        lang::cc::Node::Param_T with_name(lang::cc::Node::Expr_T name);
+        lang::cc::Node::Param_T with_val(langcc::Option_T<lang::cc::Node::Param::val_T> val);
+        void hash_ser_acc_lang_cc_Node_Param(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
 }
 
 namespace langcc {
@@ -1595,6 +1576,10 @@ namespace lang::cc::Node::FunDeclDef {
         lang::cc::Node::FunDeclDef::Def_T as_Def();
         lang::cc::Node::FunDeclDef::Del_T as_Del();
         lang::cc::Node::FunDeclDef::Zero_T as_Zero();
+        langcc::Ptr<lang::cc::Node::FunDeclDef::Decl::_T> as_Decl_unchecked();
+        langcc::Ptr<lang::cc::Node::FunDeclDef::Def::_T> as_Def_unchecked();
+        langcc::Ptr<lang::cc::Node::FunDeclDef::Del::_T> as_Del_unchecked();
+        langcc::Ptr<lang::cc::Node::FunDeclDef::Zero::_T> as_Zero_unchecked();
         void match(std::function<void(lang::cc::Node::FunDeclDef::Decl_T)> f_Decl, std::function<void(lang::cc::Node::FunDeclDef::Def_T)> f_Def, std::function<void(lang::cc::Node::FunDeclDef::Del_T)> f_Del, std::function<void(lang::cc::Node::FunDeclDef::Zero_T)> f_Zero);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::FunDeclDef::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::FunDeclDef::Def_T)> f_Def, std::function<RetT(lang::cc::Node::FunDeclDef::Del_T)> f_Del, std::function<RetT(lang::cc::Node::FunDeclDef::Zero_T)> f_Zero);
         void hash_ser_acc_lang_cc_Node_FunDeclDef(langcc::SerBuf& buf) const;
@@ -1660,6 +1645,12 @@ namespace lang::cc::Node::Mod {
         lang::cc::Node::Mod::Virtual_T as_Virtual();
         lang::cc::Node::Mod::NoInline_T as_NoInline();
         lang::cc::Node::Mod::AlwaysInline_T as_AlwaysInline();
+        langcc::Ptr<lang::cc::Node::Mod::Const::_T> as_Const_unchecked();
+        langcc::Ptr<lang::cc::Node::Mod::Inline::_T> as_Inline_unchecked();
+        langcc::Ptr<lang::cc::Node::Mod::Static::_T> as_Static_unchecked();
+        langcc::Ptr<lang::cc::Node::Mod::Virtual::_T> as_Virtual_unchecked();
+        langcc::Ptr<lang::cc::Node::Mod::NoInline::_T> as_NoInline_unchecked();
+        langcc::Ptr<lang::cc::Node::Mod::AlwaysInline::_T> as_AlwaysInline_unchecked();
         void match(std::function<void(lang::cc::Node::Mod::Const_T)> f_Const, std::function<void(lang::cc::Node::Mod::Inline_T)> f_Inline, std::function<void(lang::cc::Node::Mod::Static_T)> f_Static, std::function<void(lang::cc::Node::Mod::Virtual_T)> f_Virtual, std::function<void(lang::cc::Node::Mod::NoInline_T)> f_NoInline, std::function<void(lang::cc::Node::Mod::AlwaysInline_T)> f_AlwaysInline);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Mod::Const_T)> f_Const, std::function<RetT(lang::cc::Node::Mod::Inline_T)> f_Inline, std::function<RetT(lang::cc::Node::Mod::Static_T)> f_Static, std::function<RetT(lang::cc::Node::Mod::Virtual_T)> f_Virtual, std::function<RetT(lang::cc::Node::Mod::NoInline_T)> f_NoInline, std::function<RetT(lang::cc::Node::Mod::AlwaysInline_T)> f_AlwaysInline);
         void hash_ser_acc_lang_cc_Node_Mod(langcc::SerBuf& buf) const;
@@ -1697,6 +1688,36 @@ template<typename RetT> RetT lang::cc::Node::Mod::_T::match_expr(std::function<R
             langcc::AX();
         }
     }
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Block_T x);
+}
+
+namespace lang::cc::Node::Block {
+    lang::cc::Node::Block_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Stmt_T> stmts);
+}
+
+namespace lang::cc::Node::Block {
+    lang::cc::Node::Block_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Stmt_T> stmts);
+}
+
+namespace lang::cc::Node::Block {
+    struct _T: lang::cc::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::Vec_T<lang::cc::Node::Stmt_T> stmts_;
+        _T();
+        lang::cc::Node::Block_T with_id(langcc::Int id);
+        lang::cc::Node::Block_T with_bounds(langcc::TokenBounds bounds);
+        lang::cc::Node::Block_T with_is_top(bool is_top);
+        lang::cc::Node::Block_T with_sym(langcc::ParserSymId sym);
+        lang::cc::Node::Block_T with_attr(langcc::ParserAttrMask attr);
+        lang::cc::Node::Block_T with_first_k(langcc::ParserLookahead first_k);
+        lang::cc::Node::Block_T with_stmts(langcc::Vec_T<lang::cc::Node::Stmt_T> stmts);
+        void hash_ser_acc_lang_cc_Node_Block(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
 }
 
 namespace langcc {
@@ -1745,6 +1766,16 @@ namespace lang::cc::Node::Stmt {
         lang::cc::Node::Stmt::Break_T as_Break();
         lang::cc::Node::Stmt::Continue_T as_Continue();
         lang::cc::Node::Stmt::Return_T as_Return();
+        langcc::Ptr<lang::cc::Node::Stmt::Decl::_T> as_Decl_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::Expr::_T> as_Expr_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::Block::_T> as_Block_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::If::_T> as_If_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::IfElse::_T> as_IfElse_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::For::_T> as_For_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::Switch::_T> as_Switch_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::Break::_T> as_Break_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::Continue::_T> as_Continue_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::Return::_T> as_Return_unchecked();
         void match(std::function<void(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<void(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<void(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<void(lang::cc::Node::Stmt::If_T)> f_If, std::function<void(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<void(lang::cc::Node::Stmt::For_T)> f_For, std::function<void(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<void(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<void(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<void(lang::cc::Node::Stmt::Return_T)> f_Return);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<RetT(lang::cc::Node::Stmt::If_T)> f_If, std::function<RetT(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<RetT(lang::cc::Node::Stmt::For_T)> f_For, std::function<RetT(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<RetT(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<RetT(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<RetT(lang::cc::Node::Stmt::Return_T)> f_Return);
         void hash_ser_acc_lang_cc_Node_Stmt(langcc::SerBuf& buf) const;
@@ -1801,6 +1832,40 @@ template<typename RetT> RetT lang::cc::Node::Stmt::_T::match_expr(std::function<
 }
 
 namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::TypedDecl_T x);
+}
+
+namespace lang::cc::Node::TypedDecl {
+    lang::cc::Node::TypedDecl_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
+}
+
+namespace lang::cc::Node::TypedDecl {
+    lang::cc::Node::TypedDecl_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::cc::Node::Mod_T> mods, lang::cc::Node::Expr_T type_, langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
+}
+
+namespace lang::cc::Node::TypedDecl {
+    struct _T: lang::cc::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::Vec_T<lang::cc::Node::Mod_T> mods_;
+        lang::cc::Node::Expr_T type__;
+        langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars_;
+        _T();
+        lang::cc::Node::TypedDecl_T with_id(langcc::Int id);
+        lang::cc::Node::TypedDecl_T with_bounds(langcc::TokenBounds bounds);
+        lang::cc::Node::TypedDecl_T with_is_top(bool is_top);
+        lang::cc::Node::TypedDecl_T with_sym(langcc::ParserSymId sym);
+        lang::cc::Node::TypedDecl_T with_attr(langcc::ParserAttrMask attr);
+        lang::cc::Node::TypedDecl_T with_first_k(langcc::ParserLookahead first_k);
+        lang::cc::Node::TypedDecl_T with_mods(langcc::Vec_T<lang::cc::Node::Mod_T> mods);
+        lang::cc::Node::TypedDecl_T with_type_(lang::cc::Node::Expr_T type_);
+        lang::cc::Node::TypedDecl_T with_vars(langcc::Vec_T<lang::cc::Node::TypedDecl::vars::item_T> vars);
+        void hash_ser_acc_lang_cc_Node_TypedDecl(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::ExprExt_T x);
 }
 
@@ -1822,6 +1887,8 @@ namespace lang::cc::Node::ExprExt {
         bool is_Decl();
         lang::cc::Node::ExprExt::Expr_T as_Expr();
         lang::cc::Node::ExprExt::Decl_T as_Decl();
+        langcc::Ptr<lang::cc::Node::ExprExt::Expr::_T> as_Expr_unchecked();
+        langcc::Ptr<lang::cc::Node::ExprExt::Decl::_T> as_Decl_unchecked();
         void match(std::function<void(lang::cc::Node::ExprExt::Expr_T)> f_Expr, std::function<void(lang::cc::Node::ExprExt::Decl_T)> f_Decl);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::ExprExt::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::ExprExt::Decl_T)> f_Decl);
         void hash_ser_acc_lang_cc_Node_ExprExt(langcc::SerBuf& buf) const;
@@ -1867,6 +1934,8 @@ namespace lang::cc::Node::SwitchCase {
         bool is_Default();
         lang::cc::Node::SwitchCase::Case_T as_Case();
         lang::cc::Node::SwitchCase::Default_T as_Default();
+        langcc::Ptr<lang::cc::Node::SwitchCase::Case::_T> as_Case_unchecked();
+        langcc::Ptr<lang::cc::Node::SwitchCase::Default::_T> as_Default_unchecked();
         void match(std::function<void(lang::cc::Node::SwitchCase::Case_T)> f_Case, std::function<void(lang::cc::Node::SwitchCase::Default_T)> f_Default);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::SwitchCase::Case_T)> f_Case, std::function<RetT(lang::cc::Node::SwitchCase::Default_T)> f_Default);
         void hash_ser_acc_lang_cc_Node_SwitchCase(langcc::SerBuf& buf) const;
@@ -1919,7 +1988,7 @@ namespace lang::cc::Node::Expr {
         New,
         Delete,
         Ellipsis,
-        Tilde,
+        NSGlobal,
         Namespace,
         Id,
         Lit,
@@ -1956,7 +2025,7 @@ namespace lang::cc::Node::Expr {
         bool is_New();
         bool is_Delete();
         bool is_Ellipsis();
-        bool is_Tilde();
+        bool is_NSGlobal();
         bool is_Namespace();
         bool is_Id();
         bool is_Lit();
@@ -1983,18 +2052,45 @@ namespace lang::cc::Node::Expr {
         lang::cc::Node::Expr::New_T as_New();
         lang::cc::Node::Expr::Delete_T as_Delete();
         lang::cc::Node::Expr::Ellipsis_T as_Ellipsis();
-        lang::cc::Node::Expr::Tilde_T as_Tilde();
+        lang::cc::Node::Expr::NSGlobal_T as_NSGlobal();
         lang::cc::Node::Expr::Namespace_T as_Namespace();
         lang::cc::Node::Expr::Id_T as_Id();
         lang::cc::Node::Expr::Lit_T as_Lit();
-        void match(std::function<void(lang::cc::Node::Expr::Paren_T)> f_Paren, std::function<void(lang::cc::Node::Expr::Call_T)> f_Call, std::function<void(lang::cc::Node::Expr::Index_T)> f_Index, std::function<void(lang::cc::Node::Expr::IndexEmpty_T)> f_IndexEmpty, std::function<void(lang::cc::Node::Expr::Dot_T)> f_Dot, std::function<void(lang::cc::Node::Expr::Arrow_T)> f_Arrow, std::function<void(lang::cc::Node::Expr::Ref__T)> f_Ref_, std::function<void(lang::cc::Node::Expr::AddrOf_T)> f_AddrOf, std::function<void(lang::cc::Node::Expr::Deref_T)> f_Deref, std::function<void(lang::cc::Node::Expr::UnaryPre_T)> f_UnaryPre, std::function<void(lang::cc::Node::Expr::IncDecPre_T)> f_IncDecPre, std::function<void(lang::cc::Node::Expr::IncDecPost_T)> f_IncDecPost, std::function<void(lang::cc::Node::Expr::Assign_T)> f_Assign, std::function<void(lang::cc::Node::Expr::Bin1_T)> f_Bin1, std::function<void(lang::cc::Node::Expr::Bin2_T)> f_Bin2, std::function<void(lang::cc::Node::Expr::Bin3_T)> f_Bin3, std::function<void(lang::cc::Node::Expr::Bin4_T)> f_Bin4, std::function<void(lang::cc::Node::Expr::Bin5_T)> f_Bin5, std::function<void(lang::cc::Node::Expr::Bin6_T)> f_Bin6, std::function<void(lang::cc::Node::Expr::Template_T)> f_Template, std::function<void(lang::cc::Node::Expr::New_T)> f_New, std::function<void(lang::cc::Node::Expr::Delete_T)> f_Delete, std::function<void(lang::cc::Node::Expr::Ellipsis_T)> f_Ellipsis, std::function<void(lang::cc::Node::Expr::Tilde_T)> f_Tilde, std::function<void(lang::cc::Node::Expr::Namespace_T)> f_Namespace, std::function<void(lang::cc::Node::Expr::Id_T)> f_Id, std::function<void(lang::cc::Node::Expr::Lit_T)> f_Lit);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Paren_T)> f_Paren, std::function<RetT(lang::cc::Node::Expr::Call_T)> f_Call, std::function<RetT(lang::cc::Node::Expr::Index_T)> f_Index, std::function<RetT(lang::cc::Node::Expr::IndexEmpty_T)> f_IndexEmpty, std::function<RetT(lang::cc::Node::Expr::Dot_T)> f_Dot, std::function<RetT(lang::cc::Node::Expr::Arrow_T)> f_Arrow, std::function<RetT(lang::cc::Node::Expr::Ref__T)> f_Ref_, std::function<RetT(lang::cc::Node::Expr::AddrOf_T)> f_AddrOf, std::function<RetT(lang::cc::Node::Expr::Deref_T)> f_Deref, std::function<RetT(lang::cc::Node::Expr::UnaryPre_T)> f_UnaryPre, std::function<RetT(lang::cc::Node::Expr::IncDecPre_T)> f_IncDecPre, std::function<RetT(lang::cc::Node::Expr::IncDecPost_T)> f_IncDecPost, std::function<RetT(lang::cc::Node::Expr::Assign_T)> f_Assign, std::function<RetT(lang::cc::Node::Expr::Bin1_T)> f_Bin1, std::function<RetT(lang::cc::Node::Expr::Bin2_T)> f_Bin2, std::function<RetT(lang::cc::Node::Expr::Bin3_T)> f_Bin3, std::function<RetT(lang::cc::Node::Expr::Bin4_T)> f_Bin4, std::function<RetT(lang::cc::Node::Expr::Bin5_T)> f_Bin5, std::function<RetT(lang::cc::Node::Expr::Bin6_T)> f_Bin6, std::function<RetT(lang::cc::Node::Expr::Template_T)> f_Template, std::function<RetT(lang::cc::Node::Expr::New_T)> f_New, std::function<RetT(lang::cc::Node::Expr::Delete_T)> f_Delete, std::function<RetT(lang::cc::Node::Expr::Ellipsis_T)> f_Ellipsis, std::function<RetT(lang::cc::Node::Expr::Tilde_T)> f_Tilde, std::function<RetT(lang::cc::Node::Expr::Namespace_T)> f_Namespace, std::function<RetT(lang::cc::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::cc::Node::Expr::Lit_T)> f_Lit);
+        langcc::Ptr<lang::cc::Node::Expr::Paren::_T> as_Paren_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Call::_T> as_Call_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Index::_T> as_Index_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::IndexEmpty::_T> as_IndexEmpty_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Dot::_T> as_Dot_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Arrow::_T> as_Arrow_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Ref_::_T> as_Ref__unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::AddrOf::_T> as_AddrOf_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Deref::_T> as_Deref_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::UnaryPre::_T> as_UnaryPre_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPre::_T> as_IncDecPre_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPost::_T> as_IncDecPost_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Assign::_T> as_Assign_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin1::_T> as_Bin1_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin2::_T> as_Bin2_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::_T> as_Bin3_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin4::_T> as_Bin4_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin5::_T> as_Bin5_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin6::_T> as_Bin6_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Template::_T> as_Template_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::New::_T> as_New_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Delete::_T> as_Delete_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Ellipsis::_T> as_Ellipsis_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::NSGlobal::_T> as_NSGlobal_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Namespace::_T> as_Namespace_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Id::_T> as_Id_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Lit::_T> as_Lit_unchecked();
+        void match(std::function<void(lang::cc::Node::Expr::Paren_T)> f_Paren, std::function<void(lang::cc::Node::Expr::Call_T)> f_Call, std::function<void(lang::cc::Node::Expr::Index_T)> f_Index, std::function<void(lang::cc::Node::Expr::IndexEmpty_T)> f_IndexEmpty, std::function<void(lang::cc::Node::Expr::Dot_T)> f_Dot, std::function<void(lang::cc::Node::Expr::Arrow_T)> f_Arrow, std::function<void(lang::cc::Node::Expr::Ref__T)> f_Ref_, std::function<void(lang::cc::Node::Expr::AddrOf_T)> f_AddrOf, std::function<void(lang::cc::Node::Expr::Deref_T)> f_Deref, std::function<void(lang::cc::Node::Expr::UnaryPre_T)> f_UnaryPre, std::function<void(lang::cc::Node::Expr::IncDecPre_T)> f_IncDecPre, std::function<void(lang::cc::Node::Expr::IncDecPost_T)> f_IncDecPost, std::function<void(lang::cc::Node::Expr::Assign_T)> f_Assign, std::function<void(lang::cc::Node::Expr::Bin1_T)> f_Bin1, std::function<void(lang::cc::Node::Expr::Bin2_T)> f_Bin2, std::function<void(lang::cc::Node::Expr::Bin3_T)> f_Bin3, std::function<void(lang::cc::Node::Expr::Bin4_T)> f_Bin4, std::function<void(lang::cc::Node::Expr::Bin5_T)> f_Bin5, std::function<void(lang::cc::Node::Expr::Bin6_T)> f_Bin6, std::function<void(lang::cc::Node::Expr::Template_T)> f_Template, std::function<void(lang::cc::Node::Expr::New_T)> f_New, std::function<void(lang::cc::Node::Expr::Delete_T)> f_Delete, std::function<void(lang::cc::Node::Expr::Ellipsis_T)> f_Ellipsis, std::function<void(lang::cc::Node::Expr::NSGlobal_T)> f_NSGlobal, std::function<void(lang::cc::Node::Expr::Namespace_T)> f_Namespace, std::function<void(lang::cc::Node::Expr::Id_T)> f_Id, std::function<void(lang::cc::Node::Expr::Lit_T)> f_Lit);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Paren_T)> f_Paren, std::function<RetT(lang::cc::Node::Expr::Call_T)> f_Call, std::function<RetT(lang::cc::Node::Expr::Index_T)> f_Index, std::function<RetT(lang::cc::Node::Expr::IndexEmpty_T)> f_IndexEmpty, std::function<RetT(lang::cc::Node::Expr::Dot_T)> f_Dot, std::function<RetT(lang::cc::Node::Expr::Arrow_T)> f_Arrow, std::function<RetT(lang::cc::Node::Expr::Ref__T)> f_Ref_, std::function<RetT(lang::cc::Node::Expr::AddrOf_T)> f_AddrOf, std::function<RetT(lang::cc::Node::Expr::Deref_T)> f_Deref, std::function<RetT(lang::cc::Node::Expr::UnaryPre_T)> f_UnaryPre, std::function<RetT(lang::cc::Node::Expr::IncDecPre_T)> f_IncDecPre, std::function<RetT(lang::cc::Node::Expr::IncDecPost_T)> f_IncDecPost, std::function<RetT(lang::cc::Node::Expr::Assign_T)> f_Assign, std::function<RetT(lang::cc::Node::Expr::Bin1_T)> f_Bin1, std::function<RetT(lang::cc::Node::Expr::Bin2_T)> f_Bin2, std::function<RetT(lang::cc::Node::Expr::Bin3_T)> f_Bin3, std::function<RetT(lang::cc::Node::Expr::Bin4_T)> f_Bin4, std::function<RetT(lang::cc::Node::Expr::Bin5_T)> f_Bin5, std::function<RetT(lang::cc::Node::Expr::Bin6_T)> f_Bin6, std::function<RetT(lang::cc::Node::Expr::Template_T)> f_Template, std::function<RetT(lang::cc::Node::Expr::New_T)> f_New, std::function<RetT(lang::cc::Node::Expr::Delete_T)> f_Delete, std::function<RetT(lang::cc::Node::Expr::Ellipsis_T)> f_Ellipsis, std::function<RetT(lang::cc::Node::Expr::NSGlobal_T)> f_NSGlobal, std::function<RetT(lang::cc::Node::Expr::Namespace_T)> f_Namespace, std::function<RetT(lang::cc::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::cc::Node::Expr::Lit_T)> f_Lit);
         void hash_ser_acc_lang_cc_Node_Expr(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::cc::Node::Expr::_T::match_expr(std::function<RetT(lang::cc::Node::Expr::Paren_T)> f_Paren, std::function<RetT(lang::cc::Node::Expr::Call_T)> f_Call, std::function<RetT(lang::cc::Node::Expr::Index_T)> f_Index, std::function<RetT(lang::cc::Node::Expr::IndexEmpty_T)> f_IndexEmpty, std::function<RetT(lang::cc::Node::Expr::Dot_T)> f_Dot, std::function<RetT(lang::cc::Node::Expr::Arrow_T)> f_Arrow, std::function<RetT(lang::cc::Node::Expr::Ref__T)> f_Ref_, std::function<RetT(lang::cc::Node::Expr::AddrOf_T)> f_AddrOf, std::function<RetT(lang::cc::Node::Expr::Deref_T)> f_Deref, std::function<RetT(lang::cc::Node::Expr::UnaryPre_T)> f_UnaryPre, std::function<RetT(lang::cc::Node::Expr::IncDecPre_T)> f_IncDecPre, std::function<RetT(lang::cc::Node::Expr::IncDecPost_T)> f_IncDecPost, std::function<RetT(lang::cc::Node::Expr::Assign_T)> f_Assign, std::function<RetT(lang::cc::Node::Expr::Bin1_T)> f_Bin1, std::function<RetT(lang::cc::Node::Expr::Bin2_T)> f_Bin2, std::function<RetT(lang::cc::Node::Expr::Bin3_T)> f_Bin3, std::function<RetT(lang::cc::Node::Expr::Bin4_T)> f_Bin4, std::function<RetT(lang::cc::Node::Expr::Bin5_T)> f_Bin5, std::function<RetT(lang::cc::Node::Expr::Bin6_T)> f_Bin6, std::function<RetT(lang::cc::Node::Expr::Template_T)> f_Template, std::function<RetT(lang::cc::Node::Expr::New_T)> f_New, std::function<RetT(lang::cc::Node::Expr::Delete_T)> f_Delete, std::function<RetT(lang::cc::Node::Expr::Ellipsis_T)> f_Ellipsis, std::function<RetT(lang::cc::Node::Expr::Tilde_T)> f_Tilde, std::function<RetT(lang::cc::Node::Expr::Namespace_T)> f_Namespace, std::function<RetT(lang::cc::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::cc::Node::Expr::Lit_T)> f_Lit) {
+template<typename RetT> RetT lang::cc::Node::Expr::_T::match_expr(std::function<RetT(lang::cc::Node::Expr::Paren_T)> f_Paren, std::function<RetT(lang::cc::Node::Expr::Call_T)> f_Call, std::function<RetT(lang::cc::Node::Expr::Index_T)> f_Index, std::function<RetT(lang::cc::Node::Expr::IndexEmpty_T)> f_IndexEmpty, std::function<RetT(lang::cc::Node::Expr::Dot_T)> f_Dot, std::function<RetT(lang::cc::Node::Expr::Arrow_T)> f_Arrow, std::function<RetT(lang::cc::Node::Expr::Ref__T)> f_Ref_, std::function<RetT(lang::cc::Node::Expr::AddrOf_T)> f_AddrOf, std::function<RetT(lang::cc::Node::Expr::Deref_T)> f_Deref, std::function<RetT(lang::cc::Node::Expr::UnaryPre_T)> f_UnaryPre, std::function<RetT(lang::cc::Node::Expr::IncDecPre_T)> f_IncDecPre, std::function<RetT(lang::cc::Node::Expr::IncDecPost_T)> f_IncDecPost, std::function<RetT(lang::cc::Node::Expr::Assign_T)> f_Assign, std::function<RetT(lang::cc::Node::Expr::Bin1_T)> f_Bin1, std::function<RetT(lang::cc::Node::Expr::Bin2_T)> f_Bin2, std::function<RetT(lang::cc::Node::Expr::Bin3_T)> f_Bin3, std::function<RetT(lang::cc::Node::Expr::Bin4_T)> f_Bin4, std::function<RetT(lang::cc::Node::Expr::Bin5_T)> f_Bin5, std::function<RetT(lang::cc::Node::Expr::Bin6_T)> f_Bin6, std::function<RetT(lang::cc::Node::Expr::Template_T)> f_Template, std::function<RetT(lang::cc::Node::Expr::New_T)> f_New, std::function<RetT(lang::cc::Node::Expr::Delete_T)> f_Delete, std::function<RetT(lang::cc::Node::Expr::Ellipsis_T)> f_Ellipsis, std::function<RetT(lang::cc::Node::Expr::NSGlobal_T)> f_NSGlobal, std::function<RetT(lang::cc::Node::Expr::Namespace_T)> f_Namespace, std::function<RetT(lang::cc::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::cc::Node::Expr::Lit_T)> f_Lit) {
     switch (this->w_) {
         case lang::cc::Node::Expr::_W::Paren: {
             return f_Paren(this->as_Paren());
@@ -2088,8 +2184,8 @@ template<typename RetT> RetT lang::cc::Node::Expr::_T::match_expr(std::function<
             return f_Ellipsis(this->as_Ellipsis());
             break;
         }
-        case lang::cc::Node::Expr::_W::Tilde: {
-            return f_Tilde(this->as_Tilde());
+        case lang::cc::Node::Expr::_W::NSGlobal: {
+            return f_NSGlobal(this->as_NSGlobal());
             break;
         }
         case lang::cc::Node::Expr::_W::Namespace: {
@@ -3989,31 +4085,31 @@ namespace lang::cc::Node::Expr::Ellipsis {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::Tilde_T x);
+    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Expr::NSGlobal_T x);
 }
 
-namespace lang::cc::Node::Expr::Tilde {
-    lang::cc::Node::Expr::Tilde_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+namespace lang::cc::Node::Expr::NSGlobal {
+    lang::cc::Node::Expr::NSGlobal_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
-namespace lang::cc::Node::Expr::Tilde {
-    lang::cc::Node::Expr::Tilde_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x);
+namespace lang::cc::Node::Expr::NSGlobal {
+    lang::cc::Node::Expr::NSGlobal_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x);
 }
 
-namespace lang::cc::Node::Expr::Tilde {
+namespace lang::cc::Node::Expr::NSGlobal {
     struct _T: lang::cc::Node::Expr::_T {
         void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
         void write(langcc::Ref<langcc::PrBufStream_T> pb);
         lang::cc::Node::Expr_T x_;
         _T();
-        lang::cc::Node::Expr::Tilde_T with_id(langcc::Int id);
-        lang::cc::Node::Expr::Tilde_T with_bounds(langcc::TokenBounds bounds);
-        lang::cc::Node::Expr::Tilde_T with_is_top(bool is_top);
-        lang::cc::Node::Expr::Tilde_T with_sym(langcc::ParserSymId sym);
-        lang::cc::Node::Expr::Tilde_T with_attr(langcc::ParserAttrMask attr);
-        lang::cc::Node::Expr::Tilde_T with_first_k(langcc::ParserLookahead first_k);
-        lang::cc::Node::Expr::Tilde_T with_x(lang::cc::Node::Expr_T x);
-        void hash_ser_acc_lang_cc_Node_Expr_Tilde(langcc::SerBuf& buf) const;
+        lang::cc::Node::Expr::NSGlobal_T with_id(langcc::Int id);
+        lang::cc::Node::Expr::NSGlobal_T with_bounds(langcc::TokenBounds bounds);
+        lang::cc::Node::Expr::NSGlobal_T with_is_top(bool is_top);
+        lang::cc::Node::Expr::NSGlobal_T with_sym(langcc::ParserSymId sym);
+        lang::cc::Node::Expr::NSGlobal_T with_attr(langcc::ParserAttrMask attr);
+        lang::cc::Node::Expr::NSGlobal_T with_first_k(langcc::ParserLookahead first_k);
+        lang::cc::Node::Expr::NSGlobal_T with_x(lang::cc::Node::Expr_T x);
+        void hash_ser_acc_lang_cc_Node_Expr_NSGlobal(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
     };
 }
@@ -4023,11 +4119,11 @@ namespace langcc {
 }
 
 namespace lang::cc::Node::Expr::Namespace {
-    lang::cc::Node::Expr::Namespace_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x, bool tilde, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Expr::Namespace_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Expr::Namespace {
-    lang::cc::Node::Expr::Namespace_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x, bool tilde, lang::cc::Node::Expr_T name);
+    lang::cc::Node::Expr::Namespace_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T x, lang::cc::Node::Expr_T name);
 }
 
 namespace lang::cc::Node::Expr::Namespace {
@@ -4035,7 +4131,6 @@ namespace lang::cc::Node::Expr::Namespace {
         void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
         void write(langcc::Ref<langcc::PrBufStream_T> pb);
         lang::cc::Node::Expr_T x_;
-        bool tilde_;
         lang::cc::Node::Expr_T name_;
         _T();
         lang::cc::Node::Expr::Namespace_T with_id(langcc::Int id);
@@ -4045,7 +4140,6 @@ namespace lang::cc::Node::Expr::Namespace {
         lang::cc::Node::Expr::Namespace_T with_attr(langcc::ParserAttrMask attr);
         lang::cc::Node::Expr::Namespace_T with_first_k(langcc::ParserLookahead first_k);
         lang::cc::Node::Expr::Namespace_T with_x(lang::cc::Node::Expr_T x);
-        lang::cc::Node::Expr::Namespace_T with_tilde(bool tilde);
         lang::cc::Node::Expr::Namespace_T with_name(lang::cc::Node::Expr_T name);
         void hash_ser_acc_lang_cc_Node_Expr_Namespace(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
@@ -4057,17 +4151,18 @@ namespace langcc {
 }
 
 namespace lang::cc::Node::Expr::Id {
-    lang::cc::Node::Expr::Id_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name);
+    lang::cc::Node::Expr::Id_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool tilde, langcc::StrSlice name);
 }
 
 namespace lang::cc::Node::Expr::Id {
-    lang::cc::Node::Expr::Id_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name);
+    lang::cc::Node::Expr::Id_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool tilde, langcc::StrSlice name);
 }
 
 namespace lang::cc::Node::Expr::Id {
     struct _T: lang::cc::Node::Expr::_T {
         void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
         void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        bool tilde_;
         langcc::StrSlice name_;
         _T();
         lang::cc::Node::Expr::Id_T with_id(langcc::Int id);
@@ -4076,6 +4171,7 @@ namespace lang::cc::Node::Expr::Id {
         lang::cc::Node::Expr::Id_T with_sym(langcc::ParserSymId sym);
         lang::cc::Node::Expr::Id_T with_attr(langcc::ParserAttrMask attr);
         lang::cc::Node::Expr::Id_T with_first_k(langcc::ParserLookahead first_k);
+        lang::cc::Node::Expr::Id_T with_tilde(bool tilde);
         lang::cc::Node::Expr::Id_T with_name(langcc::StrSlice name);
         void hash_ser_acc_lang_cc_Node_Expr_Id(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
@@ -4107,6 +4203,9 @@ namespace lang::cc::Node::Expr::Lit {
         lang::cc::Node::Expr::Lit::Integer_T as_Integer();
         lang::cc::Node::Expr::Lit::Str__T as_Str_();
         lang::cc::Node::Expr::Lit::Array_T as_Array();
+        langcc::Ptr<lang::cc::Node::Expr::Lit::Integer::_T> as_Integer_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Lit::Str_::_T> as_Str__unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Lit::Array::_T> as_Array_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::Lit::Integer_T)> f_Integer, std::function<void(lang::cc::Node::Expr::Lit::Str__T)> f_Str_, std::function<void(lang::cc::Node::Expr::Lit::Array_T)> f_Array);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Lit::Integer_T)> f_Integer, std::function<RetT(lang::cc::Node::Expr::Lit::Str__T)> f_Str_, std::function<RetT(lang::cc::Node::Expr::Lit::Array_T)> f_Array);
         void hash_ser_acc_lang_cc_Node_Expr_Lit(langcc::SerBuf& buf) const;
@@ -4188,6 +4287,8 @@ namespace lang::cc::Node::Expr::UnaryPre::op {
         bool is_NEG();
         lang::cc::Node::Expr::UnaryPre::op::NOT_T as_NOT();
         lang::cc::Node::Expr::UnaryPre::op::NEG_T as_NEG();
+        langcc::Ptr<lang::cc::Node::Expr::UnaryPre::op::NOT::_T> as_NOT_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::UnaryPre::op::NEG::_T> as_NEG_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::UnaryPre::op::NOT_T)> f_NOT, std::function<void(lang::cc::Node::Expr::UnaryPre::op::NEG_T)> f_NEG);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::UnaryPre::op::NOT_T)> f_NOT, std::function<RetT(lang::cc::Node::Expr::UnaryPre::op::NEG_T)> f_NEG);
         void hash_ser_acc_lang_cc_Node_Expr_UnaryPre_op(langcc::SerBuf& buf) const;
@@ -4233,6 +4334,8 @@ namespace lang::cc::Node::Expr::IncDecPre::op {
         bool is_DEC();
         lang::cc::Node::Expr::IncDecPre::op::INC_T as_INC();
         lang::cc::Node::Expr::IncDecPre::op::DEC_T as_DEC();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPre::op::INC::_T> as_INC_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPre::op::DEC::_T> as_DEC_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::IncDecPre::op::INC_T)> f_INC, std::function<void(lang::cc::Node::Expr::IncDecPre::op::DEC_T)> f_DEC);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::IncDecPre::op::INC_T)> f_INC, std::function<RetT(lang::cc::Node::Expr::IncDecPre::op::DEC_T)> f_DEC);
         void hash_ser_acc_lang_cc_Node_Expr_IncDecPre_op(langcc::SerBuf& buf) const;
@@ -4278,6 +4381,8 @@ namespace lang::cc::Node::Expr::IncDecPost::op {
         bool is_DEC();
         lang::cc::Node::Expr::IncDecPost::op::INC_T as_INC();
         lang::cc::Node::Expr::IncDecPost::op::DEC_T as_DEC();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPost::op::INC::_T> as_INC_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::IncDecPost::op::DEC::_T> as_DEC_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::IncDecPost::op::INC_T)> f_INC, std::function<void(lang::cc::Node::Expr::IncDecPost::op::DEC_T)> f_DEC);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::IncDecPost::op::INC_T)> f_INC, std::function<RetT(lang::cc::Node::Expr::IncDecPost::op::DEC_T)> f_DEC);
         void hash_ser_acc_lang_cc_Node_Expr_IncDecPost_op(langcc::SerBuf& buf) const;
@@ -4320,6 +4425,7 @@ namespace lang::cc::Node::Expr::Bin1::op {
         _T(lang::cc::Node::Expr::Bin1::op::_W w);
         bool is_LOR();
         lang::cc::Node::Expr::Bin1::op::LOR_T as_LOR();
+        langcc::Ptr<lang::cc::Node::Expr::Bin1::op::LOR::_T> as_LOR_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::Bin1::op::LOR_T)> f_LOR);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Bin1::op::LOR_T)> f_LOR);
         void hash_ser_acc_lang_cc_Node_Expr_Bin1_op(langcc::SerBuf& buf) const;
@@ -4358,6 +4464,7 @@ namespace lang::cc::Node::Expr::Bin2::op {
         _T(lang::cc::Node::Expr::Bin2::op::_W w);
         bool is_LAND();
         lang::cc::Node::Expr::Bin2::op::LAND_T as_LAND();
+        langcc::Ptr<lang::cc::Node::Expr::Bin2::op::LAND::_T> as_LAND_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::Bin2::op::LAND_T)> f_LAND);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Bin2::op::LAND_T)> f_LAND);
         void hash_ser_acc_lang_cc_Node_Expr_Bin2_op(langcc::SerBuf& buf) const;
@@ -4411,6 +4518,12 @@ namespace lang::cc::Node::Expr::Bin3::op {
         lang::cc::Node::Expr::Bin3::op::GE_T as_GE();
         lang::cc::Node::Expr::Bin3::op::LT_T as_LT();
         lang::cc::Node::Expr::Bin3::op::GT_T as_GT();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::op::EQ::_T> as_EQ_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::op::NE::_T> as_NE_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::op::LE::_T> as_LE_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::op::GE::_T> as_GE_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::op::LT::_T> as_LT_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin3::op::GT::_T> as_GT_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::Bin3::op::EQ_T)> f_EQ, std::function<void(lang::cc::Node::Expr::Bin3::op::NE_T)> f_NE, std::function<void(lang::cc::Node::Expr::Bin3::op::LE_T)> f_LE, std::function<void(lang::cc::Node::Expr::Bin3::op::GE_T)> f_GE, std::function<void(lang::cc::Node::Expr::Bin3::op::LT_T)> f_LT, std::function<void(lang::cc::Node::Expr::Bin3::op::GT_T)> f_GT);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Bin3::op::EQ_T)> f_EQ, std::function<RetT(lang::cc::Node::Expr::Bin3::op::NE_T)> f_NE, std::function<RetT(lang::cc::Node::Expr::Bin3::op::LE_T)> f_LE, std::function<RetT(lang::cc::Node::Expr::Bin3::op::GE_T)> f_GE, std::function<RetT(lang::cc::Node::Expr::Bin3::op::LT_T)> f_LT, std::function<RetT(lang::cc::Node::Expr::Bin3::op::GT_T)> f_GT);
         void hash_ser_acc_lang_cc_Node_Expr_Bin3_op(langcc::SerBuf& buf) const;
@@ -4469,6 +4582,7 @@ namespace lang::cc::Node::Expr::Bin4::op {
         _T(lang::cc::Node::Expr::Bin4::op::_W w);
         bool is_SHL();
         lang::cc::Node::Expr::Bin4::op::SHL_T as_SHL();
+        langcc::Ptr<lang::cc::Node::Expr::Bin4::op::SHL::_T> as_SHL_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::Bin4::op::SHL_T)> f_SHL);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Bin4::op::SHL_T)> f_SHL);
         void hash_ser_acc_lang_cc_Node_Expr_Bin4_op(langcc::SerBuf& buf) const;
@@ -4510,6 +4624,8 @@ namespace lang::cc::Node::Expr::Bin5::op {
         bool is_MINUS();
         lang::cc::Node::Expr::Bin5::op::PLUS_T as_PLUS();
         lang::cc::Node::Expr::Bin5::op::MINUS_T as_MINUS();
+        langcc::Ptr<lang::cc::Node::Expr::Bin5::op::PLUS::_T> as_PLUS_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin5::op::MINUS::_T> as_MINUS_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::Bin5::op::PLUS_T)> f_PLUS, std::function<void(lang::cc::Node::Expr::Bin5::op::MINUS_T)> f_MINUS);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Bin5::op::PLUS_T)> f_PLUS, std::function<RetT(lang::cc::Node::Expr::Bin5::op::MINUS_T)> f_MINUS);
         void hash_ser_acc_lang_cc_Node_Expr_Bin5_op(langcc::SerBuf& buf) const;
@@ -4558,6 +4674,9 @@ namespace lang::cc::Node::Expr::Bin6::op {
         lang::cc::Node::Expr::Bin6::op::TIMES_T as_TIMES();
         lang::cc::Node::Expr::Bin6::op::DIVIDE_T as_DIVIDE();
         lang::cc::Node::Expr::Bin6::op::MODULO_T as_MODULO();
+        langcc::Ptr<lang::cc::Node::Expr::Bin6::op::TIMES::_T> as_TIMES_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin6::op::DIVIDE::_T> as_DIVIDE_unchecked();
+        langcc::Ptr<lang::cc::Node::Expr::Bin6::op::MODULO::_T> as_MODULO_unchecked();
         void match(std::function<void(lang::cc::Node::Expr::Bin6::op::TIMES_T)> f_TIMES, std::function<void(lang::cc::Node::Expr::Bin6::op::DIVIDE_T)> f_DIVIDE, std::function<void(lang::cc::Node::Expr::Bin6::op::MODULO_T)> f_MODULO);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Expr::Bin6::op::TIMES_T)> f_TIMES, std::function<RetT(lang::cc::Node::Expr::Bin6::op::DIVIDE_T)> f_DIVIDE, std::function<RetT(lang::cc::Node::Expr::Bin6::op::MODULO_T)> f_MODULO);
         void hash_ser_acc_lang_cc_Node_Expr_Bin6_op(langcc::SerBuf& buf) const;
@@ -5617,7 +5736,7 @@ void visit_lang_cc_Node(lang::cc::Node::Expr::Delete_T x, std::function<void(lan
 
 void visit_lang_cc_Node(lang::cc::Node::Expr::Ellipsis_T x, std::function<void(lang::cc::Node_T)> f);
 
-void visit_lang_cc_Node(lang::cc::Node::Expr::Tilde_T x, std::function<void(lang::cc::Node_T)> f);
+void visit_lang_cc_Node(lang::cc::Node::Expr::NSGlobal_T x, std::function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::Expr::Namespace_T x, std::function<void(lang::cc::Node_T)> f);
 
@@ -5857,7 +5976,7 @@ lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Delete_T x, std::func
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Ellipsis_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Tilde_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::NSGlobal_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Expr::Namespace_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
@@ -6111,7 +6230,7 @@ lang::cc::Node::Expr::Delete_T xform_lang_cc_Node(lang::cc::Node::Expr::Delete_T
 
 lang::cc::Node::Expr::Ellipsis_T xform_lang_cc_Node(lang::cc::Node::Expr::Ellipsis_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
-lang::cc::Node::Expr::Tilde_T xform_lang_cc_Node(lang::cc::Node::Expr::Tilde_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
+lang::cc::Node::Expr::NSGlobal_T xform_lang_cc_Node(lang::cc::Node::Expr::NSGlobal_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Expr::Namespace_T xform_lang_cc_Node(lang::cc::Node::Expr::Namespace_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 

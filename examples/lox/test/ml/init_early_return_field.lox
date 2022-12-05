@@ -1,0 +1,12 @@
+class A {
+    init(x, y, z) {
+        this.x = x;
+        this.y = y;
+        return;
+        this.z = z;
+    }
+}
+
+var a = A(1, 2, 3);
+print a.x;  // expect: 1
+print a.y;  // expect: 2

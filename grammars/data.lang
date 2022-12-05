@@ -1,13 +1,14 @@
 
 tokens {
     kw <= `def` | `enum` | `namespace` | `Type`
-        | `mut` | `xform` | `visit` | `#include` | `no_hash`
+        | `mut` | `xform` | `visit` | `#include` | `no_hash` | `no_xform`
         | `method` | `virtual` | `interface`;
     idBase <- ((`a`..`z` | `A`..`Z` | `_`) (`a`..`z` | `A`..`Z` | `0`..`9` | `_`)*) - kw;
     op <= `.` | `:` | `;` | `::` | `{` | `}` | `(` | `)` | `,` | `^` | `<:`;
     str_lit <- `"` (unicode_any - `"`)* `"`;
+    int_lit <- `0` | `1`..`9` `0`..`9`*;
     ws <= ` ` | `\n`;
-    top <= idBase | op | kw | str_lit;
+    top <= idBase | op | kw | str_lit | int_lit;
 }
 
 lexer {
@@ -49,7 +50,7 @@ parser {
 
     Param <- name:idBase `:` _ type_:Expr;
 
-    Entry.Field <- name:idBase no_hash_:(_ `no_hash`)? `:` _ type_:Expr `;`;
+    Entry.Field <- name:idBase no_hash_:(_ `no_hash`)? no_xform_:(_ `no_xform`)? `:` _ type_:Expr `;`;
     Entry.Method <-
         `method` virtual_:(_ `virtual`)? interface_:(_ `interface`)? _
         name:idBase `(` params:#L[Param::`,`_] `)` `:` _ ret_type:Expr `;`;
@@ -57,10 +58,11 @@ parser {
     Expr.Id <- ext:`^`? x:Id;
     Expr.App <- f:Expr `(` args:#L[Expr::`,`_] `)`;
     Expr.Type_ <- `Type`;
+    Expr.Int_ <- int_lit;
 
     SumId <- items:#L[idBase::+`.`];
 
-    Id <- items:#L[idBase::+`::`];
+    Id <- leading:(`::` _)? items:#L[idBase::+`::`];
 }
 
 test {

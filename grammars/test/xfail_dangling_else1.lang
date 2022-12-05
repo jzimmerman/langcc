@@ -1,0 +1,51 @@
+tokens {
+    ws_inline <= `\r` | `\t` | ` `;
+
+    kw <= `if` | `else`;
+
+    op <= `(` | `)` | `;`;
+
+    id <- `x`;
+    top <= kw | op | id;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        ws_inline => { pass; }
+        `\n` => { pass; }
+        `//` => { push comment_single; }
+        eof => { pop; }
+    }
+
+    mode comment_single {
+        `\n` => { pop_extract; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { Stmt, Expr }
+
+    attr {
+        match {
+            Stmt.If => {},
+            _ => lhs[aIf],
+        };
+    }
+
+    prop { name_strict; }
+
+    prop { Err; }
+
+    Stmt.Expr <- x:Expr `;`;
+    Stmt.If <- `if` _ `(` cond:Expr `)` _ xt:Stmt;
+    Stmt.IfElse <- `if` _ `(` cond:Expr `)` _ xt:Stmt[aIf] _ `else` _ xf:Stmt;
+
+    Expr.Id <- name:id;
+}
+
+test {
+}

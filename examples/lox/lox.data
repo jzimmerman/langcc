@@ -1,0 +1,41 @@
+namespace lox {
+    def Env(K: Type, V: Type) {
+        env no_hash: ^std::unordered_map(K, V);
+        at_this no_hash: V;
+        at_super no_hash: V;
+        parent no_hash: ^langcc::Ptr(^lox::Env::_T(K, V));
+        origin: EnvOrigin;
+        fwd_loc: Int;
+        mark no_hash: ^lox::GCMark;
+
+        method lookup(name: K, depth: Int): V;
+        method lookup_depth(name: K): Option(^std::pair(V, Int));
+        method assign(name: K, val: V, depth: Int): void;
+        method is_global(): bool;
+        method global_env_depth(): Int;
+        method new_scope(origin: EnvOrigin): Env(K, V);
+        method is_inside_function(): bool;
+    }
+
+    enum SymStatus {
+        Unbound;
+        Binding;
+        Bound;
+    }
+
+    enum EnvOrigin {
+        Global;
+        Block;
+        Function;
+        For;
+        Class;
+    }
+
+    enum BuiltinId {
+        Uninitialized;
+        Init;
+        This;
+        Super;
+        Clock;
+    }
+}

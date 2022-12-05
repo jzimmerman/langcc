@@ -1,0 +1,150 @@
+#include `lox_val_fwd.hpp`
+#include_post `lox_val.hpp`
+
+tokens {
+    letter_gen <= `a`..`z` | `A`..`Z` |`_`;
+    digit <= `0`..`9`;
+    ws_inline <= `\r` | `\t` | ` `;
+
+    kw <= `and` | `else` | `false` | `for` | `fun` | `if` | `nil` | `or` 
+        | `print` | `return` | `true` | `var` | `while` | `class`
+        | `this` | `super`;
+
+    op <= `==` | `=` | `!=` | `!` | `<` | `<=` | `>` | `>=` | `+` | `-`
+        | `*` | `/` | `(` | `)` | `{` | `}` | `,` | `.` | `;`;
+
+    str_lit <- `"` str_lit_body* `"`;
+    str_lit_body <= ((unicode_any - (`\\` | `"`))
+            | `\\n` | `\\r` | `\\t` | `\\"` | `\\'` | `\\\\`);
+
+    dir <- `#` (unicode_any - `\n`)* `\n`;
+
+    number <- (`0` | (`1`..`9`) digit*) (`.` digit+)?;
+
+    id <- letter_gen (letter_gen | digit)* - kw;
+
+    top <= kw | op | str_lit | number | id;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        dir => { pass; }
+        ws_inline => { pass; }
+        `\n` => { pass; }
+        `//` => { push comment_single; }
+        eof => { pop; }
+    }
+
+    mode comment_single {
+        `\n` => { pop_extract; }
+        eof => { pop_extract; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { Prog, Stmt, Expr }
+
+    prec {
+        Expr.Assign assoc_right;
+        Expr.LogOp.Or assoc_left;
+        Expr.LogOp.And assoc_left;
+        Expr.BinOp.Eq assoc_left;
+        Expr.BinOp.Cmp assoc_left;
+        Expr.BinOp.AddSub assoc_left;
+        Expr.BinOp.MulDiv assoc_left;
+        Expr.UnaryPre prefix;
+        Expr.Call postfix;
+        Expr.Get postfix;
+        Expr.SuperField assoc_left;
+        Expr.This Expr.Id Expr.Lit.Number Expr.Lit.String
+            Expr.Lit.Bool.True Expr.Lit.Bool.False Expr.Lit.Nil Expr.Paren;
+    }
+
+    attr {
+        match {
+            Stmt.If => {},
+            _ => { lhs[aNoDangle] -> rhs_end[aNoDangle]; },
+        };
+
+        match {
+            Stmt.Class | Stmt.Fun | Stmt.Var => {},
+            _ => { lhs[P]; },
+        };
+
+        match {
+            Expr.Id | Expr.Lit | Expr.This | Expr.SuperField => lhs[L],
+            Expr.Get => lhs[L] -> rhs_begin[L],
+        };
+    }
+
+    prop { name_strict; }
+    prop { ast_extra_data(`::lox::AstData`); }
+
+    Prog <- decls:#T[Stmt::eps];
+
+    Stmt.Var[V] <- `var` _ name:Expr[I] val:(_ `=` _ Expr)? `;`;
+    Stmt.Class <- `class` _ name:Expr[I] base:(_ `<` _ Expr[I])? _ `{` funs:#B2[FunBody::eps] `}`;
+    Stmt.Fun <- `fun` _ FunBody;
+
+        FunBody <- name:Expr[I] `(` params:#L[Expr[I]::`,`_] `)` _ body:Block;
+
+    Stmt.Expr <- x:Expr `;`;
+    Stmt.Print <- `print` _ x:Expr `;`;
+    Stmt.Block <- b:Block;
+    Stmt.If <- `if` _ `(` cond:Expr `)` _ xt:Stmt[P];
+    Stmt.IfElse <- `if` _ `(` cond:Expr `)` _ xt:Stmt[P, aNoDangle] _ `else` _ xf:Stmt[P];
+    Stmt.While <- `while` _ `(` cond:Expr `)` _ body:Stmt[P];
+    Stmt.For <- `for` _ `(` init:(Var:Stmt[V] | Expr:(Expr `;`) | Empty:`;`) _ cond:Expr?
+        `;` _ incr:Expr? `)` body:Stmt[P];
+    Stmt.Return <- `return` v:(_ Expr)? `;`;
+
+        Block <- `{` decls:#B[Stmt::eps] `}`;
+
+    Expr.Assign <- x:Expr[L] _ `=` _ val:Expr;
+    Expr.LogOp.Or <- x:Expr _ `or` _ y:Expr;
+    Expr.LogOp.And <- x:Expr _ `and` _ y:Expr;
+    Expr.BinOp.Eq <- x:Expr _ op:(Eq:`==` | Neq: `!=`) _ y:Expr;
+    Expr.BinOp.Cmp <- x:Expr _ op:(Gt:`>` | Gte:`>=` | Lt:`<` | Lte:`<=`) _ y:Expr;
+    Expr.BinOp.AddSub <- x:Expr _ op:(Add:`+` | Sub:`-`) _ y:Expr;
+    Expr.BinOp.MulDiv <- x:Expr _ op:(Mul:`*` | Div:`/`) _ y:Expr;
+    Expr.UnaryPre <- op:(Neg:`-` | Not:`!`) x:Expr;
+    Expr.Call <- f:Expr `(` args:#L[Expr[pr=*]::`,` _] `)`;
+    Expr.Get <- x:Expr `.` name:Expr[I];
+
+    Expr.Id[I] <- name:id;
+    Expr.This <- `this`;
+    Expr.SuperField <- `super` `.` name:Expr[I];
+    Expr.Lit.Number <- number;
+    Expr.Lit.String <- str_lit;
+    Expr.Lit.Bool.True <- `true`;
+    Expr.Lit.Bool.False <- `false`;
+    Expr.Lit.Nil <- `nil`;
+
+    Expr.Paren <- `(` x:Expr[pr=*] `)`;
+}
+
+test {
+    `var x;`;
+    `abc123 + XYZ456;`;
+    `(x + y);`;
+    `var x = 7;`;
+    `x + y ##= z + w;`;
+    `var x = 7.7;`;
+    `x == 3;`;
+    `x = 4;`;
+    `n - 2` <- Expr;
+    `fib(n + 2)` <- Expr;
+    `return fib(n - 2) + fib(n - 1);`;
+    `0` <- Expr;
+    `0.##` <- Expr;
+    `123456789.0987654321` <- Expr;
+    `0.123` <- Expr;
+    `##.0` <- Expr;
+    `0##0` <- Expr;
+    `super.init(0)` <- Expr;
+    `true.foo = "value";` <- Stmt;
+}

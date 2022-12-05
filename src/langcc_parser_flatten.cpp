@@ -322,7 +322,7 @@ inline Vec_T<ParseExpr_T> parse_expr_squash_concat_rec(
     return ret;
 }
 
-inline pair<bool, bool> parser_flatten_expr_concat_acc_extract_spec(
+inline tuple<bool, bool, bool> parser_flatten_expr_concat_acc_extract_spec(
     Vec_T<ParseExpr_T> ys, bool allow_passthrough, LangCompileContext& ctx);
 
 // Conservative approximation
@@ -337,7 +337,7 @@ inline bool parser_flatten_predict_is_dt_conservative(
         auto ys = x->as_Concat()->xs_;
         ys = parse_expr_squash_concat_rec(ys, ctx);
             // Spurious nested concats may arise from alias expansion.
-        auto [is_empty, is_singleton] =
+        auto [is_empty, is_singleton, _] =
             parser_flatten_expr_concat_acc_extract_spec(ys, true, ctx);
         return !is_empty && !is_singleton;
     } else {
@@ -346,7 +346,7 @@ inline bool parser_flatten_predict_is_dt_conservative(
 }
 
 
-inline pair<bool, bool> parser_flatten_expr_concat_acc_extract_spec(
+inline tuple<bool, bool, bool> parser_flatten_expr_concat_acc_extract_spec(
     Vec_T<ParseExpr_T> ys, bool allow_passthrough, LangCompileContext& ctx) {
 
     bool is_empty = false;
@@ -358,6 +358,8 @@ inline pair<bool, bool> parser_flatten_expr_concat_acc_extract_spec(
             nontrivial_inds->push_back(i);
         }
     }
+
+    bool is_nontrivial_multi = nontrivial_inds->length() > 1;
 
     if (nontrivial_inds->length() == 1) {
         auto i_nt = nontrivial_inds->operator[](0);
@@ -377,12 +379,14 @@ inline pair<bool, bool> parser_flatten_expr_concat_acc_extract_spec(
         is_empty = false;
     }
 
-    return make_pair(is_empty, is_singleton);
+    return make_tuple(is_empty, is_singleton, is_nontrivial_multi);
 }
 
 
 inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_concat_acc_new(
-    Vec_T<ParseExpr_T> xs,
+    Vec_T<ParseExpr_T> ys,
+    bool name_override_item,
+    bool name_default_item,
     Sym_T dst,
     Option_T<AttrLeaf_T> lhs_leaf,
     NameMaybe_T id,
@@ -427,7 +431,7 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_alt_acc
             auto yi_vec = make_rc<Vec<ParseExpr_T>>();
             yi_vec->push_back(yi);
             auto [yi_wr_inner, yi_ty_inner, yi_is_dt_inner] = parser_flatten_expr_concat_acc_new(
-                yi_vec, ri_sym, None<AttrLeaf_T>(), id_sub_yi, true, rule_ctx, false, ctx);
+                yi_vec, true, false, ri_sym, None<AttrLeaf_T>(), id_sub_yi, true, rule_ctx, false, ctx);
             yi_wr = yi_wr_inner; yi_ty = yi_ty_inner; yi_is_dt = yi_is_dt_inner;
         } else {
             auto [yi_wr_inner, yi_ty_inner, yi_is_dt_inner] = parser_flatten_expr_acc_new(
@@ -541,6 +545,8 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_optiona
 
 inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_concat_acc_new(
     Vec_T<ParseExpr_T> ys,
+    bool name_override_item,
+    bool name_default_item,
     Sym_T dst,
     Option_T<AttrLeaf_T> lhs_leaf,
     NameMaybe_T id,
@@ -557,8 +563,8 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_concat_
     auto ret_dt_items = make_rc<Map<IdentBase_T, GenType_T>>();
     auto ret_args_ind_map = make_rc<Map<IdentBase_T, Int>>();
 
-    auto [is_empty, is_singleton] = parser_flatten_expr_concat_acc_extract_spec(
-        ys, allow_passthrough, ctx);
+    auto [is_empty, is_singleton, is_nontrivial_multi] =
+        parser_flatten_expr_concat_acc_extract_spec(ys, allow_passthrough, ctx);
 
     Int i_nonempty = 0;
     Int i_name_gen = 0;
@@ -587,11 +593,18 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_concat_
             ++i_name_gen;
         }
 
+        if (name_default_item && !is_nontrivial_multi) {
+            yi_nm_default = Some<IdentBase_T>(IdentBase::ItemInner::make());
+        }
+
         auto id_sub_yi = id;
         bool owns_id_sub = owns_id;
         if (!is_singleton) {
-            id_sub_yi = NameMaybe::with_sub(
-                id, parser_flatten_lookup_name(yi, ctx), yi_nm_default, ctx);
+            auto yi_lookup = parser_flatten_lookup_name(yi, ctx);
+            if (name_override_item) {
+                yi_lookup = NameMaybeBase::Name::make(IdentBase::ItemInner::make());
+            }
+            id_sub_yi = NameMaybe::with_sub(id, yi_lookup, yi_nm_default, ctx);
         } else {
             owns_id_sub = false;
         }
@@ -968,7 +981,7 @@ inline tuple<WriteInstr_T, GenType_T, IsOwnDatatype> parser_flatten_expr_acc_new
 
     } else if (x->is_Concat()) {
         auto ret = parser_flatten_expr_concat_acc_new(
-            x->as_Concat()->xs_, dst, lhs_leaf, id, owns_id, rule_ctx, true, ctx);
+            x->as_Concat()->xs_, false, false, dst, lhs_leaf, id, owns_id, rule_ctx, true, ctx);
         return ret;
 
     } else if (x->is_List() || x->is_Rep() || x->is_RepNonzero()) {
@@ -1021,7 +1034,7 @@ inline void parser_flatten_grammar_rule_acc(
         auto y_vec = make_rc<Vec<ParseExpr_T>>();
         y_vec->push_back(y);
         parser_flatten_expr_concat_acc_new(
-            y_vec, dst_sym, Some<AttrLeaf_T>(AttrLeaf::Lhs::make()),
+            y_vec, false, true, dst_sym, Some<AttrLeaf_T>(AttrLeaf::Lhs::make()),
             NameMaybe::from_ident(rule_id), true, rule, false, ctx);
     } else {
         parser_flatten_expr_acc_new(
@@ -1168,6 +1181,20 @@ void parser_flatten_grammar_rules(LangCompileContext& ctx) {
             ctx.parser_attr_domains_->insert(sym, make_rc<Map<AttrKey_T, AttrType_T>>());
         }
     }
+
+    // Reorder for canonical ordering (e.g., in generated match/match_expr).
+    auto gen_dt_map_new = make_rc<Map<Ident_T, GenType_T>>();
+    gen_dt_map_new->insert(id_top, ctx.gen_dt_map_->operator[](id_top));
+    for (auto [id, dt] : *ctx.gen_dt_map_) {
+        auto curr = id_top;
+        for (auto name : *id->xs_) {
+            curr = Ident::with_sub(curr, name);
+            if (!gen_dt_map_new->contains_key(curr) && ctx.gen_dt_map_->contains_key(curr)) {
+                gen_dt_map_new->insert(curr, ctx.gen_dt_map_->operator[](curr));
+            }
+        }
+    }
+    ctx.gen_dt_map_ = gen_dt_map_new;
 }
 
 }

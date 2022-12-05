@@ -7,7 +7,7 @@ namespace langcc {
 
 LangCompileResult_T compile_lang_inner(
     lang::meta::Node_T src, Int k, Gensym_T gen_meta, LexOutput_T lex_res,
-    string src_base_name, string dst_path, HeaderMode header_mode) {
+    string src_base_name, string dst_path, HeaderMode hm) {
 
     AR_ge(k, 0);
 
@@ -17,6 +17,11 @@ LangCompileResult_T compile_lang_inner(
     LOG(1, "Performing initial validation and tabulation");
 
     lang_init_validate(ctx);
+
+    for (auto path : *ctx.includes_) {
+        ctx.cc_.dst_decls_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
+            fmt_str("#include \"{}\"", path))->as_Decl());
+    }
 
     lang_emit_preambles(ctx);
 
@@ -31,7 +36,7 @@ LangCompileResult_T compile_lang_inner(
 
     auto lexer_mode_dfas = lexer_compile_dfas(ctx);
 
-    lexer_gen_cpp_defs(ctx, ctx.cc_, src_base_name, lexer_mode_dfas);
+    lexer_gen_cpp_defs(ctx, ctx.cc_, src_base_name, lexer_mode_dfas, hm);
 
     LOG(1, "Compiling parser: tabulating symbols");
 
@@ -68,23 +73,28 @@ LangCompileResult_T compile_lang_inner(
 
     LOG(1, "Generating AST datatype definitions");
 
-    lang_emit_datatype_defs(ctx, header_mode);
+    lang_emit_datatype_defs(ctx, hm);
 
     LOG(1, "Generating AST writer definitions");
 
-    lang_emit_writer_defs(ctx);
+    lang_emit_writer_defs(ctx, hm);
 
     LOG(1, "Generating AST parser definitions");
 
-    lang_emit_parser_defs(ctx);
+    lang_emit_parser_defs(ctx, hm);
+
+    for (auto path : *ctx.includes_post_) {
+        ctx.cc_.dst_decls_->push_back(ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
+            fmt_str("#include \"{}\"", path))->as_Decl());
+    }
 
     LOG(1, "Generating global definitions");
 
-    lang_emit_global_defs(ctx);
+    lang_emit_global_defs(ctx, hm);
     lang_emit_test_defs(ctx);
     lang_emit_debug_defs(ctx);
 
-    lang_emit_extract_final(ctx, header_mode);
+    lang_emit_extract_final(ctx, hm);
 
     return LangCompileResult::Ok::make(
         ctx.hpp_path_, ctx.cpp_path_, ctx.cpp_test_path_, ctx.cpp_debug_path_);
@@ -93,10 +103,10 @@ LangCompileResult_T compile_lang_inner(
 
 LangCompileResult_T compile_lang(
     lang::meta::Node_T src, Int k, Gensym_T gen_meta, LexOutput_T lex_res,
-    string src_base_name, string dst_path, HeaderMode header_mode) {
+    string src_base_name, string dst_path, HeaderMode hm) {
 
     try {
-        return compile_lang_inner(src, k, gen_meta, lex_res, src_base_name, dst_path, header_mode);
+        return compile_lang_inner(src, k, gen_meta, lex_res, src_base_name, dst_path, hm);
     } catch (const LangCompileResult::Error_T& res) {
         return res;
     }
@@ -133,7 +143,7 @@ string lang_get_src_base_name(string src_path) {
 
 
 LangCompileResult_T compile_lang_path(
-    string src_path, string dst_path, Option_T<Int> k, HeaderMode header_mode) {
+    string src_path, string dst_path, Option_T<Int> k, HeaderMode hm) {
 
     auto src_base_name = lang_get_src_base_name(src_path);
     auto [src, gen_meta, lex_res] = load_lang_path(src_path);
@@ -143,12 +153,12 @@ LangCompileResult_T compile_lang_path(
         kr = k.as_some();
     }
 
-    return compile_lang(src, kr, gen_meta, lex_res, src_base_name, dst_path, header_mode);
+    return compile_lang(src, kr, gen_meta, lex_res, src_base_name, dst_path, hm);
 }
 
 
 LangCompileResult_T compile_lang_full(
-    string src_path, string dst_path, RunTests run_tests, HeaderMode header_mode) {
+    string src_path, string dst_path, RunTests run_tests, HeaderMode hm) {
 
     makedirs(dst_path);
 
@@ -157,7 +167,7 @@ LangCompileResult_T compile_lang_full(
     if (compile_tests.is_some()) {
         for (auto test : *compile_tests.as_some()->items_) {
             auto test_k = string_to_int(test->k_.to_std_string()).as_some();
-            auto test_res = compile_lang_path(src_path, dst_path, Some<Int>(test_k), header_mode);
+            auto test_res = compile_lang_path(src_path, dst_path, Some<Int>(test_k), hm);
             if (test_res->is_Ok()) {
                 if (test->neg_) {
                     LG_ERR("Unexpected compilation success: k={}", test_k);
@@ -174,7 +184,7 @@ LangCompileResult_T compile_lang_full(
         }
     }
 
-    auto res = compile_lang_path(src_path, dst_path, None<Int>(), header_mode);
+    auto res = compile_lang_path(src_path, dst_path, None<Int>(), hm);
     if (res->is_Error()) {
         return res;
     }
@@ -217,8 +227,10 @@ LangCompileResult_T compile_lang_full(
         cmds.push("-I");
         cmds.push(fmt_str("./{}", dst_path));
         cmds.push("-I");
+        cmds.push(".");
+        cmds.push("-I");
         cmds.push("./src");
-        if (header_mode == HeaderMode::N) {
+        if (hm == HeaderMode::N) {
             cmds.push(res->as_Ok()->cpp_path_);
         }
         cmds.push(res->as_Ok()->cpp_test_path_);

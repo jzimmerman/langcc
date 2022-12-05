@@ -1,0 +1,17 @@
+class A {
+  f(y) {
+    print y + 1;
+  }
+
+  init(x) {
+    super.f(x);  // Error: cannot use super without base class
+  }
+}
+
+class B < A {
+  f(y) {
+    print y + 2;
+  }
+}
+
+var b = B(10);

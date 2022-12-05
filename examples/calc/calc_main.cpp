@@ -21,6 +21,10 @@ Int expr_eval(Expr_T e, const unordered_map<string, Int>& env) {
             }
             return env.at(name);
         },
+        [&](Expr::Lit_T cc) {
+            auto val_str = cc->as_Int_()->val_.to_std_string();
+            return string_to_int(val_str).as_some();
+        },
         [&](Expr::UnaryPre_T cc) {
             auto xr = expr_eval(cc->x_, env);
             if (cc->op_->is_Neg()) {
@@ -65,10 +69,6 @@ Int expr_eval(Expr_T e, const unordered_map<string, Int>& env) {
         },
         [&](Expr::Paren_T cc) {
             return expr_eval(cc->x_, env);
-        },
-        [&](Expr::Lit_T cc) {
-            auto val_str = cc->as_Int_()->val_.to_std_string();
-            return string_to_int(val_str).as_some();
         });
 }
 

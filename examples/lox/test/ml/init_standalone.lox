@@ -1,0 +1,17 @@
+fun init() {
+}
+
+var q = init();
+print q;
+
+class A {
+    init() {
+    }
+}
+
+var r = A();
+print r.init();
+
+#expect(success_output);
+#output(`nil`);
+#output(`A instance`);

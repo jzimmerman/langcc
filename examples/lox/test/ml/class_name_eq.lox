@@ -1,0 +1,11 @@
+fun f() {
+  class A {}
+  return A;
+}
+
+fun g() {
+  class A {}
+  return A;
+}
+
+print f() == g();  // expect: false

@@ -32,12 +32,52 @@ namespace lang::meta::lexer::comment_single {
 
 #include <langcc_util.hpp>
 
+namespace lang::meta::Node {
+    struct _T;
+}
+
+namespace lang::meta {
+    using Node_T = langcc::rc_ptr<lang::meta::Node::_T>;
+}
+
 namespace lang::meta::Node::Lang {
     struct _T;
 }
 
 namespace lang::meta::Node {
     using Lang_T = langcc::rc_ptr<lang::meta::Node::Lang::_T>;
+}
+
+namespace lang::meta::Node::Decl {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using Decl_T = langcc::rc_ptr<lang::meta::Node::Decl::_T>;
+}
+
+namespace lang::meta::Node::Decl::Include {
+    struct _T;
+}
+
+namespace lang::meta::Node::Decl {
+    using Include_T = langcc::rc_ptr<lang::meta::Node::Decl::Include::_T>;
+}
+
+namespace lang::meta::Node::Decl::IncludePost {
+    struct _T;
+}
+
+namespace lang::meta::Node::Decl {
+    using IncludePost_T = langcc::rc_ptr<lang::meta::Node::Decl::IncludePost::_T>;
+}
+
+namespace lang::meta::Node::Stanza {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using Stanza_T = langcc::rc_ptr<lang::meta::Node::Stanza::_T>;
 }
 
 namespace lang::meta::Node::Stanza::Tokens {
@@ -80,6 +120,22 @@ namespace lang::meta::Node::Stanza {
     using CompileTest_T = langcc::rc_ptr<lang::meta::Node::Stanza::CompileTest::_T>;
 }
 
+namespace lang::meta::Node::TokenDecl {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using TokenDecl_T = langcc::rc_ptr<lang::meta::Node::TokenDecl::_T>;
+}
+
+namespace lang::meta::Node::TokenDecl::op {
+    struct _T;
+}
+
+namespace lang::meta::Node::TokenDecl {
+    using op_T = langcc::rc_ptr<lang::meta::Node::TokenDecl::op::_T>;
+}
+
 namespace lang::meta::Node::TokenDecl::op::DEF {
     struct _T;
 }
@@ -96,20 +152,12 @@ namespace lang::meta::Node::TokenDecl::op {
     using DEF_ALIAS_T = langcc::rc_ptr<lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T>;
 }
 
-namespace lang::meta::Node::TokenDecl::op {
-    struct _T;
-}
-
-namespace lang::meta::Node::TokenDecl {
-    using op_T = langcc::rc_ptr<lang::meta::Node::TokenDecl::op::_T>;
-}
-
-namespace lang::meta::Node::TokenDecl {
+namespace lang::meta::Node::LexerDecl {
     struct _T;
 }
 
 namespace lang::meta::Node {
-    using TokenDecl_T = langcc::rc_ptr<lang::meta::Node::TokenDecl::_T>;
+    using LexerDecl_T = langcc::rc_ptr<lang::meta::Node::LexerDecl::_T>;
 }
 
 namespace lang::meta::Node::LexerDecl::Main {
@@ -120,12 +168,12 @@ namespace lang::meta::Node::LexerDecl {
     using Main_T = langcc::rc_ptr<lang::meta::Node::LexerDecl::Main::_T>;
 }
 
-namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
+namespace lang::meta::Node::LexerDecl::Mode {
     struct _T;
 }
 
-namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
-    using spec_T = langcc::rc_ptr<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T>;
+namespace lang::meta::Node::LexerDecl {
+    using Mode_T = langcc::rc_ptr<lang::meta::Node::LexerDecl::Mode::_T>;
 }
 
 namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
@@ -136,12 +184,12 @@ namespace lang::meta::Node::LexerDecl::Mode {
     using ws_sig__T = langcc::rc_ptr<lang::meta::Node::LexerDecl::Mode::ws_sig_::_T>;
 }
 
-namespace lang::meta::Node::LexerDecl::Mode {
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_::spec {
     struct _T;
 }
 
-namespace lang::meta::Node::LexerDecl {
-    using Mode_T = langcc::rc_ptr<lang::meta::Node::LexerDecl::Mode::_T>;
+namespace lang::meta::Node::LexerDecl::Mode::ws_sig_ {
+    using spec_T = langcc::rc_ptr<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T>;
 }
 
 namespace lang::meta::Node::LexerModeCase {
@@ -150,6 +198,14 @@ namespace lang::meta::Node::LexerModeCase {
 
 namespace lang::meta::Node {
     using LexerModeCase_T = langcc::rc_ptr<lang::meta::Node::LexerModeCase::_T>;
+}
+
+namespace lang::meta::Node::LexerInstr {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using LexerInstr_T = langcc::rc_ptr<lang::meta::Node::LexerInstr::_T>;
 }
 
 namespace lang::meta::Node::LexerInstr::Emit {
@@ -208,6 +264,14 @@ namespace lang::meta::Node::LexerInstr {
     using MatchHistory_T = langcc::rc_ptr<lang::meta::Node::LexerInstr::MatchHistory::_T>;
 }
 
+namespace lang::meta::Node::ParserDecl {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using ParserDecl_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::_T>;
+}
+
 namespace lang::meta::Node::ParserDecl::Main {
     struct _T;
 }
@@ -240,6 +304,22 @@ namespace lang::meta::Node::ParserDecl {
     using Attr_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::Attr::_T>;
 }
 
+namespace lang::meta::Node::ParserDecl::Rule {
+    struct _T;
+}
+
+namespace lang::meta::Node::ParserDecl {
+    using Rule_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::Rule::_T>;
+}
+
+namespace lang::meta::Node::ParserDecl::Rule::op {
+    struct _T;
+}
+
+namespace lang::meta::Node::ParserDecl::Rule {
+    using op_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::Rule::op::_T>;
+}
+
 namespace lang::meta::Node::ParserDecl::Rule::op::DEF {
     struct _T;
 }
@@ -256,20 +336,12 @@ namespace lang::meta::Node::ParserDecl::Rule::op {
     using DEF_ALIAS_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T>;
 }
 
-namespace lang::meta::Node::ParserDecl::Rule::op {
+namespace lang::meta::Node::ParserProp {
     struct _T;
 }
 
-namespace lang::meta::Node::ParserDecl::Rule {
-    using op_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::Rule::op::_T>;
-}
-
-namespace lang::meta::Node::ParserDecl::Rule {
-    struct _T;
-}
-
-namespace lang::meta::Node::ParserDecl {
-    using Rule_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::Rule::_T>;
+namespace lang::meta::Node {
+    using ParserProp_T = langcc::rc_ptr<lang::meta::Node::ParserProp::_T>;
 }
 
 namespace lang::meta::Node::ParserProp::NameStrict {
@@ -286,6 +358,14 @@ namespace lang::meta::Node::ParserProp::AllowUnreach {
 
 namespace lang::meta::Node::ParserProp {
     using AllowUnreach_T = langcc::rc_ptr<lang::meta::Node::ParserProp::AllowUnreach::_T>;
+}
+
+namespace lang::meta::Node::ParserProp::ASTExtraData {
+    struct _T;
+}
+
+namespace lang::meta::Node::ParserProp {
+    using ASTExtraData_T = langcc::rc_ptr<lang::meta::Node::ParserProp::ASTExtraData::_T>;
 }
 
 namespace lang::meta::Node::ParserProp::LRSpec {
@@ -310,6 +390,14 @@ namespace lang::meta::Node::PrecItem {
 
 namespace lang::meta::Node {
     using PrecItem_T = langcc::rc_ptr<lang::meta::Node::PrecItem::_T>;
+}
+
+namespace lang::meta::Node::PrecAssoc {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using PrecAssoc_T = langcc::rc_ptr<lang::meta::Node::PrecAssoc::_T>;
 }
 
 namespace lang::meta::Node::PrecAssoc::Left {
@@ -344,6 +432,14 @@ namespace lang::meta::Node::PrecAssoc {
     using Postfix_T = langcc::rc_ptr<lang::meta::Node::PrecAssoc::Postfix::_T>;
 }
 
+namespace lang::meta::Node::AttrClause {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using AttrClause_T = langcc::rc_ptr<lang::meta::Node::AttrClause::_T>;
+}
+
 namespace lang::meta::Node::AttrClause::Expr {
     struct _T;
 }
@@ -376,6 +472,14 @@ namespace lang::meta::Node {
     using AttrMatchCase_T = langcc::rc_ptr<lang::meta::Node::AttrMatchCase::_T>;
 }
 
+namespace lang::meta::Node::AttrMatchCasePattern {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using AttrMatchCasePattern_T = langcc::rc_ptr<lang::meta::Node::AttrMatchCasePattern::_T>;
+}
+
 namespace lang::meta::Node::AttrMatchCasePattern::Alt {
     struct _T;
 }
@@ -390,6 +494,14 @@ namespace lang::meta::Node::AttrMatchCasePattern::Wildcard {
 
 namespace lang::meta::Node::AttrMatchCasePattern {
     using Wildcard_T = langcc::rc_ptr<lang::meta::Node::AttrMatchCasePattern::Wildcard::_T>;
+}
+
+namespace lang::meta::Node::AttrClauseExpr {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using AttrClauseExpr_T = langcc::rc_ptr<lang::meta::Node::AttrClauseExpr::_T>;
 }
 
 namespace lang::meta::Node::AttrClauseExpr::LhsGeq {
@@ -414,6 +526,14 @@ namespace lang::meta::Node::AttrClauseExpr::Implies {
 
 namespace lang::meta::Node::AttrClauseExpr {
     using Implies_T = langcc::rc_ptr<lang::meta::Node::AttrClauseExpr::Implies::_T>;
+}
+
+namespace lang::meta::Node::AttrClauseExprRhsLoc {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using AttrClauseExprRhsLoc_T = langcc::rc_ptr<lang::meta::Node::AttrClauseExprRhsLoc::_T>;
 }
 
 namespace lang::meta::Node::AttrClauseExprRhsLoc::All {
@@ -462,6 +582,14 @@ namespace lang::meta::Node::CompileTestCase {
 
 namespace lang::meta::Node {
     using CompileTestCase_T = langcc::rc_ptr<lang::meta::Node::CompileTestCase::_T>;
+}
+
+namespace lang::meta::Node::ParseExpr {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using ParseExpr_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::_T>;
 }
 
 namespace lang::meta::Node::ParseExpr::Id {
@@ -648,6 +776,22 @@ namespace lang::meta::Node::ParseExpr {
     using Name_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::Name::_T>;
 }
 
+namespace lang::meta::Node::ParseExpr::List {
+    struct _T;
+}
+
+namespace lang::meta::Node::ParseExpr {
+    using List_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::List::_T>;
+}
+
+namespace lang::meta::Node::ParseExpr::List::end_delim {
+    struct _T;
+}
+
+namespace lang::meta::Node::ParseExpr::List {
+    using end_delim_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::List::end_delim::_T>;
+}
+
 namespace lang::meta::Node::ParseExpr::List::end_delim::NONE {
     struct _T;
 }
@@ -672,22 +816,6 @@ namespace lang::meta::Node::ParseExpr::List::end_delim {
     using SOME_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::List::end_delim::SOME::_T>;
 }
 
-namespace lang::meta::Node::ParseExpr::List::end_delim {
-    struct _T;
-}
-
-namespace lang::meta::Node::ParseExpr::List {
-    using end_delim_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::List::end_delim::_T>;
-}
-
-namespace lang::meta::Node::ParseExpr::List {
-    struct _T;
-}
-
-namespace lang::meta::Node::ParseExpr {
-    using List_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::List::_T>;
-}
-
 namespace lang::meta::Node::ParseExpr::Unfold {
     struct _T;
 }
@@ -704,6 +832,14 @@ namespace lang::meta::Node::ParseExpr {
     using AttrReq_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::AttrReq::_T>;
 }
 
+namespace lang::meta::Node::AttrReq {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using AttrReq_T = langcc::rc_ptr<lang::meta::Node::AttrReq::_T>;
+}
+
 namespace lang::meta::Node::AttrReq::Base {
     struct _T;
 }
@@ -718,6 +854,14 @@ namespace lang::meta::Node::AttrReq::PrecStar {
 
 namespace lang::meta::Node::AttrReq {
     using PrecStar_T = langcc::rc_ptr<lang::meta::Node::AttrReq::PrecStar::_T>;
+}
+
+namespace lang::meta::Node::ParseExprListType {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using ParseExprListType_T = langcc::rc_ptr<lang::meta::Node::ParseExprListType::_T>;
 }
 
 namespace lang::meta::Node::ParseExprListType::List {
@@ -760,6 +904,14 @@ namespace lang::meta::Node::ParseExprListType {
     using Top2_T = langcc::rc_ptr<lang::meta::Node::ParseExprListType::Top2::_T>;
 }
 
+namespace lang::meta::Node::ParseExprListNum {
+    struct _T;
+}
+
+namespace lang::meta::Node {
+    using ParseExprListNum_T = langcc::rc_ptr<lang::meta::Node::ParseExprListNum::_T>;
+}
+
 namespace lang::meta::Node::ParseExprListNum::Ge0 {
     struct _T;
 }
@@ -792,126 +944,6 @@ namespace lang::meta::Node {
     using Id_T = langcc::rc_ptr<lang::meta::Node::Id::_T>;
 }
 
-namespace lang::meta::Node::Stanza {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using Stanza_T = langcc::rc_ptr<lang::meta::Node::Stanza::_T>;
-}
-
-namespace lang::meta::Node::LexerDecl {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using LexerDecl_T = langcc::rc_ptr<lang::meta::Node::LexerDecl::_T>;
-}
-
-namespace lang::meta::Node::LexerInstr {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using LexerInstr_T = langcc::rc_ptr<lang::meta::Node::LexerInstr::_T>;
-}
-
-namespace lang::meta::Node::ParserDecl {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using ParserDecl_T = langcc::rc_ptr<lang::meta::Node::ParserDecl::_T>;
-}
-
-namespace lang::meta::Node::ParserProp {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using ParserProp_T = langcc::rc_ptr<lang::meta::Node::ParserProp::_T>;
-}
-
-namespace lang::meta::Node::PrecAssoc {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using PrecAssoc_T = langcc::rc_ptr<lang::meta::Node::PrecAssoc::_T>;
-}
-
-namespace lang::meta::Node::AttrClause {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using AttrClause_T = langcc::rc_ptr<lang::meta::Node::AttrClause::_T>;
-}
-
-namespace lang::meta::Node::AttrMatchCasePattern {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using AttrMatchCasePattern_T = langcc::rc_ptr<lang::meta::Node::AttrMatchCasePattern::_T>;
-}
-
-namespace lang::meta::Node::AttrClauseExpr {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using AttrClauseExpr_T = langcc::rc_ptr<lang::meta::Node::AttrClauseExpr::_T>;
-}
-
-namespace lang::meta::Node::AttrClauseExprRhsLoc {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using AttrClauseExprRhsLoc_T = langcc::rc_ptr<lang::meta::Node::AttrClauseExprRhsLoc::_T>;
-}
-
-namespace lang::meta::Node::ParseExpr {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using ParseExpr_T = langcc::rc_ptr<lang::meta::Node::ParseExpr::_T>;
-}
-
-namespace lang::meta::Node::AttrReq {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using AttrReq_T = langcc::rc_ptr<lang::meta::Node::AttrReq::_T>;
-}
-
-namespace lang::meta::Node::ParseExprListType {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using ParseExprListType_T = langcc::rc_ptr<lang::meta::Node::ParseExprListType::_T>;
-}
-
-namespace lang::meta::Node::ParseExprListNum {
-    struct _T;
-}
-
-namespace lang::meta::Node {
-    using ParseExprListNum_T = langcc::rc_ptr<lang::meta::Node::ParseExprListNum::_T>;
-}
-
-namespace lang::meta::Node {
-    struct _T;
-}
-
-namespace lang::meta {
-    using Node_T = langcc::rc_ptr<lang::meta::Node::_T>;
-}
-
 namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node_T x);
 }
@@ -919,32 +951,33 @@ namespace langcc {
 namespace lang::meta::Node {
     enum struct _W {
         Lang,
-        TokenDecl__op,
-        TokenDecl,
-        LexerDecl__Mode__ws_sig___spec,
-        LexerDecl__Mode__ws_sig_,
-        LexerModeCase,
-        ParserDecl__Rule__op,
-        PrecItem,
-        AttrMatchCase,
-        TestCase,
-        CompileTestCase,
-        ParseExpr__List__end_delim,
-        Id,
+        Decl,
         Stanza,
+        TokenDecl,
+        TokenDecl__op,
         LexerDecl,
+        LexerDecl__Mode__ws_sig_,
+        LexerDecl__Mode__ws_sig___spec,
+        LexerModeCase,
         LexerInstr,
         ParserDecl,
+        ParserDecl__Rule__op,
         ParserProp,
+        PrecItem,
         PrecAssoc,
         AttrClause,
+        AttrMatchCase,
         AttrMatchCasePattern,
         AttrClauseExpr,
         AttrClauseExprRhsLoc,
+        TestCase,
+        CompileTestCase,
         ParseExpr,
+        ParseExpr__List__end_delim,
         AttrReq,
         ParseExprListType,
         ParseExprListNum,
+        Id,
     };
 }
 
@@ -962,126 +995,132 @@ namespace lang::meta::Node {
         langcc::ParserLookahead first_k_;
         _T(lang::meta::Node::_W w);
         bool is_Lang();
-        bool is_TokenDecl__op();
-        bool is_TokenDecl();
-        bool is_LexerDecl__Mode__ws_sig___spec();
-        bool is_LexerDecl__Mode__ws_sig_();
-        bool is_LexerModeCase();
-        bool is_ParserDecl__Rule__op();
-        bool is_PrecItem();
-        bool is_AttrMatchCase();
-        bool is_TestCase();
-        bool is_CompileTestCase();
-        bool is_ParseExpr__List__end_delim();
-        bool is_Id();
+        bool is_Decl();
         bool is_Stanza();
+        bool is_TokenDecl();
+        bool is_TokenDecl__op();
         bool is_LexerDecl();
+        bool is_LexerDecl__Mode__ws_sig_();
+        bool is_LexerDecl__Mode__ws_sig___spec();
+        bool is_LexerModeCase();
         bool is_LexerInstr();
         bool is_ParserDecl();
+        bool is_ParserDecl__Rule__op();
         bool is_ParserProp();
+        bool is_PrecItem();
         bool is_PrecAssoc();
         bool is_AttrClause();
+        bool is_AttrMatchCase();
         bool is_AttrMatchCasePattern();
         bool is_AttrClauseExpr();
         bool is_AttrClauseExprRhsLoc();
+        bool is_TestCase();
+        bool is_CompileTestCase();
         bool is_ParseExpr();
+        bool is_ParseExpr__List__end_delim();
         bool is_AttrReq();
         bool is_ParseExprListType();
         bool is_ParseExprListNum();
+        bool is_Id();
         lang::meta::Node::Lang_T as_Lang();
-        lang::meta::Node::TokenDecl::op_T as_TokenDecl__op();
-        lang::meta::Node::TokenDecl_T as_TokenDecl();
-        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T as_LexerDecl__Mode__ws_sig___spec();
-        lang::meta::Node::LexerDecl::Mode::ws_sig__T as_LexerDecl__Mode__ws_sig_();
-        lang::meta::Node::LexerModeCase_T as_LexerModeCase();
-        lang::meta::Node::ParserDecl::Rule::op_T as_ParserDecl__Rule__op();
-        lang::meta::Node::PrecItem_T as_PrecItem();
-        lang::meta::Node::AttrMatchCase_T as_AttrMatchCase();
-        lang::meta::Node::TestCase_T as_TestCase();
-        lang::meta::Node::CompileTestCase_T as_CompileTestCase();
-        lang::meta::Node::ParseExpr::List::end_delim_T as_ParseExpr__List__end_delim();
-        lang::meta::Node::Id_T as_Id();
+        lang::meta::Node::Decl_T as_Decl();
         lang::meta::Node::Stanza_T as_Stanza();
+        lang::meta::Node::TokenDecl_T as_TokenDecl();
+        lang::meta::Node::TokenDecl::op_T as_TokenDecl__op();
         lang::meta::Node::LexerDecl_T as_LexerDecl();
+        lang::meta::Node::LexerDecl::Mode::ws_sig__T as_LexerDecl__Mode__ws_sig_();
+        lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T as_LexerDecl__Mode__ws_sig___spec();
+        lang::meta::Node::LexerModeCase_T as_LexerModeCase();
         lang::meta::Node::LexerInstr_T as_LexerInstr();
         lang::meta::Node::ParserDecl_T as_ParserDecl();
+        lang::meta::Node::ParserDecl::Rule::op_T as_ParserDecl__Rule__op();
         lang::meta::Node::ParserProp_T as_ParserProp();
+        lang::meta::Node::PrecItem_T as_PrecItem();
         lang::meta::Node::PrecAssoc_T as_PrecAssoc();
         lang::meta::Node::AttrClause_T as_AttrClause();
+        lang::meta::Node::AttrMatchCase_T as_AttrMatchCase();
         lang::meta::Node::AttrMatchCasePattern_T as_AttrMatchCasePattern();
         lang::meta::Node::AttrClauseExpr_T as_AttrClauseExpr();
         lang::meta::Node::AttrClauseExprRhsLoc_T as_AttrClauseExprRhsLoc();
+        lang::meta::Node::TestCase_T as_TestCase();
+        lang::meta::Node::CompileTestCase_T as_CompileTestCase();
         lang::meta::Node::ParseExpr_T as_ParseExpr();
+        lang::meta::Node::ParseExpr::List::end_delim_T as_ParseExpr__List__end_delim();
         lang::meta::Node::AttrReq_T as_AttrReq();
         lang::meta::Node::ParseExprListType_T as_ParseExprListType();
         lang::meta::Node::ParseExprListNum_T as_ParseExprListNum();
-        void match(std::function<void(lang::meta::Node::Lang_T)> f_Lang, std::function<void(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, std::function<void(lang::meta::Node::TokenDecl_T)> f_TokenDecl, std::function<void(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, std::function<void(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, std::function<void(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, std::function<void(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, std::function<void(lang::meta::Node::PrecItem_T)> f_PrecItem, std::function<void(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, std::function<void(lang::meta::Node::TestCase_T)> f_TestCase, std::function<void(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, std::function<void(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, std::function<void(lang::meta::Node::Id_T)> f_Id, std::function<void(lang::meta::Node::Stanza_T)> f_Stanza, std::function<void(lang::meta::Node::LexerDecl_T)> f_LexerDecl, std::function<void(lang::meta::Node::LexerInstr_T)> f_LexerInstr, std::function<void(lang::meta::Node::ParserDecl_T)> f_ParserDecl, std::function<void(lang::meta::Node::ParserProp_T)> f_ParserProp, std::function<void(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, std::function<void(lang::meta::Node::AttrClause_T)> f_AttrClause, std::function<void(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, std::function<void(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, std::function<void(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, std::function<void(lang::meta::Node::ParseExpr_T)> f_ParseExpr, std::function<void(lang::meta::Node::AttrReq_T)> f_AttrReq, std::function<void(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, std::function<void(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::Lang_T)> f_Lang, std::function<RetT(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, std::function<RetT(lang::meta::Node::TokenDecl_T)> f_TokenDecl, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, std::function<RetT(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, std::function<RetT(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, std::function<RetT(lang::meta::Node::PrecItem_T)> f_PrecItem, std::function<RetT(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, std::function<RetT(lang::meta::Node::TestCase_T)> f_TestCase, std::function<RetT(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, std::function<RetT(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, std::function<RetT(lang::meta::Node::Id_T)> f_Id, std::function<RetT(lang::meta::Node::Stanza_T)> f_Stanza, std::function<RetT(lang::meta::Node::LexerDecl_T)> f_LexerDecl, std::function<RetT(lang::meta::Node::LexerInstr_T)> f_LexerInstr, std::function<RetT(lang::meta::Node::ParserDecl_T)> f_ParserDecl, std::function<RetT(lang::meta::Node::ParserProp_T)> f_ParserProp, std::function<RetT(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, std::function<RetT(lang::meta::Node::AttrClause_T)> f_AttrClause, std::function<RetT(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, std::function<RetT(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, std::function<RetT(lang::meta::Node::ParseExpr_T)> f_ParseExpr, std::function<RetT(lang::meta::Node::AttrReq_T)> f_AttrReq, std::function<RetT(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, std::function<RetT(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum);
+        lang::meta::Node::Id_T as_Id();
+        langcc::Ptr<lang::meta::Node::Lang::_T> as_Lang_unchecked();
+        langcc::Ptr<lang::meta::Node::Decl::_T> as_Decl_unchecked();
+        langcc::Ptr<lang::meta::Node::Stanza::_T> as_Stanza_unchecked();
+        langcc::Ptr<lang::meta::Node::TokenDecl::_T> as_TokenDecl_unchecked();
+        langcc::Ptr<lang::meta::Node::TokenDecl::op::_T> as_TokenDecl__op_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerDecl::_T> as_LexerDecl_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerDecl::Mode::ws_sig_::_T> as_LexerDecl__Mode__ws_sig__unchecked();
+        langcc::Ptr<lang::meta::Node::LexerDecl::Mode::ws_sig_::spec::_T> as_LexerDecl__Mode__ws_sig___spec_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerModeCase::_T> as_LexerModeCase_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerInstr::_T> as_LexerInstr_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserDecl::_T> as_ParserDecl_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Rule::op::_T> as_ParserDecl__Rule__op_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserProp::_T> as_ParserProp_unchecked();
+        langcc::Ptr<lang::meta::Node::PrecItem::_T> as_PrecItem_unchecked();
+        langcc::Ptr<lang::meta::Node::PrecAssoc::_T> as_PrecAssoc_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClause::_T> as_AttrClause_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrMatchCase::_T> as_AttrMatchCase_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrMatchCasePattern::_T> as_AttrMatchCasePattern_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClauseExpr::_T> as_AttrClauseExpr_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClauseExprRhsLoc::_T> as_AttrClauseExprRhsLoc_unchecked();
+        langcc::Ptr<lang::meta::Node::TestCase::_T> as_TestCase_unchecked();
+        langcc::Ptr<lang::meta::Node::CompileTestCase::_T> as_CompileTestCase_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::_T> as_ParseExpr_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::List::end_delim::_T> as_ParseExpr__List__end_delim_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrReq::_T> as_AttrReq_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListType::_T> as_ParseExprListType_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListNum::_T> as_ParseExprListNum_unchecked();
+        langcc::Ptr<lang::meta::Node::Id::_T> as_Id_unchecked();
+        void match(std::function<void(lang::meta::Node::Lang_T)> f_Lang, std::function<void(lang::meta::Node::Decl_T)> f_Decl, std::function<void(lang::meta::Node::Stanza_T)> f_Stanza, std::function<void(lang::meta::Node::TokenDecl_T)> f_TokenDecl, std::function<void(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, std::function<void(lang::meta::Node::LexerDecl_T)> f_LexerDecl, std::function<void(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, std::function<void(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, std::function<void(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, std::function<void(lang::meta::Node::LexerInstr_T)> f_LexerInstr, std::function<void(lang::meta::Node::ParserDecl_T)> f_ParserDecl, std::function<void(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, std::function<void(lang::meta::Node::ParserProp_T)> f_ParserProp, std::function<void(lang::meta::Node::PrecItem_T)> f_PrecItem, std::function<void(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, std::function<void(lang::meta::Node::AttrClause_T)> f_AttrClause, std::function<void(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, std::function<void(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, std::function<void(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, std::function<void(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, std::function<void(lang::meta::Node::TestCase_T)> f_TestCase, std::function<void(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, std::function<void(lang::meta::Node::ParseExpr_T)> f_ParseExpr, std::function<void(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, std::function<void(lang::meta::Node::AttrReq_T)> f_AttrReq, std::function<void(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, std::function<void(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum, std::function<void(lang::meta::Node::Id_T)> f_Id);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::Lang_T)> f_Lang, std::function<RetT(lang::meta::Node::Decl_T)> f_Decl, std::function<RetT(lang::meta::Node::Stanza_T)> f_Stanza, std::function<RetT(lang::meta::Node::TokenDecl_T)> f_TokenDecl, std::function<RetT(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, std::function<RetT(lang::meta::Node::LexerDecl_T)> f_LexerDecl, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, std::function<RetT(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, std::function<RetT(lang::meta::Node::LexerInstr_T)> f_LexerInstr, std::function<RetT(lang::meta::Node::ParserDecl_T)> f_ParserDecl, std::function<RetT(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, std::function<RetT(lang::meta::Node::ParserProp_T)> f_ParserProp, std::function<RetT(lang::meta::Node::PrecItem_T)> f_PrecItem, std::function<RetT(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, std::function<RetT(lang::meta::Node::AttrClause_T)> f_AttrClause, std::function<RetT(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, std::function<RetT(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, std::function<RetT(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, std::function<RetT(lang::meta::Node::TestCase_T)> f_TestCase, std::function<RetT(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, std::function<RetT(lang::meta::Node::ParseExpr_T)> f_ParseExpr, std::function<RetT(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, std::function<RetT(lang::meta::Node::AttrReq_T)> f_AttrReq, std::function<RetT(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, std::function<RetT(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum, std::function<RetT(lang::meta::Node::Id_T)> f_Id);
         void hash_ser_acc_lang_meta_Node(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::meta::Node::_T::match_expr(std::function<RetT(lang::meta::Node::Lang_T)> f_Lang, std::function<RetT(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, std::function<RetT(lang::meta::Node::TokenDecl_T)> f_TokenDecl, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, std::function<RetT(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, std::function<RetT(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, std::function<RetT(lang::meta::Node::PrecItem_T)> f_PrecItem, std::function<RetT(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, std::function<RetT(lang::meta::Node::TestCase_T)> f_TestCase, std::function<RetT(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, std::function<RetT(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, std::function<RetT(lang::meta::Node::Id_T)> f_Id, std::function<RetT(lang::meta::Node::Stanza_T)> f_Stanza, std::function<RetT(lang::meta::Node::LexerDecl_T)> f_LexerDecl, std::function<RetT(lang::meta::Node::LexerInstr_T)> f_LexerInstr, std::function<RetT(lang::meta::Node::ParserDecl_T)> f_ParserDecl, std::function<RetT(lang::meta::Node::ParserProp_T)> f_ParserProp, std::function<RetT(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, std::function<RetT(lang::meta::Node::AttrClause_T)> f_AttrClause, std::function<RetT(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, std::function<RetT(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, std::function<RetT(lang::meta::Node::ParseExpr_T)> f_ParseExpr, std::function<RetT(lang::meta::Node::AttrReq_T)> f_AttrReq, std::function<RetT(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, std::function<RetT(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum) {
+template<typename RetT> RetT lang::meta::Node::_T::match_expr(std::function<RetT(lang::meta::Node::Lang_T)> f_Lang, std::function<RetT(lang::meta::Node::Decl_T)> f_Decl, std::function<RetT(lang::meta::Node::Stanza_T)> f_Stanza, std::function<RetT(lang::meta::Node::TokenDecl_T)> f_TokenDecl, std::function<RetT(lang::meta::Node::TokenDecl::op_T)> f_TokenDecl__op, std::function<RetT(lang::meta::Node::LexerDecl_T)> f_LexerDecl, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig__T)> f_LexerDecl__Mode__ws_sig_, std::function<RetT(lang::meta::Node::LexerDecl::Mode::ws_sig_::spec_T)> f_LexerDecl__Mode__ws_sig___spec, std::function<RetT(lang::meta::Node::LexerModeCase_T)> f_LexerModeCase, std::function<RetT(lang::meta::Node::LexerInstr_T)> f_LexerInstr, std::function<RetT(lang::meta::Node::ParserDecl_T)> f_ParserDecl, std::function<RetT(lang::meta::Node::ParserDecl::Rule::op_T)> f_ParserDecl__Rule__op, std::function<RetT(lang::meta::Node::ParserProp_T)> f_ParserProp, std::function<RetT(lang::meta::Node::PrecItem_T)> f_PrecItem, std::function<RetT(lang::meta::Node::PrecAssoc_T)> f_PrecAssoc, std::function<RetT(lang::meta::Node::AttrClause_T)> f_AttrClause, std::function<RetT(lang::meta::Node::AttrMatchCase_T)> f_AttrMatchCase, std::function<RetT(lang::meta::Node::AttrMatchCasePattern_T)> f_AttrMatchCasePattern, std::function<RetT(lang::meta::Node::AttrClauseExpr_T)> f_AttrClauseExpr, std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc_T)> f_AttrClauseExprRhsLoc, std::function<RetT(lang::meta::Node::TestCase_T)> f_TestCase, std::function<RetT(lang::meta::Node::CompileTestCase_T)> f_CompileTestCase, std::function<RetT(lang::meta::Node::ParseExpr_T)> f_ParseExpr, std::function<RetT(lang::meta::Node::ParseExpr::List::end_delim_T)> f_ParseExpr__List__end_delim, std::function<RetT(lang::meta::Node::AttrReq_T)> f_AttrReq, std::function<RetT(lang::meta::Node::ParseExprListType_T)> f_ParseExprListType, std::function<RetT(lang::meta::Node::ParseExprListNum_T)> f_ParseExprListNum, std::function<RetT(lang::meta::Node::Id_T)> f_Id) {
     switch (this->w_) {
         case lang::meta::Node::_W::Lang: {
             return f_Lang(this->as_Lang());
             break;
         }
-        case lang::meta::Node::_W::TokenDecl__op: {
-            return f_TokenDecl__op(this->as_TokenDecl__op());
-            break;
-        }
-        case lang::meta::Node::_W::TokenDecl: {
-            return f_TokenDecl(this->as_TokenDecl());
-            break;
-        }
-        case lang::meta::Node::_W::LexerDecl__Mode__ws_sig___spec: {
-            return f_LexerDecl__Mode__ws_sig___spec(this->as_LexerDecl__Mode__ws_sig___spec());
-            break;
-        }
-        case lang::meta::Node::_W::LexerDecl__Mode__ws_sig_: {
-            return f_LexerDecl__Mode__ws_sig_(this->as_LexerDecl__Mode__ws_sig_());
-            break;
-        }
-        case lang::meta::Node::_W::LexerModeCase: {
-            return f_LexerModeCase(this->as_LexerModeCase());
-            break;
-        }
-        case lang::meta::Node::_W::ParserDecl__Rule__op: {
-            return f_ParserDecl__Rule__op(this->as_ParserDecl__Rule__op());
-            break;
-        }
-        case lang::meta::Node::_W::PrecItem: {
-            return f_PrecItem(this->as_PrecItem());
-            break;
-        }
-        case lang::meta::Node::_W::AttrMatchCase: {
-            return f_AttrMatchCase(this->as_AttrMatchCase());
-            break;
-        }
-        case lang::meta::Node::_W::TestCase: {
-            return f_TestCase(this->as_TestCase());
-            break;
-        }
-        case lang::meta::Node::_W::CompileTestCase: {
-            return f_CompileTestCase(this->as_CompileTestCase());
-            break;
-        }
-        case lang::meta::Node::_W::ParseExpr__List__end_delim: {
-            return f_ParseExpr__List__end_delim(this->as_ParseExpr__List__end_delim());
-            break;
-        }
-        case lang::meta::Node::_W::Id: {
-            return f_Id(this->as_Id());
+        case lang::meta::Node::_W::Decl: {
+            return f_Decl(this->as_Decl());
             break;
         }
         case lang::meta::Node::_W::Stanza: {
             return f_Stanza(this->as_Stanza());
             break;
         }
+        case lang::meta::Node::_W::TokenDecl: {
+            return f_TokenDecl(this->as_TokenDecl());
+            break;
+        }
+        case lang::meta::Node::_W::TokenDecl__op: {
+            return f_TokenDecl__op(this->as_TokenDecl__op());
+            break;
+        }
         case lang::meta::Node::_W::LexerDecl: {
             return f_LexerDecl(this->as_LexerDecl());
+            break;
+        }
+        case lang::meta::Node::_W::LexerDecl__Mode__ws_sig_: {
+            return f_LexerDecl__Mode__ws_sig_(this->as_LexerDecl__Mode__ws_sig_());
+            break;
+        }
+        case lang::meta::Node::_W::LexerDecl__Mode__ws_sig___spec: {
+            return f_LexerDecl__Mode__ws_sig___spec(this->as_LexerDecl__Mode__ws_sig___spec());
+            break;
+        }
+        case lang::meta::Node::_W::LexerModeCase: {
+            return f_LexerModeCase(this->as_LexerModeCase());
             break;
         }
         case lang::meta::Node::_W::LexerInstr: {
@@ -1092,8 +1131,16 @@ template<typename RetT> RetT lang::meta::Node::_T::match_expr(std::function<RetT
             return f_ParserDecl(this->as_ParserDecl());
             break;
         }
+        case lang::meta::Node::_W::ParserDecl__Rule__op: {
+            return f_ParserDecl__Rule__op(this->as_ParserDecl__Rule__op());
+            break;
+        }
         case lang::meta::Node::_W::ParserProp: {
             return f_ParserProp(this->as_ParserProp());
+            break;
+        }
+        case lang::meta::Node::_W::PrecItem: {
+            return f_PrecItem(this->as_PrecItem());
             break;
         }
         case lang::meta::Node::_W::PrecAssoc: {
@@ -1102,6 +1149,10 @@ template<typename RetT> RetT lang::meta::Node::_T::match_expr(std::function<RetT
         }
         case lang::meta::Node::_W::AttrClause: {
             return f_AttrClause(this->as_AttrClause());
+            break;
+        }
+        case lang::meta::Node::_W::AttrMatchCase: {
+            return f_AttrMatchCase(this->as_AttrMatchCase());
             break;
         }
         case lang::meta::Node::_W::AttrMatchCasePattern: {
@@ -1116,8 +1167,20 @@ template<typename RetT> RetT lang::meta::Node::_T::match_expr(std::function<RetT
             return f_AttrClauseExprRhsLoc(this->as_AttrClauseExprRhsLoc());
             break;
         }
+        case lang::meta::Node::_W::TestCase: {
+            return f_TestCase(this->as_TestCase());
+            break;
+        }
+        case lang::meta::Node::_W::CompileTestCase: {
+            return f_CompileTestCase(this->as_CompileTestCase());
+            break;
+        }
         case lang::meta::Node::_W::ParseExpr: {
             return f_ParseExpr(this->as_ParseExpr());
+            break;
+        }
+        case lang::meta::Node::_W::ParseExpr__List__end_delim: {
+            return f_ParseExpr__List__end_delim(this->as_ParseExpr__List__end_delim());
             break;
         }
         case lang::meta::Node::_W::AttrReq: {
@@ -1132,6 +1195,10 @@ template<typename RetT> RetT lang::meta::Node::_T::match_expr(std::function<RetT
             return f_ParseExprListNum(this->as_ParseExprListNum());
             break;
         }
+        case lang::meta::Node::_W::Id: {
+            return f_Id(this->as_Id());
+            break;
+        }
         default: {
             langcc::AX();
         }
@@ -1143,17 +1210,18 @@ namespace langcc {
 }
 
 namespace lang::meta::Node::Lang {
-    lang::meta::Node::Lang_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Stanza_T> stanzas);
+    lang::meta::Node::Lang_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Decl_T> decls, langcc::Vec_T<lang::meta::Node::Stanza_T> stanzas);
 }
 
 namespace lang::meta::Node::Lang {
-    lang::meta::Node::Lang_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Stanza_T> stanzas);
+    lang::meta::Node::Lang_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Decl_T> decls, langcc::Vec_T<lang::meta::Node::Stanza_T> stanzas);
 }
 
 namespace lang::meta::Node::Lang {
     struct _T: lang::meta::Node::_T {
         void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
         void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::Vec_T<lang::meta::Node::Decl_T> decls_;
         langcc::Vec_T<lang::meta::Node::Stanza_T> stanzas_;
         _T();
         lang::meta::Node::Lang_T with_id(langcc::Int id);
@@ -1162,10 +1230,129 @@ namespace lang::meta::Node::Lang {
         lang::meta::Node::Lang_T with_sym(langcc::ParserSymId sym);
         lang::meta::Node::Lang_T with_attr(langcc::ParserAttrMask attr);
         lang::meta::Node::Lang_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::Lang_T with_decls(langcc::Vec_T<lang::meta::Node::Decl_T> decls);
         lang::meta::Node::Lang_T with_stanzas(langcc::Vec_T<lang::meta::Node::Stanza_T> stanzas);
         void hash_ser_acc_lang_meta_Node_Lang(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
     };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Decl_T x);
+}
+
+namespace lang::meta::Node::Decl {
+    enum struct _W {
+        Include,
+        IncludePost,
+    };
+}
+
+namespace lang::meta::Node::Decl {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        lang::meta::Node::Decl::_W w_;
+        virtual ~_T();
+        _T(lang::meta::Node::Decl::_W w);
+        bool is_Include();
+        bool is_IncludePost();
+        lang::meta::Node::Decl::Include_T as_Include();
+        lang::meta::Node::Decl::IncludePost_T as_IncludePost();
+        langcc::Ptr<lang::meta::Node::Decl::Include::_T> as_Include_unchecked();
+        langcc::Ptr<lang::meta::Node::Decl::IncludePost::_T> as_IncludePost_unchecked();
+        void match(std::function<void(lang::meta::Node::Decl::Include_T)> f_Include, std::function<void(lang::meta::Node::Decl::IncludePost_T)> f_IncludePost);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::Decl::Include_T)> f_Include, std::function<RetT(lang::meta::Node::Decl::IncludePost_T)> f_IncludePost);
+        void hash_ser_acc_lang_meta_Node_Decl(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
+    };
+}
+
+template<typename RetT> RetT lang::meta::Node::Decl::_T::match_expr(std::function<RetT(lang::meta::Node::Decl::Include_T)> f_Include, std::function<RetT(lang::meta::Node::Decl::IncludePost_T)> f_IncludePost) {
+    switch (this->w_) {
+        case lang::meta::Node::Decl::_W::Include: {
+            return f_Include(this->as_Include());
+            break;
+        }
+        case lang::meta::Node::Decl::_W::IncludePost: {
+            return f_IncludePost(this->as_IncludePost());
+            break;
+        }
+        default: {
+            langcc::AX();
+        }
+    }
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza_T x);
+}
+
+namespace lang::meta::Node::Stanza {
+    enum struct _W {
+        Tokens,
+        Lexer,
+        Parser,
+        Test,
+        CompileTest,
+    };
+}
+
+namespace lang::meta::Node::Stanza {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        lang::meta::Node::Stanza::_W w_;
+        virtual ~_T();
+        _T(lang::meta::Node::Stanza::_W w);
+        bool is_Tokens();
+        bool is_Lexer();
+        bool is_Parser();
+        bool is_Test();
+        bool is_CompileTest();
+        lang::meta::Node::Stanza::Tokens_T as_Tokens();
+        lang::meta::Node::Stanza::Lexer_T as_Lexer();
+        lang::meta::Node::Stanza::Parser_T as_Parser();
+        lang::meta::Node::Stanza::Test_T as_Test();
+        lang::meta::Node::Stanza::CompileTest_T as_CompileTest();
+        langcc::Ptr<lang::meta::Node::Stanza::Tokens::_T> as_Tokens_unchecked();
+        langcc::Ptr<lang::meta::Node::Stanza::Lexer::_T> as_Lexer_unchecked();
+        langcc::Ptr<lang::meta::Node::Stanza::Parser::_T> as_Parser_unchecked();
+        langcc::Ptr<lang::meta::Node::Stanza::Test::_T> as_Test_unchecked();
+        langcc::Ptr<lang::meta::Node::Stanza::CompileTest::_T> as_CompileTest_unchecked();
+        void match(std::function<void(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, std::function<void(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, std::function<void(lang::meta::Node::Stanza::Parser_T)> f_Parser, std::function<void(lang::meta::Node::Stanza::Test_T)> f_Test, std::function<void(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, std::function<RetT(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, std::function<RetT(lang::meta::Node::Stanza::Parser_T)> f_Parser, std::function<RetT(lang::meta::Node::Stanza::Test_T)> f_Test, std::function<RetT(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest);
+        void hash_ser_acc_lang_meta_Node_Stanza(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
+    };
+}
+
+template<typename RetT> RetT lang::meta::Node::Stanza::_T::match_expr(std::function<RetT(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, std::function<RetT(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, std::function<RetT(lang::meta::Node::Stanza::Parser_T)> f_Parser, std::function<RetT(lang::meta::Node::Stanza::Test_T)> f_Test, std::function<RetT(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest) {
+    switch (this->w_) {
+        case lang::meta::Node::Stanza::_W::Tokens: {
+            return f_Tokens(this->as_Tokens());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Lexer: {
+            return f_Lexer(this->as_Lexer());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Parser: {
+            return f_Parser(this->as_Parser());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::Test: {
+            return f_Test(this->as_Test());
+            break;
+        }
+        case lang::meta::Node::Stanza::_W::CompileTest: {
+            return f_CompileTest(this->as_CompileTest());
+            break;
+        }
+        default: {
+            langcc::AX();
+        }
+    }
 }
 
 namespace langcc {
@@ -1203,6 +1390,53 @@ namespace lang::meta::Node::TokenDecl {
 }
 
 namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T x);
+}
+
+namespace lang::meta::Node::LexerDecl {
+    enum struct _W {
+        Main,
+        Mode,
+    };
+}
+
+namespace lang::meta::Node::LexerDecl {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        lang::meta::Node::LexerDecl::_W w_;
+        virtual ~_T();
+        _T(lang::meta::Node::LexerDecl::_W w);
+        bool is_Main();
+        bool is_Mode();
+        lang::meta::Node::LexerDecl::Main_T as_Main();
+        lang::meta::Node::LexerDecl::Mode_T as_Mode();
+        langcc::Ptr<lang::meta::Node::LexerDecl::Main::_T> as_Main_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerDecl::Mode::_T> as_Mode_unchecked();
+        void match(std::function<void(lang::meta::Node::LexerDecl::Main_T)> f_Main, std::function<void(lang::meta::Node::LexerDecl::Mode_T)> f_Mode);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::LexerDecl::Main_T)> f_Main, std::function<RetT(lang::meta::Node::LexerDecl::Mode_T)> f_Mode);
+        void hash_ser_acc_lang_meta_Node_LexerDecl(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
+    };
+}
+
+template<typename RetT> RetT lang::meta::Node::LexerDecl::_T::match_expr(std::function<RetT(lang::meta::Node::LexerDecl::Main_T)> f_Main, std::function<RetT(lang::meta::Node::LexerDecl::Mode_T)> f_Mode) {
+    switch (this->w_) {
+        case lang::meta::Node::LexerDecl::_W::Main: {
+            return f_Main(this->as_Main());
+            break;
+        }
+        case lang::meta::Node::LexerDecl::_W::Mode: {
+            return f_Mode(this->as_Mode());
+            break;
+        }
+        default: {
+            langcc::AX();
+        }
+    }
+}
+
+namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerModeCase_T x);
 }
 
@@ -1232,277 +1466,6 @@ namespace lang::meta::Node::LexerModeCase {
         void hash_ser_acc_lang_meta_Node_LexerModeCase(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
     };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecItem_T x);
-}
-
-namespace lang::meta::Node::PrecItem {
-    lang::meta::Node::PrecItem_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Id_T> ids, langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc);
-}
-
-namespace lang::meta::Node::PrecItem {
-    lang::meta::Node::PrecItem_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Id_T> ids, langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc);
-}
-
-namespace lang::meta::Node::PrecItem {
-    struct _T: lang::meta::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::Vec_T<lang::meta::Node::Id_T> ids_;
-        langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc_;
-        _T();
-        lang::meta::Node::PrecItem_T with_id(langcc::Int id);
-        lang::meta::Node::PrecItem_T with_bounds(langcc::TokenBounds bounds);
-        lang::meta::Node::PrecItem_T with_is_top(bool is_top);
-        lang::meta::Node::PrecItem_T with_sym(langcc::ParserSymId sym);
-        lang::meta::Node::PrecItem_T with_attr(langcc::ParserAttrMask attr);
-        lang::meta::Node::PrecItem_T with_first_k(langcc::ParserLookahead first_k);
-        lang::meta::Node::PrecItem_T with_ids(langcc::Vec_T<lang::meta::Node::Id_T> ids);
-        lang::meta::Node::PrecItem_T with_assoc(langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc);
-        void hash_ser_acc_lang_meta_Node_PrecItem(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCase_T x);
-}
-
-namespace lang::meta::Node::AttrMatchCase {
-    lang::meta::Node::AttrMatchCase_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::meta::Node::AttrMatchCasePattern_T pat, lang::meta::Node::AttrClause_T clause);
-}
-
-namespace lang::meta::Node::AttrMatchCase {
-    lang::meta::Node::AttrMatchCase_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::meta::Node::AttrMatchCasePattern_T pat, lang::meta::Node::AttrClause_T clause);
-}
-
-namespace lang::meta::Node::AttrMatchCase {
-    struct _T: lang::meta::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        lang::meta::Node::AttrMatchCasePattern_T pat_;
-        lang::meta::Node::AttrClause_T clause_;
-        _T();
-        lang::meta::Node::AttrMatchCase_T with_id(langcc::Int id);
-        lang::meta::Node::AttrMatchCase_T with_bounds(langcc::TokenBounds bounds);
-        lang::meta::Node::AttrMatchCase_T with_is_top(bool is_top);
-        lang::meta::Node::AttrMatchCase_T with_sym(langcc::ParserSymId sym);
-        lang::meta::Node::AttrMatchCase_T with_attr(langcc::ParserAttrMask attr);
-        lang::meta::Node::AttrMatchCase_T with_first_k(langcc::ParserLookahead first_k);
-        lang::meta::Node::AttrMatchCase_T with_pat(lang::meta::Node::AttrMatchCasePattern_T pat);
-        lang::meta::Node::AttrMatchCase_T with_clause(lang::meta::Node::AttrClause_T clause);
-        void hash_ser_acc_lang_meta_Node_AttrMatchCase(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TestCase_T x);
-}
-
-namespace lang::meta::Node::TestCase {
-    lang::meta::Node::TestCase_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice text, langcc::Option_T<langcc::StrSlice> sym_, bool print_exempt);
-}
-
-namespace lang::meta::Node::TestCase {
-    lang::meta::Node::TestCase_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice text, langcc::Option_T<langcc::StrSlice> sym_, bool print_exempt);
-}
-
-namespace lang::meta::Node::TestCase {
-    struct _T: lang::meta::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::StrSlice text_;
-        langcc::Option_T<langcc::StrSlice> sym__;
-        bool print_exempt_;
-        _T();
-        lang::meta::Node::TestCase_T with_id(langcc::Int id);
-        lang::meta::Node::TestCase_T with_bounds(langcc::TokenBounds bounds);
-        lang::meta::Node::TestCase_T with_is_top(bool is_top);
-        lang::meta::Node::TestCase_T with_sym(langcc::ParserSymId sym);
-        lang::meta::Node::TestCase_T with_attr(langcc::ParserAttrMask attr);
-        lang::meta::Node::TestCase_T with_first_k(langcc::ParserLookahead first_k);
-        lang::meta::Node::TestCase_T with_text(langcc::StrSlice text);
-        lang::meta::Node::TestCase_T with_sym_(langcc::Option_T<langcc::StrSlice> sym_);
-        lang::meta::Node::TestCase_T with_print_exempt(bool print_exempt);
-        void hash_ser_acc_lang_meta_Node_TestCase(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::CompileTestCase_T x);
-}
-
-namespace lang::meta::Node::CompileTestCase {
-    lang::meta::Node::CompileTestCase_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool neg, langcc::StrSlice k);
-}
-
-namespace lang::meta::Node::CompileTestCase {
-    lang::meta::Node::CompileTestCase_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool neg, langcc::StrSlice k);
-}
-
-namespace lang::meta::Node::CompileTestCase {
-    struct _T: lang::meta::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        bool neg_;
-        langcc::StrSlice k_;
-        _T();
-        lang::meta::Node::CompileTestCase_T with_id(langcc::Int id);
-        lang::meta::Node::CompileTestCase_T with_bounds(langcc::TokenBounds bounds);
-        lang::meta::Node::CompileTestCase_T with_is_top(bool is_top);
-        lang::meta::Node::CompileTestCase_T with_sym(langcc::ParserSymId sym);
-        lang::meta::Node::CompileTestCase_T with_attr(langcc::ParserAttrMask attr);
-        lang::meta::Node::CompileTestCase_T with_first_k(langcc::ParserLookahead first_k);
-        lang::meta::Node::CompileTestCase_T with_neg(bool neg);
-        lang::meta::Node::CompileTestCase_T with_k(langcc::StrSlice k);
-        void hash_ser_acc_lang_meta_Node_CompileTestCase(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Id_T x);
-}
-
-namespace lang::meta::Node::Id {
-    lang::meta::Node::Id_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> names);
-}
-
-namespace lang::meta::Node::Id {
-    lang::meta::Node::Id_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> names);
-}
-
-namespace lang::meta::Node::Id {
-    struct _T: lang::meta::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::Vec_T<langcc::StrSlice> names_;
-        _T();
-        lang::meta::Node::Id_T with_id(langcc::Int id);
-        lang::meta::Node::Id_T with_bounds(langcc::TokenBounds bounds);
-        lang::meta::Node::Id_T with_is_top(bool is_top);
-        lang::meta::Node::Id_T with_sym(langcc::ParserSymId sym);
-        lang::meta::Node::Id_T with_attr(langcc::ParserAttrMask attr);
-        lang::meta::Node::Id_T with_first_k(langcc::ParserLookahead first_k);
-        lang::meta::Node::Id_T with_names(langcc::Vec_T<langcc::StrSlice> names);
-        void hash_ser_acc_lang_meta_Node_Id(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Stanza_T x);
-}
-
-namespace lang::meta::Node::Stanza {
-    enum struct _W {
-        Tokens,
-        Lexer,
-        Parser,
-        Test,
-        CompileTest,
-    };
-}
-
-namespace lang::meta::Node::Stanza {
-    struct _T: lang::meta::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        lang::meta::Node::Stanza::_W w_;
-        virtual ~_T();
-        _T(lang::meta::Node::Stanza::_W w);
-        bool is_Tokens();
-        bool is_Lexer();
-        bool is_Parser();
-        bool is_Test();
-        bool is_CompileTest();
-        lang::meta::Node::Stanza::Tokens_T as_Tokens();
-        lang::meta::Node::Stanza::Lexer_T as_Lexer();
-        lang::meta::Node::Stanza::Parser_T as_Parser();
-        lang::meta::Node::Stanza::Test_T as_Test();
-        lang::meta::Node::Stanza::CompileTest_T as_CompileTest();
-        void match(std::function<void(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, std::function<void(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, std::function<void(lang::meta::Node::Stanza::Parser_T)> f_Parser, std::function<void(lang::meta::Node::Stanza::Test_T)> f_Test, std::function<void(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, std::function<RetT(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, std::function<RetT(lang::meta::Node::Stanza::Parser_T)> f_Parser, std::function<RetT(lang::meta::Node::Stanza::Test_T)> f_Test, std::function<RetT(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest);
-        void hash_ser_acc_lang_meta_Node_Stanza(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
-    };
-}
-
-template<typename RetT> RetT lang::meta::Node::Stanza::_T::match_expr(std::function<RetT(lang::meta::Node::Stanza::Tokens_T)> f_Tokens, std::function<RetT(lang::meta::Node::Stanza::Lexer_T)> f_Lexer, std::function<RetT(lang::meta::Node::Stanza::Parser_T)> f_Parser, std::function<RetT(lang::meta::Node::Stanza::Test_T)> f_Test, std::function<RetT(lang::meta::Node::Stanza::CompileTest_T)> f_CompileTest) {
-    switch (this->w_) {
-        case lang::meta::Node::Stanza::_W::Tokens: {
-            return f_Tokens(this->as_Tokens());
-            break;
-        }
-        case lang::meta::Node::Stanza::_W::Lexer: {
-            return f_Lexer(this->as_Lexer());
-            break;
-        }
-        case lang::meta::Node::Stanza::_W::Parser: {
-            return f_Parser(this->as_Parser());
-            break;
-        }
-        case lang::meta::Node::Stanza::_W::Test: {
-            return f_Test(this->as_Test());
-            break;
-        }
-        case lang::meta::Node::Stanza::_W::CompileTest: {
-            return f_CompileTest(this->as_CompileTest());
-            break;
-        }
-        default: {
-            langcc::AX();
-        }
-    }
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::LexerDecl_T x);
-}
-
-namespace lang::meta::Node::LexerDecl {
-    enum struct _W {
-        Main,
-        Mode,
-    };
-}
-
-namespace lang::meta::Node::LexerDecl {
-    struct _T: lang::meta::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        lang::meta::Node::LexerDecl::_W w_;
-        virtual ~_T();
-        _T(lang::meta::Node::LexerDecl::_W w);
-        bool is_Main();
-        bool is_Mode();
-        lang::meta::Node::LexerDecl::Main_T as_Main();
-        lang::meta::Node::LexerDecl::Mode_T as_Mode();
-        void match(std::function<void(lang::meta::Node::LexerDecl::Main_T)> f_Main, std::function<void(lang::meta::Node::LexerDecl::Mode_T)> f_Mode);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::LexerDecl::Main_T)> f_Main, std::function<RetT(lang::meta::Node::LexerDecl::Mode_T)> f_Mode);
-        void hash_ser_acc_lang_meta_Node_LexerDecl(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
-    };
-}
-
-template<typename RetT> RetT lang::meta::Node::LexerDecl::_T::match_expr(std::function<RetT(lang::meta::Node::LexerDecl::Main_T)> f_Main, std::function<RetT(lang::meta::Node::LexerDecl::Mode_T)> f_Mode) {
-    switch (this->w_) {
-        case lang::meta::Node::LexerDecl::_W::Main: {
-            return f_Main(this->as_Main());
-            break;
-        }
-        case lang::meta::Node::LexerDecl::_W::Mode: {
-            return f_Mode(this->as_Mode());
-            break;
-        }
-        default: {
-            langcc::AX();
-        }
-    }
 }
 
 namespace langcc {
@@ -1542,6 +1505,13 @@ namespace lang::meta::Node::LexerInstr {
         lang::meta::Node::LexerInstr::PopExtract_T as_PopExtract();
         lang::meta::Node::LexerInstr::PopEmit_T as_PopEmit();
         lang::meta::Node::LexerInstr::MatchHistory_T as_MatchHistory();
+        langcc::Ptr<lang::meta::Node::LexerInstr::Emit::_T> as_Emit_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerInstr::Pass::_T> as_Pass_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerInstr::Push::_T> as_Push_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerInstr::Pop::_T> as_Pop_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerInstr::PopExtract::_T> as_PopExtract_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerInstr::PopEmit::_T> as_PopEmit_unchecked();
+        langcc::Ptr<lang::meta::Node::LexerInstr::MatchHistory::_T> as_MatchHistory_unchecked();
         void match(std::function<void(lang::meta::Node::LexerInstr::Emit_T)> f_Emit, std::function<void(lang::meta::Node::LexerInstr::Pass_T)> f_Pass, std::function<void(lang::meta::Node::LexerInstr::Push_T)> f_Push, std::function<void(lang::meta::Node::LexerInstr::Pop_T)> f_Pop, std::function<void(lang::meta::Node::LexerInstr::PopExtract_T)> f_PopExtract, std::function<void(lang::meta::Node::LexerInstr::PopEmit_T)> f_PopEmit, std::function<void(lang::meta::Node::LexerInstr::MatchHistory_T)> f_MatchHistory);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::LexerInstr::Emit_T)> f_Emit, std::function<RetT(lang::meta::Node::LexerInstr::Pass_T)> f_Pass, std::function<RetT(lang::meta::Node::LexerInstr::Push_T)> f_Push, std::function<RetT(lang::meta::Node::LexerInstr::Pop_T)> f_Pop, std::function<RetT(lang::meta::Node::LexerInstr::PopExtract_T)> f_PopExtract, std::function<RetT(lang::meta::Node::LexerInstr::PopEmit_T)> f_PopEmit, std::function<RetT(lang::meta::Node::LexerInstr::MatchHistory_T)> f_MatchHistory);
         void hash_ser_acc_lang_meta_Node_LexerInstr(langcc::SerBuf& buf) const;
@@ -1616,6 +1586,11 @@ namespace lang::meta::Node::ParserDecl {
         lang::meta::Node::ParserDecl::Prec_T as_Prec();
         lang::meta::Node::ParserDecl::Attr_T as_Attr();
         lang::meta::Node::ParserDecl::Rule_T as_Rule();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Main::_T> as_Main_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Prop::_T> as_Prop_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Prec::_T> as_Prec_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Attr::_T> as_Attr_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Rule::_T> as_Rule_unchecked();
         void match(std::function<void(lang::meta::Node::ParserDecl::Main_T)> f_Main, std::function<void(lang::meta::Node::ParserDecl::Prop_T)> f_Prop, std::function<void(lang::meta::Node::ParserDecl::Prec_T)> f_Prec, std::function<void(lang::meta::Node::ParserDecl::Attr_T)> f_Attr, std::function<void(lang::meta::Node::ParserDecl::Rule_T)> f_Rule);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParserDecl::Main_T)> f_Main, std::function<RetT(lang::meta::Node::ParserDecl::Prop_T)> f_Prop, std::function<RetT(lang::meta::Node::ParserDecl::Prec_T)> f_Prec, std::function<RetT(lang::meta::Node::ParserDecl::Attr_T)> f_Attr, std::function<RetT(lang::meta::Node::ParserDecl::Rule_T)> f_Rule);
         void hash_ser_acc_lang_meta_Node_ParserDecl(langcc::SerBuf& buf) const;
@@ -1659,6 +1634,7 @@ namespace lang::meta::Node::ParserProp {
     enum struct _W {
         NameStrict,
         AllowUnreach,
+        ASTExtraData,
         LRSpec,
         Err_,
     };
@@ -1673,20 +1649,27 @@ namespace lang::meta::Node::ParserProp {
         _T(lang::meta::Node::ParserProp::_W w);
         bool is_NameStrict();
         bool is_AllowUnreach();
+        bool is_ASTExtraData();
         bool is_LRSpec();
         bool is_Err_();
         lang::meta::Node::ParserProp::NameStrict_T as_NameStrict();
         lang::meta::Node::ParserProp::AllowUnreach_T as_AllowUnreach();
+        lang::meta::Node::ParserProp::ASTExtraData_T as_ASTExtraData();
         lang::meta::Node::ParserProp::LRSpec_T as_LRSpec();
         lang::meta::Node::ParserProp::Err__T as_Err_();
-        void match(std::function<void(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<void(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<void(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<void(lang::meta::Node::ParserProp::Err__T)> f_Err_);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_);
+        langcc::Ptr<lang::meta::Node::ParserProp::NameStrict::_T> as_NameStrict_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserProp::AllowUnreach::_T> as_AllowUnreach_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserProp::ASTExtraData::_T> as_ASTExtraData_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserProp::LRSpec::_T> as_LRSpec_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserProp::Err_::_T> as_Err__unchecked();
+        void match(std::function<void(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<void(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<void(lang::meta::Node::ParserProp::ASTExtraData_T)> f_ASTExtraData, std::function<void(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<void(lang::meta::Node::ParserProp::Err__T)> f_Err_);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<RetT(lang::meta::Node::ParserProp::ASTExtraData_T)> f_ASTExtraData, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_);
         void hash_ser_acc_lang_meta_Node_ParserProp(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_) {
+template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(std::function<RetT(lang::meta::Node::ParserProp::NameStrict_T)> f_NameStrict, std::function<RetT(lang::meta::Node::ParserProp::AllowUnreach_T)> f_AllowUnreach, std::function<RetT(lang::meta::Node::ParserProp::ASTExtraData_T)> f_ASTExtraData, std::function<RetT(lang::meta::Node::ParserProp::LRSpec_T)> f_LRSpec, std::function<RetT(lang::meta::Node::ParserProp::Err__T)> f_Err_) {
     switch (this->w_) {
         case lang::meta::Node::ParserProp::_W::NameStrict: {
             return f_NameStrict(this->as_NameStrict());
@@ -1694,6 +1677,10 @@ template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(std::f
         }
         case lang::meta::Node::ParserProp::_W::AllowUnreach: {
             return f_AllowUnreach(this->as_AllowUnreach());
+            break;
+        }
+        case lang::meta::Node::ParserProp::_W::ASTExtraData: {
+            return f_ASTExtraData(this->as_ASTExtraData());
             break;
         }
         case lang::meta::Node::ParserProp::_W::LRSpec: {
@@ -1708,6 +1695,38 @@ template<typename RetT> RetT lang::meta::Node::ParserProp::_T::match_expr(std::f
             langcc::AX();
         }
     }
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::PrecItem_T x);
+}
+
+namespace lang::meta::Node::PrecItem {
+    lang::meta::Node::PrecItem_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Id_T> ids, langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc);
+}
+
+namespace lang::meta::Node::PrecItem {
+    lang::meta::Node::PrecItem_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<lang::meta::Node::Id_T> ids, langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc);
+}
+
+namespace lang::meta::Node::PrecItem {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::Vec_T<lang::meta::Node::Id_T> ids_;
+        langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc_;
+        _T();
+        lang::meta::Node::PrecItem_T with_id(langcc::Int id);
+        lang::meta::Node::PrecItem_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::PrecItem_T with_is_top(bool is_top);
+        lang::meta::Node::PrecItem_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::PrecItem_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::PrecItem_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::PrecItem_T with_ids(langcc::Vec_T<lang::meta::Node::Id_T> ids);
+        lang::meta::Node::PrecItem_T with_assoc(langcc::Option_T<lang::meta::Node::PrecAssoc_T> assoc);
+        void hash_ser_acc_lang_meta_Node_PrecItem(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
 }
 
 namespace langcc {
@@ -1738,6 +1757,10 @@ namespace lang::meta::Node::PrecAssoc {
         lang::meta::Node::PrecAssoc::Right_T as_Right();
         lang::meta::Node::PrecAssoc::Prefix_T as_Prefix();
         lang::meta::Node::PrecAssoc::Postfix_T as_Postfix();
+        langcc::Ptr<lang::meta::Node::PrecAssoc::Left::_T> as_Left_unchecked();
+        langcc::Ptr<lang::meta::Node::PrecAssoc::Right::_T> as_Right_unchecked();
+        langcc::Ptr<lang::meta::Node::PrecAssoc::Prefix::_T> as_Prefix_unchecked();
+        langcc::Ptr<lang::meta::Node::PrecAssoc::Postfix::_T> as_Postfix_unchecked();
         void match(std::function<void(lang::meta::Node::PrecAssoc::Left_T)> f_Left, std::function<void(lang::meta::Node::PrecAssoc::Right_T)> f_Right, std::function<void(lang::meta::Node::PrecAssoc::Prefix_T)> f_Prefix, std::function<void(lang::meta::Node::PrecAssoc::Postfix_T)> f_Postfix);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::PrecAssoc::Left_T)> f_Left, std::function<RetT(lang::meta::Node::PrecAssoc::Right_T)> f_Right, std::function<RetT(lang::meta::Node::PrecAssoc::Prefix_T)> f_Prefix, std::function<RetT(lang::meta::Node::PrecAssoc::Postfix_T)> f_Postfix);
         void hash_ser_acc_lang_meta_Node_PrecAssoc(langcc::SerBuf& buf) const;
@@ -1794,6 +1817,9 @@ namespace lang::meta::Node::AttrClause {
         lang::meta::Node::AttrClause::Expr_T as_Expr();
         lang::meta::Node::AttrClause::Block_T as_Block();
         lang::meta::Node::AttrClause::Match_T as_Match();
+        langcc::Ptr<lang::meta::Node::AttrClause::Expr::_T> as_Expr_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClause::Block::_T> as_Block_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClause::Match::_T> as_Match_unchecked();
         void match(std::function<void(lang::meta::Node::AttrClause::Expr_T)> f_Expr, std::function<void(lang::meta::Node::AttrClause::Block_T)> f_Block, std::function<void(lang::meta::Node::AttrClause::Match_T)> f_Match);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::AttrClause::Expr_T)> f_Expr, std::function<RetT(lang::meta::Node::AttrClause::Block_T)> f_Block, std::function<RetT(lang::meta::Node::AttrClause::Match_T)> f_Match);
         void hash_ser_acc_lang_meta_Node_AttrClause(langcc::SerBuf& buf) const;
@@ -1822,6 +1848,38 @@ template<typename RetT> RetT lang::meta::Node::AttrClause::_T::match_expr(std::f
 }
 
 namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCase_T x);
+}
+
+namespace lang::meta::Node::AttrMatchCase {
+    lang::meta::Node::AttrMatchCase_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::meta::Node::AttrMatchCasePattern_T pat, lang::meta::Node::AttrClause_T clause);
+}
+
+namespace lang::meta::Node::AttrMatchCase {
+    lang::meta::Node::AttrMatchCase_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::meta::Node::AttrMatchCasePattern_T pat, lang::meta::Node::AttrClause_T clause);
+}
+
+namespace lang::meta::Node::AttrMatchCase {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        lang::meta::Node::AttrMatchCasePattern_T pat_;
+        lang::meta::Node::AttrClause_T clause_;
+        _T();
+        lang::meta::Node::AttrMatchCase_T with_id(langcc::Int id);
+        lang::meta::Node::AttrMatchCase_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::AttrMatchCase_T with_is_top(bool is_top);
+        lang::meta::Node::AttrMatchCase_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::AttrMatchCase_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::AttrMatchCase_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::AttrMatchCase_T with_pat(lang::meta::Node::AttrMatchCasePattern_T pat);
+        lang::meta::Node::AttrMatchCase_T with_clause(lang::meta::Node::AttrClause_T clause);
+        void hash_ser_acc_lang_meta_Node_AttrMatchCase(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::AttrMatchCasePattern_T x);
 }
 
@@ -1843,6 +1901,8 @@ namespace lang::meta::Node::AttrMatchCasePattern {
         bool is_Wildcard();
         lang::meta::Node::AttrMatchCasePattern::Alt_T as_Alt();
         lang::meta::Node::AttrMatchCasePattern::Wildcard_T as_Wildcard();
+        langcc::Ptr<lang::meta::Node::AttrMatchCasePattern::Alt::_T> as_Alt_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrMatchCasePattern::Wildcard::_T> as_Wildcard_unchecked();
         void match(std::function<void(lang::meta::Node::AttrMatchCasePattern::Alt_T)> f_Alt, std::function<void(lang::meta::Node::AttrMatchCasePattern::Wildcard_T)> f_Wildcard);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::AttrMatchCasePattern::Alt_T)> f_Alt, std::function<RetT(lang::meta::Node::AttrMatchCasePattern::Wildcard_T)> f_Wildcard);
         void hash_ser_acc_lang_meta_Node_AttrMatchCasePattern(langcc::SerBuf& buf) const;
@@ -1891,6 +1951,9 @@ namespace lang::meta::Node::AttrClauseExpr {
         lang::meta::Node::AttrClauseExpr::LhsGeq_T as_LhsGeq();
         lang::meta::Node::AttrClauseExpr::RhsGeq_T as_RhsGeq();
         lang::meta::Node::AttrClauseExpr::Implies_T as_Implies();
+        langcc::Ptr<lang::meta::Node::AttrClauseExpr::LhsGeq::_T> as_LhsGeq_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClauseExpr::RhsGeq::_T> as_RhsGeq_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClauseExpr::Implies::_T> as_Implies_unchecked();
         void match(std::function<void(lang::meta::Node::AttrClauseExpr::LhsGeq_T)> f_LhsGeq, std::function<void(lang::meta::Node::AttrClauseExpr::RhsGeq_T)> f_RhsGeq, std::function<void(lang::meta::Node::AttrClauseExpr::Implies_T)> f_Implies);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::AttrClauseExpr::LhsGeq_T)> f_LhsGeq, std::function<RetT(lang::meta::Node::AttrClauseExpr::RhsGeq_T)> f_RhsGeq, std::function<RetT(lang::meta::Node::AttrClauseExpr::Implies_T)> f_Implies);
         void hash_ser_acc_lang_meta_Node_AttrClauseExpr(langcc::SerBuf& buf) const;
@@ -1946,6 +2009,10 @@ namespace lang::meta::Node::AttrClauseExprRhsLoc {
         lang::meta::Node::AttrClauseExprRhsLoc::Begin_T as_Begin();
         lang::meta::Node::AttrClauseExprRhsLoc::Mid_T as_Mid();
         lang::meta::Node::AttrClauseExprRhsLoc::End_T as_End();
+        langcc::Ptr<lang::meta::Node::AttrClauseExprRhsLoc::All::_T> as_All_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClauseExprRhsLoc::Begin::_T> as_Begin_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClauseExprRhsLoc::Mid::_T> as_Mid_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrClauseExprRhsLoc::End::_T> as_End_unchecked();
         void match(std::function<void(lang::meta::Node::AttrClauseExprRhsLoc::All_T)> f_All, std::function<void(lang::meta::Node::AttrClauseExprRhsLoc::Begin_T)> f_Begin, std::function<void(lang::meta::Node::AttrClauseExprRhsLoc::Mid_T)> f_Mid, std::function<void(lang::meta::Node::AttrClauseExprRhsLoc::End_T)> f_End);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::All_T)> f_All, std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::Begin_T)> f_Begin, std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::Mid_T)> f_Mid, std::function<RetT(lang::meta::Node::AttrClauseExprRhsLoc::End_T)> f_End);
         void hash_ser_acc_lang_meta_Node_AttrClauseExprRhsLoc(langcc::SerBuf& buf) const;
@@ -1975,6 +2042,72 @@ template<typename RetT> RetT lang::meta::Node::AttrClauseExprRhsLoc::_T::match_e
             langcc::AX();
         }
     }
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::TestCase_T x);
+}
+
+namespace lang::meta::Node::TestCase {
+    lang::meta::Node::TestCase_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice text, langcc::Option_T<langcc::StrSlice> sym_, bool print_exempt);
+}
+
+namespace lang::meta::Node::TestCase {
+    lang::meta::Node::TestCase_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice text, langcc::Option_T<langcc::StrSlice> sym_, bool print_exempt);
+}
+
+namespace lang::meta::Node::TestCase {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::StrSlice text_;
+        langcc::Option_T<langcc::StrSlice> sym__;
+        bool print_exempt_;
+        _T();
+        lang::meta::Node::TestCase_T with_id(langcc::Int id);
+        lang::meta::Node::TestCase_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::TestCase_T with_is_top(bool is_top);
+        lang::meta::Node::TestCase_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::TestCase_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::TestCase_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::TestCase_T with_text(langcc::StrSlice text);
+        lang::meta::Node::TestCase_T with_sym_(langcc::Option_T<langcc::StrSlice> sym_);
+        lang::meta::Node::TestCase_T with_print_exempt(bool print_exempt);
+        void hash_ser_acc_lang_meta_Node_TestCase(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::CompileTestCase_T x);
+}
+
+namespace lang::meta::Node::CompileTestCase {
+    lang::meta::Node::CompileTestCase_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool neg, langcc::StrSlice k);
+}
+
+namespace lang::meta::Node::CompileTestCase {
+    lang::meta::Node::CompileTestCase_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool neg, langcc::StrSlice k);
+}
+
+namespace lang::meta::Node::CompileTestCase {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        bool neg_;
+        langcc::StrSlice k_;
+        _T();
+        lang::meta::Node::CompileTestCase_T with_id(langcc::Int id);
+        lang::meta::Node::CompileTestCase_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::CompileTestCase_T with_is_top(bool is_top);
+        lang::meta::Node::CompileTestCase_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::CompileTestCase_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::CompileTestCase_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::CompileTestCase_T with_neg(bool neg);
+        lang::meta::Node::CompileTestCase_T with_k(langcc::StrSlice k);
+        void hash_ser_acc_lang_meta_Node_CompileTestCase(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
 }
 
 namespace langcc {
@@ -2071,6 +2204,32 @@ namespace lang::meta::Node::ParseExpr {
         lang::meta::Node::ParseExpr::List_T as_List();
         lang::meta::Node::ParseExpr::Unfold_T as_Unfold();
         lang::meta::Node::ParseExpr::AttrReq_T as_AttrReq();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Id::_T> as_Id_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Eof::_T> as_Eof_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::False::_T> as_False_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Eps::_T> as_Eps_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Indent::_T> as_Indent_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Dedent::_T> as_Dedent_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Newline::_T> as_Newline_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::UnicodeAny::_T> as_UnicodeAny_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::AsciiBaseAny::_T> as_AsciiBaseAny_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Alt::_T> as_Alt_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::AltExplicit::_T> as_AltExplicit_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Minus::_T> as_Minus_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Concat::_T> as_Concat_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Optional::_T> as_Optional_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Rep::_T> as_Rep_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::RepNonzero::_T> as_RepNonzero_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::RepCount::_T> as_RepCount_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::CharRange::_T> as_CharRange_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::StrLit::_T> as_StrLit_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Underscore::_T> as_Underscore_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Pass::_T> as_Pass_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Paren::_T> as_Paren_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Name::_T> as_Name_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::List::_T> as_List_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::Unfold::_T> as_Unfold_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::AttrReq::_T> as_AttrReq_unchecked();
         void match(std::function<void(lang::meta::Node::ParseExpr::Id_T)> f_Id, std::function<void(lang::meta::Node::ParseExpr::Eof_T)> f_Eof, std::function<void(lang::meta::Node::ParseExpr::False_T)> f_False, std::function<void(lang::meta::Node::ParseExpr::Eps_T)> f_Eps, std::function<void(lang::meta::Node::ParseExpr::Indent_T)> f_Indent, std::function<void(lang::meta::Node::ParseExpr::Dedent_T)> f_Dedent, std::function<void(lang::meta::Node::ParseExpr::Newline_T)> f_Newline, std::function<void(lang::meta::Node::ParseExpr::UnicodeAny_T)> f_UnicodeAny, std::function<void(lang::meta::Node::ParseExpr::AsciiBaseAny_T)> f_AsciiBaseAny, std::function<void(lang::meta::Node::ParseExpr::Alt_T)> f_Alt, std::function<void(lang::meta::Node::ParseExpr::AltExplicit_T)> f_AltExplicit, std::function<void(lang::meta::Node::ParseExpr::Minus_T)> f_Minus, std::function<void(lang::meta::Node::ParseExpr::Concat_T)> f_Concat, std::function<void(lang::meta::Node::ParseExpr::Optional_T)> f_Optional, std::function<void(lang::meta::Node::ParseExpr::Rep_T)> f_Rep, std::function<void(lang::meta::Node::ParseExpr::RepNonzero_T)> f_RepNonzero, std::function<void(lang::meta::Node::ParseExpr::RepCount_T)> f_RepCount, std::function<void(lang::meta::Node::ParseExpr::CharRange_T)> f_CharRange, std::function<void(lang::meta::Node::ParseExpr::StrLit_T)> f_StrLit, std::function<void(lang::meta::Node::ParseExpr::Underscore_T)> f_Underscore, std::function<void(lang::meta::Node::ParseExpr::Pass_T)> f_Pass, std::function<void(lang::meta::Node::ParseExpr::Paren_T)> f_Paren, std::function<void(lang::meta::Node::ParseExpr::Name_T)> f_Name, std::function<void(lang::meta::Node::ParseExpr::List_T)> f_List, std::function<void(lang::meta::Node::ParseExpr::Unfold_T)> f_Unfold, std::function<void(lang::meta::Node::ParseExpr::AttrReq_T)> f_AttrReq);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParseExpr::Id_T)> f_Id, std::function<RetT(lang::meta::Node::ParseExpr::Eof_T)> f_Eof, std::function<RetT(lang::meta::Node::ParseExpr::False_T)> f_False, std::function<RetT(lang::meta::Node::ParseExpr::Eps_T)> f_Eps, std::function<RetT(lang::meta::Node::ParseExpr::Indent_T)> f_Indent, std::function<RetT(lang::meta::Node::ParseExpr::Dedent_T)> f_Dedent, std::function<RetT(lang::meta::Node::ParseExpr::Newline_T)> f_Newline, std::function<RetT(lang::meta::Node::ParseExpr::UnicodeAny_T)> f_UnicodeAny, std::function<RetT(lang::meta::Node::ParseExpr::AsciiBaseAny_T)> f_AsciiBaseAny, std::function<RetT(lang::meta::Node::ParseExpr::Alt_T)> f_Alt, std::function<RetT(lang::meta::Node::ParseExpr::AltExplicit_T)> f_AltExplicit, std::function<RetT(lang::meta::Node::ParseExpr::Minus_T)> f_Minus, std::function<RetT(lang::meta::Node::ParseExpr::Concat_T)> f_Concat, std::function<RetT(lang::meta::Node::ParseExpr::Optional_T)> f_Optional, std::function<RetT(lang::meta::Node::ParseExpr::Rep_T)> f_Rep, std::function<RetT(lang::meta::Node::ParseExpr::RepNonzero_T)> f_RepNonzero, std::function<RetT(lang::meta::Node::ParseExpr::RepCount_T)> f_RepCount, std::function<RetT(lang::meta::Node::ParseExpr::CharRange_T)> f_CharRange, std::function<RetT(lang::meta::Node::ParseExpr::StrLit_T)> f_StrLit, std::function<RetT(lang::meta::Node::ParseExpr::Underscore_T)> f_Underscore, std::function<RetT(lang::meta::Node::ParseExpr::Pass_T)> f_Pass, std::function<RetT(lang::meta::Node::ParseExpr::Paren_T)> f_Paren, std::function<RetT(lang::meta::Node::ParseExpr::Name_T)> f_Name, std::function<RetT(lang::meta::Node::ParseExpr::List_T)> f_List, std::function<RetT(lang::meta::Node::ParseExpr::Unfold_T)> f_Unfold, std::function<RetT(lang::meta::Node::ParseExpr::AttrReq_T)> f_AttrReq);
         void hash_ser_acc_lang_meta_Node_ParseExpr(langcc::SerBuf& buf) const;
@@ -2212,6 +2371,8 @@ namespace lang::meta::Node::AttrReq {
         bool is_PrecStar();
         lang::meta::Node::AttrReq::Base_T as_Base();
         lang::meta::Node::AttrReq::PrecStar_T as_PrecStar();
+        langcc::Ptr<lang::meta::Node::AttrReq::Base::_T> as_Base_unchecked();
+        langcc::Ptr<lang::meta::Node::AttrReq::PrecStar::_T> as_PrecStar_unchecked();
         void match(std::function<void(lang::meta::Node::AttrReq::Base_T)> f_Base, std::function<void(lang::meta::Node::AttrReq::PrecStar_T)> f_PrecStar);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::AttrReq::Base_T)> f_Base, std::function<RetT(lang::meta::Node::AttrReq::PrecStar_T)> f_PrecStar);
         void hash_ser_acc_lang_meta_Node_AttrReq(langcc::SerBuf& buf) const;
@@ -2266,6 +2427,11 @@ namespace lang::meta::Node::ParseExprListType {
         lang::meta::Node::ParseExprListType::Block2_T as_Block2();
         lang::meta::Node::ParseExprListType::Top_T as_Top();
         lang::meta::Node::ParseExprListType::Top2_T as_Top2();
+        langcc::Ptr<lang::meta::Node::ParseExprListType::List::_T> as_List_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListType::Block::_T> as_Block_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListType::Block2::_T> as_Block2_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListType::Top::_T> as_Top_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListType::Top2::_T> as_Top2_unchecked();
         void match(std::function<void(lang::meta::Node::ParseExprListType::List_T)> f_List, std::function<void(lang::meta::Node::ParseExprListType::Block_T)> f_Block, std::function<void(lang::meta::Node::ParseExprListType::Block2_T)> f_Block2, std::function<void(lang::meta::Node::ParseExprListType::Top_T)> f_Top, std::function<void(lang::meta::Node::ParseExprListType::Top2_T)> f_Top2);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParseExprListType::List_T)> f_List, std::function<RetT(lang::meta::Node::ParseExprListType::Block_T)> f_Block, std::function<RetT(lang::meta::Node::ParseExprListType::Block2_T)> f_Block2, std::function<RetT(lang::meta::Node::ParseExprListType::Top_T)> f_Top, std::function<RetT(lang::meta::Node::ParseExprListType::Top2_T)> f_Top2);
         void hash_ser_acc_lang_meta_Node_ParseExprListType(langcc::SerBuf& buf) const;
@@ -2326,6 +2492,9 @@ namespace lang::meta::Node::ParseExprListNum {
         lang::meta::Node::ParseExprListNum::Ge0_T as_Ge0();
         lang::meta::Node::ParseExprListNum::Ge1_T as_Ge1();
         lang::meta::Node::ParseExprListNum::Ge2_T as_Ge2();
+        langcc::Ptr<lang::meta::Node::ParseExprListNum::Ge0::_T> as_Ge0_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListNum::Ge1::_T> as_Ge1_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExprListNum::Ge2::_T> as_Ge2_unchecked();
         void match(std::function<void(lang::meta::Node::ParseExprListNum::Ge0_T)> f_Ge0, std::function<void(lang::meta::Node::ParseExprListNum::Ge1_T)> f_Ge1, std::function<void(lang::meta::Node::ParseExprListNum::Ge2_T)> f_Ge2);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParseExprListNum::Ge0_T)> f_Ge0, std::function<RetT(lang::meta::Node::ParseExprListNum::Ge1_T)> f_Ge1, std::function<RetT(lang::meta::Node::ParseExprListNum::Ge2_T)> f_Ge2);
         void hash_ser_acc_lang_meta_Node_ParseExprListNum(langcc::SerBuf& buf) const;
@@ -2351,6 +2520,96 @@ template<typename RetT> RetT lang::meta::Node::ParseExprListNum::_T::match_expr(
             langcc::AX();
         }
     }
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Id_T x);
+}
+
+namespace lang::meta::Node::Id {
+    lang::meta::Node::Id_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> names);
+}
+
+namespace lang::meta::Node::Id {
+    lang::meta::Node::Id_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> names);
+}
+
+namespace lang::meta::Node::Id {
+    struct _T: lang::meta::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::Vec_T<langcc::StrSlice> names_;
+        _T();
+        lang::meta::Node::Id_T with_id(langcc::Int id);
+        lang::meta::Node::Id_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::Id_T with_is_top(bool is_top);
+        lang::meta::Node::Id_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::Id_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::Id_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::Id_T with_names(langcc::Vec_T<langcc::StrSlice> names);
+        void hash_ser_acc_lang_meta_Node_Id(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Decl::Include_T x);
+}
+
+namespace lang::meta::Node::Decl::Include {
+    lang::meta::Node::Decl::Include_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice path);
+}
+
+namespace lang::meta::Node::Decl::Include {
+    lang::meta::Node::Decl::Include_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice path);
+}
+
+namespace lang::meta::Node::Decl::Include {
+    struct _T: lang::meta::Node::Decl::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::StrSlice path_;
+        _T();
+        lang::meta::Node::Decl::Include_T with_id(langcc::Int id);
+        lang::meta::Node::Decl::Include_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::Decl::Include_T with_is_top(bool is_top);
+        lang::meta::Node::Decl::Include_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::Decl::Include_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::Decl::Include_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::Decl::Include_T with_path(langcc::StrSlice path);
+        void hash_ser_acc_lang_meta_Node_Decl_Include(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::Decl::IncludePost_T x);
+}
+
+namespace lang::meta::Node::Decl::IncludePost {
+    lang::meta::Node::Decl::IncludePost_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice path);
+}
+
+namespace lang::meta::Node::Decl::IncludePost {
+    lang::meta::Node::Decl::IncludePost_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice path);
+}
+
+namespace lang::meta::Node::Decl::IncludePost {
+    struct _T: lang::meta::Node::Decl::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::StrSlice path_;
+        _T();
+        lang::meta::Node::Decl::IncludePost_T with_id(langcc::Int id);
+        lang::meta::Node::Decl::IncludePost_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::Decl::IncludePost_T with_is_top(bool is_top);
+        lang::meta::Node::Decl::IncludePost_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::Decl::IncludePost_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::Decl::IncludePost_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::Decl::IncludePost_T with_path(langcc::StrSlice path);
+        void hash_ser_acc_lang_meta_Node_Decl_IncludePost(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
 }
 
 namespace langcc {
@@ -2525,6 +2784,8 @@ namespace lang::meta::Node::TokenDecl::op {
         bool is_DEF_ALIAS();
         lang::meta::Node::TokenDecl::op::DEF_T as_DEF();
         lang::meta::Node::TokenDecl::op::DEF_ALIAS_T as_DEF_ALIAS();
+        langcc::Ptr<lang::meta::Node::TokenDecl::op::DEF::_T> as_DEF_unchecked();
+        langcc::Ptr<lang::meta::Node::TokenDecl::op::DEF_ALIAS::_T> as_DEF_ALIAS_unchecked();
         void match(std::function<void(lang::meta::Node::TokenDecl::op::DEF_T)> f_DEF, std::function<void(lang::meta::Node::TokenDecl::op::DEF_ALIAS_T)> f_DEF_ALIAS);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::TokenDecl::op::DEF_T)> f_DEF, std::function<RetT(lang::meta::Node::TokenDecl::op::DEF_ALIAS_T)> f_DEF_ALIAS);
         void hash_ser_acc_lang_meta_Node_TokenDecl_op(langcc::SerBuf& buf) const;
@@ -3024,6 +3285,36 @@ namespace lang::meta::Node::ParserProp::AllowUnreach {
         lang::meta::Node::ParserProp::AllowUnreach_T with_attr(langcc::ParserAttrMask attr);
         lang::meta::Node::ParserProp::AllowUnreach_T with_first_k(langcc::ParserLookahead first_k);
         void hash_ser_acc_lang_meta_Node_ParserProp_AllowUnreach(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::meta::Node::ParserProp::ASTExtraData_T x);
+}
+
+namespace lang::meta::Node::ParserProp::ASTExtraData {
+    lang::meta::Node::ParserProp::ASTExtraData_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name);
+}
+
+namespace lang::meta::Node::ParserProp::ASTExtraData {
+    lang::meta::Node::ParserProp::ASTExtraData_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name);
+}
+
+namespace lang::meta::Node::ParserProp::ASTExtraData {
+    struct _T: lang::meta::Node::ParserProp::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::StrSlice name_;
+        _T();
+        lang::meta::Node::ParserProp::ASTExtraData_T with_id(langcc::Int id);
+        lang::meta::Node::ParserProp::ASTExtraData_T with_bounds(langcc::TokenBounds bounds);
+        lang::meta::Node::ParserProp::ASTExtraData_T with_is_top(bool is_top);
+        lang::meta::Node::ParserProp::ASTExtraData_T with_sym(langcc::ParserSymId sym);
+        lang::meta::Node::ParserProp::ASTExtraData_T with_attr(langcc::ParserAttrMask attr);
+        lang::meta::Node::ParserProp::ASTExtraData_T with_first_k(langcc::ParserLookahead first_k);
+        lang::meta::Node::ParserProp::ASTExtraData_T with_name(langcc::StrSlice name);
+        void hash_ser_acc_lang_meta_Node_ParserProp_ASTExtraData(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
     };
 }
@@ -4724,6 +5015,8 @@ namespace lang::meta::Node::ParserDecl::Rule::op {
         bool is_DEF_ALIAS();
         lang::meta::Node::ParserDecl::Rule::op::DEF_T as_DEF();
         lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T as_DEF_ALIAS();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Rule::op::DEF::_T> as_DEF_unchecked();
+        langcc::Ptr<lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS::_T> as_DEF_ALIAS_unchecked();
         void match(std::function<void(lang::meta::Node::ParserDecl::Rule::op::DEF_T)> f_DEF, std::function<void(lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T)> f_DEF_ALIAS);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParserDecl::Rule::op::DEF_T)> f_DEF, std::function<RetT(lang::meta::Node::ParserDecl::Rule::op::DEF_ALIAS_T)> f_DEF_ALIAS);
         void hash_ser_acc_lang_meta_Node_ParserDecl_Rule_op(langcc::SerBuf& buf) const;
@@ -4772,6 +5065,9 @@ namespace lang::meta::Node::ParseExpr::List::end_delim {
         lang::meta::Node::ParseExpr::List::end_delim::NONE_T as_NONE();
         lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T as_OPTIONAL();
         lang::meta::Node::ParseExpr::List::end_delim::SOME_T as_SOME();
+        langcc::Ptr<lang::meta::Node::ParseExpr::List::end_delim::NONE::_T> as_NONE_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL::_T> as_OPTIONAL_unchecked();
+        langcc::Ptr<lang::meta::Node::ParseExpr::List::end_delim::SOME::_T> as_SOME_unchecked();
         void match(std::function<void(lang::meta::Node::ParseExpr::List::end_delim::NONE_T)> f_NONE, std::function<void(lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T)> f_OPTIONAL, std::function<void(lang::meta::Node::ParseExpr::List::end_delim::SOME_T)> f_SOME);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::meta::Node::ParseExpr::List::end_delim::NONE_T)> f_NONE, std::function<RetT(lang::meta::Node::ParseExpr::List::end_delim::OPTIONAL_T)> f_OPTIONAL, std::function<RetT(lang::meta::Node::ParseExpr::List::end_delim::SOME_T)> f_SOME);
         void hash_ser_acc_lang_meta_Node_ParseExpr_List_end_delim(langcc::SerBuf& buf) const;
@@ -4971,6 +5267,12 @@ namespace lang::meta::Node::ParseExpr::List::end_delim::SOME {
     };
 }
 
+void visit_lang_meta_Node(lang::meta::Node::Decl::Include_T x, std::function<void(lang::meta::Node_T)> f);
+
+void visit_lang_meta_Node(lang::meta::Node::Decl::IncludePost_T x, std::function<void(lang::meta::Node_T)> f);
+
+void visit_lang_meta_Node(lang::meta::Node::Decl_T x, std::function<void(lang::meta::Node_T)> f);
+
 void visit_lang_meta_Node(lang::meta::Node::TokenDecl::op::DEF_T x, std::function<void(lang::meta::Node_T)> f);
 
 void visit_lang_meta_Node(lang::meta::Node::TokenDecl::op::DEF_ALIAS_T x, std::function<void(lang::meta::Node_T)> f);
@@ -5107,6 +5409,8 @@ void visit_lang_meta_Node(lang::meta::Node::ParserProp::NameStrict_T x, std::fun
 
 void visit_lang_meta_Node(lang::meta::Node::ParserProp::AllowUnreach_T x, std::function<void(lang::meta::Node_T)> f);
 
+void visit_lang_meta_Node(lang::meta::Node::ParserProp::ASTExtraData_T x, std::function<void(lang::meta::Node_T)> f);
+
 void visit_lang_meta_Node(lang::meta::Node::ParserProp::LRSpec_T x, std::function<void(lang::meta::Node_T)> f);
 
 void visit_lang_meta_Node(lang::meta::Node::ParserProp::Err__T x, std::function<void(lang::meta::Node_T)> f);
@@ -5190,6 +5494,12 @@ void visit_lang_meta_Node(lang::meta::Node::Stanza_T x, std::function<void(lang:
 void visit_lang_meta_Node(lang::meta::Node::Lang_T x, std::function<void(lang::meta::Node_T)> f);
 
 void visit_lang_meta_Node(lang::meta::Node_T x, std::function<void(lang::meta::Node_T)> f);
+
+lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::Decl::Include_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::Decl::IncludePost_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::Decl_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::TokenDecl::op::DEF_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
@@ -5327,6 +5637,8 @@ lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::NameStric
 
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::AllowUnreach_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
+lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::ASTExtraData_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::LRSpec_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node::ParserProp::Err__T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
@@ -5414,6 +5726,12 @@ lang::meta::Node_T xformT_lang_meta_Node(lang::meta::Node_T x, std::function<lan
 lang::meta::Node_T xform_lang_meta_Node(lang::meta::Node_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::Lang_T xform_lang_meta_Node(lang::meta::Node::Lang_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node::Decl_T xform_lang_meta_Node(lang::meta::Node::Decl_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node::Decl::Include_T xform_lang_meta_Node(lang::meta::Node::Decl::Include_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node::Decl::IncludePost_T xform_lang_meta_Node(lang::meta::Node::Decl::IncludePost_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::Stanza_T xform_lang_meta_Node(lang::meta::Node::Stanza_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
@@ -5560,6 +5878,8 @@ lang::meta::Node::ParserProp_T xform_lang_meta_Node(lang::meta::Node::ParserProp
 lang::meta::Node::ParserProp::NameStrict_T xform_lang_meta_Node(lang::meta::Node::ParserProp::NameStrict_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::ParserProp::AllowUnreach_T xform_lang_meta_Node(lang::meta::Node::ParserProp::AllowUnreach_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
+
+lang::meta::Node::ParserProp::ASTExtraData_T xform_lang_meta_Node(lang::meta::Node::ParserProp::ASTExtraData_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 
 lang::meta::Node::ParserProp::LRSpec_T xform_lang_meta_Node(lang::meta::Node::ParserProp::LRSpec_T x, std::function<lang::meta::Node_T(lang::meta::Node_T)> f);
 

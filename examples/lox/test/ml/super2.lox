@@ -1,0 +1,17 @@
+class A {
+  f(y) {
+    print y + 1;
+  }
+
+  init(x) {
+    this.f(x);
+  }
+}
+
+class B < A {
+  f(y) {
+    print y + 2;
+  }
+}
+
+var b = B(10);  // expect: 12

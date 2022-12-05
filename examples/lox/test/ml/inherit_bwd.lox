@@ -1,0 +1,4 @@
+class Foo < Bar {}
+
+class Bar {}
+// expect runtime error: Bar not bound

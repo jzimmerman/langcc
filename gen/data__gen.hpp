@@ -32,12 +32,28 @@ namespace lang::data::lexer::comment_single {
 
 #include <langcc_util.hpp>
 
+namespace lang::data::Node {
+    struct _T;
+}
+
+namespace lang::data {
+    using Node_T = langcc::rc_ptr<lang::data::Node::_T>;
+}
+
 namespace lang::data::Node::Module {
     struct _T;
 }
 
 namespace lang::data::Node {
     using Module_T = langcc::rc_ptr<lang::data::Node::Module::_T>;
+}
+
+namespace lang::data::Node::Decl {
+    struct _T;
+}
+
+namespace lang::data::Node {
+    using Decl_T = langcc::rc_ptr<lang::data::Node::Decl::_T>;
 }
 
 namespace lang::data::Node::Decl::Include {
@@ -72,6 +88,14 @@ namespace lang::data::Node::Decl {
     using Enum_T = langcc::rc_ptr<lang::data::Node::Decl::Enum::_T>;
 }
 
+namespace lang::data::Node::Mod {
+    struct _T;
+}
+
+namespace lang::data::Node {
+    using Mod_T = langcc::rc_ptr<lang::data::Node::Mod::_T>;
+}
+
 namespace lang::data::Node::Mod::Mut {
     struct _T;
 }
@@ -104,6 +128,14 @@ namespace lang::data::Node {
     using Param_T = langcc::rc_ptr<lang::data::Node::Param::_T>;
 }
 
+namespace lang::data::Node::Entry {
+    struct _T;
+}
+
+namespace lang::data::Node {
+    using Entry_T = langcc::rc_ptr<lang::data::Node::Entry::_T>;
+}
+
 namespace lang::data::Node::Entry::Field {
     struct _T;
 }
@@ -118,6 +150,14 @@ namespace lang::data::Node::Entry::Method {
 
 namespace lang::data::Node::Entry {
     using Method_T = langcc::rc_ptr<lang::data::Node::Entry::Method::_T>;
+}
+
+namespace lang::data::Node::Expr {
+    struct _T;
+}
+
+namespace lang::data::Node {
+    using Expr_T = langcc::rc_ptr<lang::data::Node::Expr::_T>;
 }
 
 namespace lang::data::Node::Expr::Id {
@@ -144,6 +184,14 @@ namespace lang::data::Node::Expr {
     using Type__T = langcc::rc_ptr<lang::data::Node::Expr::Type_::_T>;
 }
 
+namespace lang::data::Node::Expr::Int_ {
+    struct _T;
+}
+
+namespace lang::data::Node::Expr {
+    using Int__T = langcc::rc_ptr<lang::data::Node::Expr::Int_::_T>;
+}
+
 namespace lang::data::Node::SumId {
     struct _T;
 }
@@ -160,46 +208,6 @@ namespace lang::data::Node {
     using Id_T = langcc::rc_ptr<lang::data::Node::Id::_T>;
 }
 
-namespace lang::data::Node::Decl {
-    struct _T;
-}
-
-namespace lang::data::Node {
-    using Decl_T = langcc::rc_ptr<lang::data::Node::Decl::_T>;
-}
-
-namespace lang::data::Node::Mod {
-    struct _T;
-}
-
-namespace lang::data::Node {
-    using Mod_T = langcc::rc_ptr<lang::data::Node::Mod::_T>;
-}
-
-namespace lang::data::Node::Entry {
-    struct _T;
-}
-
-namespace lang::data::Node {
-    using Entry_T = langcc::rc_ptr<lang::data::Node::Entry::_T>;
-}
-
-namespace lang::data::Node::Expr {
-    struct _T;
-}
-
-namespace lang::data::Node {
-    using Expr_T = langcc::rc_ptr<lang::data::Node::Expr::_T>;
-}
-
-namespace lang::data::Node {
-    struct _T;
-}
-
-namespace lang::data {
-    using Node_T = langcc::rc_ptr<lang::data::Node::_T>;
-}
-
 namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::data::Node_T x);
 }
@@ -207,13 +215,13 @@ namespace langcc {
 namespace lang::data::Node {
     enum struct _W {
         Module,
-        Param,
-        SumId,
-        Id,
         Decl,
         Mod,
+        Param,
         Entry,
         Expr,
+        SumId,
+        Id,
     };
 }
 
@@ -231,44 +239,40 @@ namespace lang::data::Node {
         langcc::ParserLookahead first_k_;
         _T(lang::data::Node::_W w);
         bool is_Module();
-        bool is_Param();
-        bool is_SumId();
-        bool is_Id();
         bool is_Decl();
         bool is_Mod();
+        bool is_Param();
         bool is_Entry();
         bool is_Expr();
+        bool is_SumId();
+        bool is_Id();
         lang::data::Node::Module_T as_Module();
-        lang::data::Node::Param_T as_Param();
-        lang::data::Node::SumId_T as_SumId();
-        lang::data::Node::Id_T as_Id();
         lang::data::Node::Decl_T as_Decl();
         lang::data::Node::Mod_T as_Mod();
+        lang::data::Node::Param_T as_Param();
         lang::data::Node::Entry_T as_Entry();
         lang::data::Node::Expr_T as_Expr();
-        void match(std::function<void(lang::data::Node::Module_T)> f_Module, std::function<void(lang::data::Node::Param_T)> f_Param, std::function<void(lang::data::Node::SumId_T)> f_SumId, std::function<void(lang::data::Node::Id_T)> f_Id, std::function<void(lang::data::Node::Decl_T)> f_Decl, std::function<void(lang::data::Node::Mod_T)> f_Mod, std::function<void(lang::data::Node::Entry_T)> f_Entry, std::function<void(lang::data::Node::Expr_T)> f_Expr);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::data::Node::Module_T)> f_Module, std::function<RetT(lang::data::Node::Param_T)> f_Param, std::function<RetT(lang::data::Node::SumId_T)> f_SumId, std::function<RetT(lang::data::Node::Id_T)> f_Id, std::function<RetT(lang::data::Node::Decl_T)> f_Decl, std::function<RetT(lang::data::Node::Mod_T)> f_Mod, std::function<RetT(lang::data::Node::Entry_T)> f_Entry, std::function<RetT(lang::data::Node::Expr_T)> f_Expr);
+        lang::data::Node::SumId_T as_SumId();
+        lang::data::Node::Id_T as_Id();
+        langcc::Ptr<lang::data::Node::Module::_T> as_Module_unchecked();
+        langcc::Ptr<lang::data::Node::Decl::_T> as_Decl_unchecked();
+        langcc::Ptr<lang::data::Node::Mod::_T> as_Mod_unchecked();
+        langcc::Ptr<lang::data::Node::Param::_T> as_Param_unchecked();
+        langcc::Ptr<lang::data::Node::Entry::_T> as_Entry_unchecked();
+        langcc::Ptr<lang::data::Node::Expr::_T> as_Expr_unchecked();
+        langcc::Ptr<lang::data::Node::SumId::_T> as_SumId_unchecked();
+        langcc::Ptr<lang::data::Node::Id::_T> as_Id_unchecked();
+        void match(std::function<void(lang::data::Node::Module_T)> f_Module, std::function<void(lang::data::Node::Decl_T)> f_Decl, std::function<void(lang::data::Node::Mod_T)> f_Mod, std::function<void(lang::data::Node::Param_T)> f_Param, std::function<void(lang::data::Node::Entry_T)> f_Entry, std::function<void(lang::data::Node::Expr_T)> f_Expr, std::function<void(lang::data::Node::SumId_T)> f_SumId, std::function<void(lang::data::Node::Id_T)> f_Id);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::data::Node::Module_T)> f_Module, std::function<RetT(lang::data::Node::Decl_T)> f_Decl, std::function<RetT(lang::data::Node::Mod_T)> f_Mod, std::function<RetT(lang::data::Node::Param_T)> f_Param, std::function<RetT(lang::data::Node::Entry_T)> f_Entry, std::function<RetT(lang::data::Node::Expr_T)> f_Expr, std::function<RetT(lang::data::Node::SumId_T)> f_SumId, std::function<RetT(lang::data::Node::Id_T)> f_Id);
         void hash_ser_acc_lang_data_Node(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::data::Node::_T::match_expr(std::function<RetT(lang::data::Node::Module_T)> f_Module, std::function<RetT(lang::data::Node::Param_T)> f_Param, std::function<RetT(lang::data::Node::SumId_T)> f_SumId, std::function<RetT(lang::data::Node::Id_T)> f_Id, std::function<RetT(lang::data::Node::Decl_T)> f_Decl, std::function<RetT(lang::data::Node::Mod_T)> f_Mod, std::function<RetT(lang::data::Node::Entry_T)> f_Entry, std::function<RetT(lang::data::Node::Expr_T)> f_Expr) {
+template<typename RetT> RetT lang::data::Node::_T::match_expr(std::function<RetT(lang::data::Node::Module_T)> f_Module, std::function<RetT(lang::data::Node::Decl_T)> f_Decl, std::function<RetT(lang::data::Node::Mod_T)> f_Mod, std::function<RetT(lang::data::Node::Param_T)> f_Param, std::function<RetT(lang::data::Node::Entry_T)> f_Entry, std::function<RetT(lang::data::Node::Expr_T)> f_Expr, std::function<RetT(lang::data::Node::SumId_T)> f_SumId, std::function<RetT(lang::data::Node::Id_T)> f_Id) {
     switch (this->w_) {
         case lang::data::Node::_W::Module: {
             return f_Module(this->as_Module());
-            break;
-        }
-        case lang::data::Node::_W::Param: {
-            return f_Param(this->as_Param());
-            break;
-        }
-        case lang::data::Node::_W::SumId: {
-            return f_SumId(this->as_SumId());
-            break;
-        }
-        case lang::data::Node::_W::Id: {
-            return f_Id(this->as_Id());
             break;
         }
         case lang::data::Node::_W::Decl: {
@@ -279,12 +283,24 @@ template<typename RetT> RetT lang::data::Node::_T::match_expr(std::function<RetT
             return f_Mod(this->as_Mod());
             break;
         }
+        case lang::data::Node::_W::Param: {
+            return f_Param(this->as_Param());
+            break;
+        }
         case lang::data::Node::_W::Entry: {
             return f_Entry(this->as_Entry());
             break;
         }
         case lang::data::Node::_W::Expr: {
             return f_Expr(this->as_Expr());
+            break;
+        }
+        case lang::data::Node::_W::SumId: {
+            return f_SumId(this->as_SumId());
+            break;
+        }
+        case lang::data::Node::_W::Id: {
+            return f_Id(this->as_Id());
             break;
         }
         default: {
@@ -324,98 +340,6 @@ namespace lang::data::Node::Module {
 }
 
 namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Param_T x);
-}
-
-namespace lang::data::Node::Param {
-    lang::data::Node::Param_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, lang::data::Node::Expr_T type_);
-}
-
-namespace lang::data::Node::Param {
-    lang::data::Node::Param_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, lang::data::Node::Expr_T type_);
-}
-
-namespace lang::data::Node::Param {
-    struct _T: lang::data::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::StrSlice name_;
-        lang::data::Node::Expr_T type__;
-        _T();
-        lang::data::Node::Param_T with_id(langcc::Int id);
-        lang::data::Node::Param_T with_bounds(langcc::TokenBounds bounds);
-        lang::data::Node::Param_T with_is_top(bool is_top);
-        lang::data::Node::Param_T with_sym(langcc::ParserSymId sym);
-        lang::data::Node::Param_T with_attr(langcc::ParserAttrMask attr);
-        lang::data::Node::Param_T with_first_k(langcc::ParserLookahead first_k);
-        lang::data::Node::Param_T with_name(langcc::StrSlice name);
-        lang::data::Node::Param_T with_type_(lang::data::Node::Expr_T type_);
-        void hash_ser_acc_lang_data_Node_Param(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x);
-}
-
-namespace lang::data::Node::SumId {
-    lang::data::Node::SumId_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items);
-}
-
-namespace lang::data::Node::SumId {
-    lang::data::Node::SumId_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items);
-}
-
-namespace lang::data::Node::SumId {
-    struct _T: lang::data::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::Vec_T<langcc::StrSlice> items_;
-        _T();
-        lang::data::Node::SumId_T with_id(langcc::Int id);
-        lang::data::Node::SumId_T with_bounds(langcc::TokenBounds bounds);
-        lang::data::Node::SumId_T with_is_top(bool is_top);
-        lang::data::Node::SumId_T with_sym(langcc::ParserSymId sym);
-        lang::data::Node::SumId_T with_attr(langcc::ParserAttrMask attr);
-        lang::data::Node::SumId_T with_first_k(langcc::ParserLookahead first_k);
-        lang::data::Node::SumId_T with_items(langcc::Vec_T<langcc::StrSlice> items);
-        void hash_ser_acc_lang_data_Node_SumId(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
-    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Id_T x);
-}
-
-namespace lang::data::Node::Id {
-    lang::data::Node::Id_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items);
-}
-
-namespace lang::data::Node::Id {
-    lang::data::Node::Id_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items);
-}
-
-namespace lang::data::Node::Id {
-    struct _T: lang::data::Node::_T {
-        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
-        void write(langcc::Ref<langcc::PrBufStream_T> pb);
-        langcc::Vec_T<langcc::StrSlice> items_;
-        _T();
-        lang::data::Node::Id_T with_id(langcc::Int id);
-        lang::data::Node::Id_T with_bounds(langcc::TokenBounds bounds);
-        lang::data::Node::Id_T with_is_top(bool is_top);
-        lang::data::Node::Id_T with_sym(langcc::ParserSymId sym);
-        lang::data::Node::Id_T with_attr(langcc::ParserAttrMask attr);
-        lang::data::Node::Id_T with_first_k(langcc::ParserLookahead first_k);
-        lang::data::Node::Id_T with_items(langcc::Vec_T<langcc::StrSlice> items);
-        void hash_ser_acc_lang_data_Node_Id(langcc::SerBuf& buf) const;
-        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
-    };
-}
-
-namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Decl_T x);
 }
 
@@ -443,6 +367,10 @@ namespace lang::data::Node::Decl {
         lang::data::Node::Decl::Namespace_T as_Namespace();
         lang::data::Node::Decl::Data_T as_Data();
         lang::data::Node::Decl::Enum_T as_Enum();
+        langcc::Ptr<lang::data::Node::Decl::Include::_T> as_Include_unchecked();
+        langcc::Ptr<lang::data::Node::Decl::Namespace::_T> as_Namespace_unchecked();
+        langcc::Ptr<lang::data::Node::Decl::Data::_T> as_Data_unchecked();
+        langcc::Ptr<lang::data::Node::Decl::Enum::_T> as_Enum_unchecked();
         void match(std::function<void(lang::data::Node::Decl::Include_T)> f_Include, std::function<void(lang::data::Node::Decl::Namespace_T)> f_Namespace, std::function<void(lang::data::Node::Decl::Data_T)> f_Data, std::function<void(lang::data::Node::Decl::Enum_T)> f_Enum);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::data::Node::Decl::Include_T)> f_Include, std::function<RetT(lang::data::Node::Decl::Namespace_T)> f_Namespace, std::function<RetT(lang::data::Node::Decl::Data_T)> f_Data, std::function<RetT(lang::data::Node::Decl::Enum_T)> f_Enum);
         void hash_ser_acc_lang_data_Node_Decl(langcc::SerBuf& buf) const;
@@ -499,6 +427,9 @@ namespace lang::data::Node::Mod {
         lang::data::Node::Mod::Mut_T as_Mut();
         lang::data::Node::Mod::Xform_T as_Xform();
         lang::data::Node::Mod::Visit_T as_Visit();
+        langcc::Ptr<lang::data::Node::Mod::Mut::_T> as_Mut_unchecked();
+        langcc::Ptr<lang::data::Node::Mod::Xform::_T> as_Xform_unchecked();
+        langcc::Ptr<lang::data::Node::Mod::Visit::_T> as_Visit_unchecked();
         void match(std::function<void(lang::data::Node::Mod::Mut_T)> f_Mut, std::function<void(lang::data::Node::Mod::Xform_T)> f_Xform, std::function<void(lang::data::Node::Mod::Visit_T)> f_Visit);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::data::Node::Mod::Mut_T)> f_Mut, std::function<RetT(lang::data::Node::Mod::Xform_T)> f_Xform, std::function<RetT(lang::data::Node::Mod::Visit_T)> f_Visit);
         void hash_ser_acc_lang_data_Node_Mod(langcc::SerBuf& buf) const;
@@ -527,6 +458,38 @@ template<typename RetT> RetT lang::data::Node::Mod::_T::match_expr(std::function
 }
 
 namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Param_T x);
+}
+
+namespace lang::data::Node::Param {
+    lang::data::Node::Param_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, lang::data::Node::Expr_T type_);
+}
+
+namespace lang::data::Node::Param {
+    lang::data::Node::Param_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, lang::data::Node::Expr_T type_);
+}
+
+namespace lang::data::Node::Param {
+    struct _T: lang::data::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::StrSlice name_;
+        lang::data::Node::Expr_T type__;
+        _T();
+        lang::data::Node::Param_T with_id(langcc::Int id);
+        lang::data::Node::Param_T with_bounds(langcc::TokenBounds bounds);
+        lang::data::Node::Param_T with_is_top(bool is_top);
+        lang::data::Node::Param_T with_sym(langcc::ParserSymId sym);
+        lang::data::Node::Param_T with_attr(langcc::ParserAttrMask attr);
+        lang::data::Node::Param_T with_first_k(langcc::ParserLookahead first_k);
+        lang::data::Node::Param_T with_name(langcc::StrSlice name);
+        lang::data::Node::Param_T with_type_(lang::data::Node::Expr_T type_);
+        void hash_ser_acc_lang_data_Node_Param(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
     void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Entry_T x);
 }
 
@@ -548,6 +511,8 @@ namespace lang::data::Node::Entry {
         bool is_Method();
         lang::data::Node::Entry::Field_T as_Field();
         lang::data::Node::Entry::Method_T as_Method();
+        langcc::Ptr<lang::data::Node::Entry::Field::_T> as_Field_unchecked();
+        langcc::Ptr<lang::data::Node::Entry::Method::_T> as_Method_unchecked();
         void match(std::function<void(lang::data::Node::Entry::Field_T)> f_Field, std::function<void(lang::data::Node::Entry::Method_T)> f_Method);
         template<typename RetT> RetT match_expr(std::function<RetT(lang::data::Node::Entry::Field_T)> f_Field, std::function<RetT(lang::data::Node::Entry::Method_T)> f_Method);
         void hash_ser_acc_lang_data_Node_Entry(langcc::SerBuf& buf) const;
@@ -580,6 +545,7 @@ namespace lang::data::Node::Expr {
         Id,
         App,
         Type_,
+        Int_,
     };
 }
 
@@ -593,17 +559,23 @@ namespace lang::data::Node::Expr {
         bool is_Id();
         bool is_App();
         bool is_Type_();
+        bool is_Int_();
         lang::data::Node::Expr::Id_T as_Id();
         lang::data::Node::Expr::App_T as_App();
         lang::data::Node::Expr::Type__T as_Type_();
-        void match(std::function<void(lang::data::Node::Expr::Id_T)> f_Id, std::function<void(lang::data::Node::Expr::App_T)> f_App, std::function<void(lang::data::Node::Expr::Type__T)> f_Type_);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::data::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::data::Node::Expr::App_T)> f_App, std::function<RetT(lang::data::Node::Expr::Type__T)> f_Type_);
+        lang::data::Node::Expr::Int__T as_Int_();
+        langcc::Ptr<lang::data::Node::Expr::Id::_T> as_Id_unchecked();
+        langcc::Ptr<lang::data::Node::Expr::App::_T> as_App_unchecked();
+        langcc::Ptr<lang::data::Node::Expr::Type_::_T> as_Type__unchecked();
+        langcc::Ptr<lang::data::Node::Expr::Int_::_T> as_Int__unchecked();
+        void match(std::function<void(lang::data::Node::Expr::Id_T)> f_Id, std::function<void(lang::data::Node::Expr::App_T)> f_App, std::function<void(lang::data::Node::Expr::Type__T)> f_Type_, std::function<void(lang::data::Node::Expr::Int__T)> f_Int_);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::data::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::data::Node::Expr::App_T)> f_App, std::function<RetT(lang::data::Node::Expr::Type__T)> f_Type_, std::function<RetT(lang::data::Node::Expr::Int__T)> f_Int_);
         void hash_ser_acc_lang_data_Node_Expr(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::data::Node::Expr::_T::match_expr(std::function<RetT(lang::data::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::data::Node::Expr::App_T)> f_App, std::function<RetT(lang::data::Node::Expr::Type__T)> f_Type_) {
+template<typename RetT> RetT lang::data::Node::Expr::_T::match_expr(std::function<RetT(lang::data::Node::Expr::Id_T)> f_Id, std::function<RetT(lang::data::Node::Expr::App_T)> f_App, std::function<RetT(lang::data::Node::Expr::Type__T)> f_Type_, std::function<RetT(lang::data::Node::Expr::Int__T)> f_Int_) {
     switch (this->w_) {
         case lang::data::Node::Expr::_W::Id: {
             return f_Id(this->as_Id());
@@ -617,10 +589,76 @@ template<typename RetT> RetT lang::data::Node::Expr::_T::match_expr(std::functio
             return f_Type_(this->as_Type_());
             break;
         }
+        case lang::data::Node::Expr::_W::Int_: {
+            return f_Int_(this->as_Int_());
+            break;
+        }
         default: {
             langcc::AX();
         }
     }
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::SumId_T x);
+}
+
+namespace lang::data::Node::SumId {
+    lang::data::Node::SumId_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items);
+}
+
+namespace lang::data::Node::SumId {
+    lang::data::Node::SumId_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::Vec_T<langcc::StrSlice> items);
+}
+
+namespace lang::data::Node::SumId {
+    struct _T: lang::data::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::Vec_T<langcc::StrSlice> items_;
+        _T();
+        lang::data::Node::SumId_T with_id(langcc::Int id);
+        lang::data::Node::SumId_T with_bounds(langcc::TokenBounds bounds);
+        lang::data::Node::SumId_T with_is_top(bool is_top);
+        lang::data::Node::SumId_T with_sym(langcc::ParserSymId sym);
+        lang::data::Node::SumId_T with_attr(langcc::ParserAttrMask attr);
+        lang::data::Node::SumId_T with_first_k(langcc::ParserLookahead first_k);
+        lang::data::Node::SumId_T with_items(langcc::Vec_T<langcc::StrSlice> items);
+        void hash_ser_acc_lang_data_Node_SumId(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Id_T x);
+}
+
+namespace lang::data::Node::Id {
+    lang::data::Node::Id_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool leading, langcc::Vec_T<langcc::StrSlice> items);
+}
+
+namespace lang::data::Node::Id {
+    lang::data::Node::Id_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, bool leading, langcc::Vec_T<langcc::StrSlice> items);
+}
+
+namespace lang::data::Node::Id {
+    struct _T: lang::data::Node::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        bool leading_;
+        langcc::Vec_T<langcc::StrSlice> items_;
+        _T();
+        lang::data::Node::Id_T with_id(langcc::Int id);
+        lang::data::Node::Id_T with_bounds(langcc::TokenBounds bounds);
+        lang::data::Node::Id_T with_is_top(bool is_top);
+        lang::data::Node::Id_T with_sym(langcc::ParserSymId sym);
+        lang::data::Node::Id_T with_attr(langcc::ParserAttrMask attr);
+        lang::data::Node::Id_T with_first_k(langcc::ParserLookahead first_k);
+        lang::data::Node::Id_T with_leading(bool leading);
+        lang::data::Node::Id_T with_items(langcc::Vec_T<langcc::StrSlice> items);
+        void hash_ser_acc_lang_data_Node_Id(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
 }
 
 namespace langcc {
@@ -844,11 +882,11 @@ namespace langcc {
 }
 
 namespace lang::data::Node::Entry::Field {
-    lang::data::Node::Entry::Field_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
+    lang::data::Node::Entry::Field_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, bool no_hash_, bool no_xform_, lang::data::Node::Expr_T type_);
 }
 
 namespace lang::data::Node::Entry::Field {
-    lang::data::Node::Entry::Field_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, bool no_hash_, lang::data::Node::Expr_T type_);
+    lang::data::Node::Entry::Field_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, bool no_hash_, bool no_xform_, lang::data::Node::Expr_T type_);
 }
 
 namespace lang::data::Node::Entry::Field {
@@ -857,6 +895,7 @@ namespace lang::data::Node::Entry::Field {
         void write(langcc::Ref<langcc::PrBufStream_T> pb);
         langcc::StrSlice name_;
         bool no_hash__;
+        bool no_xform__;
         lang::data::Node::Expr_T type__;
         _T();
         lang::data::Node::Entry::Field_T with_id(langcc::Int id);
@@ -867,6 +906,7 @@ namespace lang::data::Node::Entry::Field {
         lang::data::Node::Entry::Field_T with_first_k(langcc::ParserLookahead first_k);
         lang::data::Node::Entry::Field_T with_name(langcc::StrSlice name);
         lang::data::Node::Entry::Field_T with_no_hash_(bool no_hash_);
+        lang::data::Node::Entry::Field_T with_no_xform_(bool no_xform_);
         lang::data::Node::Entry::Field_T with_type_(lang::data::Node::Expr_T type_);
         void hash_ser_acc_lang_data_Node_Entry_Field(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
@@ -1003,6 +1043,36 @@ namespace lang::data::Node::Expr::Type_ {
     };
 }
 
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::data::Node::Expr::Int__T x);
+}
+
+namespace lang::data::Node::Expr::Int_ {
+    lang::data::Node::Expr::Int__T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice item);
+}
+
+namespace lang::data::Node::Expr::Int_ {
+    lang::data::Node::Expr::Int__T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice item);
+}
+
+namespace lang::data::Node::Expr::Int_ {
+    struct _T: lang::data::Node::Expr::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        langcc::StrSlice item_;
+        _T();
+        lang::data::Node::Expr::Int__T with_id(langcc::Int id);
+        lang::data::Node::Expr::Int__T with_bounds(langcc::TokenBounds bounds);
+        lang::data::Node::Expr::Int__T with_is_top(bool is_top);
+        lang::data::Node::Expr::Int__T with_sym(langcc::ParserSymId sym);
+        lang::data::Node::Expr::Int__T with_attr(langcc::ParserAttrMask attr);
+        lang::data::Node::Expr::Int__T with_first_k(langcc::ParserLookahead first_k);
+        lang::data::Node::Expr::Int__T with_item(langcc::StrSlice item);
+        void hash_ser_acc_lang_data_Node_Expr_Int_(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
 void visit_lang_data_Node(lang::data::Node::Decl::Include_T x, std::function<void(lang::data::Node_T)> f);
 
 void visit_lang_data_Node(lang::data::Node::Id_T x, std::function<void(lang::data::Node_T)> f);
@@ -1016,6 +1086,8 @@ void visit_lang_data_Node(lang::data::Node::Expr::Id_T x, std::function<void(lan
 void visit_lang_data_Node(lang::data::Node::Expr::App_T x, std::function<void(lang::data::Node_T)> f);
 
 void visit_lang_data_Node(lang::data::Node::Expr::Type__T x, std::function<void(lang::data::Node_T)> f);
+
+void visit_lang_data_Node(lang::data::Node::Expr::Int__T x, std::function<void(lang::data::Node_T)> f);
 
 void visit_lang_data_Node(lang::data::Node::Expr_T x, std::function<void(lang::data::Node_T)> f);
 
@@ -1058,6 +1130,8 @@ lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::Id_T x, std::fu
 lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::App_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
 
 lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::Type__T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
+
+lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr::Int__T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
 
 lang::data::Node_T xformT_lang_data_Node(lang::data::Node::Expr_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
 
@@ -1112,6 +1186,8 @@ lang::data::Node::Expr::Id_T xform_lang_data_Node(lang::data::Node::Expr::Id_T x
 lang::data::Node::Expr::App_T xform_lang_data_Node(lang::data::Node::Expr::App_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
 
 lang::data::Node::Expr::Type__T xform_lang_data_Node(lang::data::Node::Expr::Type__T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
+
+lang::data::Node::Expr::Int__T xform_lang_data_Node(lang::data::Node::Expr::Int__T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
 
 lang::data::Node::Mod_T xform_lang_data_Node(lang::data::Node::Mod_T x, std::function<lang::data::Node_T(lang::data::Node_T)> f);
 

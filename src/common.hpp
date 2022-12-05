@@ -182,7 +182,7 @@ SymStr_T string_set_min_len_element(StringSet_T<Repr> x) {
     Option_T<SymStr_T> ret;
     AT(x->items_->length() > 0);
     for (auto xi : *x->items_) {
-        if (ret.is_none() || xi.first->v_->length() < ret.as_some()->v_->length()) {
+        if (ret.is_none() || xi.second->v_->length() < ret.as_some()->v_->length()) {
             ret = Some<SymStr_T>(xi.second);
         }
     }

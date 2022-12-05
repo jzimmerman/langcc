@@ -34,14 +34,16 @@
 #include <signal.h>
 #endif
 
-#define UNW_LOCAL_ONLY
-
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <libunwind.h>
 #include <dlfcn.h>
+
+#ifdef __LIBUNWIND_BACKTRACE__
+#define UNW_LOCAL_ONLY
+#include <libunwind.h>
+#endif
 
 namespace langcc {
 
@@ -89,6 +91,8 @@ using IntPair = pair<Int, Int>;
 
 template<typename T> using Ptr = T*;
 template<typename T> using Ref = T&;
+
+using VoidPtr = void*;
 
 inline void cc_nop() {}
 
@@ -228,34 +232,34 @@ template<typename T> struct rc_ptr {
     // If rc_ == 0, this is an arena-allocated pointer (not ref-counted).
     atomic<Int>* rc_;
 
-    inline T& operator*() {
+    inline __attribute__((always_inline)) T& operator*() {
         return *reinterpret_cast<T*>(v_);
     }
 
-    inline T* operator->() {
+    inline __attribute__((always_inline)) T* operator->() {
         return reinterpret_cast<T*>(v_);
     }
 
-    inline const T& operator*() const {
+    inline __attribute__((always_inline)) const T& operator*() const {
         return *reinterpret_cast<T*>(v_);
     }
 
-    inline const T* operator->() const {
+    inline __attribute__((always_inline)) const T* operator->() const {
         return reinterpret_cast<T*>(v_);
     }
 
-    inline T* get() const {
+    inline __attribute__((always_inline)) T* get() const {
         return reinterpret_cast<T*>(v_);
     }
 
-    inline rc_ptr() : v_(nullptr), rc_(nullptr) {}
+    inline __attribute__((always_inline)) rc_ptr() : v_(nullptr), rc_(nullptr) {}
 
-    inline void incref() const;
-    inline void decref();
+    inline __attribute__((always_inline)) void incref() const;
+    inline __attribute__((always_inline)) void decref();
 
     static rc_ptr from_alloc(void* v);
 
-    inline static rc_ptr from_contents(void* v, atomic<Int>* rc) {
+    inline __attribute__((always_inline)) static rc_ptr from_contents(void* v, atomic<Int>* rc) {
         rc_ptr ret;
         ret.v_ = v;
         ret.rc_ = rc;
@@ -263,11 +267,11 @@ template<typename T> struct rc_ptr {
         return ret;
     }
 
-    inline rc_ptr(const rc_ptr<T>& x) : v_(x.v_), rc_(x.rc_) {
+    inline __attribute__((always_inline)) rc_ptr(const rc_ptr<T>& x) : v_(x.v_), rc_(x.rc_) {
         this->incref();
     }
 
-    inline rc_ptr(nullptr_t) : v_(nullptr), rc_(nullptr) {}
+    inline __attribute__((always_inline)) rc_ptr(nullptr_t) : v_(nullptr), rc_(nullptr) {}
 
     template<
         typename U,
@@ -279,7 +283,7 @@ template<typename T> struct rc_ptr {
         this->incref();
     }
 
-    inline rc_ptr<T>& operator=(const rc_ptr<T>& x) {
+    inline __attribute__((always_inline)) rc_ptr<T>& operator=(const rc_ptr<T>& x) {
         x.incref();
         this->decref();
         v_ = x.v_;
@@ -287,7 +291,7 @@ template<typename T> struct rc_ptr {
         return *this;
     }
 
-    inline ~rc_ptr() {
+    inline __attribute__((always_inline)) ~rc_ptr() {
         this->decref();
     }
 };
@@ -1042,7 +1046,55 @@ inline void pr(ostream& os, FmtFlags flags, const vector<T>& x) {
 }
 
 template<typename K, typename V>
+inline void pr_debug(ostream& os, FmtFlags flags, const map<K, V>& x) {
+    os << "{";
+    bool fresh = true;
+    for (auto p : x) {
+        if (!fresh) {
+            os << ", ";
+        }
+        fresh = false;
+        pr_debug(os, flags, p.first);
+        os << ": ";
+        pr_debug(os, flags, p.second);
+    }
+    os << "}";
+}
+
+template<typename K, typename V>
 inline void pr(ostream& os, FmtFlags flags, const map<K, V>& x) {
+    os << "{";
+    bool fresh = true;
+    for (auto p : x) {
+        if (!fresh) {
+            os << ", ";
+        }
+        fresh = false;
+        pr(os, flags, p.first);
+        os << ": ";
+        pr(os, flags, p.second);
+    }
+    os << "}";
+}
+
+template<typename K, typename V>
+inline void pr_debug(ostream& os, FmtFlags flags, const unordered_map<K, V>& x) {
+    os << "{";
+    bool fresh = true;
+    for (auto p : x) {
+        if (!fresh) {
+            os << ", ";
+        }
+        fresh = false;
+        pr_debug(os, flags, p.first);
+        os << ": ";
+        pr_debug(os, flags, p.second);
+    }
+    os << "}";
+}
+
+template<typename K, typename V>
+inline void pr(ostream& os, FmtFlags flags, const unordered_map<K, V>& x) {
     os << "{";
     bool fresh = true;
     for (auto p : x) {
@@ -3633,7 +3685,7 @@ inline Str_T read_file_shared(string filename, Arena* A = nullptr) {
     }
     Int len = lseek(fin, 0, SEEK_END);
     lseek(fin, 0, SEEK_SET);
-    auto ret = make_rc<Str>(A, 0, len*2, _Vec_constr_internal{});
+    auto ret = make_rc_ext<Str>(A, A, 0, len*2, _Vec_constr_internal{});
     Int n_read = sys_chk_nonneg(read(fin, &ret->at_unchecked(0), len), "read");
     AR_eq(n_read, len);
     close(fin);
@@ -3821,7 +3873,7 @@ inline void dispatch_unit_test(UnitTest& test) {
     }
 }
 
-inline bool run_unit_tests() {
+inline bool run_unit_tests(Time timeout = 1800L*G_) {
     fmt(cerr, "Running {} unit test(s).\n", len(get_unit_tests()));
 
     set<string> test_names;
@@ -3842,7 +3894,7 @@ inline bool run_unit_tests() {
         len(get_unit_tests()), unit_tests_max_concurrent);
 
     Time monitor_start = now();
-    Time timeout = 1800L*G_;
+    // Time timeout = 1800L*G_;
 
     while (test_dispatch_i < ts.size() || get_unit_tests_running().size() > 0) {
         if (test_dispatch_i < ts.size()) {
@@ -3852,6 +3904,21 @@ inline bool run_unit_tests() {
                 ++test_dispatch_i;
                 usleep(1000);
             }
+        }
+
+        if (now() - monitor_start > timeout) {
+            for (auto& p : get_unit_tests_running()) {
+                auto test = p.second;
+                LOG(0, "\033[31m[TIMEOUT]\033[0m {}", test.desc_.name_);
+                kill_child_proc(test.pid_);
+                test.ret_ = None<Int>();
+                test.end_time_ = now();
+                test.stdout_ = read_file(test.stdout_filename_);
+                test.stderr_ = read_file(test.stderr_filename_);
+                get_unit_tests_terminated().insert(make_pair(test.desc_.name_, test));
+            }
+            get_unit_tests_running().clear();
+            break;
         }
 
         i32 status = -1;
@@ -3881,21 +3948,6 @@ inline bool run_unit_tests() {
             LOG(0, "\033[32m[success]\033[0m {}", test.desc_.name_);
         } else {
             LOG(0, "\033[31m[FAILURE]\033[0m [{}] {}", test.ret_desc(), test.desc_.name_);
-        }
-
-        if (now() - monitor_start > timeout) {
-            for (auto& p : get_unit_tests_running()) {
-                auto test = p.second;
-                fmt(cerr, "[TIMEOUT] {}", test.desc_.name_);
-                kill_child_proc(test.pid_);
-                test.ret_ = None<Int>();
-                test.end_time_ = now();
-                test.stdout_ = read_file(test.stdout_filename_);
-                test.stderr_ = read_file(test.stderr_filename_);
-                get_unit_tests_terminated().insert(make_pair(test.desc_.name_, test));
-            }
-            get_unit_tests_running().clear();
-            break;
         }
     }
 
@@ -4036,6 +4088,7 @@ inline string sym_path_long_excerpt(string path_line) {
 }
 
 inline void dump_stack() {
+#ifdef __LIBUNWIND_BACKTRACE__
     unw_cursor_t cursor;
     unw_context_t uc;
     unw_word_t ip;
@@ -4054,8 +4107,13 @@ inline void dump_stack() {
         offs += 0x100000000UL;
         offs -= 1;
 #endif
-        auto sym_in_curr = fmt_str(
-            "{} 0x{}\n", string(info.dli_fname), hex_u64_display(offs));
+        auto fname = string(info.dli_fname);
+        if (fname == "langcc") {
+            fname = "/usr/local/bin/langcc";
+        } else if (fname == "datacc") {
+            fname = "/usr/local/bin/datacc";
+        }
+        auto sym_in_curr = fmt_str("{} 0x{}\n", fname, hex_u64_display(offs));
         sym_in += sym_in_curr;
         sym_ins.push_back(sym_in_curr);
     }
@@ -4131,6 +4189,7 @@ inline void dump_stack() {
     }
 
     cerr << ret << flush;
+#endif
 }
 
 }

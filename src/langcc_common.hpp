@@ -40,6 +40,9 @@ struct LangCompileContext {
     string cpp_test_path_;
     string cpp_debug_path_;
 
+    Vec_T<string> includes_;
+    Vec_T<string> includes_post_;
+    
     Int lr_k_;
 
     lang::meta::Node::Stanza::Tokens_T tokens_;
@@ -62,6 +65,7 @@ struct LangCompileContext {
     ParseExprPropsMap_T parse_expr_props_;
     bool parser_name_strict_ { false };
     bool parser_allow_unreach_ { false };
+    Option_T<string> parser_ast_extra_data_;
     VecUniq_T<Ident_T> parser_syms_top_;
     Option_T<string> parser_sym_top_main_;
     Map_T<Ident_T, Rule_T> parser_rules_;
@@ -120,6 +124,9 @@ struct LangCompileContext {
         cpp_path_ = fmt_str("{}/{}__gen.cpp", dst_path, src_base_name);
         cpp_test_path_ = fmt_str("{}/{}__gen_test.cpp", dst_path, src_base_name);
         cpp_debug_path_ = fmt_str("{}/{}__gen_debug.cpp", dst_path, src_base_name);
+
+        includes_ = make_rc<Vec<string>>();
+        includes_post_ = make_rc<Vec<string>>();
     }
 
     inline void error(meta::Node_T x, string msg) {
@@ -302,26 +309,27 @@ pair<Vec_T<Int>, Vec_T<Int>> parser_lr_action_by_vertex_impl_table_opt(
 
 // Code generation
 void lang_emit_preambles(LangCompileContext& ctx);
-void lang_emit_datatype_defs(LangCompileContext& ctx, HeaderMode header_mode);
-void lang_emit_writer_defs(LangCompileContext& ctx);
-void lang_emit_parser_defs(LangCompileContext& ctx);
-void lang_emit_global_defs(LangCompileContext& ctx);
+void lang_emit_datatype_defs(LangCompileContext& ctx, HeaderMode hm);
+void lang_emit_writer_defs(LangCompileContext& ctx, HeaderMode hm);
+void lang_emit_parser_defs(LangCompileContext& ctx, HeaderMode hm);
+void lang_emit_global_defs(LangCompileContext& ctx, HeaderMode hm);
 void lang_emit_test_defs(LangCompileContext& ctx);
 void lang_emit_debug_defs(LangCompileContext& ctx);
-void lang_emit_extract_final(LangCompileContext& ctx, HeaderMode header_mode);
+void lang_emit_extract_final(LangCompileContext& ctx, HeaderMode hm);
 data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty);
 void data_gen_dtype_acc(
-    DataGenContext data, Ident_T id, GenDatatype_T dt,
+    LangCompileContext& ctx, DataGenContext data, Ident_T id, GenDatatype_T dt,
     Ident_T parent);
 Vec_T<string> lower_name_ident_struct(Ident_T id);
 void lexer_gen_cpp_defs(
     LangCompileContext& ctx, CppGenContext& cc, string src_base_name,
-    Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_mode_dfas);
+    Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_mode_dfas,
+    HeaderMode hm);
 void parser_lr_write_impl_gen_cpp_instr(Vec_T<cc::Node_T>& dst, WriteInstr_T wr,
     cc::Node_T curr, GenName fun_ns,
     string src_base_name, CppGenContext& cc, LangCompileContext& ctx);
 cc::Node_T parser_lr_unwind_impl_gen_cpp(
     CppGenContext& cc, Prod_T prod_cps, Prod_T prod_flat, LangCompileContext& ctx,
-    string src_base_name);
+    string src_base_name, HeaderMode hm);
 
 }

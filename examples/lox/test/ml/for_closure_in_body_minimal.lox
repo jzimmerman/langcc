@@ -1,0 +1,13 @@
+var f_outer;
+
+for (var i = 1; i < 4; i = i + 1) {
+  var j = i;
+  fun f() {
+    print i;
+    print j;
+  }
+  f_outer = f;
+}
+
+f_outer(); // expect: 4
+           // expect: 3

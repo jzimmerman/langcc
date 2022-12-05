@@ -1,0 +1,9 @@
+var B;
+
+class A < B {  // expect runtime error: cannot inherit from nil
+    f(x) {
+        return super.f(x);
+    }
+}
+
+B = A;

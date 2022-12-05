@@ -23,6 +23,19 @@ void lang_init_validate(LangCompileContext& ctx) {
     ctx.tokens_ = lang_get_tokens_stanza(ctx.src_);
     ctx.lexer_ = lang_get_lexer_stanza(ctx.src_);
     ctx.parser_ = lang_get_parser_stanza(ctx.src_);
+    for (auto decl : *ctx.src_->decls_) {
+        if (decl->is_Include()) {
+            auto s = decl->as_Include()->path_.to_std_string();
+            auto path = s.substr(1, s.length()-2);
+            ctx.includes_->push_back(path);
+        } else if (decl->is_IncludePost()) {
+            auto s = decl->as_IncludePost()->path_.to_std_string();
+            auto path = s.substr(1, s.length()-2);
+            ctx.includes_post_->push_back(path);
+        } else {
+            AX();
+        }
+    }
 
     // Tabulate token defs
     for (auto& decl : *ctx.tokens_->decls_) {
@@ -479,6 +492,10 @@ void lang_init_validate(LangCompileContext& ctx) {
                     ctx.parser_name_strict_ = true;
                 } else if (prop->is_AllowUnreach()) {
                     ctx.parser_allow_unreach_ = true;
+                } else if (prop->is_ASTExtraData()) {
+                    auto s = prop->as_ASTExtraData()->name_.to_std_string();
+                    auto name = s.substr(1, s.length()-2);
+                    ctx.parser_ast_extra_data_ = Some<string>(name);
                 }
             }
 
@@ -574,6 +591,7 @@ bool lang_name_is_lower_reserved(string x) {
     res->insert("inline");
     res->insert("int");
     res->insert("Int");
+    res->insert("item");
     res->insert("Map");
     res->insert("mut");
     res->insert("namespace");
@@ -893,7 +911,7 @@ meta::Node::Lang_T xform_lang_normalize(
     }
 
     return meta::Node::Lang::make(
-        gen->gen(), L->bounds_, L->is_top_, L->sym_, L->attr_, L->first_k_, stanzas_new);
+        gen->gen(), L->bounds_, L->is_top_, L->sym_, L->attr_, L->first_k_, L->decls_, stanzas_new);
 }
 
 }

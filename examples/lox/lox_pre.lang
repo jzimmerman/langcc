@@ -1,0 +1,51 @@
+tokens {
+    error_general <- `// ` (`[line ` (`0`..`9`)+ `] `)? `Error` `:`? ` `;
+
+    comment_output <- false;
+    comment_error_static <- false;
+    comment_error_dynamic <- false;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        `// expect: ` => { push comment_output; }
+        error_general => { push comment_error_static; }
+        `// expect runtime error: ` => { push comment_error_dynamic; }
+        eof => { pop; }
+        _ => { pass; }
+    }
+
+    mode comment_output {
+        `\n` => { pass; pop_emit comment_output; }
+        _ => { pass; }
+    }
+
+    mode comment_error_static {
+        `\n` => { pass; pop_emit comment_error_static; }
+        eof => { pop_emit comment_error_static; }
+        _ => { pass; }
+    }
+
+    mode comment_error_dynamic {
+        `\n` => { pass; pop_emit comment_error_dynamic; }
+        eof => { pop_emit comment_error_dynamic; }
+        _ => { pass; }
+    }
+}
+
+parser {
+    main { Prog, Dir }
+
+    prop { name_strict; }
+
+    Prog <- #L[Dir::eps];
+
+    Dir.Output <- comment_output;
+    Dir.Error.Static <- comment_error_static;
+    Dir.Error.Dynamic <- comment_error_dynamic;
+}
+
+test {
+}

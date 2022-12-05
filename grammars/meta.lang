@@ -8,7 +8,7 @@ tokens {
     kw <= `tokens` | `lexer` | `parser` | `test` | `compile_test`
         | `main` | `mode` | `prop` | `prec` | `attr`
         | `emit` | `pass` | `pop` | `pop_extract` | `pop_emit` | `push`
-        | `name_strict` | `allow_unreach`
+        | `name_strict` | `allow_unreach` | `ast_extra_data`
         | `assoc_left` | `assoc_right` | `prefix` | `postfix`
         | `match` | `match_history`
         | `lhs` | `rhs` | `rhs_begin` | `rhs_mid` | `rhs_end`
@@ -17,7 +17,8 @@ tokens {
         | `unicode_any` | `ascii_base_any`
         | `ws_sig` | `newline` | `indent` | `dedent`
         | `pr`
-        | `LR` | `Err`;
+        | `LR` | `Err`
+        | `#include` | `#include_post`;
 
     op <= `(` | `)` | `{` | `}` | `[` | `]` | `;`
         | `<-` | `<=` | `|` | `*` | `+` | `^` | `-` | `..` | `?` | `!` | `~` | `_`
@@ -73,7 +74,10 @@ parser {
             AttrClauseExpr.LhsGeq AttrClauseExpr.RhsGeq AttrClauseExpr.Implies;
     }
 
-    Lang <- stanzas:#T2[Stanza::eps];
+    Lang <- decls:#T2[Decl::eps] stanzas:#T2[Stanza::eps];
+
+    Decl.Include <- `#include` _ path:str_lit;
+    Decl.IncludePost <- `#include_post` _ path:str_lit;
 
     Stanza.Tokens <- `tokens` _ `{` decls:#B[TokenDecl::`;`::] `}`;
     Stanza.Lexer <- `lexer` _ `{` decls:#B2[LexerDecl::eps] `}`;
@@ -109,6 +113,7 @@ parser {
 
         ParserProp.NameStrict <- `name_strict`;
         ParserProp.AllowUnreach <- `allow_unreach`;
+        ParserProp.ASTExtraData <- `ast_extra_data` `(` name:str_lit `)`;
         ParserProp.LRSpec <- `LR` `(` k:int_lit `)`;
         ParserProp.Err_ <- `Err`;
 

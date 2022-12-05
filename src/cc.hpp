@@ -193,9 +193,12 @@ struct CppGenContext {
 
 inline cc::Node::Expr_T name_to_cpp_direct(const GenName& name, CppGenContext& ctx) {
     AT(name->length() > 0);
-    auto ret = ctx.Q_->qq_ext(Some<string>("Expr"), (*name)[0]);
+    if (name->length() == 1) {
+        return ctx.Q_->qq_ext(Some<string>("Expr"), (*name)[0])->as_Expr();
+    }
 
-    for (Int i = 1; i < name->length(); i++) {
+    auto ret = ctx.Q_->qq_ext(Some<string>("Expr"), (*name)[0], "::", (*name)[1]);
+    for (Int i = 2; i < name->length(); i++) {
         ret = ctx.Q_->qq_ext(Some<string>("Expr"), ret, "::", (*name)[i]);
     }
     return ret->as_Expr();

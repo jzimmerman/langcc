@@ -1227,6 +1227,9 @@ LRStringExemplar_T lr_conflict_extract_exemplar_sym(LRSym_T sym, AttrSet_T attr,
             G_gen->operator[](sym->as_Base()->sym_)->operator[](attr));
     }
     auto ret = LRStringExemplar::make(sym, attr, contents);
+
+    LOG(4, "lr_conflict_extract_exemplar_sym: sym={}, attr={} -> {}", sym, attr, ret);
+
     return ret;
 }
 
@@ -1307,6 +1310,8 @@ template<typename T, typename U> pair<T, U> pair_snd_add(pair<T, U> x, U inc) {
 Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
     LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre, SymStr_T la, GrammarSymConstrGen_T G_gen,
     GrammarProdConstrs_T G_constrs) {
+
+    LOG(3, "Begin lr_conflict_nfa_search_post: w={}, pre={}, la={}", w, pre, la);
 
     Int k = la->v_->length();
 

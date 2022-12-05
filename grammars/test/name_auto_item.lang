@@ -1,0 +1,27 @@
+tokens {
+    id <- `x`;
+    top <= id | `,` | `;` | `_`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Stmt, Expr }
+
+    prop { name_strict; }
+
+    Stmt.ExprList <- #L[(Wildcard:`_` | Expr:Expr)::+`,`];
+    Stmt.Expr <- Expr `;`;
+
+    Expr.Id <- id;
+}
+
+test {
+}

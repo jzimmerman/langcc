@@ -1,0 +1,13 @@
+
+fun f(x) {
+    class A {
+        m() {
+            return x;
+        }
+    }
+    return A;
+}
+
+var Ar = f(7);
+var a = Ar();
+print a.m();

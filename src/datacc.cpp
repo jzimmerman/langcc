@@ -141,7 +141,19 @@ inline Vec_T<cc::Node_T> DataCompileContext::cpp_tabulate_template_params(
 }
 
 
-GenName data_id_to_name(const Vec_T<StrSlice>& items) {
+GenName data_id_to_name(lang::data::Node::Id_T id) {
+    auto ret = make_rc<Vec<IdBase>>();
+    if (id->leading_) {
+        ret->push("");
+    }
+    for (auto id_base : *id->items_) {
+        ret->push(id_base.to_std_string());
+    }
+    return ret;
+}
+
+
+GenName data_sum_id_to_name(const Vec_T<StrSlice>& items) {
     auto ret = make_rc<Vec<IdBase>>();
     for (auto id_base : *items) {
         ret->push(id_base.to_std_string());
@@ -180,16 +192,6 @@ inline bool has_mod_visit(data::Node::Decl::Data_T x) {
 }
 
 
-inline bool data_id_is_vec(data::Node::Id_T x) {
-    return val_hash(data_id_to_name(x->items_)) == val_hash(name_lit({"Vec"}));
-}
-
-
-inline bool data_id_is_option(data::Node::Id_T x) {
-    return val_hash(data_id_to_name(x->items_)) == val_hash(name_lit({"Option"}));
-}
-
-
 void tabulate_data_decl_acc(
     data::Node_T src, const GenName& ns, DataCompileContext& ctx) {
 
@@ -199,7 +201,8 @@ void tabulate_data_decl_acc(
         ctx.includes_->push_back(decl->as_Include()->path_.to_std_string());
 
     } else if (decl->is_Namespace()) {
-        auto ns_new = ns->with_extend(data_id_to_name(decl->as_Namespace()->name_->items_));
+        AT(!decl->as_Namespace()->name_->leading_);
+        auto ns_new = ns->with_extend(data_id_to_name(decl->as_Namespace()->name_));
         for (auto decl : *decl->as_Namespace()->body_) {
             tabulate_data_decl_acc(decl, ns_new, ctx);
         }
@@ -213,12 +216,12 @@ void tabulate_data_decl_acc(
         auto id_base = dd->name_->items_->slice(0, 1);
         auto id_sel = dd->name_->items_->slice(1, n);
 
-        auto dd_name = ns->with_extend(data_id_to_name(id_base));
-        auto dd_name_full = dd_name->with_extend(data_id_to_name(id_sel));
+        auto dd_name = ns->with_extend(data_sum_id_to_name(id_base));
+        auto dd_name_full = dd_name->with_extend(data_sum_id_to_name(id_sel));
         auto [dd_name_full_sum, dd_name_full_base] = name_ns_decons(dd_name_full);
 
         if (dd->base_.is_some()) {
-            dd_name_full_sum = ns->with_extend(data_id_to_name(dd->base_.as_some()->items_));
+            dd_name_full_sum = ns->with_extend(data_sum_id_to_name(dd->base_.as_some()->items_));
             AT(dd_name_full->length() > dd_name_full_sum->length());
             for (Int i = 0; i < dd_name_full_sum->length(); i++) {
                 if (val_hash(dd_name_full_sum->operator[](i)) !=
@@ -265,7 +268,7 @@ void tabulate_data_decl_acc(
 
     } else if (decl->is_Enum()) {
         auto dd = decl->as_Enum();
-        auto dd_name = ns->with_extend(data_id_to_name(dd->name_->items_));
+        auto dd_name = ns->with_extend(data_sum_id_to_name(dd->name_->items_));
         ctx.enum_leaves_->insert_strict(dd_name->clone_rc(), dd);
         ctx.ns_defs_->insert_strict(dd_name->clone_rc(), ns->clone_rc());
 
@@ -369,6 +372,14 @@ GenName lower_name(LowerTy lt, const GenName& name, Option_T<GenName> name_aux) 
         auto ret = make_rc<Vec<IdBase>>();
         ret->push(fmt_str("as_{}", name_aux.as_some()->only()));
         return ret;
+    } else if (lt == LowerTy::SUM_AS_UNCHECKED_FULL) {
+        return name_ns_cons(
+            name->with_append_rc("_T"),
+            fmt_str("as_{}_unchecked", name_aux.as_some()->only()));
+    } else if (lt == LowerTy::SUM_AS_UNCHECKED_BASE) {
+        auto ret = make_rc<Vec<IdBase>>();
+        ret->push(fmt_str("as_{}_unchecked", name_aux.as_some()->only()));
+        return ret;
     } else if (lt == LowerTy::HASH_SER_ACC_INST_FULL) {
         return name_ns_cons(
             name->with_append_rc("_T"),
@@ -455,7 +466,7 @@ cc::Node_T data_type_expr_to_cpp(
 
     if (x->is_Id()) {
         auto xc = x->as_Id()->x_;
-        auto name = data_id_to_name(xc->items_);
+        auto name = data_id_to_name(xc);
 
         auto name_full_pair = ns_resolve(ns, name, ctx);
         if (name_full_pair.is_some()) {
@@ -493,6 +504,11 @@ cc::Node_T data_type_expr_to_cpp(
         }
         ctx.cc_.Q_->qq_args_acc(lex_args, ">");
         return ctx.cc_.Q_->qq_inner(Some<string>("Expr"), lex_args);
+
+    } else if (x->is_Int_()) {
+        auto xc = x->as_Int_();
+        auto v = string_to_int(xc->item_.to_std_string()).as_some();
+        return ctx.cc_.qq_expr(fmt_str("{}", v));
 
     } else {
         AX("{}", x);
@@ -592,7 +608,7 @@ Option_T<cc::Node_T> lower_xform_field_entry(
 
     if (ty->is_Id()) {
         auto xc = ty->as_Id()->x_;
-        auto name = data_id_to_name(xc->items_);
+        auto name = data_id_to_name(xc);
 
         auto name_full_pair = ns_resolve(src_ns, name, ctx);
         if (name_full_pair.is_some()) {
@@ -629,7 +645,7 @@ Option_T<cc::Node_T> lower_xform_field_entry(
         if (!xc->f_->is_Id()) {
             LG_ERR("Multiple template invocations not supported"); AX();
         }
-        auto f = data_id_to_name(xc->f_->as_Id()->x_->items_);
+        auto f = data_id_to_name(xc->f_->as_Id()->x_);
 
         if (val_hash(f) == val_hash(name_lit({"Vec"}))) {
             if (xc->args_->length() != 1) {
@@ -799,12 +815,17 @@ void data_gen_xform_fn(
             auto cpp_field_proj = ctx.cc_.qq(
                 "Expr", cpp_xform_param_x_var, "->", fmt_str("{}_", field_name));
             auto field_type = q->type__;
-            auto cpp_field_item = lower_xform_field_entry(
-                xform_ty, star, curr, vis, cpp_xform_body, cpp_field_proj,
-                cpp_xform_param_f_var, field_type, curr, id_xform_fun_ns, header_mode, ctx);
-
+            cc::Node_T cpp_xform_res = cpp_field_proj;
+            if (!q->no_xform__) {
+                auto r = lower_xform_field_entry(
+                    xform_ty, star, curr, vis, cpp_xform_body, cpp_field_proj,
+                    cpp_xform_param_f_var, field_type, curr, id_xform_fun_ns, header_mode, ctx);
+                if (xform_ty == XformTy::Xform) {
+                    cpp_xform_res = r.as_some();
+                }
+            }
             if (xform_ty == XformTy::Xform) {
-                cpp_make_args->push_back(cpp_field_item.as_some());
+                cpp_make_args->push_back(cpp_xform_res);
             }
         }
 
@@ -1202,6 +1223,19 @@ DataDefsResult compile_data_defs(
             }
         }
 
+        // as_X_unchecked()
+        Map<IdBase, GenName> cpp_sum_as_unchecked_name_full;
+        Map<IdBase, Vec_T<cc::Node_T>> cpp_sum_as_unchecked_body;
+        Map<IdBase, Vec_T<cc::Node_T>> cpp_sum_as_unchecked_params;
+        if (is_sum) {
+            for (const auto& [sum_case, _] : *ctx.sum_cases_->operator[](name_full)) {
+                cpp_sum_as_unchecked_name_full.insert(sum_case,
+                    lower_name(LowerTy::SUM_AS_FULL, name_full, Some(name_lit({sum_case,}))));
+                cpp_sum_as_unchecked_body.insert(sum_case, make_rc<Vec<cc::Node_T>>());
+                cpp_sum_as_unchecked_params.insert(sum_case, make_rc<Vec<cc::Node_T>>());
+            }
+        }
+
         // match()
         auto id_sum_match_fun_ns = name_lit({ctx.cc_.gen_id_fresh(name_lit({}), "__anon__"),});
         GenName cpp_sum_match_name_full = lower_name(LowerTy::MATCH_FULL, name_full);
@@ -1418,6 +1452,16 @@ DataDefsResult compile_data_defs(
                         "return this->rc_from_this_poly<", cpp_struct_decl_name_tmpl_sub, ">();"));
             }
 
+            // as_X_unchecked()
+            for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
+                auto cpp_struct_decl_name_tmpl_sub = cpp_get_templated_name(
+                    sub_name_full, LowerTy::STRUCT, ctx);
+                cpp_sum_as_unchecked_body[sum_case]->push_back(
+                    ctx.cc_.qq_stmt(
+                        "return reinterpret_cast<langcc::Ptr<",
+                        cpp_struct_decl_name_tmpl_sub, ">>(this);"));
+            }
+
             // match()
             {
                 auto cpp_switch_cases = make_rc<Vec<cc::Node_T>>();
@@ -1504,7 +1548,6 @@ DataDefsResult compile_data_defs(
             auto def_ns = name_full;
             auto cpp_type = data_type_expr_to_cpp(data_field_type->type__, def_ns, ctx);
             auto cpp_field_name = ctx.cc_.gen_cpp_id_base(data_field_name + "_");
-
             cpp_fields->push_back(
                 ctx.cc_.Q_->qq_ext(Some<string>("Entry"), cpp_type, cpp_field_name, ";"));
         }
@@ -1656,6 +1699,22 @@ DataDefsResult compile_data_defs(
                         NodeV_empty(),
                         Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub),
                         lower_name_cpp(LowerTy::SUM_AS_BASE, name_full, ctx,
+                            Some(name_lit({sum_case,}))),
+                        cpp_sum_as_params[sum_case]));
+            }
+
+            // as_X_unchecked()
+            for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
+                auto cpp_struct_decl_name_tmpl_sub = cpp_get_templated_name(
+                    sub_name_full, LowerTy::STRUCT, ctx);
+                auto cpp_struct_decl_name_tmpl_sub_ptr = ctx.cc_.qq_expr(
+                    "langcc::Ptr<", cpp_struct_decl_name_tmpl_sub, ">");
+                cpp_fields->push_back(
+                    ctx.cc_.gen_cpp_fun_proto_entry(
+                        NodeV_empty(),
+                        NodeV_empty(),
+                        Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub_ptr),
+                        lower_name_cpp(LowerTy::SUM_AS_UNCHECKED_BASE, name_full, ctx,
                             Some(name_lit({sum_case,}))),
                         cpp_sum_as_params[sum_case]));
             }
@@ -1855,6 +1914,29 @@ DataDefsResult compile_data_defs(
                         cpp_sum_as_params[sum_case],
                         NodeV_empty(),
                         cpp_sum_as_body[sum_case])->as_Decl());
+            }
+
+            // as_X_unchecked()
+            for (const auto& [sum_case, sub_name_full] : *ctx.sum_cases_->operator[](name_full)) {
+                auto cpp_template_params_sub = cpp_tabulate_template_params(sub_name_full, ctx);
+                auto cpp_struct_decl_name_sub = lower_name_cpp(
+                    LowerTy::STRUCT, sub_name_full, ctx);
+                auto cpp_struct_decl_name_tmpl_sub = ctx.cc_.gen_cpp_id_with_template_args_acc(
+                    cpp_struct_decl_name_sub, cpp_template_params_sub);
+                auto cpp_struct_decl_name_tmpl_sub_ptr = ctx.cc_.qq_expr(
+                    "langcc::Ptr<", cpp_struct_decl_name_tmpl_sub, ">");
+                ctx.cc_.push_def(cpp_template_params->length() > 0,
+                    ctx.cc_.gen_cpp_fun_body(
+                        cpp_template_params,
+                        NodeV_empty(),
+                        inline_maybe_mods(header_mode, ctx),
+                        Some<cc::Node_T>(cpp_struct_decl_name_tmpl_sub_ptr),
+                        lower_name_cpp(LowerTy::SUM_AS_UNCHECKED_FULL, name_full, ctx,
+                            Some(name_lit({sum_case,})),
+                            Some<Vec_T<cc::Node_T>>(cpp_template_params)),
+                        cpp_sum_as_unchecked_params[sum_case],
+                        NodeV_empty(),
+                        cpp_sum_as_unchecked_body[sum_case])->as_Decl());
             }
 
             // match()

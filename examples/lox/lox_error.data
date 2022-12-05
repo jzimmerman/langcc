@@ -1,0 +1,11 @@
+namespace lox {
+    def Error {
+        desc: Str;
+        e_blame: ^lang::lox::Node_T;
+    }
+
+    def ErrorPre {
+        desc: Str;
+        e_blame: ^lang::lox_pre::Node_T;
+    }
+}
