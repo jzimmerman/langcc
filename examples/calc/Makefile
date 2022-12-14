@@ -2,11 +2,21 @@ default: all
 
 BUILD = build
 
+LANGCC = ../../build/langcc
+DATACC = ../../build/datacc
+
 all: \
+	$(LANGCC) \
+	$(DATACC) \
 	$(BUILD)/calc
 
 clean:
 	rm -rf $(BUILD) gen
+
+$(LANGCC):
+	+make -C ../.. build/langcc
+
+$(DATACC): $(LANGCC)
 
 CFLAGS_EXTRA =
 LFLAGS_EXTRA =
@@ -24,12 +34,12 @@ ifeq ($(shell uname), Darwin)
 		HOMEBREW_BASE = /opt/homebrew
 	endif
 
-	CFLAGS_EXTRA = -isystem /usr/local/include -D__MACOS_SDKROOT__=$(SDKROOT) -D__HOMEBREW_BASE__=$(HOMEBREW_BASE) -mmacosx-version-min=12.0
+	CFLAGS_EXTRA = -isystem ../../src -isystem /usr/local/include -D__MACOS_SDKROOT__=$(SDKROOT) -D__HOMEBREW_BASE__=$(HOMEBREW_BASE) -mmacosx-version-min=12.0
 	LFLAGS_EXTRA = -L/opt/local/lib -L$(HOMEBREW_BASE)/opt/gperftools/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib -ldl
 	CC = clang++
 	DSYMUTIL_MAYBE = dsymutil
 else
-	CFLAGS_EXTRA =
+	CFLAGS_EXTRA = -isystem ../../src
 	LFLAGS_EXTRA = -ldl
 	CC = clang++
 	DSYMUTIL_MAYBE = true
@@ -42,8 +52,8 @@ HPP_SRC = $(wildcard src/*.hpp)
 
 IMPLICIT_SRC = $(HPP_SRC) gen/calc__gen.hpp
 
-gen/calc__gen.hpp: calc.lang Makefile
-	langcc -h calc.lang gen
+gen/calc__gen.hpp: calc.lang Makefile $(LANGCC)
+	$(LANGCC) -h -i ../../src calc.lang gen
 
 $(BUILD)/%.o: %.cpp $(IMPLICIT_SRC) Makefile
 	mkdir -p $(BUILD)

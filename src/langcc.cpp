@@ -158,7 +158,8 @@ LangCompileResult_T compile_lang_path(
 
 
 LangCompileResult_T compile_lang_full(
-    string src_path, string dst_path, RunTests run_tests, HeaderMode hm) {
+    string src_path, string dst_path, RunTests run_tests, HeaderMode hm,
+    Vec_T<string> extra_includes) {
 
     makedirs(dst_path);
 
@@ -230,6 +231,10 @@ LangCompileResult_T compile_lang_full(
         cmds.push(".");
         cmds.push("-I");
         cmds.push("./src");
+        for (auto x : *extra_includes) {
+            cmds.push("-isystem");
+            cmds.push(x);
+        }
         if (hm == HeaderMode::N) {
             cmds.push(res->as_Ok()->cpp_path_);
         }
@@ -270,7 +275,8 @@ bool test_lang(string test_name) {
     string src_path = fmt_str("grammars/test/{}.lang", test_name);
     string dst_path = "build/gen_test_src";
     auto [src, _, __] = load_lang_path(src_path);
-    auto stat = compile_lang_full(src_path, dst_path, RunTests::Y, HeaderMode::N);
+    auto stat = compile_lang_full(
+        src_path, dst_path, RunTests::Y, HeaderMode::N, make_rc<Vec<string>>());
     if (stat->is_Error() && !lang_is_expected_fail(src)) {
         LG_ERR("Error:\n\n{}\n\n", stat->as_Error());
         return false;

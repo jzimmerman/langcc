@@ -11,7 +11,18 @@ int main(int argc, char** argv) {
 
     auto args = make_rc<Vec<string>>();
     auto params = make_rc<Vec<string>>();
+    auto extra_includes = make_rc<Vec<string>>();
     for (Int i = 1; i < argc; i++) {
+        if (argv[i] == string("-i")) {
+            ++i;
+            if (i == argc) {
+                fmt(cerr, "Usage: langcc [options] src.lang dst_dir\n");
+                return 1;
+            }
+            extra_includes->push(argv[i]);
+            continue;
+        }
+
         if (str_starts_with(argv[i], "-")) {
             params->push(argv[i]);
         } else {
@@ -49,7 +60,8 @@ int main(int argc, char** argv) {
     string src_path = args->operator[](0);
     string dst_path = args->operator[](1);
 
-    auto stat = compile_lang_full(src_path, dst_path, RunTests::Y, header_mode);
+    auto stat = compile_lang_full(
+        src_path, dst_path, RunTests::Y, header_mode, extra_includes);
     if (stat->is_Error()) {
         LG_ERR("langcc compile error:\n\n{}\n\n", stat->as_Error());
         return 1;
