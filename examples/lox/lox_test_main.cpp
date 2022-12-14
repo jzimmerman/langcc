@@ -17,6 +17,9 @@ int main(i32 argc, char** argv) {
     vector<string> ss;
     try {
         for (const auto& entry : std::filesystem::directory_iterator("test")) {
+            if (!entry.is_directory()) {
+                continue;
+            }
             for (const auto& entry2 : std::filesystem::directory_iterator(entry.path())) {
                 if (!entry2.is_regular_file()) {
                     AX("Tests must be exactly two levels deep");
