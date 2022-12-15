@@ -470,8 +470,6 @@ inline string str_reindent(const string& x, Int count) {
 }
 
 inline string duration_fmt_str(Int t) {
-    t += 500;
-    t /= 1000;
     Int micros = t % 1000000;
     t /= 1000000;
     Int sec = t % 60;
@@ -3617,7 +3615,7 @@ inline Option_T<string> stdin_readline() {
 
 inline Time now() {
     auto ret_duration = chrono::steady_clock::now().time_since_epoch();
-    Time ret = chrono::duration_cast<chrono::nanoseconds>(ret_duration).count();
+    Time ret = chrono::duration_cast<chrono::microseconds>(ret_duration).count();
     return ret;
 }
 
@@ -3863,7 +3861,7 @@ inline void dispatch_unit_test(UnitTest& test) {
     }
 }
 
-inline bool run_unit_tests(Time timeout = 1800L*G_) {
+inline bool run_unit_tests(Time timeout = 1800L*M_) {
     fmt(cerr, "Running {} unit test(s).\n", len(get_unit_tests()));
 
     set<string> test_names;
@@ -3884,7 +3882,6 @@ inline bool run_unit_tests(Time timeout = 1800L*G_) {
         len(get_unit_tests()), unit_tests_max_concurrent);
 
     Time monitor_start = now();
-    // Time timeout = 1800L*G_;
 
     while (test_dispatch_i < ts.size() || get_unit_tests_running().size() > 0) {
         if (test_dispatch_i < ts.size()) {
