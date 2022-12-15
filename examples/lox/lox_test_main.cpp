@@ -40,6 +40,6 @@ int main(i32 argc, char** argv) {
         });
     }
 
-    bool success = run_unit_tests(60*G_);
+    bool success = run_unit_tests(60*M_);
     return success ? 0 : 1;
 }
