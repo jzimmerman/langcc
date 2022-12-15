@@ -299,16 +299,6 @@ template<typename T> struct rc_ptr {
 #define STRINGIFY(x) STRINGIFY_INNER(x)
 #define STRINGIFY_INNER(x) #x
 
-template<typename T> T take_ptr(T* x) {
-    T ret = *x;
-    delete x;
-    return ret;
-}
-
-template<typename T> T drop_ptr(T* x) {
-    delete x;
-}
-
 template<
     typename U,
     typename T,
