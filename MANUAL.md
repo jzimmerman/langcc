@@ -1,41 +1,49 @@
 # ``langcc``: A Next-Generation Compiler Compiler
 
-## Introduction
+``langcc`` can serve as a replacement for
+[lex](https://en.wikipedia.org/wiki/Lex_(software))+[yacc](https://en.wikipedia.org/wiki/Yacc), but is much more powerful. ``langcc`` enables a completely new paradigm for developing programming languages based on iteratively improving the intuitive declarative specification of your language instead of laboriously updating your hand-written compiler frontend for every grammar change.
 
-`langcc` is a tool that takes as input a declarative, BNF-style grammar,
-and generates as output a compiler front-end.
-`langcc` can be used as a replacement for the combination of `lex`
-and `yacc` (or `flex` and `bison`). However, `langcc` provides many
-additional features, including:
-- Automatic generation of AST data structures, via a standalone datatype
-compiler (``datacc``).
-- Full LR parser generation as the default, rather than the more restrictive
-LALR.
-- Clear presentation of LR conflicts via explicit "confusing input pairs",
-rather than opaque shift/reduce errors.
-- Novel efficiency optimizations for LR automata.
-- An extension of the LR paradigm to include recursive-descent (RD)
-parsing actions, resulting in significantly smaller and more intuitive
-automata.
-- An extension of the LR paradigm to include per-symbol attributes,
-which are vital for the efficient implementation of many industrial language
-constructs.
-- A general transformation for LR grammars (CPS), which significantly
-expands the class of grammars the tool can support.
+- ``langcc`` generates efficient, linear-time parsers for an extremely broad class of grammars (a strict superset of
+canonical LR). In particular, the project includes complete specifications of Python 3.9.12 
+([grammars/py.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/py.lang))
+and Golang 1.17.8 ([grammars/go.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/go.lang)),
+and generates parsers for each language that are faster than their respective standard parsers (resp.,
+1.2x and 4.3x faster).
+- ``langcc`` requires only a single input file in its declarative ``.lang`` format to generate a full
+compiler frontend, including AST struct definitions and associated traversals, hashing, pretty-printing,
+and automatic integration with the generated parser (no need to sprinkle C++ code into your grammar as in lex+yacc).
+- ``langcc`` provides a built-in "conflict tracing" algorithm which traces LR conflicts back to
+"confusing input pairs", which provide explicit example strings instead of opaque shift/reduce conflicts.
+- ``langcc`` extends the existing LR paradigm to include both recursive-descent parsing actions (which result in 
+much smaller and more intuitive automata) and also per-symbol attribute constraints (which provide support for
+many industrial language constructs).
+- ``langcc`` implements a novel transformation for LR grammars we call "continuation-passing style", which
+significantly expands the class of grammars the tool supports.
+- Finally, ``langcc`` ships with a standalone _datatype compiler_ called ``datacc``, which
+generates full C++ implementations of algebraic datatypes (including sum types) from a simple declarative
+language whose spec is provided in 
+[data.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/data.lang).
 
-Unlike previous compiler front-end generators, `langcc` is efficient and general enough to capture
-full industrial programming languages, including
-Python 3.9.12 ([grammars/py.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/py.lang))
-and Golang 1.17.8 ([grammars/go.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/go.lang)). In both cases, `langcc` automatically generates
-a parser that is faster than the standard library parser for each language
-(resp., 1.2x and 4.3x faster).
-In fact, the class of grammars supported by `langcc` is general enough
-that the tool is _self-hosting_: that is, one can express the "language
-of languages" in the "language of languages" itself, and use `langcc`
-to generate its own compiler front-end. We do this in the canonical
-implementation; see the files [bootstrap.sh](https://github.com/jzimmerman/langcc/blob/main/bootstrap.sh) and
-[grammars/meta.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/meta.lang)
-in the source repository for more details.
+
+``langcc`` is _self-hosting_. The file
+[grammars/meta.lang](https://github.com/jzimmerman/langcc/blob/main/grammars/meta.lang) contains the
+specification for the "language of languages" in which ``langcc`` expects ``.lang`` files to be written.
+In this canonical implementation, the file
+[bootstrap.sh](https://github.com/jzimmerman/langcc/blob/main/bootstrap.sh) uses ``langcc`` to
+generate its own compiler front-end.
+
+``langcc`` is stable and feature-complete. It is ready to be used as a research prototype to facilitate
+rapid exploration of new compilers and programming languages. It is free and open-source and available under
+the Apache 2.0 License.
+
+``langcc`` is also described in the following companion technical reports, which provide the theoretical basis for
+its functionality.
+- Zimmerman, Joe.
+[Practical LR Parser Generation.](https://arxiv.org/pdf/2209.08383.pdf)
+arXiv, 2022.
+- Zimmerman, Joe.
+[langcc: A Next-Generation Compiler Compiler.](https://arxiv.org/pdf/2209.08385.pdf)
+arXiv, 2022.
 
 ## Usage
 
@@ -611,3 +619,39 @@ The following is a brief excerpt:
 We note that the syntax is very compact,
 and corresponds to little more than one would write on the whiteboard for an informal BNF grammar.
 
+## Detailed Examples
+
+### Lox
+
+(Note: This section is under active construction.) The Lox scripting language was designed by Robert Nystrom at
+[Crafting Interpreters](https://craftinginterpreters.com/). The example in ``examples/lox`` is a complete
+implementation of an interpreter for Lox using ``langcc``, and is the recommended way for new users to
+learn about ``langcc``'s feature set.
+
+### ``lox.lang``
+
+This file contains the specification for the Lox grammar.
+
+### ``lox.data`` and ``lox_error.data``
+
+These files contains specifications for several algebraic datatypes that our Lox interpreter uses, including
+environments, several enumerations, and runtime errors.
+
+### ``lox_val.hpp``
+
+This file (along with its forward declarations in ``lox_val_fwd.hpp``, needed in ``lox.lang``) defines
+the (performance-optimized) runtime representation we use for Lox values.
+
+### ``lox.cpp``
+
+This file contains the implementation of our Lox interpreter, which matches the behavior of Robert Nystrom's
+``jlox`` interpreter in virtually all cases (one notable exception being that we do not currently limit the number of
+arguments to a function or method call). Its performance matches or exceeds ``jlox``'s on all of the provided Lox
+benchmarks.
+
+This section will soon be greatly expanded to include commentary on the various approaches and features used to
+accomplish this.
+
+### ``lox.hpp`` and ``lox_test_main.cpp``
+
+These files are used by the Lox test harness.
