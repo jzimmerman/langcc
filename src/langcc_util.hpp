@@ -623,7 +623,7 @@ inline string oct_byte_display(u8 c) {
         hex_nybble_display((c >> 3) & 0x7) + hex_nybble_display((c >> 6) & 0x7);
 }
 
-inline string hex_u16_display(u32 c) {
+inline string hex_u16_display(u16 c) {
     string ret;
     for (Int i = 0; i < 4; i++) {
         ret += hex_nybble_display((c >> ((3-i)*4)) & 0xf);
