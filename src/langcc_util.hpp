@@ -881,15 +881,13 @@ template<typename ...Ts> inline string cc_sprintf(
 struct FmtFlags {
     Int indent_width_;
     Int indent_curr_;
-    Int prec_curr_;
 
-    FmtFlags(): indent_width_(4), indent_curr_(0), prec_curr_(0) {}
+    FmtFlags(): indent_width_(4), indent_curr_(0) {}
 
     inline static FmtFlags default_() {
         FmtFlags ret;
         ret.indent_width_ = 4;
         ret.indent_curr_ = 0;
-        ret.prec_curr_ = 0;
         return ret;
     }
 
@@ -897,7 +895,6 @@ struct FmtFlags {
         FmtFlags ret;
         ret.indent_width_ = indent_width_;
         ret.indent_curr_ = indent_curr_ + 1;
-        ret.prec_curr_ = 0;
         return ret;
     }
 
