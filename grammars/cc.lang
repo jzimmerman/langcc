@@ -5,7 +5,7 @@ tokens {
     digit <= `0`..`9`;
     ws_inline <= (`\r` | `\t` | ` `);
 
-    kw <= `return` | `struct` | `if` | `else` | `for`
+    kw <= `return` | `struct` | `if` | `else` | `for` | `while`
         | `template` | `typename` | `namespace` | `enum` | `delete` | `using`
         | `virtual` | `static` | `inline` | `const` | `switch` | `case` | `default`
         | `break` | `continue` | `new`
@@ -178,6 +178,8 @@ parser {
 
         ExprExt.Expr <- e:Expr;
         ExprExt.Decl <- decl:~TypedDecl;
+
+    Stmt.While <- `while` _ `(` cond:Expr `)` _ body:Block;
 
     Stmt.Switch <- `switch` _ `(` val:Expr `)` _ `{` cases:#B[SwitchCase::eps] `}`;
 
