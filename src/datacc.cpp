@@ -1443,10 +1443,22 @@ DataDefsResult compile_data_defs(
                     sub_name_full, LowerTy::STRUCT, ctx);
                 auto cpp_sum_is_method_name = lower_name_cpp(
                     LowerTy::SUM_IS_BASE, name_full, ctx, Some(name_lit({sum_case,})));
+                string name_full_str;
+                bool fresh = true;
+                for (auto id_str : *name_full) {
+                    if (!fresh) {
+                        name_full_str += "::";
+                    }
+                    name_full_str += id_str;
+                    fresh = false;
+                }
+                auto err_str = fmt_str("\"Sum type downcast failed: {} to {}\"",
+                    name_full_str, sum_case);
+
                 cpp_sum_as_body[sum_case]->push_back(
                     ctx.cc_.Q_->qq_ext(Some<string>("Stmt"),
                         "langcc::AT(this->", cpp_sum_is_method_name,
-                        "());"));
+                        "(),", err_str, ");"));
                 cpp_sum_as_body[sum_case]->push_back(
                     ctx.cc_.qq_stmt(
                         "return this->rc_from_this_poly<", cpp_struct_decl_name_tmpl_sub, ">();"));
