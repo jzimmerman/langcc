@@ -1,0 +1,41 @@
+tokens {
+    op <= `+` | `|`;
+
+    str_lit <- `"` ((unicode_any - (`\\` | `"`)) | esc)* `"`;
+    esc <= `\\` (`"` | `n` | `t` | `\\`);
+
+    top <=  str_lit | op;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Expr }
+
+    prop { name_strict; }
+
+    prec {
+        Expr.Bar;
+        Expr.Plus;
+        Expr.Lit;
+    }
+
+    Expr.Plus <- #L[Expr::++`+`];
+    Expr.Bar <- #L[Expr::++`|`];
+    Expr.Lit <- str_lit;
+}
+
+test {
+    `"hi"+"there"`;
+    `"you"`;
+    `##+`;
+    `"hi"##"there"`;
+    `"+"|"+"|"\\"|"+"|"##"|"-"|"+"`;
+}

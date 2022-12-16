@@ -380,9 +380,20 @@ template<typename N> void lexer_nfa_item_compile(
         auto labels_lhs = NFA::all_labels(dfa_lhs);
         auto labels_rhs = NFA::all_labels(dfa_rhs);
         auto all_labels = labels_lhs->with_union(labels_rhs);
+
+        LOG(4, "Lexer DFA minus: LHS:\n{}\n", dfa_lhs);
+        LOG(4, "Lexer DFA minus: RHS:\n{}\n", dfa_rhs);
+
         auto dfa_rhs_neg = NFA::dfa_negated(dfa_rhs, all_labels);
+
+        LOG(4, "Lexer DFA minus: RHS neg:\n{}\n", dfa_rhs_neg);
+
         auto dfa_res_raw = NFA::dfa_product(dfa_lhs, dfa_rhs_neg);
+
+        LOG(4, "Lexer DFA minus: res:\n{}\n", dfa_res_raw);
+
         auto dfa_res = NFA::vertex_stripped(dfa_res_raw);
+
         auto w_src = NFA::gen_vertex(nfa);
         auto w_dst = NFA::gen_vertex(nfa);
         NFA::splice_in(nfa, dfa_res, w_src, w_dst, eps);
@@ -710,7 +721,12 @@ Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_compile_dfas(LangCompileC
             }
         }
 
+        LOG(3, "Lexer NFA ({}):\n{}\n\n", mode, nfa);
+
         auto dfa_res = NFA::nfa_subset_constr(nfa);
+
+        LOG(3, "Lexer DFA full ({}):\n{}\n\n", mode, dfa_res);
+
         if (NFA::has_conflicts(dfa_res)) {
             for (auto vs : *dfa_res->G_->V_) {
                 auto vsi = dfa_res->G_->V_->index_of_maybe(vs).as_some();
@@ -754,6 +770,8 @@ Map_T<meta::Node::LexerDecl::Mode_T, LexerNFA_T> lexer_compile_dfas(LangCompileC
         AT(dfa->start_.as_some() == 0);  // Hardcoded in lexer_proc_mode_loop
 
         ret->insert(mode, dfa);
+
+        LOG(3, "Lexer DFA final ({}):\n{}\n\n", mode, dfa);
     }
 
     return ret;

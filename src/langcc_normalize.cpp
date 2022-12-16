@@ -284,6 +284,13 @@ void lang_init_validate(LangCompileContext& ctx) {
         }
     }
 
+    auto tok = TokenBase::Special::make(TokenBaseSpecial::ErrInvalid);
+    auto tok_expr = parse_expr_base_from_token(tok);
+    if (!ctx.tokens_top_by_id_rev_.contains_key(tok_expr)) {
+        ctx.tokens_top_by_id_rev_.insert(tok_expr, ctx.tokens_top_by_id_.length());
+        ctx.tokens_top_by_id_.push(tok_expr);
+    }
+
     LOG(2, "Top-level lexer tokens: {}", ctx.tokens_top_by_id_);
 
     // Tabulate char thresholds

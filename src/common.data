@@ -16,6 +16,7 @@ namespace langcc {
         ErrMixedIndent;
         ErrTextAfterLC;
         ErrDelimMismatch;
+        ErrInvalid;
     }
 
     def TokenBase {}
