@@ -980,7 +980,7 @@ struct WsSigSpec {
 };
 
 struct LexerModeDesc: enable_rc_from_this<LexerModeDesc> {
-    Int (*proc_mode_loop_opt_fn_)(
+    IntPair (*proc_mode_loop_opt_fn_)(
         LexerModeDesc* mode, LexerState* st, SymItemVec* emit_dst,
         Int mode_start_pos, Int mode_buf_pos);
 
@@ -995,6 +995,7 @@ struct LexerModeDesc: enable_rc_from_this<LexerModeDesc> {
     Int ws_err_mixed_indent_ind_;
     Int ws_err_text_after_lc_ind_;
     Int ws_err_delim_mismatch_ind_;
+    Int err_invalid_ind_;
 };
 
 struct LexerState: enable_rc_from_this<LexerState> {
@@ -1314,6 +1315,12 @@ inline __attribute__((always_inline)) void lexer_raise_unexpected_eof(
     throw st->in_->lex_error_val("Unexpected end-of-file", in_i);
 }
 
+inline __attribute__((always_inline)) void lexer_raise_invalid_token(
+    LexerState* st, Int in_i) {
+
+    throw st->in_->lex_error_val("Invalid token encountered", in_i);
+}
+
 inline __attribute__((always_inline)) DFALabelId lexer_char_to_label(
     Ch* in_data, Int in_i, Int in_data_len,
     DFALabelId* label_ids_ascii,
@@ -1356,7 +1363,7 @@ inline __attribute__((always_inline)) void lexer_state_eof_fail(Int& in_i, Lexer
     throw st->in_->lex_error_val("Unexpected end-of-file", in_i);
 }
 
-inline __attribute__((always_inline)) Int lexer_proc_mode_loop(LexerModeDesc* mode,
+inline __attribute__((always_inline)) IntPair lexer_proc_mode_loop(LexerModeDesc* mode,
     Ptr<langcc::LexerState> st, langcc::SymItemVec* emit_dst, Int mode_start_pos,
     Int mode_buf_pos) {
 
@@ -1378,7 +1385,11 @@ inline LexOutput_T LangDesc<Node, FAcc, FStep>::lex(const Str_T& input, Arena* A
     Int pos = -1;
     try {
         auto desc = st->mode_descs_->operator[](st->main_mode_);
-        pos = desc->proc_mode_loop_opt_fn_(desc.get(), st.get(), nullptr, 0, 0);
+        auto [pos_new, num_err] = desc->proc_mode_loop_opt_fn_(desc.get(), st.get(), nullptr, 0, 0);
+        pos = pos_new;
+        if (num_err > 0) {
+            return st->out_;
+        }
     } catch (LexError_T err) {
         st->out_->err_ = Some<LexError_T>(err);
     }

@@ -1,0 +1,24 @@
+tokens {
+    id <- ((`x` | `y`) - `y`)+;
+
+    top <= id | `y`;
+}
+
+lexer {
+    main { body }
+
+    mode body {
+        top => { emit; }
+        eof => { pop; }
+    }
+}
+
+parser {
+    main { Expr }
+
+    Expr.Id <- id `y`;
+}
+
+test {
+    `xy` <- Expr;
+}
