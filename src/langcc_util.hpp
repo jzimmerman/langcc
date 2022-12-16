@@ -118,6 +118,48 @@ inline Int len(const deque<T>& x) {
     return static_cast<Int>(x.size());
 }
 
+template<typename... Aux>
+inline Int cmp(bool x, bool y, Aux... aux) {
+    if (x < y) {
+        return -1;
+    } else if (x > y) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+template<typename... Aux>
+inline Int cmp(Int x, Int y, Aux... aux) {
+    if (x < y) {
+        return -1;
+    } else if (x > y) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+template<typename... Aux>
+inline Int cmp(string x, string y, Aux... aux) {
+    if (x < y) {
+        return -1;
+    } else if (x > y) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+template<typename T, typename U, typename... Aux>
+inline Int cmp(pair<T, U> x, pair<T, U> y, Aux... aux) {
+    Int v = cmp(x.first, y.first, aux...);
+    if (v != 0) {
+        return v;
+    }
+    return cmp(x.second, y.second, aux...);
+}
+
 constexpr Int K_ = 1000;
 constexpr Int M_ = 1000000;
 constexpr Int G_ = 1000000000;
@@ -1837,6 +1879,48 @@ struct Vec: enable_rc_from_this<Vec<T>> {
         }
         return ret;
     }
+
+    inline void swap_unchecked(Int i, Int j) {
+        T t = this->operator[](i);
+        this->operator[](i) = this->operator[](j);
+        this->operator[](j) = t;
+    }
+
+    // Note: Not robust to adversarial inputs.
+    template<typename ...Aux>
+    inline void sort_range(Int i, Int j, Aux... aux) {
+        if (j - i < 2) {
+            return;
+        }
+
+        this->swap_unchecked(i, (i+j)/2);
+
+        T pivot = this->operator[](i);
+        Int lo = i+1;
+        Int hi = j;
+
+        while (lo != hi) {
+            auto v = cmp(this->operator[](lo), pivot, aux...);
+            if (v == 1) {
+                this->swap_unchecked(lo, hi-1);
+                --hi;
+            } else {
+                this->operator[](lo-1) = this->operator[](lo);
+                ++lo;
+            }
+        }
+
+        this->operator[](lo-1) = pivot;
+
+        this->sort_range(i, lo-1, aux...);
+        this->sort_range(lo, j, aux...);
+    }
+
+    // Note: Not robust to adversarial inputs.
+    template<typename ...Aux>
+    inline void sort(Aux... aux) {
+        this->sort_range(0, this->length(), aux...);
+    }
 };
 
 template<typename T> using Vec_T = rc_ptr<Vec<T>>;
@@ -2912,6 +2996,14 @@ struct Map: enable_rc_from_this<Map<K, V>> {
         auto ret = make_rc<Vec<pair<K, V>>>();
         for (auto [k, v] : *this) {
             ret->push_back(make_pair(k, v));
+        }
+        return ret;
+    }
+
+    inline Vec_T<K> keys_to_vec() const {
+        auto ret = make_rc<Vec<K>>();
+        for (auto [k, v] : *this) {
+            ret->push_back(k);
         }
         return ret;
     }

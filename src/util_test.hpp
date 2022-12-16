@@ -97,4 +97,28 @@ TEST(utf8_encode1) {
     AR_eq(r.as_some(), v);
 }
 
+TEST(sort1) {
+    auto v = make_rc<Vec<Int>>();
+    for (Int i = 0; i < 10; i++) {
+        auto vh = val_hash(i);
+        v->push((*reinterpret_cast<Int*>(vh.v_)) % 10);
+    }
+    v->sort();
+    for (Int i = 0; i < v->length()-1; i++) {
+        AT(cmp(v->operator[](i), v->operator[](i+1)) < 1);
+    }
+}
+
+TEST(sort2) {
+    auto v = make_rc<Vec<Int>>();
+    for (Int i = 0; i < 100; i++) {
+        auto vh = val_hash(i);
+        v->push((*reinterpret_cast<Int*>(vh.v_)) % 100);
+    }
+    v->sort();
+    for (Int i = 0; i < v->length()-1; i++) {
+        AT(cmp(v->operator[](i), v->operator[](i+1)) < 1);
+    }
+}
+
 }

@@ -796,83 +796,6 @@ inline Unit string_set_repr_concat(Unit x, Unit y) {
 }
 
 
-inline Unit string_set_repr_select(Unit x, Unit y) {
-    return Unit{};
-}
-
-
-inline SymStr_T string_set_repr_concat(SymStr_T x, SymStr_T y) {
-    return sym_str_concat(x, y);
-}
-
-
-inline SymStr_T string_set_repr_select(SymStr_T x, SymStr_T y) {
-    if (y->v_->length() < x->v_->length()) {
-        return y;
-    } else {
-        return x;
-    }
-}
-
-
-template<typename Repr>
-StringSet_T<Repr> string_set_union(StringSet_T<Repr> x, StringSet_T<Repr> y) {
-    AT(x->k_ == y->k_);
-    AT(x->strict_eq_ == y->strict_eq_);
-    auto ret = make_rc<Map<SymStr_T, Repr>>();
-    for (auto xi : *x->items_) {
-        ret->insert(xi.first, xi.second);
-    }
-    for (auto yi : *y->items_) {
-        auto yr = yi.second;
-        if (ret->contains_key(yi.first)) {
-            auto xr = ret->operator[](yi.first);
-            auto zr = string_set_repr_select(xr, yr);
-            ret->insert(yi.first, zr);
-        } else {
-            ret->insert(yi.first, yi.second);
-        }
-    }
-    return StringSet::make(ret, x->k_, x->strict_eq_);
-}
-
-
-template<typename Repr>
-StringSet_T<Repr> string_set_union_multi(Set_T<StringSet_T<Repr>> xs) {
-    AT(xs->length() > 0);
-    Int k;
-    bool strict_eq;
-    for (auto x : *xs) {
-        k = x->k_;
-        strict_eq = x->strict_eq_;
-        break;
-    }
-
-    auto ret = string_set_empty<Repr>(k, strict_eq);
-    for (auto x : *xs) {
-        ret = string_set_union(ret, x);
-    }
-    return ret;
-}
-
-
-template<typename Repr>
-StringSet_T<Repr> string_set_intersection(StringSet_T<Repr> x, StringSet_T<Repr> y) {
-    AT(x->k_ == y->k_);
-    AT(x->strict_eq_ == y->strict_eq_);
-    auto ret = make_rc<Map<SymStr_T, Repr>>();
-    for (auto xi : *x->items_) {
-        if (y->items_->contains_key(xi.first)) {
-            auto xr = xi.second;
-            auto yr = y->items_->operator[](xi.first);
-            auto zr = string_set_repr_select(xr, yr);
-            ret->insert(xi.first, zr);
-        }
-    }
-    return StringSet::make(ret, x->k_, x->strict_eq_);
-}
-
-
 inline RhsPos_T parser_rhs_pos_with_update(RhsPos_T rhs_pos, Int i, Int n) {
     auto ret = RhsPos::make(rhs_pos->begin_, rhs_pos->end_);
     if (i > 0) {
@@ -997,10 +920,45 @@ inline bool attr_set_meets_bounds_relaxed(AttrSet_T s, AttrBoundSet_T bounds) {
 }
 
 
-using GrammarProdConstrs_T = Map_T<Prod_T, VecUniq_T<ProdConstrFlat_T>>;
+inline Int cmp(IdentBase_T x, IdentBase_T y) {
+    auto v = cmp(static_cast<Int>(x->w_), static_cast<Int>(y->w_));
+    if (v != 0) {
+        return v;
+    }
+    switch (x->w_) {
+        case IdentBase::_W::User: {
+            return cmp(x->as_User()->name_, y->as_User()->name_);
+        }
+        case IdentBase::_W::Ordinal: {
+            return cmp(x->as_Ordinal()->i_, y->as_Ordinal()->i_);
+        }
+        case IdentBase::_W::ItemInner: {
+            return 0;
+        }
+        default: {
+            AX();
+        }
+    }
+}
 
-using GrammarSymConstrGen_T = Map_T<Sym_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>;
-using GrammarProdConstrGen_T = Map_T<DottedProd_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>;
+
+inline Int cmp(Ident_T x, Ident_T y) {
+    Int xn = x->xs_->length();
+    Int yn = y->xs_->length();
+    for (Int i = 0; i < min(xn, yn); i++) {
+        auto vi = cmp(x->xs_->operator[](i), y->xs_->operator[](i));
+        if (vi != 0) {
+            return vi;
+        }
+    }
+    if (xn < yn) {
+        return -1;
+    }
+    if (yn < xn) {
+        return 1;
+    }
+    return 0;
+}
 
 
 inline string data_gen_id_base_to_string(IdentBase_T x) {
@@ -1013,27 +971,6 @@ inline string data_gen_id_base_to_string(IdentBase_T x) {
     } else {
         AX();
     }
-}
-
-
-inline data::Node_T data_gen_id_string_to_node(DataGenContext data, string name) {
-    auto ret_items = make_rc<Vec<string>>();
-    ret_items->push_back(name);
-    return data.Q_->qq_ext(Some<string>("Id"), *ret_items);
-}
-
-
-inline data::Node_T data_gen_id_to_node(DataGenContext data, Ident_T id) {
-    auto ret_items = make_rc<Vec<string>>();
-    bool fresh = true;
-    for (auto x : *id->xs_) {
-        if (!fresh) {
-            ret_items->push_back("::");
-        }
-        fresh = false;
-        ret_items->push_back(data_gen_id_base_to_string(x));
-    }
-    return data.Q_->qq_ext(Some<string>("Id"), *ret_items);
 }
 
 

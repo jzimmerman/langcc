@@ -335,6 +335,27 @@ void lexer_gen_cpp_defs(
 }
 
 
+inline data::Node_T data_gen_id_string_to_node(DataGenContext data, string name) {
+    auto ret_items = make_rc<Vec<string>>();
+    ret_items->push_back(name);
+    return data.Q_->qq_ext(Some<string>("Id"), *ret_items);
+}
+
+
+inline data::Node_T data_gen_id_to_node(DataGenContext data, Ident_T id) {
+    auto ret_items = make_rc<Vec<string>>();
+    bool fresh = true;
+    for (auto x : *id->xs_) {
+        if (!fresh) {
+            ret_items->push_back("::");
+        }
+        fresh = false;
+        ret_items->push_back(data_gen_id_base_to_string(x));
+    }
+    return data.Q_->qq_ext(Some<string>("Id"), *ret_items);
+}
+
+
 data::Node_T data_gen_type_to_node(DataGenContext data, GenType_T ty) {
     if (ty->is_Bool()) {
         return data_gen_id_string_to_node(data, "bool");

@@ -456,6 +456,14 @@ namespace lang::cc::Node::ExprExt {
     using Decl_T = langcc::rc_ptr<lang::cc::Node::ExprExt::Decl::_T>;
 }
 
+namespace lang::cc::Node::Stmt::While {
+    struct _T;
+}
+
+namespace lang::cc::Node::Stmt {
+    using While_T = langcc::rc_ptr<lang::cc::Node::Stmt::While::_T>;
+}
+
 namespace lang::cc::Node::Stmt::Switch {
     struct _T;
 }
@@ -1732,6 +1740,7 @@ namespace lang::cc::Node::Stmt {
         If,
         IfElse,
         For,
+        While,
         Switch,
         Break,
         Continue,
@@ -1752,6 +1761,7 @@ namespace lang::cc::Node::Stmt {
         bool is_If();
         bool is_IfElse();
         bool is_For();
+        bool is_While();
         bool is_Switch();
         bool is_Break();
         bool is_Continue();
@@ -1762,6 +1772,7 @@ namespace lang::cc::Node::Stmt {
         lang::cc::Node::Stmt::If_T as_If();
         lang::cc::Node::Stmt::IfElse_T as_IfElse();
         lang::cc::Node::Stmt::For_T as_For();
+        lang::cc::Node::Stmt::While_T as_While();
         lang::cc::Node::Stmt::Switch_T as_Switch();
         lang::cc::Node::Stmt::Break_T as_Break();
         lang::cc::Node::Stmt::Continue_T as_Continue();
@@ -1772,18 +1783,19 @@ namespace lang::cc::Node::Stmt {
         langcc::Ptr<lang::cc::Node::Stmt::If::_T> as_If_unchecked();
         langcc::Ptr<lang::cc::Node::Stmt::IfElse::_T> as_IfElse_unchecked();
         langcc::Ptr<lang::cc::Node::Stmt::For::_T> as_For_unchecked();
+        langcc::Ptr<lang::cc::Node::Stmt::While::_T> as_While_unchecked();
         langcc::Ptr<lang::cc::Node::Stmt::Switch::_T> as_Switch_unchecked();
         langcc::Ptr<lang::cc::Node::Stmt::Break::_T> as_Break_unchecked();
         langcc::Ptr<lang::cc::Node::Stmt::Continue::_T> as_Continue_unchecked();
         langcc::Ptr<lang::cc::Node::Stmt::Return::_T> as_Return_unchecked();
-        void match(std::function<void(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<void(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<void(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<void(lang::cc::Node::Stmt::If_T)> f_If, std::function<void(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<void(lang::cc::Node::Stmt::For_T)> f_For, std::function<void(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<void(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<void(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<void(lang::cc::Node::Stmt::Return_T)> f_Return);
-        template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<RetT(lang::cc::Node::Stmt::If_T)> f_If, std::function<RetT(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<RetT(lang::cc::Node::Stmt::For_T)> f_For, std::function<RetT(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<RetT(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<RetT(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<RetT(lang::cc::Node::Stmt::Return_T)> f_Return);
+        void match(std::function<void(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<void(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<void(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<void(lang::cc::Node::Stmt::If_T)> f_If, std::function<void(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<void(lang::cc::Node::Stmt::For_T)> f_For, std::function<void(lang::cc::Node::Stmt::While_T)> f_While, std::function<void(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<void(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<void(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<void(lang::cc::Node::Stmt::Return_T)> f_Return);
+        template<typename RetT> RetT match_expr(std::function<RetT(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<RetT(lang::cc::Node::Stmt::If_T)> f_If, std::function<RetT(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<RetT(lang::cc::Node::Stmt::For_T)> f_For, std::function<RetT(lang::cc::Node::Stmt::While_T)> f_While, std::function<RetT(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<RetT(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<RetT(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<RetT(lang::cc::Node::Stmt::Return_T)> f_Return);
         void hash_ser_acc_lang_cc_Node_Stmt(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const = 0;
     };
 }
 
-template<typename RetT> RetT lang::cc::Node::Stmt::_T::match_expr(std::function<RetT(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<RetT(lang::cc::Node::Stmt::If_T)> f_If, std::function<RetT(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<RetT(lang::cc::Node::Stmt::For_T)> f_For, std::function<RetT(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<RetT(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<RetT(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<RetT(lang::cc::Node::Stmt::Return_T)> f_Return) {
+template<typename RetT> RetT lang::cc::Node::Stmt::_T::match_expr(std::function<RetT(lang::cc::Node::Stmt::Decl_T)> f_Decl, std::function<RetT(lang::cc::Node::Stmt::Expr_T)> f_Expr, std::function<RetT(lang::cc::Node::Stmt::Block_T)> f_Block, std::function<RetT(lang::cc::Node::Stmt::If_T)> f_If, std::function<RetT(lang::cc::Node::Stmt::IfElse_T)> f_IfElse, std::function<RetT(lang::cc::Node::Stmt::For_T)> f_For, std::function<RetT(lang::cc::Node::Stmt::While_T)> f_While, std::function<RetT(lang::cc::Node::Stmt::Switch_T)> f_Switch, std::function<RetT(lang::cc::Node::Stmt::Break_T)> f_Break, std::function<RetT(lang::cc::Node::Stmt::Continue_T)> f_Continue, std::function<RetT(lang::cc::Node::Stmt::Return_T)> f_Return) {
     switch (this->w_) {
         case lang::cc::Node::Stmt::_W::Decl: {
             return f_Decl(this->as_Decl());
@@ -1807,6 +1819,10 @@ template<typename RetT> RetT lang::cc::Node::Stmt::_T::match_expr(std::function<
         }
         case lang::cc::Node::Stmt::_W::For: {
             return f_For(this->as_For());
+            break;
+        }
+        case lang::cc::Node::Stmt::_W::While: {
+            return f_While(this->as_While());
             break;
         }
         case lang::cc::Node::Stmt::_W::Switch: {
@@ -3168,6 +3184,38 @@ namespace lang::cc::Node::ExprExt::Decl {
         lang::cc::Node::ExprExt::Decl_T with_first_k(langcc::ParserLookahead first_k);
         lang::cc::Node::ExprExt::Decl_T with_decl(lang::cc::Node::TypedDecl_T decl);
         void hash_ser_acc_lang_cc_Node_ExprExt_Decl(langcc::SerBuf& buf) const;
+        virtual void hash_ser_acc(langcc::SerBuf& buf) const;
+    };
+}
+
+namespace langcc {
+    void pr_debug(ostream& os, FmtFlags flags, lang::cc::Node::Stmt::While_T x);
+}
+
+namespace lang::cc::Node::Stmt::While {
+    lang::cc::Node::Stmt::While_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Block_T body);
+}
+
+namespace lang::cc::Node::Stmt::While {
+    lang::cc::Node::Stmt::While_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, lang::cc::Node::Expr_T cond, lang::cc::Node::Block_T body);
+}
+
+namespace lang::cc::Node::Stmt::While {
+    struct _T: lang::cc::Node::Stmt::_T {
+        void write(langcc::Ref<std::ostream> os, langcc::FmtFlags flags);
+        void write(langcc::Ref<langcc::PrBufStream_T> pb);
+        lang::cc::Node::Expr_T cond_;
+        lang::cc::Node::Block_T body_;
+        _T();
+        lang::cc::Node::Stmt::While_T with_id(langcc::Int id);
+        lang::cc::Node::Stmt::While_T with_bounds(langcc::TokenBounds bounds);
+        lang::cc::Node::Stmt::While_T with_is_top(bool is_top);
+        lang::cc::Node::Stmt::While_T with_sym(langcc::ParserSymId sym);
+        lang::cc::Node::Stmt::While_T with_attr(langcc::ParserAttrMask attr);
+        lang::cc::Node::Stmt::While_T with_first_k(langcc::ParserLookahead first_k);
+        lang::cc::Node::Stmt::While_T with_cond(lang::cc::Node::Expr_T cond);
+        lang::cc::Node::Stmt::While_T with_body(lang::cc::Node::Block_T body);
+        void hash_ser_acc_lang_cc_Node_Stmt_While(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;
     };
 }
@@ -5808,6 +5856,8 @@ void visit_lang_cc_Node(lang::cc::Node::ExprExt_T x, std::function<void(lang::cc
 
 void visit_lang_cc_Node(lang::cc::Node::Stmt::For_T x, std::function<void(lang::cc::Node_T)> f);
 
+void visit_lang_cc_Node(lang::cc::Node::Stmt::While_T x, std::function<void(lang::cc::Node_T)> f);
+
 void visit_lang_cc_Node(lang::cc::Node::SwitchCase::Case_T x, std::function<void(lang::cc::Node_T)> f);
 
 void visit_lang_cc_Node(lang::cc::Node::SwitchCase::Default_T x, std::function<void(lang::cc::Node_T)> f);
@@ -6047,6 +6097,8 @@ lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::ExprExt::Decl_T x, std::fun
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::ExprExt_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Stmt::For_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
+
+lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::Stmt::While_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node_T xformT_lang_cc_Node(lang::cc::Node::SwitchCase::Case_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
@@ -6311,6 +6363,8 @@ lang::cc::Node::ExprExt_T xform_lang_cc_Node(lang::cc::Node::ExprExt_T x, std::f
 lang::cc::Node::ExprExt::Expr_T xform_lang_cc_Node(lang::cc::Node::ExprExt::Expr_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::ExprExt::Decl_T xform_lang_cc_Node(lang::cc::Node::ExprExt::Decl_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
+
+lang::cc::Node::Stmt::While_T xform_lang_cc_Node(lang::cc::Node::Stmt::While_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 
 lang::cc::Node::Stmt::Switch_T xform_lang_cc_Node(lang::cc::Node::Stmt::Switch_T x, std::function<lang::cc::Node_T(lang::cc::Node_T)> f);
 

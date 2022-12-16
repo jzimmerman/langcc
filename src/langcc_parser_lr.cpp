@@ -3,6 +3,97 @@
 
 namespace langcc {
 
+inline Int cmp(AttrKey_T x, AttrKey_T y) {
+    auto v = cmp(static_cast<Int>(x->w_), static_cast<Int>(y->w_));
+    if (v != 0) {
+        return v;
+    }
+    switch (x->w_) {
+        case AttrKey::_W::Prec: {
+            return cmp(static_cast<Int>(x->as_Prec()->dir_), static_cast<Int>(y->as_Prec()->dir_));
+        }
+        case AttrKey::_W::Id: {
+            return cmp(x->as_Id()->name_, y->as_Id()->name_);
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
+
+inline Int cmp(AttrVal_T x, AttrVal_T y) {
+    auto v = cmp(static_cast<Int>(x->w_), static_cast<Int>(y->w_));
+    if (v != 0) {
+        return v;
+    }
+    switch (x->w_) {
+        case AttrVal::_W::Bool: {
+            return cmp(x->as_Bool()->v_, y->as_Bool()->v_);
+        }
+        case AttrVal::_W::Int_: {
+            return cmp(x->as_Int_()->v_, y->as_Int_()->v_);
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
+
+inline Int cmp(AttrSet_T x, AttrSet_T y) {
+    auto ks = make_rc<Set<AttrKey_T>>();
+    for (auto [xk, _] : *x->m_) {
+        ks->insert(xk);
+    }
+    for (auto [yk, _] : *y->m_) {
+        ks->insert(yk);
+    }
+    auto ks_v = ks->to_vec();
+    ks_v->sort();
+    for (auto k : *ks_v) {
+        if (!x->m_->contains_key(k)) {
+            return 1;
+        }
+        if (!y->m_->contains_key(k)) {
+            return -1;
+        }
+        auto kv = - cmp(x->m_->operator[](k), y->m_->operator[](k));
+        if (kv != 0) {
+            return kv;
+        }
+    }
+    return 0;
+}
+
+
+inline Int cmp(LRLabel_T x, LRLabel_T y, Grammar_T G) {
+    auto v = cmp(static_cast<Int>(x->w_), static_cast<Int>(y->w_));
+    if (v != 0) {
+        return v;
+    }
+    switch (x->w_) {
+        case LRLabel::_W::Eps: {
+            return 0;
+        }
+        case LRLabel::_W::Sym_: {
+            auto xc = x->as_Sym_();
+            auto yc = y->as_Sym_();
+            auto r = cmp(xc->sym_, yc->sym_, G);
+            if (r != 0) {
+                return r;
+            }
+            auto ret = cmp(xc->attr_, yc->attr_);
+
+            return ret;
+        }
+        default: {
+            AX();
+        }
+    }
+}
+
+
 AttrSet_T prod_lhs_attr_init(Prod_T prod, LangCompileContext& ctx) {
     auto m = make_rc<Map<AttrKey_T, AttrVal_T>>();
     auto lhs = prod->lhs_;
@@ -80,21 +171,29 @@ Option_T<AttrSet_T> prod_lhs_apply_constrs_incremental(
 
 template<typename Repr>
 void string_set_concat_inner_acc(
-    Map_T<SymStr_T, Repr>& dst, Int k, StringSet_T<Repr> x, StringSet_T<Repr> y) {
+    Map_T<SymStr_T, Repr>& dst, Int k, StringSet_T<Repr> x, StringSet_T<Repr> y,
+    Grammar_T G) {
 
     for (auto [xi, rxi] : *x->items_) {
         for (auto [yi, ryi] : *y->items_) {
             auto zi_full = sym_str_concat(xi, yi);
             auto zi = sym_str_trunc(zi_full, k);
             auto rzi = string_set_repr_concat(rxi, ryi);
-            dst->insert(zi, rzi);
+            if (dst->contains_key(zi)) {
+                auto rzi_prev = dst->operator[](zi);
+                dst->insert(zi, string_set_repr_select(rzi_prev, rzi, G));
+            } else {
+                dst->insert(zi, rzi);
+            }
         }
     }
 }
 
 
 template<typename Repr>
-StringSet_T<Repr> string_set_concat(StringSet_T<Repr> x, StringSet_T<Repr> y) {
+StringSet_T<Repr> string_set_concat(StringSet_T<Repr> x, StringSet_T<Repr> y,
+    Grammar_T G) {
+
     auto ret_k = x->k_;
     if (!x->strict_eq_ && !y->strict_eq_) {
         AT(x->k_ == y->k_);
@@ -108,7 +207,7 @@ StringSet_T<Repr> string_set_concat(StringSet_T<Repr> x, StringSet_T<Repr> y) {
     }
     bool ret_strict_eq = x->strict_eq_ || y->strict_eq_;
     auto ret = make_rc<Map<SymStr_T, Repr>>();
-    string_set_concat_inner_acc(ret, ret_k, x, y);
+    string_set_concat_inner_acc(ret, ret_k, x, y, G);
     return StringSet::make(ret, ret_k, ret_strict_eq);
 }
 
@@ -137,6 +236,7 @@ bool prod_constr_gen_extend_inplace(
     DottedProd_T dqt,
     AttrSet_T dqt_attr_new,
     StringSet_T<SymStr_T> dqt_str_gen_incr,
+    Grammar_T G,
     LangCompileContext& ctx) {
 
     bool fresh = false;
@@ -149,8 +249,8 @@ bool prod_constr_gen_extend_inplace(
     }
 
     auto dqt_str_gen_prev = prod_gen->operator[](dqt)->operator[](dqt_attr_new);
-    auto dqt_str_gen_new = string_set_union(dqt_str_gen_prev, dqt_str_gen_incr);
-    if (dqt_str_gen_new->items_->length() != dqt_str_gen_prev->items_->length()) {
+    auto dqt_str_gen_new = string_set_union(dqt_str_gen_prev, dqt_str_gen_incr, G);
+    if (val_hash(dqt_str_gen_new->items_) != val_hash(dqt_str_gen_prev->items_)) {
         fresh = true;
     }
     prod_gen->operator[](dqt)->insert(dqt_attr_new, dqt_str_gen_new);
@@ -158,6 +258,21 @@ bool prod_constr_gen_extend_inplace(
     return fresh;
 }
 
+
+template<typename Repr> StringSet_T<Repr> string_set_sorted(
+    StringSet_T<Repr> s, Grammar_T G) {
+
+    auto ret = string_set_empty<Repr>(s->k_, s->strict_eq_);
+    auto v = make_rc<Vec<pair<SymStr_T, Repr>>>();
+    for (auto [si, si_repr] : *s->items_) {
+        v->push(make_pair(si, si_repr));
+    }
+    v->sort(G);
+    for (auto [si, si_repr] : *v) {
+        ret->items_->insert(si, si_repr);
+    }
+    return ret;
+}
 
 GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k, LangCompileContext& ctx) {
     auto sym_gen = make_rc<Map<Sym_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>>();
@@ -176,7 +291,7 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k, LangCompileC
         sym_gen->operator[](sym)->insert(attr_set_empty(), sym_str_set);
     }
 
-    auto Q = make_rc<Vec<pair<DottedProd_T, AttrSet_T>>>();
+    auto Q = make_rc<Vec<tuple<DottedProd_T, AttrSet_T, SymStr_T, SymStr_T>>>();
 
     for (auto prod : *G->prods_) {
         for (Int dot = 0; dot <= prod->rhs_->length(); dot++) {
@@ -184,16 +299,41 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k, LangCompileC
             prod_gen->insert_strict(dp, make_rc<Map<AttrSet_T, StringSet_T<SymStr_T>>>());
             if (dot == 0) {
                 auto attr_init = prod_lhs_attr_init(prod, ctx);
-                auto str_gen_init = string_set_single_empty(k, false);
+                auto str_gen_init = string_set_empty<SymStr_T>(k, false);
                 prod_gen->operator[](dp)->insert(attr_init, str_gen_init);
-                Q->push_back(make_pair(dp, attr_init));
+                Q->push_back(make_tuple(dp, attr_init, sym_str_empty(), sym_str_empty()));
             }
         }
     }
 
     while (!Q->empty()) {
-        auto [dp, dp_attr] = Q->pop_front_val();
-        auto dp_str_gen = prod_gen->operator[](dp)->operator[](dp_attr);
+        auto [dp, dp_attr, dp_str, dp_str_repr] = Q->pop_front_val();
+
+        LOG(4, "\n\nparser_lr_gen_inhabitants:\n  dp={}\n  "
+            "dp_attr={}\n  dp_str={}\n  dp_str_repr={}", dp, dp_attr, dp_str, dp_str_repr);
+
+        if (!prod_gen->contains_key(dp)) {
+            prod_gen->insert(dp, make_rc<Map<AttrSet_T, StringSet_T<SymStr_T>>>());
+        }
+        if (!prod_gen->operator[](dp)->contains_key(dp_attr)) {
+            prod_gen->operator[](dp)->insert(dp_attr, string_set_empty<SymStr_T>(k, false));
+        }
+        auto& s = prod_gen->operator[](dp)->operator[](dp_attr);
+        bool fresh_outer = false;
+        if (s->items_->contains_key(dp_str)) {
+            auto repr_curr = s->items_->operator[](dp_str);
+            auto repr_new = string_set_repr_select(repr_curr, dp_str_repr, G);
+            if (val_hash(repr_new) != val_hash(repr_curr)) {
+                s->items_->insert(dp_str, repr_new);
+                fresh_outer = true;
+            }
+        } else {
+            s->items_->insert(dp_str, dp_str_repr);
+            fresh_outer = true;
+        }
+        if (!fresh_outer) {
+            continue;
+        }
 
         if (dotted_prod_is_end(dp)) {
             auto sym = dp->prod_->lhs_;
@@ -202,28 +342,42 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k, LangCompileC
                 sym_gen->insert(sym, make_rc<Map<AttrSet_T, StringSet_T<SymStr_T>>>());
             }
             if (!sym_gen->operator[](sym)->contains_key(dp_attr)) {
-                sym_gen->operator[](sym)->insert(dp_attr, dp_str_gen);
+                sym_gen->operator[](sym)->insert(dp_attr, string_set_empty<SymStr_T>(k, false));
+            }
+            auto& s = sym_gen->operator[](sym)->operator[](dp_attr);
+            bool fresh = false;
+            if (s->items_->contains_key(dp_str)) {
+                auto repr_curr = s->items_->operator[](dp_str);
+                auto repr_new = string_set_repr_select(repr_curr, dp_str_repr, G);
+                if (val_hash(repr_new) != val_hash(repr_curr)) {
+                    s->items_->insert(dp_str, repr_new);
+                    fresh = true;
+                }
             } else {
-                auto str_gen_new = string_set_union(
-                    sym_gen->operator[](sym)->operator[](dp_attr), dp_str_gen);
-                sym_gen->operator[](sym)->insert(dp_attr, str_gen_new);
+                s->items_->insert(dp_str, dp_str_repr);
+                fresh = true;
             }
 
-            for (auto dq : *G->prods_by_nonterm_rhs_->operator[](sym)) {
-                auto dqt = dotted_prod_with_step(dq);
+            if (fresh) {
+                for (auto dq : *G->prods_by_nonterm_rhs_->operator[](sym)) {
+                    auto dqt = dotted_prod_with_step(dq);
 
-                for (auto [dq_attr, dq_str_gen] : *prod_gen->operator[](dq)) {
-                    auto dqt_attr_new_m = prod_lhs_apply_constrs_incremental(
-                        dq, dq_attr, dp_attr, ctx);
-                    if (dqt_attr_new_m.is_none()) {
-                        continue;
-                    }
-                    auto dqt_attr_new = dqt_attr_new_m.as_some();
-                    auto dqt_str_gen_incr = string_set_concat(dq_str_gen, dp_str_gen);
-                    bool fresh = prod_constr_gen_extend_inplace(
-                        prod_gen, dqt, dqt_attr_new, dqt_str_gen_incr, ctx);
-                    if (fresh) {
-                        Q->push_back(make_pair(dqt, dqt_attr_new));
+                    for (auto [dq_attr, dq_str_gen] : *prod_gen->operator[](dq)) {
+                        auto dqt_attr_new_m = prod_lhs_apply_constrs_incremental(
+                            dq, dq_attr, dp_attr, ctx);
+                        if (dqt_attr_new_m.is_none()) {
+                            continue;
+                        }
+                        auto dqt_attr_new = dqt_attr_new_m.as_some();
+                        auto dp_str_gen_single = string_set_single(dp_str, dp_str_repr, k, false);
+                        auto dqt_str_gen_incr = string_set_concat(dq_str_gen, dp_str_gen_single, G);
+
+                        for (auto [dqt_str, dqt_str_repr] : *dqt_str_gen_incr->items_) {
+                            LOG(4, "        -> parser_lr_gen_inhabitants push: {} {} {} {}",
+                                dqt, dqt_attr_new, dqt_str, dqt_str_repr);
+
+                            Q->push_back(make_tuple(dqt, dqt_attr_new, dqt_str, dqt_str_repr));
+                        }
                     }
                 }
             }
@@ -245,15 +399,25 @@ GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k, LangCompileC
                     continue;
                 }
                 auto dpt_attr_new = dpt_attr_new_m.as_some();
-                auto dpt_str_gen_incr = string_set_concat(dp_str_gen, cur_str_gen);
-                bool fresh = prod_constr_gen_extend_inplace(
-                    prod_gen, dpt, dpt_attr_new, dpt_str_gen_incr, ctx);
-                if (fresh) {
-                    Q->push_back(make_pair(dpt, dpt_attr_new));
+                auto dp_str_gen_single = string_set_single(dp_str, dp_str_repr, k, false);
+                auto dpt_str_gen_incr = string_set_concat(dp_str_gen_single, cur_str_gen, G);
+
+                for (auto [dpt_str, dpt_str_repr] : *dpt_str_gen_incr->items_) {
+                    Q->push_back(make_tuple(dpt, dpt_attr_new, dpt_str, dpt_str_repr));
                 }
             }
         }
     }
+
+    auto sym_gen_new = make_rc<Map<Sym_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>>();
+    for (auto [sym, m] : *sym_gen) {
+        auto m_new = make_rc<Map<AttrSet_T, StringSet_T<SymStr_T>>>();
+        for (auto [attr, attr_gen] : *m) {
+            m_new->insert(attr, string_set_sorted(attr_gen, G));
+        }
+        sym_gen_new->insert(sym, m_new);
+    }
+    sym_gen = sym_gen_new;
 
     return sym_gen;
 }
@@ -367,10 +531,10 @@ struct LookaheadPartNested {
     LookaheadPartFlat univ_;
     Set_T<Set_T<StringSet_T<Unit>>> part_;
 
-    inline LookaheadPartFlat flatten() {
+    inline LookaheadPartFlat flatten(Grammar_T G) {
         auto ret = make_rc<Set<StringSet_T<Unit>>>();
         for (auto s : *part_) {
-            auto s_flat = string_set_union_multi(s);
+            auto s_flat = string_set_union_multi(s, G);
             ret->insert(s_flat);
         }
         return ret;
@@ -405,10 +569,12 @@ struct LookaheadPartNested {
 using LookaheadPartsNested = Map_T<LRVertex_T, LookaheadPartNested>;
 
 
-inline LookaheadPartsFlat lookahead_parts_flatten(LookaheadPartsNested parts) {
+inline LookaheadPartsFlat lookahead_parts_flatten(LookaheadPartsNested parts,
+    Grammar_T G) {
+
     auto ret = make_rc<Map<LRVertex_T, LookaheadPartFlat>>();
     for (auto [v, part] : *parts) {
-        ret->insert(v, part.flatten());
+        ret->insert(v, part.flatten(G));
     }
     return ret;
 }
@@ -531,10 +697,11 @@ bool lr_lookahead_pred_compat(
             v->la_,
             G_gen,
             k,
+            G,
             G_constrs);
-        return string_set_intersection(la_v_tail, w->la_)->items_->length() != 0;
+        return string_set_intersection(la_v_tail, w->la_, G)->items_->length() != 0;
     } else if (v->is_RecStart()) {
-        return string_set_intersection(v->la_, w->la_)->items_->length() != 0;
+        return string_set_intersection(v->la_, w->la_, G)->items_->length() != 0;
     } else {
         AX();
     }
@@ -546,6 +713,7 @@ StringSet_T<Unit> lr_sym_constr_gen(
     AttrBoundSet_T bounds_sym,
     GrammarSymConstrGen_T G_gen,
     Int k,
+    Grammar_T G,
     GrammarProdConstrs_T G_constrs) {
 
     auto ret = string_set_empty<Unit>(k, false);
@@ -553,7 +721,7 @@ StringSet_T<Unit> lr_sym_constr_gen(
         if (!attr_set_meets_bounds(attr, bounds_sym)) {
             continue;
         }
-        ret = string_set_union<Unit>(ret, string_set_repr_stripped(gen_set));
+        ret = string_set_union<Unit>(ret, string_set_repr_stripped(gen_set), G);
     }
     return ret;
 }
@@ -565,12 +733,13 @@ StringSet_T<Unit> lr_prod_comp_constr_gen(
     AttrBoundSet_T bounds,
     GrammarSymConstrGen_T G_gen,
     Int k,
+    Grammar_T G,
     GrammarProdConstrs_T G_constrs) {
 
     auto dp = DottedProd::make(prod, i);
     auto cur = dotted_prod_cursor(dp);
     auto bounds_pred = lr_prod_bounds_pred(dp, bounds, G_constrs);
-    return lr_sym_constr_gen(cur, bounds_pred, G_gen, k, G_constrs);
+    return lr_sym_constr_gen(cur, bounds_pred, G_gen, k, G, G_constrs);
 }
 
 
@@ -580,12 +749,13 @@ StringSet_T<Unit> lr_prod_tail_constr_gen(
     StringSet_T<Unit> la_end,
     GrammarSymConstrGen_T G_gen,
     Int k,
+    Grammar_T G,
     GrammarProdConstrs_T G_constrs) {
 
     auto ret = la_end;
     for (Int i = dp->prod_->rhs_->length() - 1; i >= dp->dot_; i--) {
-        auto gen_i = lr_prod_comp_constr_gen(dp->prod_, i, bounds, G_gen, k, G_constrs);
-        ret = string_set_concat(gen_i, ret);
+        auto gen_i = lr_prod_comp_constr_gen(dp->prod_, i, bounds, G_gen, k, G, G_constrs);
+        ret = string_set_concat(gen_i, ret, G);
     }
     return ret;
 }
@@ -595,12 +765,13 @@ StringSet_T<Unit> lr_vertex_cur_look_set(
     LRVertex_T w,
     GrammarSymConstrGen_T G_gen,
     Int k,
+    Grammar_T G,
     GrammarProdConstrs_T G_constrs) {
 
     if (w->is_RecStart()) {
         auto ret = lr_sym_constr_gen(w->as_RecStart()->sym_,
-            w->as_RecStart()->bounds_, G_gen, k, G_constrs);
-        return string_set_concat(ret, w->la_);
+            w->as_RecStart()->bounds_, G_gen, k, G, G_constrs);
+        return string_set_concat(ret, w->la_, G);
 
     } else if (w->is_RecEnd()) {
         return w->la_;
@@ -610,7 +781,7 @@ StringSet_T<Unit> lr_vertex_cur_look_set(
             return w->la_;
         } else {
             auto dp = w->as_Prod()->prod_;
-            auto la = lr_prod_tail_constr_gen(dp, w->bounds_, w->la_, G_gen, k, G_constrs);
+            auto la = lr_prod_tail_constr_gen(dp, w->bounds_, w->la_, G_gen, k, G, G_constrs);
             return la;
         }
 
@@ -643,7 +814,7 @@ void lr_nfa_ensure_vertex_acc(
             NFA::add_action(N, w, acc);
         } else {
             auto dp = w->as_Prod()->prod_;
-            auto la = lr_prod_tail_constr_gen(dp, w->bounds_, w->la_, G_gen, k, G_constrs);
+            auto la = lr_prod_tail_constr_gen(dp, w->bounds_, w->la_, G_gen, k, G, G_constrs);
             auto cur = dotted_prod_cursor(dp);
 
             if (Grammar::sym_is_term(cur)) {
@@ -900,6 +1071,7 @@ LRFollowSets_T lr_nfa_compute_follows(
                             la,
                             G_gen,
                             k,
+                            G,
                             G_constrs);
                     } else if (v->is_RecStart()) {
                         la_incr = la;
@@ -911,7 +1083,7 @@ LRFollowSets_T lr_nfa_compute_follows(
                 }
 
                 auto la_prev = ret->operator[](nbr);
-                auto la_new = string_set_union(la_prev, la_incr);
+                auto la_new = string_set_union(la_prev, la_incr, G);
                 if (la_new->items_->length() > la_prev->items_->length()) {
                     updated = true;
                 }
@@ -1029,7 +1201,8 @@ LRVertex_T lr_vertex_with_lookahead(LRVertex_T v, StringSet_T<Unit> la) {
 
 LookaheadPartsFlat lr_extract_immed_conf_part(
     LR_DFA_T Ds, LR_NFA_T Ns, LookaheadPartsFlat la_part_slr,
-    GrammarSymConstrGen_T G_gen, Int k, GrammarProdConstrs_T G_constrs) {
+    GrammarSymConstrGen_T G_gen, Int k,
+    Grammar_T G, GrammarProdConstrs_T G_constrs) {
 
     auto la_conf = make_rc<Map<LRVertex_T, Set_T<StringSet_T<Unit>>>>();
 
@@ -1055,7 +1228,7 @@ LookaheadPartsFlat lr_extract_immed_conf_part(
                         for (auto [la, _] : *la_part_slr->operator[](v0)->only()->items_) {
                             auto la_single = string_set_single(la, Unit{}, k, true);
                             auto v_la = lr_vertex_with_lookahead(v, la_single);
-                            auto v_cur = lr_vertex_cur_look_set(v_la, G_gen, k, G_constrs);
+                            auto v_cur = lr_vertex_cur_look_set(v_la, G_gen, k, G, G_constrs);
                             if (v_cur->items_->contains_key(p.first)) {
                                 la_matching->items_->insert(la, Unit{});
                             } else {
@@ -1068,8 +1241,8 @@ LookaheadPartsFlat lr_extract_immed_conf_part(
 
                         auto v0_la_conf_new = make_rc<Set<StringSet_T<Unit>>>();
                         for (auto s_curr : *la_conf->operator[](v0)) {
-                            auto s_in = string_set_intersection(s_curr, la_matching);
-                            auto s_out = string_set_intersection(s_curr, la_non_matching);
+                            auto s_in = string_set_intersection(s_curr, la_matching, G);
+                            auto s_out = string_set_intersection(s_curr, la_non_matching, G);
                             if (s_in->items_->length() > 0) {
                                 v0_la_conf_new->insert(s_in);
                             }
@@ -1151,7 +1324,7 @@ LookaheadPartsNested lr_prop_part(
                         auto nbr_full = lr_vertex_with_lookahead(nbr, la_s);
 
                         for (auto t : *ret->operator[](curr).part_) {
-                            auto la_t = string_set_union_multi(t);
+                            auto la_t = string_set_union_multi(t, G);
                             auto curr_full = lr_vertex_with_lookahead(curr, la_t);
                             bool r;
                             if (lbl->is_Eps() ||
@@ -1166,7 +1339,7 @@ LookaheadPartsNested lr_prop_part(
                                     AX();
                                 }
                             } else if (lbl->is_Sym_()) {
-                                r = string_set_intersection(la_t, la_s)->items_->length() != 0;
+                                r = string_set_intersection(la_t, la_s, G)->items_->length() != 0;
                             } else {
                                 AX();
                             }
@@ -1307,6 +1480,11 @@ template<typename T, typename U> pair<T, U> pair_snd_add(pair<T, U> x, U inc) {
 }
 
 
+template<typename T, typename U> pair<T, U> pair_add(pair<T, U> x, pair<T, U> y) {
+    return make_pair(x.first + y.first, x.second + y.second);
+}
+
+
 Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
     LR_NFA_T N, LRVertex_T w, Vec_T<LRLabel_T> pre, SymStr_T la, GrammarSymConstrGen_T G_gen,
     GrammarProdConstrs_T G_constrs) {
@@ -1362,6 +1540,9 @@ Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
 
         if (buf->length() > 0) {
             auto fst = buf->operator[](0);
+
+            LOG(4, "lr_conflict_nfa_search_post buf ===== begin match attempt: {}", fst);
+
             for (auto [q_attr, qss] : *G_gen->operator[](fst->sym_->as_Base()->sym_)) {
                 if (!attr_set_meets_bounds_relaxed(q_attr, fst->bounds_)) {
                     continue;
@@ -1382,6 +1563,8 @@ Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
                         continue;
                     }
 
+                    LOG(4, "lr_conflict_nfa_search_post buf to nbr: {} -> {} {}", fst, q_attr, qss_str);
+
                     auto buf_nbr = buf->slice(1, buf->length());
                     auto x_nbr = make_tuple(x, pre_ind, la_ind + match_len, buf_nbr);
                     auto vi_nbr = vs->insert(x_nbr);
@@ -1398,6 +1581,8 @@ Vec_T<LRStringExemplar_T> lr_conflict_nfa_search_post(
                     }
                 }
             }
+
+            LOG(4, "lr_conflict_nfa_search_post buf ===== end match attempt: {}", fst);
 
         } else {  // buf->length() == 0
             auto es = NFA::incoming_edges(N, x);
@@ -1562,24 +1747,36 @@ Set_T<LRVertex_T> lr_dfa_vertex_without_lookahead(Set_T<LRVertex_T> vs) {
 }
 
 
-Int lr_exemplar_bidir_len_total(LRStringExemplarBidir_T x) {
-    Int ret = 0;
+SymStr_T lr_exemplar_bidir_str_total(LRStringExemplarBidir_T x) {
+    auto ret = make_rc<Vec<LRSym_T>>();
     for (auto str_exr : *x->pre_) {
-        ret += str_exr->contents_->v_->length();
+        ret->extend(str_exr->contents_->v_);
     }
     for (auto str_exr : *x->post_) {
-        ret += str_exr->contents_->v_->length();
+        ret->extend(str_exr->contents_->v_);
     }
-    return ret;
+    return SymStr::make(ret);
 }
 
 
-Int lr_conflict_len_total(LRConflict_T confl) {
-    Int ret = 0;
+pair<Int, SymStr_T> lr_exemplar_bidir_len_total(LRStringExemplarBidir_T x) {
+    auto s = lr_exemplar_bidir_str_total(x);
+    return make_pair(s->v_->length(), s);
+}
+
+
+SymStr_T lr_conflict_str_total(LRConflict_T confl) {
+    auto ret = make_rc<Vec<LRSym_T>>();
     for (auto exr : *confl->items_) {
-        ret += lr_exemplar_bidir_len_total(exr->exr_);
+        ret->extend(lr_exemplar_bidir_str_total(exr->exr_)->v_);
     }
-    return ret;
+    return SymStr::make(ret);
+}
+
+
+pair<Int, SymStr_T> lr_conflict_len_total(LRConflict_T x) {
+    auto s = lr_conflict_str_total(x);
+    return make_pair(s->v_->length(), s);
 }
 
 
@@ -1740,7 +1937,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
     Int k0 = 0;
 
     auto la_part_init = lr_extract_immed_conf_part(
-        Ds, Ns, la_part_slr, G_gen, k, ctx.Gr_cps_prod_constrs_);
+        Ds, Ns, la_part_slr, G_gen, k, ctx.Gr_cps_, ctx.Gr_cps_prod_constrs_);
 
     LOG(3, " === Immediately conflicting lookahead partition:\n{}\n\n", la_part_init);
 
@@ -1752,7 +1949,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
         LookaheadPartDir::BWD,
         la_part_init_nested, N0, ctx.Gr_cps_, G_gen, k, ctx.Gr_cps_prod_constrs_);
 
-    auto la_part_bwd_flat = lookahead_parts_flatten(la_part_bwd);
+    auto la_part_bwd_flat = lookahead_parts_flatten(la_part_bwd, ctx.Gr_cps_);
 
     LOG(3, " === Backward-propagated lookahead partition:\n{}\n\n", la_part_bwd_flat);
 
@@ -1766,7 +1963,7 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
 
     auto la_part_final = la_part_fwd;
 
-    auto la_part_final_flat = lookahead_parts_flatten(la_part_final);
+    auto la_part_final_flat = lookahead_parts_flatten(la_part_final, ctx.Gr_cps_);
 
     LOG(1, "Compiling parser: constructing LR NFA");
 
@@ -1812,15 +2009,20 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
     using BackEdge_T = pair<DFAVertex_T, LRLabel_T>;
     auto m_pred = make_rc<Map<DFAVertex_T, pair<Int, Option_T<BackEdge_T>>>>();
     {
-        priority_queue<IntPair> Q;
+        Int t = 0;
+        using Pri = IntPair;
+        priority_queue<pair<Pri, Int>> Q;
         auto hit = make_rc<Set<Int>>();
         auto vsi_start = D->start_.as_some();
         auto vs_start = D->G_->V_->operator[](vsi_start);
         m_pred->insert(vs_start, make_pair(0, None<BackEdge_T>()));
-        Q.push(make_pair(0, vsi_start));
+        Pri pri0 = make_pair(0, t);
+        Q.push(make_pair(pri0, vsi_start));
         while (!Q.empty()) {
+            ++t;
+
             auto [curr_len, curr_ind] = Q.top();
-            curr_len = - curr_len;
+            curr_len = make_pair(- curr_len.first, - curr_len.second);
 
             Q.pop();
             if (hit->contains(curr_ind)) {
@@ -1830,8 +2032,16 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
 
             auto curr_vs = D->G_->V_->operator[](curr_ind);
             auto es = NFA::outgoing_edges(D, curr_vs);
-            for (auto [lbl, nbrs] : *es) {
-                auto nbr = nbrs->only();
+
+            auto es_ks = es->keys_to_vec();
+            es_ks->sort(ctx.Gr_cps_);
+
+            LOG(4, "DFA search sorted edges: {}", es_ks);
+
+            for (auto lbl : *es_ks) {
+                ++t;
+
+                auto nbr = es->operator[](lbl)->only();
                 auto lbl_sym = lbl->as_Sym_()->sym_;
                 Int lbl_len;
                 if (lbl_sym->is_RecurStep()) {
@@ -1845,12 +2055,13 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
                 }
 
                 if (!m_pred->contains_key(nbr) ||
-                    m_pred->operator[](nbr).first > curr_len + lbl_len) {
+                    curr_len.first + lbl_len < m_pred->operator[](nbr).first) {
+
                     m_pred->insert(
                         nbr, make_pair(
-                            curr_len + lbl_len, Some<BackEdge_T>(make_pair(curr_vs, lbl))));
-                    Q.push(make_pair(
-                        - (curr_len + lbl_len), D->G_->V_->index_of_maybe(nbr).as_some()));
+                            curr_len.first + lbl_len, Some<BackEdge_T>(make_pair(curr_vs, lbl))));
+                    auto pri = make_pair(- (curr_len.first + lbl_len), - t);
+                    Q.push(make_pair(pri, D->G_->V_->index_of_maybe(nbr).as_some()));
                 }
             }
         }
@@ -1878,6 +2089,9 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
             vs_curr = vs_next;
         }
         buf->reverse();
+
+        LOG(3, "lr_conflict_vs DFA path search:\n  vs: {}\n  path: {}", vs, buf);
+
         for (auto lbl : *buf) {
             auto exr = lr_conflict_extract_exemplar_sym(
                 lbl->as_Sym_()->sym_, lbl->as_Sym_()->attr_, G_gen);
@@ -1888,14 +2102,17 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
         auto accs = make_rc<Set<LRAction_T>>();
         for (auto [acc, ws] : *mm) {
             accs->insert(acc);
-            auto len_min = None<Int>();
+            auto len_min = None<pair<Int, SymStr_T>>();
             auto exr_min = None<LRConflictExemplar_T>();
             for (auto w : *ws) {
                 auto post = lr_conflict_nfa_search_post(
                     N, w, buf, la, G_gen, ctx.Gr_cps_prod_constrs_);
                 auto exr = LRStringExemplarBidir::make(pre, post);
-                if (len_min.is_none() || lr_exemplar_bidir_len_total(exr) < len_min.as_some()) {
-                    len_min = Some<Int>(lr_exemplar_bidir_len_total(exr));
+
+                if (len_min.is_none() ||
+                    cmp(lr_exemplar_bidir_len_total(exr), len_min.as_some(), ctx.Gr_cps_) == -1) {
+
+                    len_min = Some<pair<Int, SymStr_T>>(lr_exemplar_bidir_len_total(exr));
                     exr_min = Some<LRConflictExemplar_T>(LRConflictExemplar::make(exr, la, acc));
                 }
             }
@@ -1913,13 +2130,16 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
     auto lr_conflicts_pre = make_rc<Vec<LRConflict_T>>();
 
     for (auto [accs, cand] : *lr_conflict_cand) {
-        auto len_min = None<Int>();
+        auto len_min = None<pair<Int, SymStr_T>>();
         auto confl_sel = None<LRConflict_T>();
 
         for (auto confl : *cand) {
             auto confl_len = lr_conflict_len_total(confl);
-            if (len_min.is_none() || confl_len < len_min.as_some()) {
-                len_min = Some<Int>(confl_len);
+
+            if (len_min.is_none() ||
+                cmp(confl_len, len_min.as_some(), ctx.Gr_cps_) == -1) {
+
+                len_min = Some<pair<Int, SymStr_T>>(confl_len);
                 confl_sel = Some<LRConflict_T>(confl);
             }
         }
@@ -1927,16 +2147,16 @@ Vec_T<LRConflict_T> parser_lr_analysis(LangCompileContext& ctx) {
         lr_conflicts_pre->push(confl_sel.as_some());
     }
 
-    vector<IntPair> inds;
+    auto inds = make_rc<Vec<pair<pair<Int, SymStr_T>, Int>>>();
     for (Int i = 0; i < lr_conflicts_pre->length(); i++) {
-        inds.push_back(
+        inds->push(
             make_pair(lr_conflict_len_total(lr_conflicts_pre->operator[](i)), i));
     }
-    std::sort(inds.begin(), inds.end());
+    inds->sort(ctx.Gr_cps_);
 
     auto lr_conflicts = make_rc<Vec<LRConflict_T>>();
 
-    for (auto [_, ii] : inds) {
+    for (auto [_, ii] : *inds) {
         lr_conflicts->push(lr_conflicts_pre->operator[](ii));
     }
 
