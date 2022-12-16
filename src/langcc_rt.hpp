@@ -1655,7 +1655,7 @@ inline string parser_format_sym(ParserDesc* desc_raw, ParserSymId sym, ParserAtt
             continue;
         }
         if (is_prec) {
-            attr_strs->push_back(fmt_str("{}={}", attr_str, attr.v_[i]));
+            attr_strs->push_back(fmt_str("{}={}", attr_str, static_cast<Int>(attr.v_[i])));
         } else {
             AT(attr.v_[i] == 1);
             attr_strs->push_back(attr_str);

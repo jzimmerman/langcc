@@ -21,6 +21,11 @@ using namespace lang;
 using LR_NFA_T = NFA_T<LRVertex_T, LRLabel_T, LRLookAction_T>;
 using LR_DFA_T = NFA_T<Set_T<LRVertex_T>, LRLabel_T, LRLookAction_T>;
 
+using GrammarProdConstrs_T = Map_T<Prod_T, VecUniq_T<ProdConstrFlat_T>>;
+
+using GrammarSymConstrGen_T = Map_T<Sym_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>;
+using GrammarProdConstrGen_T = Map_T<DottedProd_T, Map_T<AttrSet_T, StringSet_T<SymStr_T>>>;
+
 struct LangCompileContext {
     lang::meta::Node::Lang_T src_;
     Gensym_T gen_meta_;
@@ -249,7 +254,6 @@ void parser_Gr_cps_add_prod(
 // LR analysis
 LRVertex_T lr_vertex_without_lookahead(LRVertex_T v);
 void pr(ostream& os, FmtFlags flags, GrammarSymConstrGen_T G_gen);
-Int lr_conflict_exemplar_length_total(LRStringExemplarBidir_T exr);
 LRStringExemplar_T lr_conflict_extract_exemplar_sym(LRSym_T sym, AttrSet_T attr,
     GrammarSymConstrGen_T G_gen);
 Vec_T<LRStringExemplarBounded_T> lr_conflict_extract_exemplars_tail(
@@ -260,6 +264,7 @@ StringSet_T<Unit> lr_sym_constr_gen(
     AttrBoundSet_T bounds_sym,
     GrammarSymConstrGen_T G_gen,
     Int k,
+    Grammar_T G,
     GrammarProdConstrs_T G_constrs);
 StringSet_T<Unit> lr_prod_comp_constr_gen(
     Prod_T prod,
@@ -267,6 +272,7 @@ StringSet_T<Unit> lr_prod_comp_constr_gen(
     AttrBoundSet_T bounds,
     GrammarSymConstrGen_T G_gen,
     Int k,
+    Grammar_T G,
     GrammarProdConstrs_T G_constrs);
 StringSet_T<Unit> lr_prod_tail_constr_gen(
     DottedProd_T dp,
@@ -274,6 +280,7 @@ StringSet_T<Unit> lr_prod_tail_constr_gen(
     StringSet_T<Unit> la_end,
     GrammarSymConstrGen_T G_gen,
     Int k,
+    Grammar_T G,
     GrammarProdConstrs_T G_constrs);
 GrammarSymConstrGen_T parser_lr_gen_inhabitants(Grammar_T G, Int k, LangCompileContext& ctx);
 Map_T<SymStr_T, Map_T<LRAction_T, Set_T<LRVertex_T>>> lr_tabulate_nfa_acc(
