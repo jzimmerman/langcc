@@ -37,6 +37,6 @@ int main(i32 argc, char** argv) {
         register_unit_test(s, [s]() { test_lang_toplevel(s); });
     }
 
-    bool success = run_unit_tests();
+    bool success = run_unit_tests(60*M_);
     return success ? 0 : 1;
 }
