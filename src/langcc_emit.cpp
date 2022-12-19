@@ -1764,13 +1764,19 @@ void lang_emit_global_defs(LangCompileContext& ctx, HeaderMode hm) {
 
     auto lexer_mode_descs = make_rc<Vec<cc::Node_T>>();
 
-    for (auto mode : ctx.lexer_modes_) {
+    for (Int mode_i = 0; mode_i < ctx.lexer_modes_.length(); mode_i++) {
+        auto mode = ctx.lexer_modes_.operator[](mode_i);
+
         auto tr_m = lexer_extract_trivial_maybe(mode);
 
         lexer_mode_descs->push_back(
             ctx.cc_.Q_->qq_ext(
                 Some<string>("Stmt"), "auto", mode->name_.to_std_string(),
                 "= langcc::make_rc<langcc::LexerModeDesc>();"));
+
+        ctx.cc_.qq_stmt_acc(lexer_mode_descs, mode->name_.to_std_string(),
+            "->mode_ind_ = ", fmt_str("{}", mode_i), ";");
+
         lexer_mode_descs->push_back(
             ctx.cc_.Q_->qq_ext(
                 Some<string>("Stmt"),
@@ -1918,6 +1924,145 @@ void lang_emit_global_defs(LangCompileContext& ctx, HeaderMode hm) {
                 ctx.cc_.Q_->qq_ext(Some<string>("Stmt"),
                     mode->name_.to_std_string(), "->proc_mode_loop_opt_fn_ = lexer::",
                     mode->name_.to_std_string(),
+                    "::proc_mode_loop_opt;"));
+
+        } else if (mode->memo__) {
+            auto loop_fun = ctx.cc_.Q_->qq_ext(Some<string>("Decl"),
+                "inline __attribute__((always_inline)) langcc::IntPair lang::", ctx.src_base_name_,
+                    "::lexer::", mode->name_.to_std_string(), "::proc_mode_loop_opt(",
+                "    langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st,",
+                "    langcc::Ptr<langcc::SymItemVec> emit_dst,",
+                "    langcc::Int mode_start_pos, langcc::Int mode_buf_pos) {",
+
+                "    langcc::SymItemVec emit_dst_sub;",
+                "    bool read_eof = false;",
+                "    langcc::Int in_i = mode_start_pos;",
+                "    langcc::Ptr<langcc::Ch> in_data = st->in_->data_.begin();",
+                "    langcc::Int in_data_len = st->in_->data_len_;",
+                "    auto label_ids_ascii = st->label_ids_ascii_->begin();",
+                "    langcc::Int tok_lo;",
+                "    langcc::Int tok_hi;",
+                "    langcc::rc_ptr<langcc::LexWhitespaceState> ws_state_rc;",
+                "    langcc::LexWhitespaceState* ws_state = nullptr;",
+                "    if (mode->ws_sig_.is_some()) {",
+                "        ws_state_rc = langcc::make_rc<langcc::LexWhitespaceState>(st,",
+                "            st->tok_to_sym_, mode_buf_pos, in_data,",
+                "            mode->ws_newline_ind_, mode->ws_indent_ind_, mode->ws_dedent_ind_,",
+                "            mode->ws_err_mixed_indent_ind_, mode->ws_err_text_after_lc_ind_,",
+                "            mode->ws_err_delim_mismatch_ind_, mode->ws_sig_.as_some());",
+                "        ws_state = ws_state_rc.get();",
+                "    }",
+                "    langcc::vector<langcc::IntPair> memo_fail_buf;",
+                "    for (langcc::cc_nop(); true; langcc::cc_nop()) {",
+                "        tok_lo = in_i;",
+                "        langcc::DFAVertexId v = 0;",
+                "        langcc::DFAActionId best_act = langcc::DFATable::NO_ACTION;",
+                "        langcc::TokenId best_tok;",
+                "        bool dfa_fail = false;",
+                "        for (langcc::cc_nop(); true; langcc::cc_nop()) {",
+                "            langcc::TokenId cl = langcc::lexer_char_to_label(",
+                "                in_data, in_i, in_data_len, label_ids_ascii, st);",
+                "            v = step(v, cl);",
+                "            if (__builtin_expect(v == langcc::DFATable::NO_VERTEX, 0)) {",
+                "                if (best_act == langcc::DFATable::NO_ACTION) {",
+                "                    if (cl != langcc::DFATable::EOF_LABEL) {",
+                "                        tok_hi = in_i + 1;",
+                "                    } else {",
+                "                        tok_hi = in_i;",
+                "                    }",
+                "                    dfa_fail = true;",
+                "                }",
+                "                break;",
+                "            }",
+                "            if (__builtin_expect(cl == langcc::DFATable::EOF_LABEL, 0)) {",
+                "                read_eof = true;",
+                "            }",
+                "            if (__builtin_expect(!read_eof, 1)) {",
+                "                in_i++;",
+                "            }",
+                "            auto acc_tok = acc(v);",
+                "            if (acc_tok.first != langcc::DFATable::NO_ACTION) {",
+                "                memo_fail_buf.clear();",
+                "                tok_hi = in_i;",
+                "                best_act = acc_tok.first;",
+                "                best_tok = acc_tok.second;",
+                "            } else {",
+                "                if (best_act != langcc::DFATable::NO_ACTION && ",
+                "                    st->memo_fail_query(mode->mode_ind_, v, in_i)) {",
+                "                    break;",
+                "                }",
+                "                memo_fail_buf.push_back(langcc::make_pair(v, in_i));",
+                "            }",
+                "        }",
+                "        in_i = tok_lo;",
+                "        if (__builtin_expect(dfa_fail, 0)) {",
+                "            in_i = tok_hi;",
+                "            st->enqueue_emit_ext(emit_dst, ws_state, mode->err_invalid_ind_, tok_lo, tok_hi, true);",
+                "            if (mode->ws_sig_.is_some()) {",
+                "                ws_state->consume(tok_lo, tok_hi, emit_dst);",
+                "            }",
+                "            return langcc::make_pair(in_i, 1);",
+                "        }",
+                "        st->memo_fail_add_vec(mode->mode_ind_, memo_fail_buf);",
+                "        langcc::IntPair new_mode_dir = step_exec(",
+                "            st, emit_dst, ws_state, best_act, best_tok, in_i, tok_lo, tok_hi);",
+                "        if (__builtin_expect(",
+                "            new_mode_dir.first == langcc::DFATable::NEW_MODE_POP_EMIT, 0)) {",
+                "            st->enqueue_emit_ext(",
+                "                emit_dst, ws_state, new_mode_dir.second, mode_buf_pos, in_i,",
+                "                true);",
+                "            if (!!ws_state) {",
+                "                ws_state->finish(tok_hi, emit_dst);",
+                "            }",
+                "            return langcc::make_pair(in_i, 0);",
+                "        }",
+                "        if (__builtin_expect(",
+                "                new_mode_dir.first ==",
+                "                langcc::DFATable::NEW_MODE_POP_EXTRACT, 0)) {",
+                "            st->extract_comment(mode_buf_pos, in_i);",
+                "            if (!!ws_state) {",
+                "                ws_state->finish(tok_hi, emit_dst);",
+                "            }",
+                "            return langcc::make_pair(in_i, 0);",
+                "        }",
+                "        if (__builtin_expect(",
+                "                new_mode_dir.first == langcc::DFATable::NEW_MODE_POP, 0)) {",
+                "            if (!!ws_state) {",
+                "                ws_state->finish(tok_hi, emit_dst);",
+                "            }",
+                "            return langcc::make_pair(in_i, 0);",
+                "        }",
+                "        if (__builtin_expect(new_mode_dir.first >= 0, 0)) {",
+                "            auto desc_new = st->mode_descs_->operator[](new_mode_dir.first);",
+                "            auto p = lexer_proc_mode_loop(",
+                "                desc_new.get(), st, &emit_dst_sub, in_i, new_mode_dir.second);",
+                "            in_i = p.first;",
+                "            langcc::lex_queue_pull_sub(st, emit_dst, &emit_dst_sub, ws_state);",
+                "            if (p.second _GT_ 0) {",
+                "                return langcc::make_pair(in_i, p.second);",
+                "            }",
+                "        }",
+                "        if (__builtin_expect(read_eof, 0)) {",
+                "            langcc::lexer_raise_nonempty_mode_stack(st, in_i);",
+                "        }",
+                "    }",
+                "}");
+
+            ctx.cc_.dst_decls_->push_back(ctx.cc_.qq("Decl",
+                "namespace lang::", ctx.src_base_name_, "::lexer::",
+                    mode->name_.to_std_string(), "{",
+                    "inline __attribute__((always_inline)) langcc::IntPair proc_mode_loop_opt(",
+                    "langcc::Ptr<langcc::LexerModeDesc> mode, langcc::Ptr<langcc::LexerState> st,",
+                    "langcc::Ptr<langcc::SymItemVec> emit_dst,",
+                    "langcc::Int mode_start_pos, langcc::Int mode_buf_pos);",
+                "}")->as_Decl());
+
+            ctx.cc_.dst_defs_->push_back(loop_fun->as_Decl());
+
+            lexer_mode_descs->push_back(
+                ctx.cc_.Q_->qq_ext(Some<string>("Stmt"),
+                    mode->name_.to_std_string(),
+                    "->proc_mode_loop_opt_fn_ = lexer::", mode->name_.to_std_string(),
                     "::proc_mode_loop_opt;"));
 
         } else {

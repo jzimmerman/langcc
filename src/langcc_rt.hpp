@@ -980,6 +980,8 @@ struct WsSigSpec {
 };
 
 struct LexerModeDesc: enable_rc_from_this<LexerModeDesc> {
+    Int mode_ind_;
+
     IntPair (*proc_mode_loop_opt_fn_)(
         LexerModeDesc* mode, LexerState* st, SymItemVec* emit_dst,
         Int mode_start_pos, Int mode_buf_pos);
@@ -1011,6 +1013,8 @@ struct LexerState: enable_rc_from_this<LexerState> {
 
     bool consumed_;
 
+    Vec_T<rc_ptr<unordered_set<IntPair>>> memo_fail_;
+
     inline static LexerState_T make(TermTokToSymFn tok_to_sym,
         rc_ptr<DFALabelIdVec> label_ids_ascii,
         rc_ptr<DFALabelIdMap> label_ids_unicode,
@@ -1025,7 +1029,26 @@ struct LexerState: enable_rc_from_this<LexerState> {
         ret->in_ = in;
         ret->out_ = LexOutput::make_text(in);
         ret->consumed_ = false;
+        ret->memo_fail_ = make_rc<Vec<rc_ptr<unordered_set<IntPair>>>>();
+        for (Int i = 0; i < mode_descs->length(); i++) {
+            ret->memo_fail_->push(make_rc<unordered_set<IntPair>>());
+        }
         return ret;
+    }
+
+    inline void memo_fail_add(Int mode_ind, Int dfa_vertex_ind, Int input_pos) {
+        memo_fail_->operator[](mode_ind)->insert(make_pair(dfa_vertex_ind, input_pos));
+    }
+
+    inline void memo_fail_add_vec(Int mode_ind, const vector<IntPair>& buf) {
+        for (auto p : buf) {
+            this->memo_fail_add(mode_ind, p.first, p.second);
+        }
+    }
+
+    inline bool memo_fail_query(Int mode_ind, Int dfa_vertex_ind, Int input_pos) {
+        auto& m = memo_fail_->operator[](mode_ind);
+        return m->find(make_pair(dfa_vertex_ind, input_pos)) != m->end();
     }
 
     inline TokenId last_tok() {

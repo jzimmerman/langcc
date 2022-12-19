@@ -44337,6 +44337,8 @@ inline __attribute__((always_inline)) langcc::IntPair lang::cc::lexer::body::pro
                 if (best_act == langcc::DFATable::NO_ACTION) {
                     if (cl != langcc::DFATable::EOF_LABEL) {
                         tok_hi = in_i + 1;
+                    } else {
+                        tok_hi = in_i;
                     }
                     dfa_fail = true;
                 }
@@ -44349,9 +44351,9 @@ inline __attribute__((always_inline)) langcc::IntPair lang::cc::lexer::body::pro
                 in_i++;
             }
             auto acc_tok = acc(v);
-            tok_hi = in_i;
-            best_act = acc_tok.first;
             if (acc_tok.first != langcc::DFATable::NO_ACTION) {
+                tok_hi = in_i;
+                best_act = acc_tok.first;
                 best_tok = acc_tok.second;
             }
         }
@@ -44460,6 +44462,7 @@ lang::cc::LangDesc_T lang::cc::init() {
     auto ret = langcc::make_rc<lang::cc::LangDesc>();
     ret->lexer_mode_descs_ = langcc::make_rc<langcc::Vec<langcc::LexerModeDesc_T>>();
     auto body = langcc::make_rc<langcc::LexerModeDesc>();
+    body->mode_ind_ = 0;
     body->step_fn_ = lexer::body::step;
     body->acc_fn_ = lexer::body::acc;
     body->step_exec_fn_ = lexer::body::step_exec;
@@ -44468,6 +44471,7 @@ lang::cc::LangDesc_T lang::cc::init() {
     body->ws_sig_ = langcc::None<langcc::WsSigSpec>();
     body->err_invalid_ind_ = 65;
     auto comment_single = langcc::make_rc<langcc::LexerModeDesc>();
+    comment_single->mode_ind_ = 1;
     comment_single->step_fn_ = lexer::comment_single::step;
     comment_single->acc_fn_ = lexer::comment_single::acc;
     comment_single->step_exec_fn_ = lexer::comment_single::step_exec;
