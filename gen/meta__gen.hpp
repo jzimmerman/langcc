@@ -2844,11 +2844,11 @@ namespace langcc {
 }
 
 namespace lang::meta::Node::LexerDecl::Mode {
-    lang::meta::Node::LexerDecl::Mode_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, langcc::Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_, langcc::Vec_T<lang::meta::Node::LexerModeCase_T> cases);
+    lang::meta::Node::LexerDecl::Mode_T make(langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, langcc::Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_, bool memo_, langcc::Vec_T<lang::meta::Node::LexerModeCase_T> cases);
 }
 
 namespace lang::meta::Node::LexerDecl::Mode {
-    lang::meta::Node::LexerDecl::Mode_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, langcc::Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_, langcc::Vec_T<lang::meta::Node::LexerModeCase_T> cases);
+    lang::meta::Node::LexerDecl::Mode_T make_ext(langcc::ArenaPtr arena, langcc::Int id, langcc::TokenBounds bounds, bool is_top, langcc::ParserSymId sym, langcc::ParserAttrMask attr, langcc::ParserLookahead first_k, langcc::StrSlice name, langcc::Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_, bool memo_, langcc::Vec_T<lang::meta::Node::LexerModeCase_T> cases);
 }
 
 namespace lang::meta::Node::LexerDecl::Mode {
@@ -2857,6 +2857,7 @@ namespace lang::meta::Node::LexerDecl::Mode {
         void write(langcc::Ref<langcc::PrBufStream_T> pb);
         langcc::StrSlice name_;
         langcc::Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig__;
+        bool memo__;
         langcc::Vec_T<lang::meta::Node::LexerModeCase_T> cases_;
         _T();
         lang::meta::Node::LexerDecl::Mode_T with_id(langcc::Int id);
@@ -2867,6 +2868,7 @@ namespace lang::meta::Node::LexerDecl::Mode {
         lang::meta::Node::LexerDecl::Mode_T with_first_k(langcc::ParserLookahead first_k);
         lang::meta::Node::LexerDecl::Mode_T with_name(langcc::StrSlice name);
         lang::meta::Node::LexerDecl::Mode_T with_ws_sig_(langcc::Option_T<lang::meta::Node::LexerDecl::Mode::ws_sig__T> ws_sig_);
+        lang::meta::Node::LexerDecl::Mode_T with_memo_(bool memo_);
         lang::meta::Node::LexerDecl::Mode_T with_cases(langcc::Vec_T<lang::meta::Node::LexerModeCase_T> cases);
         void hash_ser_acc_lang_meta_Node_LexerDecl_Mode(langcc::SerBuf& buf) const;
         virtual void hash_ser_acc(langcc::SerBuf& buf) const;

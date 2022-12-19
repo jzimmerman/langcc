@@ -15,7 +15,7 @@ tokens {
         | `eof` | `false`
         | `eps`
         | `unicode_any` | `ascii_base_any`
-        | `ws_sig` | `newline` | `indent` | `dedent`
+        | `ws_sig` | `memo` | `newline` | `indent` | `dedent`
         | `pr`
         | `LR` | `Err`
         | `#include` | `#include_post`;
@@ -89,7 +89,7 @@ parser {
 
     LexerDecl.Main <- `main` _ `{` _ name:IdBase _ `}`;
     LexerDecl.Mode <- `mode` _ name:IdBase ws_sig_:(_ `ws_sig` spec:WsSigSpec?)? _
-        `{` cases:#B[LexerModeCase::eps] `}`;
+        memo_:(_ `memo`)? `{` cases:#B[LexerModeCase::eps] `}`;
 
         WsSigSpec <= `(` lc:(str_lit `;` _)? _ delims: #L[str_lit::`,`_] `)`;
 

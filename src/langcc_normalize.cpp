@@ -600,6 +600,7 @@ bool lang_name_is_lower_reserved(string x) {
     res->insert("Int");
     res->insert("item");
     res->insert("Map");
+    res->insert("memo");
     res->insert("mut");
     res->insert("namespace");
     res->insert("new");

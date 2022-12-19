@@ -2629,6 +2629,14 @@ namespace std {
     };
 }
 
+namespace std {
+    template<typename T, typename U> struct hash<std::pair<T, U>> {
+        inline std::size_t operator()(const std::pair<T, U>& x) const {
+            return (std::hash<T>()(x.first) << 32) ^ std::hash<U>()(x.second);
+        }
+    };
+}
+
 namespace langcc {
 
 struct hash_obj {
