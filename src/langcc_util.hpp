@@ -3979,6 +3979,7 @@ inline bool run_unit_tests(Time timeout = 1800L*M_) {
         len(get_unit_tests()), unit_tests_max_concurrent);
 
     Time monitor_start = now();
+    Time t_timeout_check_last = -1;
 
     while (test_dispatch_i < ts.size() || get_unit_tests_running().size() > 0) {
         if (test_dispatch_i < ts.size()) {
@@ -3990,19 +3991,27 @@ inline bool run_unit_tests(Time timeout = 1800L*M_) {
             }
         }
 
-        if (now() - monitor_start > timeout) {
+        if (t_timeout_check_last == -1 || now() - t_timeout_check_last > 10000) {
+            vector<pid_t> timed_out;
             for (auto& p : get_unit_tests_running()) {
-                auto test = p.second;
-                LOG(0, "\033[31m[TIMEOUT]\033[0m {}", test.desc_.name_);
-                kill_child_proc(test.pid_);
-                test.ret_ = None<Int>();
-                test.end_time_ = now();
-                test.stdout_ = read_file(test.stdout_filename_);
-                test.stderr_ = read_file(test.stderr_filename_);
-                get_unit_tests_terminated().insert(make_pair(test.desc_.name_, test));
+                auto t = now() - p.second.start_time_;
+                if (t > timeout) {
+                    auto test = p.second;
+                    LOG(0, "\033[31m[TIMEOUT]\033[0m {}", test.desc_.name_);
+                    kill_child_proc(test.pid_);
+                    test.ret_ = None<Int>();
+                    test.end_time_ = now();
+                    test.stdout_ = read_file(test.stdout_filename_);
+                    test.stderr_ = read_file(test.stderr_filename_);
+                    get_unit_tests_terminated().insert(make_pair(test.desc_.name_, test));
+                    timed_out.push_back(p.first);
+                }
             }
-            get_unit_tests_running().clear();
-            break;
+            for (auto pid : timed_out) {
+                auto it = get_unit_tests_running().find(pid);
+                get_unit_tests_running().erase(it);
+            }
+            t_timeout_check_last = now();
         }
 
         i32 status = -1;
