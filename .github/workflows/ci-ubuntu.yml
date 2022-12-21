@@ -2,9 +2,9 @@ name: Ubuntu CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "tmp8" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "tmp8" ]
 
 jobs:
   build:
