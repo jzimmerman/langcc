@@ -1152,7 +1152,7 @@ lox::Val expr_eval(Expr_S expr, LoxValEnv_P env, Int stack_depth, EvalContext& c
                     throw lox::Error::make(fmt_str("Passed {} arguments to builtin 'clock', should be 0",
                         cc->args_->length()), node_lift(cc));
                 }
-                auto t = now() / 1e6;
+                auto t = (now() / 1000) / 1e3;
                 return lox::Val::make_Number(t);
             } else {
                 AX();
